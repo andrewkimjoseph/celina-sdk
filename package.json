@@ -1,0 +1,63 @@
+{
+  "name": "@andrewkimjoseph/celina-sdk",
+  "version": "0.1.0",
+  "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js",
+      "default": "./build/index.js"
+    }
+  },
+  "files": [
+    "build/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rm -rf build && tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "celina",
+    "celina-sdk",
+    "celo",
+    "blockchain",
+    "web3",
+    "wagmi",
+    "viem",
+    "mento",
+    "aave",
+    "sdk"
+  ],
+  "author": "Andrew Kim Joseph",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewkimjoseph/celina-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andrewkimjoseph/celina-sdk/issues"
+  },
+  "homepage": "https://github.com/andrewkimjoseph/celina-sdk#readme",
+  "dependencies": {
+    "@mento-protocol/mento-sdk": "^3.2.8",
+    "viem": "^2.39.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.2"
+  }
+}
