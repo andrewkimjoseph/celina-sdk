@@ -42,12 +42,16 @@ const flow = await celina.transaction.prepareSend(
 |---------|-------|---------------------|
 | `blockchain` | network status, blocks, transactions | — |
 | `account` | CELO balance, nonce | — |
-| `token` | balances, token info, stablecoins | — |
+| `token` | balances, token info, stablecoins, `getTokenBalance` | — |
 | `ens` | resolve ENS names | — |
 | `gooddollar` | whitelist status | — |
-| `transaction` | `estimateSend(from, …)` | `prepareSend(from, …)` |
+| `transaction` | `getGasFeeData`, `estimateTransaction`, `estimateSend(from, …)` | `prepareSend(from, …)` |
 | `mentoFx` | `getFxQuote`, `estimateFx(from, …)` | `prepareFx(from, …)` |
 | `aave` | — | `prepareSupply(from, …)`, `prepareWithdraw(from, …)` |
+| `governance` | proposals list, proposal details | — |
+| `staking` | balances, activatable stakes, validator groups | — |
+| `nft` | NFT info, NFT balance | — |
+| `contract` | `callFunction`, `estimateGas` (caller-supplied ABI) | — |
 
 Prepared flows return `{ preparedFlow: true, steps, summary, from, network }` with JSON-safe `value` strings.
 
