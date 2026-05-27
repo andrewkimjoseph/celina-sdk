@@ -20,23 +20,39 @@ export class BlockchainService {
     };
   }
 
-  async getBlock(blockId: number | string | "latest" | "pending") {
+  async getBlock(
+    blockId: number | string | "latest" | "pending",
+    options?: { includeTransactions?: boolean },
+  ) {
     const { public: client } = this.clientFactory.getClients();
+    const includeTransactions = options?.includeTransactions ?? false;
+
     const blockParams =
       typeof blockId === "number"
-        ? { blockNumber: BigInt(blockId), includeTransactions: false as const }
+        ? {
+            blockNumber: BigInt(blockId),
+            includeTransactions: includeTransactions as false,
+          }
         : blockId === "latest" || blockId === "pending"
           ? {
               blockTag: blockId as "latest" | "pending",
-              includeTransactions: false as const,
+              includeTransactions: includeTransactions as false,
             }
-          : { blockHash: blockId as `0x${string}`, includeTransactions: false as const };
+          : {
+              blockHash: blockId as `0x${string}`,
+              includeTransactions: includeTransactions as false,
+            };
 
     const block = await client.getBlock(blockParams);
 
     if (!block) {
       throw new Error(`Block not found: ${blockId}`);
     }
+
+    const gasUtilization =
+      block.gasLimit > 0n
+        ? Number((block.gasUsed * 10000n) / block.gasLimit) / 100
+        : 0;
 
     return {
       number: block.number?.toString(),
@@ -45,28 +61,41 @@ export class BlockchainService {
       parentHash: block.parentHash,
       gasUsed: block.gasUsed.toString(),
       gasLimit: block.gasLimit.toString(),
+      gasUtilization,
       miner: block.miner,
       transactionCount: block.transactions.length,
+      transactions: includeTransactions ? block.transactions : undefined,
     };
   }
 
-  async getLatestBlocks(count = 5) {
+  async getLatestBlocks(count = 5, offset = 0) {
     const { public: client } = this.clientFactory.getClients();
     const latest = await client.getBlockNumber();
-    const start = latest - BigInt(Math.max(count - 1, 0));
+    const safeCount = Math.min(Math.max(count, 1), 100);
+    const safeOffset = Math.max(offset, 0);
+    const start = latest - BigInt(safeOffset + safeCount - 1);
 
     const blocks = await Promise.all(
-      Array.from({ length: count }, (_, index) =>
+      Array.from({ length: safeCount }, (_, index) =>
         client.getBlock({ blockNumber: start + BigInt(index) }),
       ),
     );
 
-    return blocks.filter(Boolean).map((block) => ({
-      number: block!.number?.toString(),
-      hash: block!.hash,
-      timestamp: block!.timestamp.toString(),
-      transactionCount: block!.transactions.length,
-    }));
+    return blocks.filter(Boolean).map((block) => {
+      const gasUtilization =
+        block!.gasLimit > 0n
+          ? Number((block!.gasUsed * 10000n) / block!.gasLimit) / 100
+          : 0;
+      return {
+        number: block!.number?.toString(),
+        hash: block!.hash,
+        timestamp: block!.timestamp.toString(),
+        transactionCount: block!.transactions.length,
+        gasUsed: block!.gasUsed.toString(),
+        gasLimit: block!.gasLimit.toString(),
+        gasUtilization,
+      };
+    });
   }
 
   async getTransaction(hash: `0x${string}`) {
@@ -80,18 +109,25 @@ export class BlockchainService {
       throw new Error(`Transaction not found: ${hash}`);
     }
 
+    const gasUsed = receipt?.gasUsed ?? 0n;
+    const gasEfficiency =
+      tx.gas > 0n ? Number((gasUsed * 10000n) / tx.gas) / 100 : 0;
+
     return {
       hash: tx.hash,
       from: tx.from,
       to: tx.to,
       value: tx.value.toString(),
+      valueCelo: Number(tx.value) / 1e18,
       nonce: tx.nonce,
       gas: tx.gas.toString(),
+      gasUsed: gasUsed.toString(),
+      gasEfficiency,
       gasPrice: tx.gasPrice?.toString(),
+      gasPriceGwei: tx.gasPrice ? Number(tx.gasPrice) / 1e9 : undefined,
       input: tx.input,
       blockNumber: tx.blockNumber?.toString(),
       status: receipt?.status,
-      gasUsed: receipt?.gasUsed.toString(),
     };
   }
 }
