@@ -5,6 +5,7 @@ import {
   resolveStablecoins,
 } from "../config/chains.js";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { normalizeAddress } from "../utils/normalize-address.js";
 
 export interface ResolvedToken {
   address: `0x${string}` | "native";
@@ -189,6 +190,60 @@ export class TokenService {
       address,
       totalChecked: coins.length,
       stablecoins,
+    };
+  }
+
+  /** ERC-20 balance for a specific token contract address. */
+  async getTokenBalance(
+    tokenAddress: `0x${string}`,
+    accountAddress: `0x${string}`,
+  ) {
+    let token: `0x${string}`;
+    let account: `0x${string}`;
+    try {
+      token = normalizeAddress(tokenAddress, "token address");
+      account = normalizeAddress(accountAddress, "account address");
+    } catch (error) {
+      throw error instanceof Error ? error : new Error(String(error));
+    }
+
+    const { public: client } = this.clientFactory.getClients();
+
+    const [name, symbol, decimals, balance] = await Promise.all([
+      client.readContract({
+        address: token,
+        abi: erc20Abi,
+        functionName: "name",
+      }),
+      client.readContract({
+        address: token,
+        abi: erc20Abi,
+        functionName: "symbol",
+      }),
+      client.readContract({
+        address: token,
+        abi: erc20Abi,
+        functionName: "decimals",
+      }),
+      client.readContract({
+        address: token,
+        abi: erc20Abi,
+        functionName: "balanceOf",
+        args: [account],
+      }),
+    ]);
+
+    const dec = Number(decimals);
+
+    return {
+      network: "mainnet" as const,
+      tokenAddress: token,
+      accountAddress: account,
+      name,
+      symbol,
+      decimals: dec,
+      raw: balance.toString(),
+      formatted: formatUnits(balance, dec),
     };
   }
 
