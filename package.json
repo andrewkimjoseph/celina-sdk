@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -21,6 +21,8 @@
   "scripts": {
     "build": "rm -rf build && tsc",
     "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
     "prepublishOnly": "npm run build",
     "prepare": "npm run build"
   },
@@ -58,6 +60,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^3.2.4"
   }
 }
