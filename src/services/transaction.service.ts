@@ -2,9 +2,17 @@
  * Token sends: estimateSend simulates gas; prepareSend builds unsigned tx steps.
  * Calldata is tagged with CELINA_DATA_SUFFIX for on-chain attribution.
  */
-import { concat, encodeFunctionData, erc20Abi, parseEther, type Hex } from "viem";
+import {
+  concat,
+  encodeFunctionData,
+  erc20Abi,
+  parseEther,
+  parseGwei,
+  type Hex,
+} from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { normalizeAddress } from "../utils/normalize-address.js";
 import {
   type PreparedFlow,
   serializePreparedFlow,
@@ -124,5 +132,88 @@ export class TransactionService {
       ],
     };
     return serializePreparedFlow(flow);
+  }
+
+  /** Current gas fee data including EIP-1559 fees when supported. */
+  async getGasFeeData() {
+    const { public: client } = this.clientFactory.getClients();
+    const [block, gasPrice] = await Promise.all([
+      client.getBlock({ blockTag: "latest" }),
+      client.getGasPrice(),
+    ]);
+
+    const baseFeePerGas = block.baseFeePerGas;
+
+    if (baseFeePerGas) {
+      const maxPriorityFeePerGas = parseGwei("2");
+      const maxFeePerGas = baseFeePerGas * 2n + maxPriorityFeePerGas;
+
+      return {
+        network: "mainnet" as const,
+        baseFeePerGas: baseFeePerGas.toString(),
+        maxFeePerGas: maxFeePerGas.toString(),
+        maxPriorityFeePerGas: maxPriorityFeePerGas.toString(),
+        gasPrice: gasPrice.toString(),
+        eip1559: true,
+      };
+    }
+
+    return {
+      network: "mainnet" as const,
+      baseFeePerGas: "0",
+      maxFeePerGas: gasPrice.toString(),
+      maxPriorityFeePerGas: "0",
+      gasPrice: gasPrice.toString(),
+      eip1559: false,
+    };
+  }
+
+  /** Generic transaction gas estimate (not token-transfer specific). */
+  async estimateTransaction(params: {
+    from: `0x${string}`;
+    to: `0x${string}`;
+    value?: string;
+    data?: Hex;
+  }) {
+    const from = normalizeAddress(params.from, "from address");
+    const to = normalizeAddress(params.to, "to address");
+    const { public: client } = this.clientFactory.getClients();
+    const value = params.value ? BigInt(params.value) : 0n;
+    const data = params.data ?? "0x";
+
+    let gasLimit: bigint;
+    try {
+      gasLimit = await client.estimateGas({
+        account: from,
+        to,
+        value,
+        data,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `Transaction gas estimation failed: ${message}. ` +
+          "Ensure from/to addresses differ for empty transfers, or provide valid calldata.",
+      );
+    }
+
+    const feeData = await this.getGasFeeData();
+    const maxFee = BigInt(feeData.maxFeePerGas);
+    const estimatedCost = gasLimit * maxFee;
+    const estimatedCostCelo = Number(estimatedCost) / 1e18;
+
+    return {
+      network: "mainnet" as const,
+      from,
+      to,
+      gasLimit: gasLimit.toString(),
+      gasPrice: feeData.gasPrice,
+      maxFeePerGas: feeData.maxFeePerGas,
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+      estimatedCost: estimatedCost.toString(),
+      estimatedCostFormatted: `${estimatedCostCelo} CELO`,
+      isEip1559: feeData.eip1559,
+    };
   }
 }
