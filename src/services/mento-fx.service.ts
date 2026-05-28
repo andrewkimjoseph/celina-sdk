@@ -42,6 +42,59 @@ export interface MentoFxParams {
 const DEFAULT_SLIPPAGE = 0.5;
 const DEFAULT_DEADLINE_MINUTES = 5;
 
+function trimDisplayDecimals(value: string): string {
+  const num = Number(value);
+  if (!Number.isFinite(num)) {
+    return value;
+  }
+  if (Math.abs(num) >= 1000) {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }
+  if (Math.abs(num) >= 1) {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  }
+  return num.toLocaleString(undefined, { maximumSignificantDigits: 6 });
+}
+
+/** Human-friendly amount for UI labels (handles raw base-unit integers). */
+function formatDisplayAmount(amount: string, decimals: number): string {
+  const trimmed = amount.trim();
+  const approx = trimmed.startsWith("~");
+  let numeric = approx ? trimmed.slice(1).trim() : trimmed;
+  numeric = numeric.replace(/,/g, "");
+
+  const integerPart = numeric.split(".")[0] ?? numeric;
+  if (/^\d+(?:\.\d+)?$/.test(numeric) && integerPart.length >= 10) {
+    try {
+      const human = formatUnits(BigInt(integerPart), decimals);
+      const asNumber = Number(human);
+      if (Number.isFinite(asNumber) && asNumber >= 0 && asNumber < 1_000_000_000) {
+        numeric = trimDisplayDecimals(human);
+        return approx ? `~${numeric}` : numeric;
+      }
+    } catch {
+      // fall through
+    }
+  }
+
+  if (/^\d+$/.test(numeric)) {
+    try {
+      const human = formatUnits(BigInt(numeric), decimals);
+      const asNumber = Number(human);
+      if (Number.isFinite(asNumber) && asNumber >= 0 && asNumber < 1_000_000_000) {
+        numeric = trimDisplayDecimals(human);
+        return approx ? `~${numeric}` : numeric;
+      }
+    } catch {
+      // keep numeric as-is
+    }
+  } else {
+    numeric = trimDisplayDecimals(numeric);
+  }
+
+  return approx ? `~${numeric}` : numeric;
+}
+
 type Erc20ApproveCall = {
   token: `0x${string}`;
   spender: `0x${string}`;
@@ -396,6 +449,11 @@ export class MentoFxService {
     try {
       const built = await this.buildFxSwap(from, tokenIn, tokenOut, amount, params);
       const { resolvedIn, resolvedOut, approval, swap, recipient } = built;
+      const displayIn = formatDisplayAmount(amount, resolvedIn.decimals);
+      const displayOut = formatDisplayAmount(
+        formatUnits(swap.expectedAmountOut, resolvedOut.decimals),
+        resolvedOut.decimals,
+      );
 
       const steps: PreparedTx[] = [];
 
@@ -411,14 +469,14 @@ export class MentoFxService {
       steps.push(
         callParamsToPreparedTx(
           swap.params,
-          `Swap ${amount} ${resolvedIn.symbol} → ~${formatUnits(swap.expectedAmountOut, resolvedOut.decimals)} ${resolvedOut.symbol}`,
+          `Swap ${displayIn} ${resolvedIn.symbol} → ~${displayOut} ${resolvedOut.symbol}`,
         ),
       );
 
       const flow: PreparedFlow = {
         network: "mainnet",
         from,
-        summary: `Mento FX: ${amount} ${resolvedIn.symbol} → ${resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
+        summary: `Mento FX: ${displayIn} ${resolvedIn.symbol} → ${displayOut} ${resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
         steps,
       };
 
