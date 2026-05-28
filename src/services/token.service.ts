@@ -1,4 +1,4 @@
-import { erc20Abi, formatUnits, isAddress, parseUnits } from "viem";
+import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
   findKnownToken,
   KNOWN_TOKEN_SYMBOLS,
@@ -17,78 +17,38 @@ export class TokenService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
   /**
-   * Resolve a token symbol or address to metadata (sync, no RPC).
-   * @param token - Known symbol (`CELO`, `USDm`, …) or `0x` contract address
-   * @throws If token is unknown
+   * Resolve a Celo mainnet registry token by symbol, alias, or registry address.
+   * @throws If the token is not in the Celo registry
    */
   resolveToken(token: string): ResolvedToken {
-    const normalized = token.trim();
-
-    const known = findKnownToken(normalized);
-    if (known) {
-      return {
-        address: known.address,
-        symbol: known.symbol,
-        decimals: known.decimals,
-      };
+    const known = findKnownToken(token.trim());
+    if (!known) {
+      throw new Error(
+        `Unknown token "${token}" on Celo mainnet. Use ${KNOWN_TOKEN_SYMBOLS.join(", ")}.`,
+      );
     }
-
-    if (isAddress(normalized)) {
-      return {
-        address: normalized,
-        symbol: normalized,
-        decimals: 18,
-      };
-    }
-
-    throw new Error(
-      `Unknown token "${token}". Use ${KNOWN_TOKEN_SYMBOLS.join(", ")}, or a contract address.`,
-    );
-  }
-
-  /** Fetch ERC-20 metadata or native CELO info for a symbol or address. */
-  async getTokenInfo(token: string) {
-    const resolved = this.resolveToken(token);
-
-    if (resolved.address === "native") {
-      return {
-        ...resolved,
-        network: "mainnet",
-        name: "Celo",
-      };
-    }
-
-    const { public: client } = this.clientFactory.getClients();
-    const address = resolved.address;
-
-    const [name, symbol, decimals] = await Promise.all([
-      client.readContract({
-        address,
-        abi: erc20Abi,
-        functionName: "name",
-      }),
-      client.readContract({
-        address,
-        abi: erc20Abi,
-        functionName: "symbol",
-      }),
-      client.readContract({
-        address,
-        abi: erc20Abi,
-        functionName: "decimals",
-      }),
-    ]);
 
     return {
-      network: "mainnet",
-      address,
-      name,
-      symbol,
-      decimals: Number(decimals),
+      address: known.address,
+      symbol: known.symbol,
+      decimals: known.decimals,
     };
   }
 
-  /** CELO and ERC-20 balances for specific tokens (defaults: CELO, USDm). */
+  /** Fetch registry token metadata on Celo mainnet. */
+  async getTokenInfo(token: string) {
+    const resolved = this.resolveToken(token);
+
+    return {
+      network: "mainnet" as const,
+      address: resolved.address,
+      name: resolved.address === "native" ? "Celo" : resolved.symbol,
+      symbol: resolved.symbol,
+      decimals: resolved.decimals,
+    };
+  }
+
+  /** CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm). */
   async getBalances(
     address: `0x${string}`,
     tokens: string[] = ["CELO", "USDm"],
@@ -103,7 +63,7 @@ export class TokenService {
           const balance = await client.getBalance({ address });
           return {
             token: token.symbol,
-            address: "native",
+            address: "native" as const,
             raw: balance.toString(),
             formatted: formatUnits(balance, token.decimals),
           };
@@ -116,27 +76,16 @@ export class TokenService {
           args: [address],
         });
 
-        const decimals =
-          token.symbol === token.address
-            ? Number(
-                await client.readContract({
-                  address: token.address,
-                  abi: erc20Abi,
-                  functionName: "decimals",
-                }),
-              )
-            : token.decimals;
-
         return {
           token: token.symbol,
           address: token.address,
           raw: balance.toString(),
-          formatted: formatUnits(balance, decimals),
+          formatted: formatUnits(balance, token.decimals),
         };
       }),
     );
 
-    return { network: "mainnet", address, balances };
+    return { network: "mainnet" as const, address, balances };
   }
 
   /**
@@ -203,57 +152,42 @@ export class TokenService {
     };
   }
 
-  /** ERC-20 balance for a specific token contract address. */
-  async getTokenBalance(
-    tokenAddress: `0x${string}`,
-    accountAddress: `0x${string}`,
-  ) {
-    let token: `0x${string}`;
-    let account: `0x${string}`;
-    try {
-      token = normalizeAddress(tokenAddress, "token address");
-      account = normalizeAddress(accountAddress, "account address");
-    } catch (error) {
-      throw error instanceof Error ? error : new Error(String(error));
-    }
-
+  /** Balance for a Celo mainnet registry token (symbol or registry address). */
+  async getTokenBalance(token: string, accountAddress: `0x${string}`) {
+    const resolved = this.resolveToken(token);
+    const account = normalizeAddress(accountAddress, "account address");
     const { public: client } = this.clientFactory.getClients();
 
-    const [name, symbol, decimals, balance] = await Promise.all([
-      client.readContract({
-        address: token,
-        abi: erc20Abi,
-        functionName: "name",
-      }),
-      client.readContract({
-        address: token,
-        abi: erc20Abi,
-        functionName: "symbol",
-      }),
-      client.readContract({
-        address: token,
-        abi: erc20Abi,
-        functionName: "decimals",
-      }),
-      client.readContract({
-        address: token,
-        abi: erc20Abi,
-        functionName: "balanceOf",
-        args: [account],
-      }),
-    ]);
+    if (resolved.address === "native") {
+      const balance = await client.getBalance({ address: account });
+      return {
+        network: "mainnet" as const,
+        tokenAddress: "native" as const,
+        accountAddress: account,
+        name: "Celo",
+        symbol: "CELO",
+        decimals: resolved.decimals,
+        raw: balance.toString(),
+        formatted: formatUnits(balance, resolved.decimals),
+      };
+    }
 
-    const dec = Number(decimals);
+    const balance = await client.readContract({
+      address: resolved.address,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [account],
+    });
 
     return {
       network: "mainnet" as const,
-      tokenAddress: token,
+      tokenAddress: resolved.address,
       accountAddress: account,
-      name,
-      symbol,
-      decimals: dec,
+      name: resolved.symbol,
+      symbol: resolved.symbol,
+      decimals: resolved.decimals,
       raw: balance.toString(),
-      formatted: formatUnits(balance, dec),
+      formatted: formatUnits(balance, resolved.decimals),
     };
   }
 

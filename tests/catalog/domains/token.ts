@@ -58,12 +58,12 @@ export const tokenOperations: OperationSpec[] = [
     layer: "read",
     sdk: {
       invoke: (client, fx) =>
-        client.token.getTokenBalance(fx.usdm, fx.wallet),
+        client.token.getTokenBalance("USDm", fx.wallet),
     },
     mcp: {
       tool: "get_token_balance",
       arguments: (fx) => ({
-        tokenAddress: fx.usdm,
+        token: "USDm",
         address: fx.wallet,
       }),
     },
