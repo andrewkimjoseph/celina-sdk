@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["src/index.ts", "src/services/*.service.ts", "src/types/prepared.ts"],
+  "entryPointStrategy": "expand",
+  "out": "docs/api-reference",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "fileExtension": ".md",
+  "tsconfig": "tsconfig.json"
+}

@@ -1,0 +1,85 @@
+# Prepared flows
+
+Methods named `prepare*` return a **serialized prepared flow** — an ordered list of unsigned transactions for the user's wallet to sign.
+
+## Supported prepare methods
+
+| Method | Service | Typical steps |
+|--------|---------|---------------|
+| `prepareSend` | `transaction` | 1 (native or ERC-20 transfer) |
+| `prepareFx` | `mentoFx` | 1–2 (optional approve + swap) |
+| `prepareSupply` | `aave` | 1–2 (optional approve + supply) |
+| `prepareWithdraw` | `aave` | 1 (withdraw) |
+
+## SerializedPreparedFlow shape
+
+```ts
+{
+  preparedFlow: true,
+  steps: PreparedTx[],
+  summary: string,       // human-readable label for UI
+  from: `0x${string}`,
+  network: "mainnet",
+}
+```
+
+The `preparedFlow: true` discriminator makes it easy to detect prepared flows in chat APIs or JSON responses.
+
+## PreparedTx fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `kind` | `"native" \| "erc20" \| "contract"` | Transaction category |
+| `to` | `` `0x${string}` `` | Target contract or recipient |
+| `data` | `` `0x${string}` `` (optional) | Calldata for contract calls |
+| `value` | `string` (optional) | Wei amount as decimal string (JSON-safe) |
+| `description` | `string` | Human-readable step label for UI |
+
+### kind values
+
+- **`native`** — CELO transfer (`to` is recipient, `value` is wei)
+- **`erc20`** — ERC-20 call (`to` is token contract, `data` is encoded function)
+- **`contract`** — Generic contract call (Aave pool, Mento router, etc.)
+
+## Multi-step flows
+
+When an ERC-20 approval is required before a swap or supply, the SDK returns multiple steps in order:
+
+```ts
+const flow = await celina.mentoFx.prepareFx(from, "USDm", "EURm", "100");
+
+// flow.steps might be:
+// [0] Approve USDm for Mento FX
+// [1] Swap 100 USDm → ~92 EURm
+```
+
+Sign and confirm each step sequentially. Do not skip or reorder steps.
+
+## JSON serialization
+
+`value` fields are decimal strings (not BigInt) so flows serialize cleanly over JSON APIs:
+
+```ts
+import { serializePreparedFlow } from "@andrewkimjoseph/celina-sdk";
+
+// prepare* methods already return serialized flows
+const flow = await celina.transaction.prepareSend(from, to, "CELO", "1");
+// flow.steps[0].value === "1000000000000000000"
+```
+
+When calling wagmi, convert back to BigInt:
+
+```ts
+value: step.value ? BigInt(step.value) : undefined
+```
+
+## Celina data suffix
+
+Prepared calldata is tagged with a Celina attribution suffix for on-chain identification. You do not need to modify `data` before passing it to wagmi.
+
+## Related
+
+- [wagmi integration](../guides/wagmi-integration.md)
+- [Send tokens](../guides/send-tokens.md)
+- [Mento FX](../guides/mento-fx.md)
+- [Aave](../guides/aave.md)

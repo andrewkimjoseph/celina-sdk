@@ -277,7 +277,12 @@ export class MentoFxService {
     };
   }
 
-  /** Expected Mento FX output for a token pair — no wallet required. */
+  /**
+   * Expected Mento FX output for a token pair — no wallet required.
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   */
   async getFxQuote(tokenIn: string, tokenOut: string, amount: string) {
     const { public: client } = this.clientFactory.getClients();
     const { resolvedIn, resolvedOut, mentoIn, mentoOut } =
@@ -304,7 +309,14 @@ export class MentoFxService {
     }
   }
 
-  /** Simulate gas for a Mento FX swap from `from`, including approval if needed. */
+  /**
+   * Simulate gas for a Mento FX swap from `from`, including approval if needed.
+   * @param from - Sender wallet address
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   * @param params - Optional slippage, deadline, and recipient
+   */
   async estimateFx(
     from: `0x${string}`,
     tokenIn: string,
@@ -367,7 +379,12 @@ export class MentoFxService {
 
   /**
    * Build unsigned Mento FX steps (approve + swap when needed).
-   * Returns `SerializedPreparedFlow` for sequential wallet signing.
+   * @param from - Sender wallet address
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   * @param params - Optional slippage, deadline, and recipient
+   * @returns 1–2 step `SerializedPreparedFlow` for sequential wallet signing
    */
   async prepareFx(
     from: `0x${string}`,

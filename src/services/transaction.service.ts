@@ -31,7 +31,14 @@ export class TransactionService {
     this.tokenService = new TokenService(clientFactory);
   }
 
-  /** Simulate gas for a CELO or ERC-20 transfer from `from`. */
+  /**
+   * Simulate gas for a CELO or ERC-20 transfer from `from`.
+   * @param from - Sender wallet address
+   * @param to - Recipient address
+   * @param token - Symbol (e.g. `CELO`, `USDm`) or contract address
+   * @param amount - Human-readable amount (e.g. `"10"`)
+   * @returns Gas estimate in units as a decimal string
+   */
   async estimateSend(
     from: `0x${string}`,
     to: `0x${string}`,
@@ -80,7 +87,11 @@ export class TransactionService {
 
   /**
    * Build an unsigned send flow (native CELO or ERC-20 transfer).
-   * Returns `SerializedPreparedFlow` for wagmi `sendTransaction`.
+   * @param from - Sender wallet address (must match connected wallet when signing)
+   * @param to - Recipient address
+   * @param token - Symbol or contract address
+   * @param amount - Human-readable amount
+   * @returns Single-step `SerializedPreparedFlow` for wagmi `sendTransaction`
    */
   async prepareSend(
     from: `0x${string}`,

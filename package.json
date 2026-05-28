@@ -23,6 +23,9 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:unit": "vitest run --config vitest.unit.config.ts",
+    "docs:api": "typedoc",
+    "docs:summary": "node scripts/update-api-summary.mjs",
+    "docs:build": "npm run docs:api && npm run docs:summary",
     "prepublishOnly": "npm run build",
     "prepare": "npm run build"
   },
@@ -53,13 +56,15 @@
   "bugs": {
     "url": "https://github.com/andrewkimjoseph/celina-sdk/issues"
   },
-  "homepage": "https://github.com/andrewkimjoseph/celina-sdk#readme",
+  "homepage": "https://andrewkimjoseph.gitbook.io/celina-sdk",
   "dependencies": {
     "@mento-protocol/mento-sdk": "^3.2.8",
     "viem": "^2.39.3"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-markdown": "^4.11.0",
     "typescript": "^5.8.2",
     "vitest": "^3.2.4"
   }

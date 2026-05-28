@@ -16,6 +16,11 @@ export interface ResolvedToken {
 export class TokenService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
+  /**
+   * Resolve a token symbol or address to metadata (sync, no RPC).
+   * @param token - Known symbol (`CELO`, `USDm`, …) or `0x` contract address
+   * @throws If token is unknown
+   */
   resolveToken(token: string): ResolvedToken {
     const normalized = token.trim();
 
@@ -134,7 +139,12 @@ export class TokenService {
     return { network: "mainnet", address, balances };
   }
 
-  /** Scan registry stablecoins for an address; omits zero balances by default. */
+  /**
+   * Scan registry stablecoins for an address; omits zero balances by default.
+   * @param address - Wallet to scan
+   * @param options.stablecoins - Subset of registry symbols to check
+   * @param options.includeZero - Include tokens with zero balance
+   */
   async getStablecoinBalances(
     address: `0x${string}`,
     options?: {

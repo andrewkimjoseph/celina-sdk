@@ -1,0 +1,60 @@
+# Table of contents
+
+* [Introduction](README.md)
+
+## Getting started
+
+* [Installation](getting-started/installation.md)
+* [Quick start](getting-started/quick-start.md)
+* [Configuration](getting-started/configuration.md)
+
+## Concepts
+
+* [Architecture](concepts/architecture.md)
+* [Prepared flows](concepts/prepared-flows.md)
+
+## Guides
+
+* [wagmi integration](guides/wagmi-integration.md)
+* [Send tokens](guides/send-tokens.md)
+* [Mento FX](guides/mento-fx.md)
+* [Aave](guides/aave.md)
+
+## API reference
+
+* [Overview](api-reference/README.md)
+* [createCelinaClient](api-reference/index/functions/createCelinaClient.md)
+* [CelinaClient](api-reference/index/interfaces/CelinaClient.md)
+* [SdkConfig](api-reference/index/interfaces/SdkConfig.md)
+* [CelinaClientOptions](api-reference/index/type-aliases/CelinaClientOptions.md)
+
+### Services
+
+* [AccountService](api-reference/services/account.service/classes/AccountService.md)
+* [AaveService](api-reference/services/aave.service/classes/AaveService.md)
+* [BlockchainService](api-reference/services/blockchain.service/classes/BlockchainService.md)
+* [ContractService](api-reference/services/contract.service/classes/ContractService.md)
+* [EnsService](api-reference/services/ens.service/classes/EnsService.md)
+* [GoodDollarService](api-reference/services/gooddollar.service/classes/GoodDollarService.md)
+* [GovernanceService](api-reference/services/governance.service/classes/GovernanceService.md)
+* [MentoFxService](api-reference/services/mento-fx.service/classes/MentoFxService.md)
+* [NftService](api-reference/services/nft.service/classes/NftService.md)
+* [StakingService](api-reference/services/staking.service/classes/StakingService.md)
+* [TokenService](api-reference/services/token.service/classes/TokenService.md)
+* [TransactionService](api-reference/services/transaction.service/classes/TransactionService.md)
+
+### Types
+
+* [PreparedTx](api-reference/types/prepared/interfaces/PreparedTx.md)
+* [PreparedFlow](api-reference/types/prepared/interfaces/PreparedFlow.md)
+* [SerializedPreparedFlow](api-reference/types/prepared/interfaces/SerializedPreparedFlow.md)
+* [PreparedTxKind](api-reference/types/prepared/type-aliases/PreparedTxKind.md)
+* [serializePreparedFlow](api-reference/types/prepared/functions/serializePreparedFlow.md)
+* [MentoFxParams](api-reference/services/mento-fx.service/interfaces/MentoFxParams.md)
+* [ResolvedToken](api-reference/services/token.service/interfaces/ResolvedToken.md)
+* [GovernanceProposalsOptions](api-reference/services/governance.service/interfaces/GovernanceProposalsOptions.md)
+* [ContractCallParams](api-reference/services/contract.service/interfaces/ContractCallParams.md)
+
+## Publishing
+
+* [GitBook setup](GITBOOK_SETUP.md)

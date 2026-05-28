@@ -98,7 +98,10 @@ export class AaveService {
 
   /**
    * Build unsigned Aave V3 supply steps (approve + supply when needed).
-   * CELO must be wrapped ERC-20, not native CELO.
+   * @param from - Supplier wallet address
+   * @param token - Aave asset symbol (e.g. `USDm`, `USDC`)
+   * @param amount - Human-readable supply amount
+   * @returns 1–2 step `SerializedPreparedFlow`; CELO must be wrapped ERC-20, not native
    */
   async prepareSupply(
     from: `0x${string}`,
@@ -159,7 +162,11 @@ export class AaveService {
 
   /**
    * Build unsigned Aave V3 withdraw step on Celo.
-   * Pass `withdrawMax: true` to redeem the full supplied balance.
+   * @param from - Withdrawer wallet address
+   * @param token - Aave asset symbol
+   * @param amount - Human-readable withdraw amount (omit when using `withdrawMax`)
+   * @param withdrawMax - When true, withdraws full supplied aToken balance
+   * @returns Single-step `SerializedPreparedFlow`
    */
   async prepareWithdraw(
     from: `0x${string}`,
