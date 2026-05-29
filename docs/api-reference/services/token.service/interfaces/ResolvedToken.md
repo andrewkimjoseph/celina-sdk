@@ -6,7 +6,7 @@
 
 # Interface: ResolvedToken
 
-Defined in: [src/services/token.service.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L10)
+Defined in: [src/services/token.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L11)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/token.service.ts:10](https://github.com/andrewkimjosep
 
 > **address**: `` `0x${string}` `` \| `"native"`
 
-Defined in: [src/services/token.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L11)
+Defined in: [src/services/token.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L12)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/token.service.ts:11](https://github.com/andrewkimjosep
 
 > **decimals**: `number`
 
-Defined in: [src/services/token.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L13)
+Defined in: [src/services/token.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L14)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [src/services/token.service.ts:13](https://github.com/andrewkimjosep
 
 > **symbol**: `string`
 
-Defined in: [src/services/token.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L12)
+Defined in: [src/services/token.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L13)

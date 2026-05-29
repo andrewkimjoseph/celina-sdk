@@ -6,7 +6,7 @@
 
 # Class: MentoFxService
 
-Defined in: [src/services/mento-fx.service.ts:100](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L100)
+Defined in: [src/services/mento-fx.service.ts:153](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L153)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [src/services/mento-fx.service.ts:100](https://github.com/andrewkimj
 
 > **new MentoFxService**(`clientFactory`): `MentoFxService`
 
-Defined in: [src/services/mento-fx.service.ts:103](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L103)
+Defined in: [src/services/mento-fx.service.ts:156](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L156)
 
 #### Parameters
 
@@ -30,9 +30,9 @@ Defined in: [src/services/mento-fx.service.ts:103](https://github.com/andrewkimj
 
 ### estimateFx()
 
-> **estimateFx**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string` \| `undefined`; `approvalNeeded`: `boolean`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `fxGas`: `string`; `network`: `"mainnet"`; `protocol`: `"mento_fx"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+> **estimateFx**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string` \| `undefined`; `approvalNeeded`: `boolean`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `fxGas`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"mento_fx"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
-Defined in: [src/services/mento-fx.service.ts:320](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L320)
+Defined in: [src/services/mento-fx.service.ts:373](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L373)
 
 Simulate gas for a Mento FX swap from `from`, including approval if needed.
 
@@ -70,7 +70,7 @@ Optional slippage, deadline, and recipient
 
 #### Returns
 
-`Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string` \| `undefined`; `approvalNeeded`: `boolean`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `fxGas`: `string`; `network`: `"mainnet"`; `protocol`: `"mento_fx"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+`Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string` \| `undefined`; `approvalNeeded`: `boolean`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `fxGas`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"mento_fx"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
 ***
 
@@ -78,7 +78,7 @@ Optional slippage, deadline, and recipient
 
 > **getFxQuote**(`tokenIn`, `tokenOut`, `amount`): `Promise`\<\{ `amountIn`: `string`; `expectedOut`: `string`; `network`: `"mainnet"`; `protocol`: `"mento_fx"`; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
-Defined in: [src/services/mento-fx.service.ts:286](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L286)
+Defined in: [src/services/mento-fx.service.ts:339](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L339)
 
 Expected Mento FX output for a token pair — no wallet required.
 
@@ -112,7 +112,7 @@ Human-readable input amount
 
 > **prepareFx**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/mento-fx.service.ts:389](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L389)
+Defined in: [src/services/mento-fx.service.ts:453](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L453)
 
 Build unsigned Mento FX steps (approve + swap when needed).
 

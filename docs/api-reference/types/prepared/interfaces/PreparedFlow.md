@@ -6,7 +6,7 @@
 
 # Interface: PreparedFlow
 
-Defined in: [src/types/prepared.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/types/prepared.ts#L14)
+Defined in: [src/types/prepared.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/types/prepared.ts#L14)
 
 In-memory prepared flow before JSON serialization.
 
@@ -16,7 +16,7 @@ In-memory prepared flow before JSON serialization.
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/types/prepared.ts#L18)
+Defined in: [src/types/prepared.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/types/prepared.ts#L18)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/types/prepared.ts:18](https://github.com/andrewkimjoseph/celina
 
 > **network**: `"mainnet"`
 
-Defined in: [src/types/prepared.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/types/prepared.ts#L17)
+Defined in: [src/types/prepared.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/types/prepared.ts#L17)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/types/prepared.ts:17](https://github.com/andrewkimjoseph/celina
 
 > **steps**: [`PreparedTx`](PreparedTx.md)[]
 
-Defined in: [src/types/prepared.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/types/prepared.ts#L15)
+Defined in: [src/types/prepared.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/types/prepared.ts#L15)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [src/types/prepared.ts:15](https://github.com/andrewkimjoseph/celina
 
 > **summary**: `string`
 
-Defined in: [src/types/prepared.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/types/prepared.ts#L16)
+Defined in: [src/types/prepared.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/types/prepared.ts#L16)

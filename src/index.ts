@@ -90,6 +90,7 @@ export { serializePreparedFlow } from "./types/prepared.js";
 export type { SdkConfig } from "./config/sdk-config.js";
 export type { ResolvedToken } from "./services/token.service.js";
 export type { MentoFxParams } from "./services/mento-fx.service.js";
+/** Slippage, deadline, and recipient options for Uniswap v4 swaps. */
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
 export type { ContractCallParams } from "./services/contract.service.js";

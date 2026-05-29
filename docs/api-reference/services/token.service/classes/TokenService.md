@@ -6,7 +6,7 @@
 
 # Class: TokenService
 
-Defined in: [src/services/token.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L16)
+Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L17)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [src/services/token.service.ts:16](https://github.com/andrewkimjosep
 
 > **new TokenService**(`clientFactory`): `TokenService`
 
-Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L17)
+Defined in: [src/services/token.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L18)
 
 #### Parameters
 
@@ -30,11 +30,11 @@ Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjosep
 
 ### getBalances()
 
-> **getBalances**(`address`, `tokens?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: `object`[]; `network`: `string`; \}\>
+> **getBalances**(`address`, `tokens?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `address`: `"native"`; `formatted`: `string`; `raw`: `string`; `token`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `token`: `string`; \})[]; `network`: `"mainnet"`; \}\>
 
-Defined in: [src/services/token.service.ts:92](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L92)
+Defined in: [src/services/token.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L60)
 
-CELO and ERC-20 balances for specific tokens (defaults: CELO, USDm).
+CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm).
 
 #### Parameters
 
@@ -48,7 +48,7 @@ CELO and ERC-20 balances for specific tokens (defaults: CELO, USDm).
 
 #### Returns
 
-`Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: `object`[]; `network`: `string`; \}\>
+`Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `address`: `"native"`; `formatted`: `string`; `raw`: `string`; `token`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `token`: `string`; \})[]; `network`: `"mainnet"`; \}\>
 
 ***
 
@@ -56,7 +56,7 @@ CELO and ERC-20 balances for specific tokens (defaults: CELO, USDm).
 
 > **getStablecoinBalances**(`address`, `options?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `network`: `string`; `stablecoins`: (\{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError`: `boolean`; `symbol`: `string`; `useCase`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `useCase`: `string`; \})[]; `totalChecked`: `number`; \}\>
 
-Defined in: [src/services/token.service.ts:148](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L148)
+Defined in: [src/services/token.service.ts:105](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L105)
 
 Scan registry stablecoins for an address; omits zero balances by default.
 
@@ -90,17 +90,17 @@ Subset of registry symbols to check
 
 ### getTokenBalance()
 
-> **getTokenBalance**(`tokenAddress`, `accountAddress`): `Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
+> **getTokenBalance**(`token`, `accountAddress`): `Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `"native"`; \} \| \{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
 
-Defined in: [src/services/token.service.ts:207](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L207)
+Defined in: [src/services/token.service.ts:164](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L164)
 
-ERC-20 balance for a specific token contract address.
+Balance for a Celo mainnet registry token (symbol or registry address).
 
 #### Parameters
 
-##### tokenAddress
+##### token
 
-`` `0x${string}` ``
+`string`
 
 ##### accountAddress
 
@@ -108,17 +108,17 @@ ERC-20 balance for a specific token contract address.
 
 #### Returns
 
-`Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
+`Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `"native"`; \} \| \{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
 
 ***
 
 ### getTokenInfo()
 
-> **getTokenInfo**(`token`): `Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `string`; `symbol`: `string`; \}\>
+> **getTokenInfo**(`token`): `Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `"mainnet"`; `symbol`: `string`; \}\>
 
-Defined in: [src/services/token.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L50)
+Defined in: [src/services/token.service.ts:47](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L47)
 
-Fetch ERC-20 metadata or native CELO info for a symbol or address.
+Fetch registry token metadata on Celo mainnet.
 
 #### Parameters
 
@@ -128,7 +128,7 @@ Fetch ERC-20 metadata or native CELO info for a symbol or address.
 
 #### Returns
 
-`Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `string`; `symbol`: `string`; \}\>
+`Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `"mainnet"`; `symbol`: `string`; \}\>
 
 ***
 
@@ -136,7 +136,7 @@ Fetch ERC-20 metadata or native CELO info for a symbol or address.
 
 > **parseAmount**(`amount`, `decimals`): `bigint`
 
-Defined in: [src/services/token.service.ts:260](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L260)
+Defined in: [src/services/token.service.ts:202](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L202)
 
 #### Parameters
 
@@ -158,9 +158,9 @@ Defined in: [src/services/token.service.ts:260](https://github.com/andrewkimjose
 
 > **resolveToken**(`token`): [`ResolvedToken`](../interfaces/ResolvedToken.md)
 
-Defined in: [src/services/token.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/token.service.ts#L24)
+Defined in: [src/services/token.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L24)
 
-Resolve a token symbol or address to metadata (sync, no RPC).
+Resolve a Celo mainnet registry token by symbol, alias, or registry address.
 
 #### Parameters
 
@@ -168,12 +168,10 @@ Resolve a token symbol or address to metadata (sync, no RPC).
 
 `string`
 
-Known symbol (`CELO`, `USDm`, …) or `0x` contract address
-
 #### Returns
 
 [`ResolvedToken`](../interfaces/ResolvedToken.md)
 
 #### Throws
 
-If token is unknown
+If the token is not in the Celo registry

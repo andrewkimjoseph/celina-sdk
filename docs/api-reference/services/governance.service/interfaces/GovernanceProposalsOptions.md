@@ -6,7 +6,7 @@
 
 # Interface: GovernanceProposalsOptions
 
-Defined in: [src/services/governance.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L16)
+Defined in: [src/services/governance.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L16)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/governance.service.ts:16](https://github.com/andrewkim
 
 > `optional` **includeInactive?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L17)
+Defined in: [src/services/governance.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L17)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/governance.service.ts:17](https://github.com/andrewkim
 
 > `optional` **includeMetadata?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L18)
+Defined in: [src/services/governance.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L18)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/governance.service.ts:18](https://github.com/andrewkim
 
 > `optional` **limit?**: `number`
 
-Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L22)
+Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L22)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkim
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/services/governance.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L21)
+Defined in: [src/services/governance.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L21)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [src/services/governance.service.ts:21](https://github.com/andrewkim
 
 > `optional` **page?**: `number`
 
-Defined in: [src/services/governance.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L19)
+Defined in: [src/services/governance.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L19)
 
 ***
 
@@ -54,4 +54,4 @@ Defined in: [src/services/governance.service.ts:19](https://github.com/andrewkim
 
 > `optional` **pageSize?**: `number`
 
-Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/governance.service.ts#L20)
+Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L20)

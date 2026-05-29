@@ -1,6 +1,7 @@
 /**
  * Uniswap v4 swaps on Celo mainnet: quote, estimate, and prepare flows.
  * Uses V4Quoter for pricing and Universal Router + Permit2 for execution calldata.
+ * Pool discovery prefers the v4 subgraph; falls back to on-chain hub probing when unavailable.
  */
 import {
   concat,
@@ -39,9 +40,13 @@ import {
 import { findBestUniswapRoute, applySlippage } from "./uniswap-path-router.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
+/** Optional parameters for Uniswap v4 swap estimates and prepares. */
 export interface UniswapSwapParams {
+  /** Max slippage tolerance in percent (default `0.5`). */
   slippageTolerance?: number;
+  /** Swap deadline in minutes from now (default `5`). */
   deadlineMinutes?: number;
+  /** Address receiving output tokens (default: `from`). */
   recipient?: `0x${string}`;
 }
 
@@ -86,6 +91,7 @@ function formatUniswapError(
   throw error instanceof Error ? error : new Error(message);
 }
 
+/** Uniswap v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet. */
 export class UniswapService {
   private readonly tokenService: TokenService;
 
@@ -365,6 +371,12 @@ export class UniswapService {
     );
   }
 
+  /**
+   * Expected Uniswap v4 output for a token pair — no wallet required.
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   */
   async getSwapQuote(tokenIn: string, tokenOut: string, amount: string) {
     try {
       const built = await this.buildSwapRoute(tokenIn, tokenOut, amount);
@@ -386,6 +398,14 @@ export class UniswapService {
     }
   }
 
+  /**
+   * Simulate gas for a Uniswap v4 swap from `from`, including Permit2 approvals when needed.
+   * @param from - Sender wallet address
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   * @param params - Optional slippage, deadline, and recipient
+   */
   async estimateSwap(
     from: `0x${string}`,
     tokenIn: string,
@@ -469,6 +489,15 @@ export class UniswapService {
     }
   }
 
+  /**
+   * Build unsigned Uniswap v4 steps (ERC-20 approve → Permit2 approve → swap when needed).
+   * @param from - Sender wallet address
+   * @param tokenIn - Input token symbol or address
+   * @param tokenOut - Output token symbol or address
+   * @param amount - Human-readable input amount
+   * @param params - Optional slippage, deadline, and recipient
+   * @returns 1–3 step `SerializedPreparedFlow` for sequential wallet signing
+   */
   async prepareSwap(
     from: `0x${string}`,
     tokenIn: string,

@@ -77,6 +77,7 @@ Some prepare methods return multiple steps (approve + action):
 | Method | Steps when approval needed |
 |--------|---------------------------|
 | `mentoFx.prepareFx` | approve → swap |
+| `uniswap.prepareSwap` | approve → Permit2 approve → swap |
 | `aave.prepareSupply` | approve → supply |
 
 **Sign steps in order.** Wait for each transaction to confirm before sending the next — the swap/supply will fail if the approval is not yet mined.
@@ -105,6 +106,9 @@ console.log(`Estimated gas: ${estimate.gas}`);
 
 const fxEstimate = await celina.mentoFx.estimateFx(from, "USDm", "EURm", "100");
 console.log(`Approval needed: ${fxEstimate.approvalNeeded}`);
+
+const swapEstimate = await celina.uniswap.estimateSwap(from, "USDC", "USDT", "100");
+console.log(`Approval steps: ${swapEstimate.approvalStepsNeeded}`);
 ```
 
 ## Error handling
@@ -151,5 +155,6 @@ for (const step of flow.steps) {
 
 - [Send tokens](send-tokens.md)
 - [Mento FX](mento-fx.md)
+- [Uniswap v4](uniswap.md)
 - [Aave](aave.md)
 - [Prepared flows](../concepts/prepared-flows.md)

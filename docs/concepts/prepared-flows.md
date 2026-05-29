@@ -8,6 +8,7 @@ Methods named `prepare*` return a **serialized prepared flow** — an ordered li
 |--------|---------|---------------|
 | `prepareSend` | `transaction` | 1 (native or ERC-20 transfer) |
 | `prepareFx` | `mentoFx` | 1–2 (optional approve + swap) |
+| `prepareSwap` | `uniswap` | 1–3 (optional ERC-20 + Permit2 approve + swap) |
 | `prepareSupply` | `aave` | 1–2 (optional approve + supply) |
 | `prepareWithdraw` | `aave` | 1 (withdraw) |
 
@@ -39,7 +40,7 @@ The `preparedFlow: true` discriminator makes it easy to detect prepared flows in
 
 - **`native`** — CELO transfer (`to` is recipient, `value` is wei)
 - **`erc20`** — ERC-20 call (`to` is token contract, `data` is encoded function)
-- **`contract`** — Generic contract call (Aave pool, Mento router, etc.)
+- **`contract`** — Generic contract call (Aave pool, Mento router, Universal Router, etc.)
 
 ## Multi-step flows
 
@@ -82,4 +83,5 @@ Prepared calldata is tagged with a Celina attribution suffix for on-chain identi
 - [wagmi integration](../guides/wagmi-integration.md)
 - [Send tokens](../guides/send-tokens.md)
 - [Mento FX](../guides/mento-fx.md)
+- [Uniswap v4](../guides/uniswap.md)
 - [Aave](../guides/aave.md)

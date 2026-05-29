@@ -34,6 +34,7 @@ flowchart LR
 | `token` | TokenService | Balances, token registry, stablecoin scans |
 | `transaction` | TransactionService | Sends, gas fees |
 | `mentoFx` | MentoFxService | Mento FX quotes and swaps |
+| `uniswap` | UniswapService | Uniswap v4 quotes and swaps |
 | `aave` | AaveService | Aave V3 supply/withdraw |
 | `gooddollar` | GoodDollarService | GoodDollar whitelist status |
 | `ens` | EnsService | ENS resolution (Celo + Ethereum) |
@@ -48,7 +49,7 @@ flowchart LR
 |------|---------|
 | `src/index.ts` | Public entry — `createCelinaClient()` and type exports |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
-| `src/config/` | Token registry, Aave/GoodDollar constants |
+| `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
 | `src/types/prepared.ts` | `SerializedPreparedFlow` contract |
 | `src/utils/` | Shared helpers (allowance simulation, formatting) |

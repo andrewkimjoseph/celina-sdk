@@ -72,3 +72,9 @@ Re-exports [SerializedPreparedFlow](../types/prepared/interfaces/SerializedPrepa
 ### serializePreparedFlow
 
 Re-exports [serializePreparedFlow](../types/prepared/functions/serializePreparedFlow.md)
+
+***
+
+### UniswapSwapParams
+
+Re-exports [UniswapSwapParams](../services/uniswap.service/interfaces/UniswapSwapParams.md)

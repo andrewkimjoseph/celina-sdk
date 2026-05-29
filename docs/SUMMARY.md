@@ -18,6 +18,7 @@
 * [wagmi integration](guides/wagmi-integration.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)
+* [Uniswap v4](guides/uniswap.md)
 * [Aave](guides/aave.md)
 
 ## API reference
@@ -38,6 +39,7 @@
 * [GoodDollarService](api-reference/services/gooddollar.service/classes/GoodDollarService.md)
 * [GovernanceService](api-reference/services/governance.service/classes/GovernanceService.md)
 * [MentoFxService](api-reference/services/mento-fx.service/classes/MentoFxService.md)
+* [UniswapService](api-reference/services/uniswap.service/classes/UniswapService.md)
 * [NftService](api-reference/services/nft.service/classes/NftService.md)
 * [StakingService](api-reference/services/staking.service/classes/StakingService.md)
 * [TokenService](api-reference/services/token.service/classes/TokenService.md)
@@ -51,10 +53,10 @@
 * [PreparedTxKind](api-reference/types/prepared/type-aliases/PreparedTxKind.md)
 * [serializePreparedFlow](api-reference/types/prepared/functions/serializePreparedFlow.md)
 * [MentoFxParams](api-reference/services/mento-fx.service/interfaces/MentoFxParams.md)
+* [UniswapSwapParams](api-reference/services/uniswap.service/interfaces/UniswapSwapParams.md)
 * [ResolvedToken](api-reference/services/token.service/interfaces/ResolvedToken.md)
 * [GovernanceProposalsOptions](api-reference/services/governance.service/interfaces/GovernanceProposalsOptions.md)
 * [ContractCallParams](api-reference/services/contract.service/interfaces/ContractCallParams.md)
-
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)

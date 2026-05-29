@@ -6,7 +6,7 @@
 
 # Interface: MentoFxParams
 
-Defined in: [src/services/mento-fx.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L36)
+Defined in: [src/services/mento-fx.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L36)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/mento-fx.service.ts:36](https://github.com/andrewkimjo
 
 > `optional` **deadlineMinutes?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L38)
+Defined in: [src/services/mento-fx.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L38)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/mento-fx.service.ts:38](https://github.com/andrewkimjo
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L39)
+Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L39)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjo
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/mento-fx.service.ts#L37)
+Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L37)

@@ -8,7 +8,7 @@
 
 > **ResolvedRecipient** = `object`
 
-Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/ens.service.ts#L13)
+Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L13)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/
 
 > **address**: `` `0x${string}` ``
 
-Defined in: [src/services/ens.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/ens.service.ts#L14)
+Defined in: [src/services/ens.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L14)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/ens.service.ts:14](https://github.com/andrewkimjoseph/
 
 > `optional` **ens?**: `object`
 
-Defined in: [src/services/ens.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/b6ab035ea248bbfea2d9505d3330e4be605f0253/src/services/ens.service.ts#L15)
+Defined in: [src/services/ens.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L15)
 
 #### name
 

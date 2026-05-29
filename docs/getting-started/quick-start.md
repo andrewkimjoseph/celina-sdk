@@ -19,6 +19,9 @@ const balances = await celina.token.getStablecoinBalances("0xYourAddress");
 
 // Mento FX quote (no wallet needed)
 const quote = await celina.mentoFx.getFxQuote("USDm", "EURm", "100");
+
+// Uniswap v4 quote (no wallet needed)
+const swapQuote = await celina.uniswap.getSwapQuote("USDC", "USDT", "100");
 ```
 
 ## 3. Prepare an unsigned transaction

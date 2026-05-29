@@ -8,9 +8,9 @@ Pair with [wagmi](https://wagmi.sh) / viem in the browser — users sign prepare
 
 | Category | Examples |
 |----------|----------|
-| **Reads** | Token balances, Mento FX quotes, governance proposals, ENS resolution |
-| **Estimates** | Gas for sends, FX swaps, generic contract calls |
-| **Prepare** | Unsigned tx flows for sends, Mento FX, Aave supply/withdraw |
+| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance proposals, ENS resolution |
+| **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
+| **Prepare** | Unsigned tx flows for sends, Mento FX, Uniswap v4, Aave supply/withdraw |
 
 The SDK never holds or uses private keys. Call `prepare*` methods with the user's wallet address, then pass the returned `steps` to wagmi for signing.
 
@@ -27,6 +27,7 @@ const celina = createCelinaClient({
 // Reads
 await celina.token.getStablecoinBalances("0xYourAddress");
 await celina.mentoFx.getFxQuote("USDm", "EURm", "100");
+await celina.uniswap.getSwapQuote("USDC", "USDT", "100");
 
 // Prepare unsigned txs (user signs in wallet)
 const flow = await celina.transaction.prepareSend(
@@ -51,6 +52,7 @@ See [Quick start](getting-started/quick-start.md) and [wagmi integration](guides
 | `gooddollar` | whitelist status | — |
 | `transaction` | gas fees, estimates | `prepareSend` |
 | `mentoFx` | `getFxQuote`, `estimateFx` | `prepareFx` |
+| `uniswap` | `getSwapQuote`, `estimateSwap` | `prepareSwap` |
 | `aave` | — | `prepareSupply`, `prepareWithdraw` |
 | `governance` | proposals list, details | — |
 | `staking` | balances, validator groups | — |
