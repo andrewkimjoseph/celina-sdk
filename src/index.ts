@@ -103,3 +103,10 @@ export type { UniswapSwapParams } from "./services/uniswap.service.js";
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
 /** Parameters for generic read-only contract calls. */
 export type { ContractCallParams } from "./services/contract.service.js";
+/** Aave V3 Celo pool address and supported asset symbols. */
+export {
+  AAVE_POOL,
+  AAVE_SUPPORTED_SYMBOLS,
+  resolveAaveAsset,
+} from "./config/aave.js";
+export type { AaveAsset } from "./config/aave.js";
