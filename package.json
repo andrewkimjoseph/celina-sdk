@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -11,10 +11,19 @@
       "types": "./build/index.d.ts",
       "import": "./build/index.js",
       "default": "./build/index.js"
+    },
+    "./testing": {
+      "types": "./tests/testing-entry.ts",
+      "import": "./tests/testing-entry.ts",
+      "default": "./tests/testing-entry.ts"
     }
   },
   "files": [
     "build/",
+    "tests/catalog/",
+    "tests/fixtures/",
+    "tests/helpers/",
+    "tests/testing-entry.ts",
     "README.md",
     "LICENSE"
   ],
