@@ -134,6 +134,7 @@ export class UniswapService {
     tokenOut: string,
     amount: string,
     params?: UniswapSwapParams,
+    from?: `0x${string}`,
   ) {
     const { public: client } = this.clientFactory.getClients();
     const { resolvedIn, resolvedOut, routingIn, routingOut, inputToken } =
@@ -144,6 +145,18 @@ export class UniswapService {
     }
 
     const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+
+    if (from) {
+      const celoHint =
+        resolvedIn.address === "native"
+          ? " Uniswap v4 swaps require wrapped CELO (WCELO), not native CELO."
+          : "";
+      await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+        spendToken: inputToken === "native" ? "native" : inputToken,
+        hint: celoHint,
+      });
+    }
+
     const quote = await findBestUniswapRoute(
       client,
       routingIn,
@@ -376,10 +389,16 @@ export class UniswapService {
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
    * @param amount - Human-readable input amount
+   * @param from - When set, verifies input token balance before route discovery
    */
-  async getSwapQuote(tokenIn: string, tokenOut: string, amount: string) {
+  async getSwapQuote(
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    from?: `0x${string}`,
+  ) {
     try {
-      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount);
+      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, undefined, from);
       return {
         ...this.baseQuoteFields(
           built.resolvedIn,
@@ -414,7 +433,7 @@ export class UniswapService {
     params?: UniswapSwapParams,
   ) {
     try {
-      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, params);
+      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, params, from);
       const recipient = params?.recipient ?? from;
       const approvalSteps = await this.getApprovalSteps(
         built.client,
@@ -506,7 +525,7 @@ export class UniswapService {
     params?: UniswapSwapParams,
   ): Promise<SerializedPreparedFlow> {
     try {
-      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, params);
+      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, params, from);
       const recipient = params?.recipient ?? from;
       const displayIn = trimDisplayDecimals(amount);
       const displayOut = trimDisplayDecimals(

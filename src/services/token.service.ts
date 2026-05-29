@@ -215,4 +215,39 @@ export class TokenService {
   parseAmount(amount: string, decimals: number): bigint {
     return parseUnits(amount, decimals);
   }
+
+  /**
+   * Ensure `owner` holds at least `amount` of the input token before swap/route work.
+   * @param spendToken - ERC-20 to check (defaults to registry address; use WCELO when swapping native CELO)
+   */
+  async assertSpendableBalance(
+    owner: `0x${string}`,
+    resolved: ResolvedToken,
+    amount: string,
+    options?: {
+      spendToken?: `0x${string}` | "native";
+      hint?: string;
+    },
+  ): Promise<void> {
+    const { public: client } = this.clientFactory.getClients();
+    const required = this.parseAmount(amount, resolved.decimals);
+    const spend = options?.spendToken ?? resolved.address;
+
+    const balance =
+      spend === "native"
+        ? await client.getBalance({ address: owner })
+        : await client.readContract({
+            address: spend,
+            abi: erc20Abi,
+            functionName: "balanceOf",
+            args: [owner],
+          });
+
+    if (balance < required) {
+      const available = formatUnits(balance, resolved.decimals);
+      throw new Error(
+        `Insufficient ${resolved.symbol} balance. Required ${amount} ${resolved.symbol}, available ${available}.${options?.hint ?? ""}`,
+      );
+    }
+  }
 }

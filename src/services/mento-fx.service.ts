@@ -228,6 +228,10 @@ export class MentoFxService {
     const { slippageTolerance, deadlineMinutes, deadline } =
       this.fxOptions(params);
 
+    await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+      spendToken: resolvedIn.address === "native" ? mentoIn : resolvedIn.address,
+    });
+
     const mento = await this.getMentoClient(client);
     const { approval, swap } = await mento.swap.buildSwapTransaction(
       mentoIn,
@@ -340,13 +344,25 @@ export class MentoFxService {
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
    * @param amount - Human-readable input amount
+   * @param from - When set, verifies input token balance before route discovery
    */
-  async getFxQuote(tokenIn: string, tokenOut: string, amount: string) {
+  async getFxQuote(
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    from?: `0x${string}`,
+  ) {
     const { public: client } = this.clientFactory.getClients();
     const { resolvedIn, resolvedOut, mentoIn, mentoOut } =
       this.resolveMentoPair(tokenIn, tokenOut);
 
     const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+
+    if (from) {
+      await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+        spendToken: resolvedIn.address === "native" ? mentoIn : resolvedIn.address,
+      });
+    }
 
     try {
       const mento = await this.getMentoClient(client);
