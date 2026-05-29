@@ -6,7 +6,9 @@
 
 # Class: BlockchainService
 
-Defined in: [src/services/blockchain.service.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L3)
+Defined in: [src/services/blockchain.service.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L7)
+
+Celo mainnet block and transaction queries.
 
 ## Constructors
 
@@ -14,7 +16,7 @@ Defined in: [src/services/blockchain.service.ts:3](https://github.com/andrewkimj
 
 > **new BlockchainService**(`clientFactory`): `BlockchainService`
 
-Defined in: [src/services/blockchain.service.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L4)
+Defined in: [src/services/blockchain.service.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L8)
 
 #### Parameters
 
@@ -32,7 +34,9 @@ Defined in: [src/services/blockchain.service.ts:4](https://github.com/andrewkimj
 
 > **getBlock**(`blockId`, `options?`): `Promise`\<\{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` \| `null`; `miner`: `` `0x${string}` ``; `number`: `string` \| `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: `` `0x${string}` ``[] \| `undefined`; \}\>
 
-Defined in: [src/services/blockchain.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L23)
+Defined in: [src/services/blockchain.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L37)
+
+Fetch a block by number, hash, or tag.
 
 #### Parameters
 
@@ -40,15 +44,25 @@ Defined in: [src/services/blockchain.service.ts:23](https://github.com/andrewkim
 
 `string` \| `number`
 
+Block number, hash, `latest`, or `pending`
+
 ##### options?
 
 ###### includeTransactions?
 
 `boolean`
 
+When true, include full transaction objects
+
 #### Returns
 
 `Promise`\<\{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` \| `null`; `miner`: `` `0x${string}` ``; `number`: `string` \| `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: `` `0x${string}` ``[] \| `undefined`; \}\>
+
+Block header fields and optional transaction list
+
+#### Throws
+
+When the block is not found
 
 ***
 
@@ -56,7 +70,9 @@ Defined in: [src/services/blockchain.service.ts:23](https://github.com/andrewkim
 
 > **getLatestBlocks**(`count?`, `offset?`): `Promise`\<`object`[]\>
 
-Defined in: [src/services/blockchain.service.ts:71](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L71)
+Defined in: [src/services/blockchain.service.ts:91](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L91)
+
+List recent blocks ending at the chain tip (newest last in the array).
 
 #### Parameters
 
@@ -64,13 +80,19 @@ Defined in: [src/services/blockchain.service.ts:71](https://github.com/andrewkim
 
 `number` = `5`
 
+Number of blocks to return (1–100, default 5)
+
 ##### offset?
 
 `number` = `0`
 
+Skip this many blocks from the tip before collecting
+
 #### Returns
 
 `Promise`\<`object`[]\>
+
+Summary fields per block (no full transaction payloads)
 
 ***
 
@@ -78,13 +100,15 @@ Defined in: [src/services/blockchain.service.ts:71](https://github.com/andrewkim
 
 > **getNetworkStatus**(): `Promise`\<\{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; \}\>
 
-Defined in: [src/services/blockchain.service.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L7)
+Defined in: [src/services/blockchain.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L14)
 
-Celo mainnet chain id, latest block, and gas price.
+Celo mainnet chain id, latest block number, and current gas price.
 
 #### Returns
 
 `Promise`\<\{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; \}\>
+
+Network metadata including `chainId`, `blockNumber`, and `gasPriceWei`
 
 ***
 
@@ -92,7 +116,9 @@ Celo mainnet chain id, latest block, and gas price.
 
 > **getTransaction**(`hash`): `Promise`\<\{ `blockNumber`: `string`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status`: `"success"` \| `"reverted"`; `to`: `` `0x${string}` `` \| `null`; `value`: `string`; `valueCelo`: `number`; \}\>
 
-Defined in: [src/services/blockchain.service.ts:101](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/blockchain.service.ts#L101)
+Defined in: [src/services/blockchain.service.ts:127](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/blockchain.service.ts#L127)
+
+Fetch a transaction and its receipt by hash.
 
 #### Parameters
 
@@ -100,6 +126,14 @@ Defined in: [src/services/blockchain.service.ts:101](https://github.com/andrewki
 
 `` `0x${string}` ``
 
+Transaction hash
+
 #### Returns
 
 `Promise`\<\{ `blockNumber`: `string`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status`: `"success"` \| `"reverted"`; `to`: `` `0x${string}` `` \| `null`; `value`: `string`; `valueCelo`: `number`; \}\>
+
+Transaction fields, gas efficiency, and receipt status when mined
+
+#### Throws
+
+When the transaction is not found

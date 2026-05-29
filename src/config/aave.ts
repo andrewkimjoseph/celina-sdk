@@ -1,3 +1,6 @@
+/**
+ * Aave V3 Celo mainnet pool addresses and supported asset registry.
+ */
 import { findKnownToken } from "./chains.js";
 
 const HEX_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
@@ -6,6 +9,7 @@ const HEX_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
 export const AAVE_POOL = "0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402" as const;
 export const AAVE_CHAIN_ID = 42220;
 
+/** Underlying and aToken addresses for one Aave V3 market on Celo. */
 export type AaveAsset = {
   symbol: string;
   underlying: `0x${string}`;
@@ -54,6 +58,11 @@ export const AAVE_SUPPORTED_SYMBOLS = [
   "EURm",
 ] as const;
 
+/**
+ * Resolve an Aave V3 Celo asset by symbol or underlying/aToken address.
+ * @param token - Registry symbol or hex address
+ * @throws When the token is not listed in `AAVE_SUPPORTED_SYMBOLS`
+ */
 export function resolveAaveAsset(token: string): AaveAsset {
   const normalized = token.trim();
   const known = findKnownToken(normalized);

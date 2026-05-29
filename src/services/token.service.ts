@@ -1,3 +1,6 @@
+/**
+ * Token registry lookups and balance reads on Celo mainnet.
+ */
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
   findKnownToken,
@@ -8,12 +11,17 @@ import {
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { normalizeAddress } from "../utils/normalize-address.js";
 
+/** Resolved Celo mainnet registry token (symbol, address, decimals). */
 export interface ResolvedToken {
+  /** Registry address, or `"native"` for CELO. */
   address: `0x${string}` | "native";
+  /** Canonical registry symbol (e.g. `USDm`, `GoodDollar`). */
   symbol: string;
+  /** Token decimals for amount parsing. */
   decimals: number;
 }
 
+/** Celo mainnet token registry lookups and balance reads. */
 export class TokenService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
@@ -199,6 +207,11 @@ export class TokenService {
     };
   }
 
+  /**
+   * Parse a human-readable amount string to base units for the given decimals.
+   * @param amount - Decimal string (e.g. `"10"` or `"0.05"`)
+   * @param decimals - Token decimals from `resolveToken`
+   */
   parseAmount(amount: string, decimals: number): bigint {
     return parseUnits(amount, decimals);
   }

@@ -1,3 +1,6 @@
+/**
+ * ERC-721 and ERC-1155 NFT reads on Celo mainnet (metadata via token URI / IPFS).
+ */
 import {
   erc1155Abi,
   erc165Abi,
@@ -30,6 +33,7 @@ async function fetchMetadata(uri: string): Promise<Record<string, unknown> | nul
   }
 }
 
+/** ERC-721 / ERC-1155 collection and balance reads with optional metadata fetch. */
 export class NftService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
@@ -78,6 +82,13 @@ export class NftService {
     );
   }
 
+  /**
+   * Collection and token metadata for an ERC-721 or ERC-1155 contract.
+   * @param contractAddress - NFT collection contract
+   * @param tokenId - Token id as decimal string
+   * @returns Standard, owner, collection info, and fetched JSON metadata when available
+   * @throws When the address is not a deployed NFT contract
+   */
   async getNftInfo(contractAddress: `0x${string}`, tokenId: string) {
     const contract = normalizeAddress(contractAddress, "contract address");
 
@@ -180,6 +191,14 @@ export class NftService {
     };
   }
 
+  /**
+   * NFT balance for an owner (ERC-721 collection total or ERC-1155 id-specific balance).
+   * @param contractAddress - NFT collection contract
+   * @param ownerAddress - Holder wallet address
+   * @param tokenId - Required for ERC-1155; ignored for ERC-721 collection balance
+   * @returns Balance as decimal string and detected standard
+   * @throws When ERC-1155 is detected but `tokenId` is omitted
+   */
   async getNftBalance(
     contractAddress: `0x${string}`,
     ownerAddress: `0x${string}`,

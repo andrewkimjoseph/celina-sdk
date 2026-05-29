@@ -1,3 +1,6 @@
+/**
+ * Uniswap v4 path routing: BFS over pool index and V4Quoter best-path selection.
+ */
 import type { PublicClient } from "viem";
 import { v4QuoterAbi } from "../abis/uniswap-v4-quoter.js";
 import {
@@ -10,6 +13,7 @@ import {
   type UniswapPoolIndex,
 } from "./uniswap-pool-discovery.js";
 
+/** Single hop descriptor in a Uniswap v4 multi-hop path. */
 export type UniswapPathKey = {
   intermediateCurrency: `0x${string}`;
   fee: number;
@@ -18,6 +22,7 @@ export type UniswapPathKey = {
   hookData: `0x${string}`;
 };
 
+/** Best quoted route between two v4 currencies. */
 export type UniswapSwapRoute = {
   currencyIn: `0x${string}`;
   currencyOut: `0x${string}`;
@@ -176,6 +181,14 @@ async function quotePath(
   return result[0];
 }
 
+/**
+ * Quote all candidate paths and return the highest-output Uniswap v4 route.
+ * @param client - Celo public client for quoter simulation
+ * @param currencyIn - Input currency address (native CELO maps to WCELO upstream)
+ * @param currencyOut - Output currency address
+ * @param amountIn - Input amount in base units
+ * @returns Best route and quoter output, or `null` when no path quotes successfully
+ */
 export async function findBestUniswapRoute(
   client: PublicClient,
   currencyIn: `0x${string}`,
@@ -228,6 +241,11 @@ export async function findBestUniswapRoute(
   };
 }
 
+/**
+ * Apply slippage tolerance to a quoted output amount.
+ * @param amountOut - Quoted output in base units
+ * @param slippagePercent - Max slippage in percent (e.g. `0.5` for 0.5%)
+ */
 export function applySlippage(amountOut: bigint, slippagePercent: number): bigint {
   const bps = BigInt(Math.round(slippagePercent * 100));
   return (amountOut * (10000n - bps)) / 10000n;

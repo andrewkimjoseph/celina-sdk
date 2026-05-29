@@ -81,16 +81,25 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
 }
 
 export type {
+  /** In-memory prepared flow before JSON serialization. */
   PreparedFlow,
+  /** One step in a multi-step wallet signing flow. */
   PreparedTx,
+  /** Discriminator for prepared transaction step kinds. */
   PreparedTxKind,
+  /** JSON-safe prepared flow returned by prepare* methods. */
   SerializedPreparedFlow,
 } from "./types/prepared.js";
 export { serializePreparedFlow } from "./types/prepared.js";
+/** RPC URLs for Celo and optional Ethereum ENS reads. */
 export type { SdkConfig } from "./config/sdk-config.js";
+/** Resolved Celo mainnet registry token metadata. */
 export type { ResolvedToken } from "./services/token.service.js";
+/** Slippage, deadline, and recipient options for Mento FX swaps. */
 export type { MentoFxParams } from "./services/mento-fx.service.js";
 /** Slippage, deadline, and recipient options for Uniswap v4 swaps. */
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
+/** Pagination and metadata options for governance proposal lists. */
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
+/** Parameters for generic read-only contract calls. */
 export type { ContractCallParams } from "./services/contract.service.js";

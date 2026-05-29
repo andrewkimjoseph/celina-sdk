@@ -1,9 +1,16 @@
+/**
+ * Chain reads: network status, blocks, and transaction lookups on Celo mainnet.
+ */
 import type { CeloClientFactory } from "../clients/celo-client.js";
 
+/** Celo mainnet block and transaction queries. */
 export class BlockchainService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
-  /** Celo mainnet chain id, latest block, and gas price. */
+  /**
+   * Celo mainnet chain id, latest block number, and current gas price.
+   * @returns Network metadata including `chainId`, `blockNumber`, and `gasPriceWei`
+   */
   async getNetworkStatus() {
     const { public: client } = this.clientFactory.getClients();
     const [chainId, blockNumber, gasPrice] = await Promise.all([
@@ -20,6 +27,13 @@ export class BlockchainService {
     };
   }
 
+  /**
+   * Fetch a block by number, hash, or tag.
+   * @param blockId - Block number, hash, `latest`, or `pending`
+   * @param options.includeTransactions - When true, include full transaction objects
+   * @returns Block header fields and optional transaction list
+   * @throws When the block is not found
+   */
   async getBlock(
     blockId: number | string | "latest" | "pending",
     options?: { includeTransactions?: boolean },
@@ -68,6 +82,12 @@ export class BlockchainService {
     };
   }
 
+  /**
+   * List recent blocks ending at the chain tip (newest last in the array).
+   * @param count - Number of blocks to return (1–100, default 5)
+   * @param offset - Skip this many blocks from the tip before collecting
+   * @returns Summary fields per block (no full transaction payloads)
+   */
   async getLatestBlocks(count = 5, offset = 0) {
     const { public: client } = this.clientFactory.getClients();
     const latest = await client.getBlockNumber();
@@ -98,6 +118,12 @@ export class BlockchainService {
     });
   }
 
+  /**
+   * Fetch a transaction and its receipt by hash.
+   * @param hash - Transaction hash
+   * @returns Transaction fields, gas efficiency, and receipt status when mined
+   * @throws When the transaction is not found
+   */
   async getTransaction(hash: `0x${string}`) {
     const { public: client } = this.clientFactory.getClients();
     const [tx, receipt] = await Promise.all([

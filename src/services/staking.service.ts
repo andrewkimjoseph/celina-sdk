@@ -1,3 +1,6 @@
+/**
+ * Celo validator election staking: votes, groups, and network totals.
+ */
 import { isAddress } from "viem";
 import { accountsAbi } from "../abis/accounts.js";
 import { electionAbi } from "../abis/election.js";
@@ -23,6 +26,7 @@ function calculateGroupCapacity(
   return (totalLockedGold * BigInt(groupMembers + 1)) / divisor;
 }
 
+/** Validator election staking reads via Celo core contracts. */
 export class StakingService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
@@ -30,6 +34,12 @@ export class StakingService {
     return this.clientFactory.getClients().public;
   }
 
+  /**
+   * Active and pending CELO vote balances per validator group for an account.
+   * @param address - Staker wallet address
+   * @returns Totals and per-group active/pending vote amounts
+   * @throws When `address` is not a valid hex address
+   */
   async getStakingBalances(address: `0x${string}`) {
     if (!isAddress(address)) {
       throw new Error(`Invalid address: ${address}`);
@@ -124,6 +134,12 @@ export class StakingService {
     };
   }
 
+  /**
+   * Pending stakes that can be activated in the current epoch.
+   * @param address - Staker wallet address
+   * @returns Groups with activatable pending votes and a summary message
+   * @throws When `address` is not a valid hex address
+   */
   async getActivatableStakes(address: `0x${string}`) {
     if (!isAddress(address)) {
       throw new Error(`Invalid address: ${address}`);
@@ -183,6 +199,14 @@ export class StakingService {
     };
   }
 
+  /**
+   * Paginated list of validator groups registered on Celo.
+   * @param options.page - Page number (1-based)
+   * @param options.pageSize - Groups per page (1–50, default 10)
+   * @param options.offset - Alternative to `page`: zero-based offset
+   * @param options.limit - Max groups when using `offset`
+   * @returns Group addresses, vote totals, capacity, and pagination metadata
+   */
   async getValidatorGroups(options?: {
     page?: number;
     pageSize?: number;
@@ -352,6 +376,12 @@ export class StakingService {
     };
   }
 
+  /**
+   * Detailed validator group profile including member validators and scores.
+   * @param groupAddress - Validator group contract address
+   * @returns Group name, votes, capacity, eligibility, and member list
+   * @throws When `groupAddress` is not a valid hex address
+   */
   async getValidatorGroupDetails(groupAddress: `0x${string}`) {
     if (!isAddress(groupAddress)) {
       throw new Error(`Invalid group address: ${groupAddress}`);
@@ -507,6 +537,10 @@ export class StakingService {
     };
   }
 
+  /**
+   * Network-wide total active staking votes across all validator groups.
+   * @returns Total votes in wei and human-readable CELO formatting
+   */
   async getTotalStakingInfo() {
     const client = this.getClient();
     const totalVotes = (await client.readContract({

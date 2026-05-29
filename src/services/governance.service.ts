@@ -1,3 +1,6 @@
+/**
+ * Celo governance: on-chain proposals with optional CGP markdown metadata from GitHub.
+ */
 import { CELO_CORE_CONTRACTS } from "../config/celo-core-contracts.js";
 import {
   governanceAbi,
@@ -13,12 +16,19 @@ const STAGE_EXPIRY_MS: Partial<Record<ProposalStageName, number>> = {
   Execution: 24 * 60 * 60 * 1000,
 };
 
+/** Pagination and metadata options for governance proposal lists. */
 export interface GovernanceProposalsOptions {
+  /** Include expired, rejected, and withdrawn proposals (default `true`). */
   includeInactive?: boolean;
+  /** Fetch CGP frontmatter from GitHub (default `true`). */
   includeMetadata?: boolean;
+  /** Page number (1-based); used with `pageSize` when set. */
   page?: number;
+  /** Proposals per page when using `page` (1–20, default 10). */
   pageSize?: number;
+  /** Zero-based offset into the proposal id list. */
   offset?: number;
+  /** Max proposals when using `offset` (capped at 100). */
   limit?: number;
 }
 
@@ -80,6 +90,7 @@ interface RawProposal {
   votes: { yes: string; no: string; abstain: string };
 }
 
+/** Celo on-chain governance proposal reads and CGP enrichment. */
 export class GovernanceService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
@@ -202,6 +213,11 @@ export class GovernanceService {
     return entries;
   }
 
+  /**
+   * List governance proposals with pagination and optional CGP metadata.
+   * @param options - Pagination (`page`/`pageSize` or `offset`/`limit`) and filters
+   * @returns Proposals with stage names, vote totals, and optional CGP frontmatter
+   */
   async getGovernanceProposals(options: GovernanceProposalsOptions = {}) {
     const includeInactive = options.includeInactive ?? true;
     const includeMetadata = options.includeMetadata ?? true;
@@ -280,6 +296,11 @@ export class GovernanceService {
     };
   }
 
+  /**
+   * Full details for a single proposal, including CGP markdown body when available.
+   * @param proposalId - On-chain governance proposal id
+   * @returns Proposal record, CGP content, or `{ proposal: null, error }` if missing
+   */
   async getProposalDetails(proposalId: number) {
     const proposal = await this.fetchProposal(proposalId, 0, true);
 

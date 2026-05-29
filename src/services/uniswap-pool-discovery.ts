@@ -1,3 +1,6 @@
+/**
+ * Uniswap v4 pool discovery: subgraph index with on-chain hub fallback.
+ */
 import {
   encodeAbiParameters,
   keccak256,
@@ -16,22 +19,29 @@ import {
   type UniswapPoolKey,
 } from "../config/uniswap.js";
 
+/** One edge in the v4 pool routing graph. */
 export type UniswapPoolEdge = {
   poolKey: UniswapPoolKey;
   tokenA: `0x${string}`;
   tokenB: `0x${string}`;
 };
 
+/** Cached routing graph of v4 pools on Celo mainnet. */
 export type UniswapPoolIndex = {
   edges: UniswapPoolEdge[];
-  /** currency address (lowercase) → neighbor currencies */
+  /** Currency address (lowercase) → neighbor currencies in the graph. */
   adjacency: Map<string, Set<string>>;
+  /** Whether pools came from the v4 subgraph or on-chain hub probing. */
   source: "subgraph" | "onchain";
   fetchedAt: number;
 };
 
 let cachedIndex: UniswapPoolIndex | null = null;
 
+/**
+ * Compute the Uniswap v4 pool id (keccak256 of sorted pool key fields).
+ * @param poolKey - Pool key (normalized so currency0 sorts before currency1)
+ */
 export function computeUniswapPoolId(poolKey: UniswapPoolKey): `0x${string}` {
   const normalized = normalizeUniswapPoolKey(poolKey);
   return keccak256(
@@ -217,6 +227,11 @@ async function buildOnChainIndex(client: PublicClient): Promise<UniswapPoolIndex
   };
 }
 
+/**
+ * Load or refresh the v4 pool index (subgraph first, on-chain hub fallback).
+ * @param client - Celo public client for StateView probing
+ * @param options.forceRefresh - Bypass TTL cache when true
+ */
 export async function getUniswapPoolIndex(
   client: PublicClient,
   options?: { forceRefresh?: boolean },
@@ -255,6 +270,12 @@ export async function getUniswapPoolIndex(
   return cachedIndex;
 }
 
+/**
+ * Find a pool key connecting two tokens in a cached index, if present.
+ * @param index - Pool graph from `getUniswapPoolIndex`
+ * @param tokenA - First currency address
+ * @param tokenB - Second currency address
+ */
 export function findPoolBetween(
   index: UniswapPoolIndex,
   tokenA: `0x${string}`,

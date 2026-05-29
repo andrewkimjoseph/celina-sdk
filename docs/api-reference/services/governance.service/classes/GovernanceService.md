@@ -6,7 +6,9 @@
 
 # Class: GovernanceService
 
-Defined in: [src/services/governance.service.ts:83](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L83)
+Defined in: [src/services/governance.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L94)
+
+Celo on-chain governance proposal reads and CGP enrichment.
 
 ## Constructors
 
@@ -14,7 +16,7 @@ Defined in: [src/services/governance.service.ts:83](https://github.com/andrewkim
 
 > **new GovernanceService**(`clientFactory`): `GovernanceService`
 
-Defined in: [src/services/governance.service.ts:84](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L84)
+Defined in: [src/services/governance.service.ts:95](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L95)
 
 #### Parameters
 
@@ -32,7 +34,9 @@ Defined in: [src/services/governance.service.ts:84](https://github.com/andrewkim
 
 > **getGovernanceProposals**(`options?`): `Promise`\<\{ `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `proposals`: `object`[]; \}\>
 
-Defined in: [src/services/governance.service.ts:205](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L205)
+Defined in: [src/services/governance.service.ts:221](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L221)
+
+List governance proposals with pagination and optional CGP metadata.
 
 #### Parameters
 
@@ -40,9 +44,13 @@ Defined in: [src/services/governance.service.ts:205](https://github.com/andrewki
 
 [`GovernanceProposalsOptions`](../interfaces/GovernanceProposalsOptions.md) = `{}`
 
+Pagination (`page`/`pageSize` or `offset`/`limit`) and filters
+
 #### Returns
 
 `Promise`\<\{ `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `proposals`: `object`[]; \}\>
+
+Proposals with stage names, vote totals, and optional CGP frontmatter
 
 ***
 
@@ -50,7 +58,9 @@ Defined in: [src/services/governance.service.ts:205](https://github.com/andrewki
 
 > **getProposalDetails**(`proposalId`): `Promise`\<\{ `content`: `null`; `error`: `string`; `network`: `"mainnet"`; `proposal`: `null`; \} \| \{ `content`: `string` \| `null`; `error`: `null`; `network`: `"mainnet"`; `proposal`: \{ `deposit`: `string`; `expiryTimestamp`: `number` \| `null`; `id`: `number`; `isApproved`: `boolean`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `networkWeight`: `string`; `numTransactions`: `number`; `proposer`: `string`; `stage`: `number`; `stageName`: `"Approval"` \| `"None"` \| `"Queued"` \| `"Referendum"` \| `"Execution"` \| `"Executed"` \| `"Expiration"` \| `"Rejected"` \| `"Withdrawn"`; `timestamp`: `number`; `upvotes`: `number`; `url`: `string`; `votes`: \{ `abstain`: `string`; `no`: `string`; `yes`: `string`; \}; \}; \}\>
 
-Defined in: [src/services/governance.service.ts:283](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/governance.service.ts#L283)
+Defined in: [src/services/governance.service.ts:304](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L304)
+
+Full details for a single proposal, including CGP markdown body when available.
 
 #### Parameters
 
@@ -58,6 +68,10 @@ Defined in: [src/services/governance.service.ts:283](https://github.com/andrewki
 
 `number`
 
+On-chain governance proposal id
+
 #### Returns
 
 `Promise`\<\{ `content`: `null`; `error`: `string`; `network`: `"mainnet"`; `proposal`: `null`; \} \| \{ `content`: `string` \| `null`; `error`: `null`; `network`: `"mainnet"`; `proposal`: \{ `deposit`: `string`; `expiryTimestamp`: `number` \| `null`; `id`: `number`; `isApproved`: `boolean`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `networkWeight`: `string`; `numTransactions`: `number`; `proposer`: `string`; `stage`: `number`; `stageName`: `"Approval"` \| `"None"` \| `"Queued"` \| `"Referendum"` \| `"Execution"` \| `"Executed"` \| `"Expiration"` \| `"Rejected"` \| `"Withdrawn"`; `timestamp`: `number`; `upvotes`: `number`; `url`: `string`; `votes`: \{ `abstain`: `string`; `no`: `string`; `yes`: `string`; \}; \}; \}\>
+
+Proposal record, CGP content, or `{ proposal: null, error }` if missing

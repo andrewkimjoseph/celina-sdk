@@ -8,9 +8,9 @@
 
 > **decodeContractResult**(`abi`, `functionName`, `data`): readonly `unknown`[]
 
-Defined in: [src/services/contract.service.ts:126](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L126)
+Defined in: [src/services/contract.service.ts:152](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L152)
 
-Decode raw calldata result — exported for tests.
+Decode raw calldata result bytes using a single ABI function entry.
 
 ## Parameters
 
@@ -18,13 +18,19 @@ Decode raw calldata result — exported for tests.
 
 `Abi`
 
+Contract ABI containing `functionName`
+
 ### functionName
 
 `string`
 
+Function whose return types define decoding
+
 ### data
 
 `` `0x${string}` ``
+
+Hex return data from `eth_call`
 
 ## Returns
 

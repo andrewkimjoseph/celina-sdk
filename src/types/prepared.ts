@@ -2,6 +2,7 @@ export type PreparedTxKind = "native" | "erc20" | "contract";
 
 /** Single unsigned transaction step in a prepared flow. */
 export interface PreparedTx {
+  /** Step category for UI and wallet routing. */
   kind: PreparedTxKind;
   to: `0x${string}`;
   data?: `0x${string}`;

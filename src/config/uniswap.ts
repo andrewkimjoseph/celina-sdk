@@ -1,3 +1,7 @@
+/**
+ * Uniswap v4 contract addresses and routing helpers for Celo mainnet.
+ * @see https://docs.celo.org/tooling/contracts/uniswap-contracts
+ */
 import { MENTO_CELO_ADDRESS } from "./chains.js";
 
 /** Uniswap v4 on Celo mainnet — https://docs.celo.org/tooling/contracts/uniswap-contracts */
@@ -14,11 +18,13 @@ export const UNISWAP_V4 = {
 export const UNISWAP_SUBGRAPH_URL =
   "https://api.studio.thegraph.com/query/111767/uniswap-v-4-celo/version/latest";
 
+/** Pool index cache TTL in milliseconds (default 5 minutes). */
 export const UNISWAP_POOL_CACHE_TTL_MS = 5 * 60 * 1000;
 
 /** Common v4 fee tiers and default tick spacings (probed on-chain when building index). */
 export const UNISWAP_FEE_TIERS = [100, 500, 3000, 10000, 30000] as const;
 
+/** Default tick spacing per fee tier when probing pools on-chain. */
 export const UNISWAP_DEFAULT_TICK_SPACING: Record<number, number> = {
   100: 1,
   500: 10,
@@ -38,6 +44,7 @@ export const UNISWAP_HUB_CURRENCIES: readonly `0x${string}`[] = [
   "0x62B8B11039FcfE5aB0C56E502b1C372A3d2a9c7A", // GoodDollar (G$)
 ];
 
+/** Uniswap v4 pool key (sorted currencies, fee tier, tick spacing, hooks). */
 export type UniswapPoolKey = {
   currency0: `0x${string}`;
   currency1: `0x${string}`;
@@ -46,6 +53,7 @@ export type UniswapPoolKey = {
   hooks: `0x${string}`;
 };
 
+/** Sort two currency addresses for canonical pool key ordering. */
 export function sortUniswapCurrencies(
   a: `0x${string}`,
   b: `0x${string}`,
@@ -53,6 +61,7 @@ export function sortUniswapCurrencies(
   return a.toLowerCase() < b.toLowerCase() ? [a, b] : [b, a];
 }
 
+/** Normalize a pool key so `currency0` sorts before `currency1`. */
 export function normalizeUniswapPoolKey(poolKey: UniswapPoolKey): UniswapPoolKey {
   const [currency0, currency1] = sortUniswapCurrencies(
     poolKey.currency0,
@@ -94,6 +103,7 @@ export function uniswapInputTokenAddress(
   return address;
 }
 
+/** Whether a v4 currency address is native CELO (`address(0)`). */
 export function isNativeUniswapCurrency(currency: `0x${string}`): boolean {
   return currency.toLowerCase() === UNISWAP_V4.nativeCurrency;
 }

@@ -1,3 +1,6 @@
+/**
+ * GoodDollar IdentityV4 whitelist and reverification reads on Celo mainnet.
+ */
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { goodDollarIdentityAbi } from "../abis/gooddollar-identity.js";
 import { GOODDOLLAR_IDENTITY_ADDRESS } from "../config/gooddollar.js";
@@ -17,10 +20,15 @@ function statusLabel(status: number): string {
   return STATUS_LABELS[status] ?? "unknown";
 }
 
+/** GoodDollar IdentityV4 whitelist status and reverification progress. */
 export class GoodDollarService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 
-  /** GoodDollar IdentityV4 whitelist status and reverification progress. */
+  /**
+   * GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
+   * @param address - Wallet to check against IdentityV4
+   * @returns On-chain status, whitelist dates, field descriptions, and reverification timeline
+   */
   async getWhitelistingInfo(address: `0x${string}`) {
     const { public: client } = this.clientFactory.getClients();
     const contract = GOODDOLLAR_IDENTITY_ADDRESS;

@@ -20,6 +20,7 @@ function taggedCalldata(data: `0x${string}`): `0x${string}` {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
+/** Aave V3 supply and withdraw prepared flows on Celo mainnet. */
 export class AaveService {
   private readonly tokenService: TokenService;
 
@@ -99,7 +100,7 @@ export class AaveService {
   /**
    * Build unsigned Aave V3 supply steps (approve + supply when needed).
    * @param from - Supplier wallet address
-   * @param token - Aave asset symbol (e.g. `USDm`, `USDC`)
+   * @param token - Aave asset symbol (e.g. `USDm`, `USDC`); `CELO` uses wrapped CELO (WCELO)
    * @param amount - Human-readable supply amount
    * @returns 1–2 step `SerializedPreparedFlow`; CELO must be wrapped ERC-20, not native
    */

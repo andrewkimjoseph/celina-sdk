@@ -8,7 +8,9 @@
 
 > **ResolvedRecipient** = `object`
 
-Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L13)
+Defined in: [src/services/ens.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L18)
+
+Address with optional ENS metadata when input was a name.
 
 ## Properties
 
@@ -16,7 +18,7 @@ Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/
 
 > **address**: `` `0x${string}` ``
 
-Defined in: [src/services/ens.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L14)
+Defined in: [src/services/ens.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L19)
 
 ***
 
@@ -24,7 +26,7 @@ Defined in: [src/services/ens.service.ts:14](https://github.com/andrewkimjoseph/
 
 > `optional` **ens?**: `object`
 
-Defined in: [src/services/ens.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/ens.service.ts#L15)
+Defined in: [src/services/ens.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L20)
 
 #### name
 
@@ -37,3 +39,5 @@ Defined in: [src/services/ens.service.ts:15](https://github.com/andrewkimjoseph/
 #### resolvedVia?
 
 > `optional` **resolvedVia?**: `"celo"` \| `"ethereum"`
+
+Present when resolved on Celo (may fall back to Ethereum records).

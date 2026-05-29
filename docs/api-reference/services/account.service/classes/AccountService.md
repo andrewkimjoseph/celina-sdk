@@ -6,7 +6,9 @@
 
 # Class: AccountService
 
-Defined in: [src/services/account.service.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/account.service.ts#L3)
+Defined in: [src/services/account.service.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/account.service.ts#L7)
+
+CELO mainnet account snapshot for a wallet or contract address.
 
 ## Constructors
 
@@ -14,7 +16,7 @@ Defined in: [src/services/account.service.ts:3](https://github.com/andrewkimjose
 
 > **new AccountService**(`clientFactory`): `AccountService`
 
-Defined in: [src/services/account.service.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/account.service.ts#L4)
+Defined in: [src/services/account.service.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/account.service.ts#L8)
 
 #### Parameters
 
@@ -32,7 +34,9 @@ Defined in: [src/services/account.service.ts:4](https://github.com/andrewkimjose
 
 > **getAccount**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balanceCelo`: `number`; `balanceWei`: `string`; `isContract`: `boolean`; `network`: `string`; `nonce`: `number`; \}\>
 
-Defined in: [src/services/account.service.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/account.service.ts#L6)
+Defined in: [src/services/account.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/account.service.ts#L15)
+
+Fetch CELO balance, nonce, and whether the address has contract bytecode.
 
 #### Parameters
 
@@ -40,6 +44,10 @@ Defined in: [src/services/account.service.ts:6](https://github.com/andrewkimjose
 
 `` `0x${string}` ``
 
+Wallet or contract address on Celo mainnet
+
 #### Returns
 
 `Promise`\<\{ `address`: `` `0x${string}` ``; `balanceCelo`: `number`; `balanceWei`: `string`; `isContract`: `boolean`; `network`: `string`; `nonce`: `number`; \}\>
+
+Balance in wei and CELO, current nonce, and `isContract` flag

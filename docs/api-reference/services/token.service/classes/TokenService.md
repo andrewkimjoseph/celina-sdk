@@ -6,7 +6,9 @@
 
 # Class: TokenService
 
-Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L17)
+Defined in: [src/services/token.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L25)
+
+Celo mainnet token registry lookups and balance reads.
 
 ## Constructors
 
@@ -14,7 +16,7 @@ Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjosep
 
 > **new TokenService**(`clientFactory`): `TokenService`
 
-Defined in: [src/services/token.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L18)
+Defined in: [src/services/token.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L26)
 
 #### Parameters
 
@@ -32,7 +34,7 @@ Defined in: [src/services/token.service.ts:18](https://github.com/andrewkimjosep
 
 > **getBalances**(`address`, `tokens?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `address`: `"native"`; `formatted`: `string`; `raw`: `string`; `token`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `token`: `string`; \})[]; `network`: `"mainnet"`; \}\>
 
-Defined in: [src/services/token.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L60)
+Defined in: [src/services/token.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L68)
 
 CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm).
 
@@ -56,7 +58,7 @@ CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm).
 
 > **getStablecoinBalances**(`address`, `options?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `network`: `string`; `stablecoins`: (\{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError`: `boolean`; `symbol`: `string`; `useCase`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `useCase`: `string`; \})[]; `totalChecked`: `number`; \}\>
 
-Defined in: [src/services/token.service.ts:105](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L105)
+Defined in: [src/services/token.service.ts:113](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L113)
 
 Scan registry stablecoins for an address; omits zero balances by default.
 
@@ -92,7 +94,7 @@ Subset of registry symbols to check
 
 > **getTokenBalance**(`token`, `accountAddress`): `Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `"native"`; \} \| \{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
 
-Defined in: [src/services/token.service.ts:164](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L164)
+Defined in: [src/services/token.service.ts:172](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L172)
 
 Balance for a Celo mainnet registry token (symbol or registry address).
 
@@ -116,7 +118,7 @@ Balance for a Celo mainnet registry token (symbol or registry address).
 
 > **getTokenInfo**(`token`): `Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `"mainnet"`; `symbol`: `string`; \}\>
 
-Defined in: [src/services/token.service.ts:47](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L47)
+Defined in: [src/services/token.service.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L55)
 
 Fetch registry token metadata on Celo mainnet.
 
@@ -136,7 +138,9 @@ Fetch registry token metadata on Celo mainnet.
 
 > **parseAmount**(`amount`, `decimals`): `bigint`
 
-Defined in: [src/services/token.service.ts:202](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L202)
+Defined in: [src/services/token.service.ts:215](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L215)
+
+Parse a human-readable amount string to base units for the given decimals.
 
 #### Parameters
 
@@ -144,9 +148,13 @@ Defined in: [src/services/token.service.ts:202](https://github.com/andrewkimjose
 
 `string`
 
+Decimal string (e.g. `"10"` or `"0.05"`)
+
 ##### decimals
 
 `number`
+
+Token decimals from `resolveToken`
 
 #### Returns
 
@@ -158,7 +166,7 @@ Defined in: [src/services/token.service.ts:202](https://github.com/andrewkimjose
 
 > **resolveToken**(`token`): [`ResolvedToken`](../interfaces/ResolvedToken.md)
 
-Defined in: [src/services/token.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L24)
+Defined in: [src/services/token.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L32)
 
 Resolve a Celo mainnet registry token by symbol, alias, or registry address.
 

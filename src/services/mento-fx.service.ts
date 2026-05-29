@@ -33,9 +33,13 @@ import {
 } from "../types/prepared.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
+/** Optional parameters for Mento FX swap estimates and prepares. */
 export interface MentoFxParams {
+  /** Max slippage tolerance in percent (default `0.5`). */
   slippageTolerance?: number;
+  /** Swap deadline in minutes from now (default `5`). */
   deadlineMinutes?: number;
+  /** Address receiving output tokens (default: `from`). */
   recipient?: `0x${string}`;
 }
 
@@ -150,6 +154,7 @@ function callParamsToPreparedTx(
   };
 }
 
+/** Mento FX quotes, gas estimates, and `prepareFx` flows on Celo mainnet. */
 export class MentoFxService {
   private readonly tokenService: TokenService;
 

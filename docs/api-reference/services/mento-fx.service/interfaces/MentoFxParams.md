@@ -6,7 +6,9 @@
 
 # Interface: MentoFxParams
 
-Defined in: [src/services/mento-fx.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L36)
+Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L37)
+
+Optional parameters for Mento FX swap estimates and prepares.
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [src/services/mento-fx.service.ts:36](https://github.com/andrewkimjo
 
 > `optional` **deadlineMinutes?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L38)
+Defined in: [src/services/mento-fx.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L41)
+
+Swap deadline in minutes from now (default `5`).
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [src/services/mento-fx.service.ts:38](https://github.com/andrewkimjo
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L39)
+Defined in: [src/services/mento-fx.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L43)
+
+Address receiving output tokens (default: `from`).
 
 ***
 
@@ -30,4 +36,6 @@ Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjo
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/mento-fx.service.ts#L37)
+Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L39)
+
+Max slippage tolerance in percent (default `0.5`).

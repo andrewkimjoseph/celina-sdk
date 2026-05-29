@@ -1,3 +1,6 @@
+/**
+ * ENS resolution on Celo (coin type 42220) and Ethereum mainnet.
+ */
 import { toCoinType } from "viem";
 import { celo } from "viem/chains";
 import { getEnsAddress, normalize } from "viem/ens";
@@ -6,23 +9,32 @@ import {
   type EnsClientFactory,
 } from "../clients/ens-client.js";
 
+/** Chain used for ENS resolution. */
 export type EnsResolveChain = "celo" | "ethereum";
 
 const ADDRESS_PATTERN = /^0x[a-fA-F0-9]{40}$/;
 
+/** Address with optional ENS metadata when input was a name. */
 export type ResolvedRecipient = {
   address: `0x${string}`;
   ens?: {
     name: string;
     normalizedName: string;
+    /** Present when resolved on Celo (may fall back to Ethereum records). */
     resolvedVia?: "celo" | "ethereum";
   };
 };
 
+/** ENS name and address resolution for send/swap recipients. */
 export class EnsService {
   constructor(private readonly ensClientFactory: EnsClientFactory) {}
 
-  /** Resolve an ENS name on Celo or Ethereum to an address. */
+  /**
+   * Resolve an ENS name on Celo or Ethereum to an address.
+   * @param name - ENS name (e.g. `vitalik.eth`)
+   * @param chain - `"celo"` tries Celo coin type first, then Ethereum; `"ethereum"` uses ETH only
+   * @throws When no address record exists for the name
+   */
   async resolveEns(name: string, chain: EnsResolveChain = "celo") {
     const trimmedName = name.trim();
     const normalizedName = normalize(trimmedName);
@@ -85,7 +97,10 @@ export class EnsService {
     };
   }
 
-  /** Accept a raw `0x` address or ENS name; returns address plus optional ENS metadata. */
+  /**
+   * Accept a raw `0x` address or ENS name; returns address plus optional ENS metadata.
+   * @param input - Hex address or ENS name
+   */
   async resolveAddressOrEns(input: string): Promise<ResolvedRecipient> {
     const trimmed = input.trim();
 

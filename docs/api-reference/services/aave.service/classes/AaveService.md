@@ -6,7 +6,9 @@
 
 # Class: AaveService
 
-Defined in: [src/services/aave.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/aave.service.ts#L23)
+Defined in: [src/services/aave.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/aave.service.ts#L24)
+
+Aave V3 supply and withdraw prepared flows on Celo mainnet.
 
 ## Constructors
 
@@ -14,7 +16,7 @@ Defined in: [src/services/aave.service.ts:23](https://github.com/andrewkimjoseph
 
 > **new AaveService**(`clientFactory`): `AaveService`
 
-Defined in: [src/services/aave.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/aave.service.ts#L26)
+Defined in: [src/services/aave.service.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/aave.service.ts#L27)
 
 #### Parameters
 
@@ -32,7 +34,7 @@ Defined in: [src/services/aave.service.ts:26](https://github.com/andrewkimjoseph
 
 > **prepareSupply**(`from`, `token`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:106](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/aave.service.ts#L106)
+Defined in: [src/services/aave.service.ts:107](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/aave.service.ts#L107)
 
 Build unsigned Aave V3 supply steps (approve + supply when needed).
 
@@ -48,7 +50,7 @@ Supplier wallet address
 
 `string`
 
-Aave asset symbol (e.g. `USDm`, `USDC`)
+Aave asset symbol (e.g. `USDm`, `USDC`); `CELO` uses wrapped CELO (WCELO)
 
 ##### amount
 
@@ -68,7 +70,7 @@ Human-readable supply amount
 
 > **prepareWithdraw**(`from`, `token`, `amount`, `withdrawMax?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:171](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/aave.service.ts#L171)
+Defined in: [src/services/aave.service.ts:172](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/aave.service.ts#L172)
 
 Build unsigned Aave V3 withdraw step on Celo.
 

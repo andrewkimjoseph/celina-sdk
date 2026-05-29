@@ -6,7 +6,9 @@
 
 # Interface: SdkConfig
 
-Defined in: [src/config/sdk-config.ts:1](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/config/sdk-config.ts#L1)
+Defined in: [src/config/sdk-config.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/config/sdk-config.ts#L2)
+
+RPC configuration for `createCelinaClient()`.
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [src/config/sdk-config.ts:1](https://github.com/andrewkimjoseph/celi
 
 > `optional` **ethRpcUrl?**: `string`
 
-Defined in: [src/config/sdk-config.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/config/sdk-config.ts#L3)
+Defined in: [src/config/sdk-config.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/config/sdk-config.ts#L6)
+
+Ethereum mainnet RPC for ENS resolution (optional).
 
 ***
 
@@ -22,4 +26,6 @@ Defined in: [src/config/sdk-config.ts:3](https://github.com/andrewkimjoseph/celi
 
 > **rpcUrl**: `string`
 
-Defined in: [src/config/sdk-config.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/config/sdk-config.ts#L2)
+Defined in: [src/config/sdk-config.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/config/sdk-config.ts#L4)
+
+Celo mainnet JSON-RPC URL (default Forno).

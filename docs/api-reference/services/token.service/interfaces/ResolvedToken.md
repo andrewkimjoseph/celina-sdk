@@ -6,7 +6,9 @@
 
 # Interface: ResolvedToken
 
-Defined in: [src/services/token.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L11)
+Defined in: [src/services/token.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L15)
+
+Resolved Celo mainnet registry token (symbol, address, decimals).
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [src/services/token.service.ts:11](https://github.com/andrewkimjosep
 
 > **address**: `` `0x${string}` `` \| `"native"`
 
-Defined in: [src/services/token.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L12)
+Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L17)
+
+Registry address, or `"native"` for CELO.
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [src/services/token.service.ts:12](https://github.com/andrewkimjosep
 
 > **decimals**: `number`
 
-Defined in: [src/services/token.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L14)
+Defined in: [src/services/token.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L21)
+
+Token decimals for amount parsing.
 
 ***
 
@@ -30,4 +36,6 @@ Defined in: [src/services/token.service.ts:14](https://github.com/andrewkimjosep
 
 > **symbol**: `string`
 
-Defined in: [src/services/token.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/token.service.ts#L13)
+Defined in: [src/services/token.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/token.service.ts#L19)
+
+Canonical registry symbol (e.g. `USDm`, `GoodDollar`).

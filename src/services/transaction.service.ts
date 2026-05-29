@@ -24,6 +24,7 @@ function taggedCalldata(data: Hex): Hex {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
+/** Token sends, gas fee reads, and `prepareSend` flows with CELINA calldata tags. */
 export class TransactionService {
   private readonly tokenService: TokenService;
 

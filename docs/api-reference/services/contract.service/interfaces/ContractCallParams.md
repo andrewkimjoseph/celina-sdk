@@ -6,7 +6,9 @@
 
 # Interface: ContractCallParams
 
-Defined in: [src/services/contract.service.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L10)
+Defined in: [src/services/contract.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L14)
+
+Parameters for a read-only or gas-estimated contract call on Celo mainnet.
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [src/services/contract.service.ts:10](https://github.com/andrewkimjo
 
 > **abi**: `Abi`
 
-Defined in: [src/services/contract.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L13)
+Defined in: [src/services/contract.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L20)
+
+Contract ABI JSON (must include `functionName`).
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [src/services/contract.service.ts:13](https://github.com/andrewkimjo
 
 > **contractAddress**: `` `0x${string}` ``
 
-Defined in: [src/services/contract.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L11)
+Defined in: [src/services/contract.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L16)
+
+Target contract address.
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: [src/services/contract.service.ts:11](https://github.com/andrewkimjo
 
 > `optional` **fromAddress?**: `` `0x${string}` ``
 
-Defined in: [src/services/contract.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L15)
+Defined in: [src/services/contract.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L24)
+
+Optional `msg.sender` for state-dependent view calls.
 
 ***
 
@@ -38,7 +46,9 @@ Defined in: [src/services/contract.service.ts:15](https://github.com/andrewkimjo
 
 > `optional` **functionArgs?**: `unknown`[]
 
-Defined in: [src/services/contract.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L14)
+Defined in: [src/services/contract.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L22)
+
+Positional arguments for the function (default `[]`).
 
 ***
 
@@ -46,7 +56,9 @@ Defined in: [src/services/contract.service.ts:14](https://github.com/andrewkimjo
 
 > **functionName**: `string`
 
-Defined in: [src/services/contract.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L12)
+Defined in: [src/services/contract.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L18)
+
+ABI function name to invoke.
 
 ***
 
@@ -54,4 +66,6 @@ Defined in: [src/services/contract.service.ts:12](https://github.com/andrewkimjo
 
 > `optional` **value?**: `string`
 
-Defined in: [src/services/contract.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/16cbfaa4151cb42b8d2ee197ea5b9943e9f75af3/src/services/contract.service.ts#L16)
+Defined in: [src/services/contract.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/contract.service.ts#L26)
+
+Wei value as decimal string for payable calls (default `"0"`).

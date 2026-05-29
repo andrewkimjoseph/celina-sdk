@@ -1,3 +1,7 @@
+/**
+ * CJS re-exports for @uniswap/v4-sdk and @uniswap/universal-router-sdk.
+ * Uses createRequire because upstream ESM builds omit .js extensions on internal imports.
+ */
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
