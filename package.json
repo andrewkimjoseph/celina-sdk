@@ -45,6 +45,7 @@
     "viem",
     "mento",
     "aave",
+    "uniswap",
     "sdk"
   ],
   "author": "Andrew Kim Joseph",
@@ -59,6 +60,9 @@
   "homepage": "https://andrewkimjoseph.gitbook.io/celina-sdk",
   "dependencies": {
     "@mento-protocol/mento-sdk": "^3.2.8",
+    "@uniswap/sdk-core": "^7.16.1",
+    "@uniswap/universal-router-sdk": "^5.5.1",
+    "@uniswap/v4-sdk": "^2.2.1",
     "viem": "^2.39.3"
   },
   "devDependencies": {

@@ -78,6 +78,89 @@ export const mentoFxOperations: OperationSpec[] = [
   },
 ];
 
+export const uniswapOperations: OperationSpec[] = [
+  {
+    id: "uniswap.getSwapQuote",
+    domain: "uniswap",
+    layer: "read",
+    sdk: {
+      invoke: (client) => client.uniswap.getSwapQuote("CELO", "USDC", "0.001"),
+    },
+    mcp: {
+      tool: "get_uniswap_quote",
+      arguments: () => ({
+        tokenIn: "CELO",
+        tokenOut: "USDC",
+        amount: "0.001",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["tokenIn", "tokenOut", "expectedOut", "protocol"]);
+    },
+  },
+  {
+    id: "uniswap.estimateSwap",
+    domain: "uniswap",
+    layer: "read",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.uniswap.estimateSwap(
+          fromAddress(fx),
+          "CELO",
+          "USDC",
+          "0.001",
+        ),
+    },
+    mcp: {
+      tool: "estimate_uniswap_swap",
+      arguments: () => ({
+        tokenIn: "CELO",
+        tokenOut: "USDC",
+        amount: "0.001",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["swapGas", "expectedOut"]);
+    },
+  },
+  {
+    id: "uniswap.prepareSwap",
+    domain: "uniswap",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.uniswap.prepareSwap(
+          fromAddress(fx),
+          "CELO",
+          "USDC",
+          "0.001",
+        ),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["from", "steps", "summary"]);
+    },
+  },
+  {
+    id: "uniswap.executeSwap",
+    domain: "uniswap",
+    layer: "write",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresWrites: true,
+    mcp: {
+      tool: "execute_uniswap_swap",
+      arguments: () => ({
+        tokenIn: "CELO",
+        tokenOut: "USDC",
+        amount: "0.001",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["hash"]);
+    },
+  },
+];
+
 export const aaveOperations: OperationSpec[] = [
   {
     id: "aave.prepareSupply",

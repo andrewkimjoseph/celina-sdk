@@ -15,6 +15,7 @@ import { EnsService } from "./services/ens.service.js";
 import { GoodDollarService } from "./services/gooddollar.service.js";
 import { GovernanceService } from "./services/governance.service.js";
 import { MentoFxService } from "./services/mento-fx.service.js";
+import { UniswapService } from "./services/uniswap.service.js";
 import { NftService } from "./services/nft.service.js";
 import { StakingService } from "./services/staking.service.js";
 import { TokenService } from "./services/token.service.js";
@@ -35,6 +36,8 @@ export interface CelinaClient {
   transaction: TransactionService;
   /** Mento FX quotes, estimates, and `prepareFx` flows. */
   mentoFx: MentoFxService;
+  /** Uniswap v4 quotes, estimates, and `prepareSwap` flows. */
+  uniswap: UniswapService;
   /** Aave V3 `prepareSupply` and `prepareWithdraw` flows on Celo. */
   aave: AaveService;
   /** GoodDollar IdentityV4 whitelist status. */
@@ -66,6 +69,7 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     token: new TokenService(clientFactory),
     transaction: new TransactionService(clientFactory),
     mentoFx: new MentoFxService(clientFactory),
+    uniswap: new UniswapService(clientFactory),
     aave: new AaveService(clientFactory),
     gooddollar: new GoodDollarService(clientFactory),
     ens: new EnsService(ensClientFactory),
@@ -86,5 +90,6 @@ export { serializePreparedFlow } from "./types/prepared.js";
 export type { SdkConfig } from "./config/sdk-config.js";
 export type { ResolvedToken } from "./services/token.service.js";
 export type { MentoFxParams } from "./services/mento-fx.service.js";
+export type { UniswapSwapParams } from "./services/uniswap.service.js";
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
 export type { ContractCallParams } from "./services/contract.service.js";

@@ -6,6 +6,7 @@ import {
   ensOperations,
   gooddollarOperations,
   mentoFxOperations,
+  uniswapOperations,
 } from "./domains/defi.js";
 import {
   contractOperations,
@@ -21,6 +22,7 @@ export const OPERATIONS: OperationSpec[] = [
   ...tokenOperations,
   ...transactionOperations,
   ...mentoFxOperations,
+  ...uniswapOperations,
   ...aaveOperations,
   ...ensOperations,
   ...gooddollarOperations,

@@ -1,0 +1,234 @@
+import type { PublicClient } from "viem";
+import { v4QuoterAbi } from "../abis/uniswap-v4-quoter.js";
+import {
+  normalizeUniswapPoolKey,
+  UNISWAP_V4,
+  type UniswapPoolKey,
+} from "../config/uniswap.js";
+import {
+  getUniswapPoolIndex,
+  type UniswapPoolIndex,
+} from "./uniswap-pool-discovery.js";
+
+export type UniswapPathKey = {
+  intermediateCurrency: `0x${string}`;
+  fee: number;
+  tickSpacing: number;
+  hooks: `0x${string}`;
+  hookData: `0x${string}`;
+};
+
+export type UniswapSwapRoute = {
+  currencyIn: `0x${string}`;
+  currencyOut: `0x${string}`;
+  pools: UniswapPoolKey[];
+  pathKeys: UniswapPathKey[];
+  hops: number;
+};
+
+const MAX_HOPS = 2;
+
+function otherToken(
+  poolKey: UniswapPoolKey,
+  currency: `0x${string}`,
+): `0x${string}` | null {
+  const c = currency.toLowerCase();
+  if (poolKey.currency0.toLowerCase() === c) return poolKey.currency1;
+  if (poolKey.currency1.toLowerCase() === c) return poolKey.currency0;
+  return null;
+}
+
+function buildPathKeys(
+  pools: UniswapPoolKey[],
+  currencyIn: `0x${string}`,
+): UniswapPathKey[] {
+  let current = currencyIn;
+  const pathKeys: UniswapPathKey[] = [];
+
+  for (const poolKey of pools) {
+    const out = otherToken(poolKey, current);
+    if (!out) {
+      throw new Error("Invalid swap path for Uniswap v4 pools.");
+    }
+
+    pathKeys.push({
+      intermediateCurrency: out,
+      fee: poolKey.fee,
+      tickSpacing: poolKey.tickSpacing,
+      hooks: poolKey.hooks,
+      hookData: "0x",
+    });
+    current = out;
+  }
+
+  return pathKeys;
+}
+
+function enumeratePaths(
+  index: UniswapPoolIndex,
+  currencyIn: `0x${string}`,
+  currencyOut: `0x${string}`,
+): UniswapPoolKey[][] {
+  const start = currencyIn.toLowerCase();
+  const goal = currencyOut.toLowerCase();
+  if (start === goal) {
+    return [];
+  }
+
+  const results: UniswapPoolKey[][] = [];
+  const queue: { currency: string; pools: UniswapPoolKey[]; visited: Set<string> }[] =
+    [{ currency: start, pools: [], visited: new Set([start]) }];
+
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    if (node.pools.length >= MAX_HOPS + 1) {
+      continue;
+    }
+
+    const neighbors = index.adjacency.get(node.currency);
+    if (!neighbors) {
+      continue;
+    }
+
+    for (const neighbor of neighbors) {
+      if (node.visited.has(neighbor)) {
+        continue;
+      }
+
+      const poolKey = index.edges.find((edge) => {
+        const a = edge.tokenA.toLowerCase();
+        const b = edge.tokenB.toLowerCase();
+        return (
+          (a === node.currency && b === neighbor) ||
+          (a === neighbor && b === node.currency)
+        );
+      })?.poolKey;
+
+      if (!poolKey) {
+        continue;
+      }
+
+      const nextPools = [...node.pools, poolKey];
+      if (neighbor === goal) {
+        results.push(nextPools);
+        continue;
+      }
+
+      if (nextPools.length <= MAX_HOPS) {
+        queue.push({
+          currency: neighbor,
+          pools: nextPools,
+          visited: new Set([...node.visited, neighbor]),
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+async function quotePath(
+  client: PublicClient,
+  currencyIn: `0x${string}`,
+  pools: UniswapPoolKey[],
+  amountIn: bigint,
+): Promise<bigint> {
+  if (pools.length === 0) {
+    return 0n;
+  }
+
+  if (pools.length === 1) {
+    const poolKey = normalizeUniswapPoolKey(pools[0]!);
+    const zeroForOne =
+      currencyIn.toLowerCase() === poolKey.currency0.toLowerCase();
+
+    const { result } = await client.simulateContract({
+      address: UNISWAP_V4.v4Quoter,
+      abi: v4QuoterAbi,
+      functionName: "quoteExactInputSingle",
+      args: [
+        {
+          poolKey,
+          zeroForOne,
+          exactAmount: amountIn,
+          hookData: "0x",
+        },
+      ],
+    });
+
+    return result[0];
+  }
+
+  const pathKeys = buildPathKeys(pools, currencyIn);
+  const { result } = await client.simulateContract({
+    address: UNISWAP_V4.v4Quoter,
+    abi: v4QuoterAbi,
+    functionName: "quoteExactInput",
+    args: [
+      {
+        exactCurrency: currencyIn,
+        path: pathKeys,
+        exactAmount: amountIn,
+      },
+    ],
+  });
+
+  return result[0];
+}
+
+export async function findBestUniswapRoute(
+  client: PublicClient,
+  currencyIn: `0x${string}`,
+  currencyOut: `0x${string}`,
+  amountIn: bigint,
+): Promise<{ route: UniswapSwapRoute; amountOut: bigint; indexSource: string } | null> {
+  const index = await getUniswapPoolIndex(client);
+  const candidatePaths = enumeratePaths(index, currencyIn, currencyOut);
+
+  let best: { route: UniswapSwapRoute; amountOut: bigint } | null = null;
+
+  for (const pools of candidatePaths) {
+    try {
+      const amountOut = await quotePath(
+        client,
+        currencyIn,
+        pools,
+        amountIn,
+      );
+
+      if (amountOut <= 0n) {
+        continue;
+      }
+
+      if (!best || amountOut > best.amountOut) {
+        best = {
+          amountOut,
+          route: {
+            currencyIn,
+            currencyOut,
+            pools,
+            pathKeys: buildPathKeys(pools, currencyIn),
+            hops: pools.length,
+          },
+        };
+      }
+    } catch {
+      // skip paths that fail to quote
+    }
+  }
+
+  if (!best) {
+    return null;
+  }
+
+  return {
+    route: best.route,
+    amountOut: best.amountOut,
+    indexSource: index.source,
+  };
+}
+
+export function applySlippage(amountOut: bigint, slippagePercent: number): bigint {
+  const bps = BigInt(Math.round(slippagePercent * 100));
+  return (amountOut * (10000n - bps)) / 10000n;
+}
