@@ -261,4 +261,47 @@ export const gooddollarOperations: OperationSpec[] = [
       assertHasKeys(result, ["isCurrentlyWhitelisted"]);
     },
   },
+  {
+    id: "gooddollar.getUbiClaimEligibility",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.getUbiClaimEligibility(fx.wallet),
+    },
+    mcp: {
+      tool: "get_gooddollar_ubi_entitlement",
+      arguments: (fx) => ({ address: fx.wallet }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["isEligibleToClaim", "claimableAmount"]);
+    },
+  },
+  {
+    id: "gooddollar.prepareClaimUbi",
+    domain: "gooddollar",
+    layer: "prepare",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.prepareClaimUbi(fromAddress(fx)),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["from", "steps"]);
+    },
+  },
+  {
+    id: "gooddollar.claimDailyUbi",
+    domain: "gooddollar",
+    layer: "write",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresWrites: true,
+    mcp: {
+      tool: "claim_daily_gooddollar_ubi",
+      arguments: () => ({}),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["hash"]);
+    },
+  },
 ];

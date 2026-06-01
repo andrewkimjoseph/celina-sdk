@@ -23,6 +23,13 @@ export const goodDollarIdentityAbi = [
     outputs: [{ name: "", type: "bool" }],
   },
   {
+    name: "getWhitelistedRoot",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "whitelisted", type: "address" }],
+  },
+  {
     name: "authenticationPeriod",
     type: "function",
     stateMutability: "view",

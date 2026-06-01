@@ -1,10 +1,24 @@
 /**
  * GoodDollar IdentityV4 whitelist and reverification reads on Celo mainnet.
  */
+import { concat, encodeFunctionData, formatUnits, type Hex } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { goodDollarIdentityAbi } from "../abis/gooddollar-identity.js";
-import { GOODDOLLAR_IDENTITY_ADDRESS } from "../config/gooddollar.js";
+import { ubiSchemeAbi } from "../abis/ubi-scheme.js";
+import {
+  GOODDOLLAR_IDENTITY_ADDRESS,
+  GOODDOLLAR_UBI_SCHEME_ADDRESS,
+} from "../config/gooddollar.js";
+import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import {
+  type PreparedFlow,
+  serializePreparedFlow,
+  type SerializedPreparedFlow,
+} from "../types/prepared.js";
 import { formatUnixDate } from "../utils/format-date.js";
+
+const G_DOLLAR_DECIMALS = 18;
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
 
 const STATUS_LABELS: Record<number, string> = {
   0: "none",
@@ -20,9 +34,17 @@ function statusLabel(status: number): string {
   return STATUS_LABELS[status] ?? "unknown";
 }
 
+function taggedCalldata(data: Hex): Hex {
+  return concat([data, CELINA_DATA_SUFFIX]);
+}
+
 /** GoodDollar IdentityV4 whitelist status and reverification progress. */
 export class GoodDollarService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
+
+  private getPublicClient() {
+    return this.clientFactory.getClients().public;
+  }
 
   /**
    * GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
@@ -120,6 +142,179 @@ export class GoodDollarService {
         authCount: authCountNum,
       },
     };
+  }
+
+  /**
+   * Daily UBI claim eligibility for a wallet against UBISchemeV2 on Celo.
+   * Resolves connected wallets via Identity `getWhitelistedRoot`.
+   */
+  async getUbiClaimEligibility(address: `0x${string}`) {
+    const client = this.getPublicClient();
+    const ubiContract = GOODDOLLAR_UBI_SCHEME_ADDRESS;
+    const identityContract = GOODDOLLAR_IDENTITY_ADDRESS;
+
+    const [
+      whitelistedRoot,
+      claimableAmount,
+      schemePaused,
+      periodStart,
+      estimatedDailyUbi,
+      dailyUbi,
+      whitelistingInfo,
+    ] = await Promise.all([
+      client.readContract({
+        address: identityContract,
+        abi: goodDollarIdentityAbi,
+        functionName: "getWhitelistedRoot",
+        args: [address],
+      }),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "checkEntitlement",
+        args: [address],
+      }),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "paused",
+      }),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "periodStart",
+      }),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "estimateNextDailyUBI",
+      }),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "dailyUbi",
+      }),
+      this.getWhitelistingInfo(address),
+    ]);
+
+    const root = whitelistedRoot as `0x${string}`;
+    const claimable = claimableAmount as bigint;
+    const nowSec = BigInt(Math.floor(Date.now() / 1000));
+    const schemeStarted = nowSec >= (periodStart as bigint);
+
+    let alreadyClaimedToday = false;
+    if (root !== ZERO_ADDRESS) {
+      alreadyClaimedToday = await client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "hasClaimed",
+        args: [root],
+      });
+    }
+
+    const reasons: string[] = [];
+    if (root === ZERO_ADDRESS) {
+      reasons.push("not whitelisted");
+    }
+    if (!whitelistingInfo.isCurrentlyWhitelisted) {
+      if (whitelistingInfo.reverification?.isReverificationOverdue) {
+        reasons.push("reverification overdue");
+      } else if (root !== ZERO_ADDRESS) {
+        reasons.push("identity not currently whitelisted");
+      }
+    }
+    if (schemePaused) {
+      reasons.push("scheme paused");
+    }
+    if (!schemeStarted) {
+      reasons.push("scheme not started");
+    }
+    if (alreadyClaimedToday) {
+      reasons.push("already claimed today");
+    }
+    if (claimable === 0n && !alreadyClaimedToday && root !== ZERO_ADDRESS) {
+      reasons.push("no entitlement available");
+    }
+
+    const isEligibleToClaim =
+      root !== ZERO_ADDRESS &&
+      !schemePaused &&
+      schemeStarted &&
+      whitelistingInfo.isCurrentlyWhitelisted &&
+      claimable > 0n;
+
+    return {
+      address,
+      contract: ubiContract,
+      whitelistedRoot: root === ZERO_ADDRESS ? null : root,
+      isConnectedWallet:
+        root !== ZERO_ADDRESS &&
+        root.toLowerCase() !== address.toLowerCase(),
+      isEligibleToClaim,
+      claimableAmount: claimable.toString(),
+      claimableAmountFormatted:
+        claimable > 0n ? `${formatUnits(claimable, G_DOLLAR_DECIMALS)} G$` : "0 G$",
+      alreadyClaimedToday,
+      schemePaused,
+      schemeStarted,
+      estimatedDailyUbi: (estimatedDailyUbi as bigint).toString(),
+      estimatedDailyUbiFormatted: `${formatUnits(estimatedDailyUbi as bigint, G_DOLLAR_DECIMALS)} G$`,
+      currentDailyUbi: (dailyUbi as bigint).toString(),
+      currentDailyUbiFormatted: `${formatUnits(dailyUbi as bigint, G_DOLLAR_DECIMALS)} G$`,
+      reasons: isEligibleToClaim ? [] : reasons,
+      identity: {
+        isCurrentlyWhitelisted: whitelistingInfo.isCurrentlyWhitelisted,
+        statusLabel: whitelistingInfo.statusLabel,
+        reverification: whitelistingInfo.reverification,
+      },
+    };
+  }
+
+  /**
+   * Build an unsigned UBISchemeV2 `claim()` transaction for daily G$ UBI.
+   * Validates whitelist, entitlement, and simulates gas before returning steps.
+   */
+  async prepareClaimUbi(from: `0x${string}`): Promise<SerializedPreparedFlow> {
+    const eligibility = await this.getUbiClaimEligibility(from);
+    if (!eligibility.isEligibleToClaim) {
+      const detail =
+        eligibility.reasons.length > 0
+          ? eligibility.reasons.join("; ")
+          : "not eligible to claim";
+      throw new Error(`Cannot claim GoodDollar UBI: ${detail}.`);
+    }
+
+    const publicClient = this.getPublicClient();
+    const claimData = taggedCalldata(
+      encodeFunctionData({
+        abi: ubiSchemeAbi,
+        functionName: "claim",
+      }),
+    );
+
+    await publicClient.estimateContractGas({
+      account: from,
+      address: GOODDOLLAR_UBI_SCHEME_ADDRESS,
+      abi: ubiSchemeAbi,
+      functionName: "claim",
+    });
+
+    const flow: PreparedFlow = {
+      network: "mainnet",
+      from,
+      summary: `Claim daily GoodDollar UBI (${eligibility.claimableAmountFormatted})`,
+      steps: [
+        {
+          kind: "contract",
+          to: GOODDOLLAR_UBI_SCHEME_ADDRESS,
+          data: claimData,
+          value: "0",
+          description: "Claim daily GoodDollar UBI",
+        },
+      ],
+    };
+
+    return serializePreparedFlow(flow);
   }
 
   private effectiveAuthCount(

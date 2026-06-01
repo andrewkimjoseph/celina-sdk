@@ -23,6 +23,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "contract.callFunction": "call_contract_function",
   "contract.estimateGas": "estimate_contract_gas",
   "ens.resolveEns": "resolve_ens",
+  "gooddollar.getUbiClaimEligibility": "get_gooddollar_ubi_entitlement",
   "gooddollar.getWhitelistingInfo": "get_gooddollar_whitelisting_info",
   "governance.getGovernanceProposals": "get_governance_proposals",
   "governance.getProposalDetails": "get_proposal_details",
