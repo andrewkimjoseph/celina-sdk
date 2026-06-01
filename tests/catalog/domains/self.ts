@@ -9,6 +9,10 @@ export const selfOperations: OperationSpec[] = [
     id: "self.verifySelfAgent",
     domain: "self",
     layer: "read",
+    sdk: {
+      invoke: (client, fx) =>
+        client.self.verifyAgent({ agentAddress: fx.selfAgentAddress }),
+    },
     mcp: {
       tool: "verify_self_agent",
       arguments: (fx) => ({
@@ -23,6 +27,9 @@ export const selfOperations: OperationSpec[] = [
     id: "self.lookupSelfAgent",
     domain: "self",
     layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.self.lookupAgent(fx.selfAgentId),
+    },
     mcp: {
       tool: "lookup_self_agent",
       arguments: (fx) => ({
@@ -38,6 +45,20 @@ export const selfOperations: OperationSpec[] = [
     domain: "self",
     layer: "read",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) => {
+        const args = fx.selfVerifyRequestArgs ?? {};
+        return client.self.verifyRequest({
+          agentSignature: args.agent_signature as `0x${string}`,
+          agentTimestamp: String(args.agent_timestamp),
+          method: String(args.method),
+          path: String(args.path),
+          body: typeof args.body === "string" ? args.body : undefined,
+          keytype: typeof args.keytype === "string" ? args.keytype : undefined,
+          agentKey: args.agent_key as `0x${string}` | undefined,
+        });
+      },
+    },
     mcp: {
       tool: "verify_self_request",
       arguments: (fx) => fx.selfVerifyRequestArgs ?? {},
@@ -55,6 +76,13 @@ export const selfOperations: OperationSpec[] = [
     domain: "self",
     layer: "write",
     requiresDestructive: true,
+    sdk: {
+      invoke: (client) =>
+        client.self.registerAgent({
+          mode: "wallet-free",
+          agentName: "celina-test",
+        }),
+    },
     mcp: {
       tool: "register_self_agent",
       arguments: () => ({
@@ -63,13 +91,19 @@ export const selfOperations: OperationSpec[] = [
       }),
     },
     assert: (result) => {
-      assertHasKeys(result, ["sessionId"]);
+      assertHasKeys(result, ["session_id"]);
     },
   },
   {
     id: "self.checkSelfRegistration",
     domain: "self",
     layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.self.checkRegistration(
+          process.env.CELINA_TEST_SELF_SESSION ?? "missing-session",
+        ),
+    },
     mcp: {
       tool: "check_self_registration",
       arguments: () => ({
@@ -89,12 +123,16 @@ export const selfOperations: OperationSpec[] = [
     domain: "self",
     layer: "read",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client) => client.self.getIdentity(),
+    },
     mcp: {
       tool: "get_self_identity",
       arguments: () => ({}),
     },
     assert: (result) => {
-      assertHasKeys(result, ["agentAddress"]);
+      const obj = result as Record<string, unknown>;
+      assertHasKeys(obj, obj.registered === false ? ["registered"] : ["address"]);
     },
   },
   {
@@ -103,12 +141,15 @@ export const selfOperations: OperationSpec[] = [
     layer: "write",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     requiresDestructive: true,
+    sdk: {
+      invoke: (client) => client.self.refreshProof(),
+    },
     mcp: {
       tool: "refresh_self_proof",
       arguments: () => ({}),
     },
     assert: (result) => {
-      assertHasKeys(result, ["sessionId"]);
+      assertHasKeys(result, ["session_id"]);
     },
   },
   {
@@ -117,12 +158,15 @@ export const selfOperations: OperationSpec[] = [
     layer: "write",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     requiresDestructive: true,
+    sdk: {
+      invoke: (client) => client.self.deregisterAgent(),
+    },
     mcp: {
       tool: "deregister_self_agent",
       arguments: () => ({}),
     },
     assert: (result) => {
-      assertHasKeys(result, ["sessionId"]);
+      assertHasKeys(result, ["session_id"]);
     },
   },
   {
@@ -130,6 +174,13 @@ export const selfOperations: OperationSpec[] = [
     domain: "self",
     layer: "read",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client) =>
+        client.self.signRequest({
+          method: "GET",
+          url: SELF_DEMO_VERIFY_URL,
+        }),
+    },
     mcp: {
       tool: "sign_self_request",
       arguments: () => ({
@@ -146,6 +197,14 @@ export const selfOperations: OperationSpec[] = [
     domain: "self",
     layer: "read",
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client) =>
+        client.self.authenticatedFetch({
+          method: "POST",
+          url: SELF_DEMO_VERIFY_URL,
+          body: JSON.stringify({ ping: true }),
+        }),
+    },
     mcp: {
       tool: "authenticated_self_fetch",
       arguments: () => ({
