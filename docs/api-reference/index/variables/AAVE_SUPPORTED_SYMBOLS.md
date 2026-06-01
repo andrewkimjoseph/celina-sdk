@@ -8,6 +8,6 @@
 
 > `const` **AAVE\_SUPPORTED\_SYMBOLS**: readonly \[`"USDT"`, `"WETH"`, `"USDm"`, `"USDC"`, `"CELO"`, `"EURm"`\]
 
-Defined in: [src/config/aave.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/config/aave.ts#L52)
+Defined in: [src/config/aave.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/aave.ts#L52)
 
 Aave V3 Celo pool address and supported asset symbols.

@@ -8,6 +8,6 @@
 
 > `const` **AAVE\_POOL**: `"0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402"`
 
-Defined in: [src/config/aave.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/config/aave.ts#L9)
+Defined in: [src/config/aave.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/aave.ts#L9)
 
 Aave V3 on Celo mainnet — from bgd-labs/aave-address-book AaveV3Celo

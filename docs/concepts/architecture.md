@@ -38,7 +38,7 @@ flowchart LR
 | `mentoFx` | MentoFxService | Mento FX quotes and swaps |
 | `uniswap` | UniswapService | Uniswap v4 quotes and swaps |
 | `aave` | AaveService | Aave V3 supply/withdraw |
-| `gooddollar` | GoodDollarService | GoodDollar whitelist status |
+| `gooddollar` | GoodDollarService | Identity whitelist, UBI entitlement, `prepareClaimUbi` |
 | `ens` | EnsService | ENS resolution (Celo + Ethereum) |
 | `governance` | GovernanceService | Celo governance proposals |
 | `staking` | StakingService | Validator election staking |

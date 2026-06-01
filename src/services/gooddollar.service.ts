@@ -38,7 +38,7 @@ function taggedCalldata(data: Hex): Hex {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
-/** GoodDollar IdentityV4 whitelist status and reverification progress. */
+/** GoodDollar IdentityV4 whitelist, reverification, and daily UBI claim preparation. */
 export class GoodDollarService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
 

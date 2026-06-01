@@ -20,6 +20,7 @@
 * [Mento FX](guides/mento-fx.md)
 * [Uniswap v4](guides/uniswap.md)
 * [Aave](guides/aave.md)
+* [GoodDollar UBI](guides/gooddollar.md)
 
 ## API reference
 
@@ -58,6 +59,7 @@
 * [ResolvedToken](api-reference/services/token.service/interfaces/ResolvedToken.md)
 * [GovernanceProposalsOptions](api-reference/services/governance.service/interfaces/GovernanceProposalsOptions.md)
 * [ContractCallParams](api-reference/services/contract.service/interfaces/ContractCallParams.md)
+
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)

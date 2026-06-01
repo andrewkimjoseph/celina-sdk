@@ -18,6 +18,8 @@ Requires Node.js ≥ 20.
 
 - [Quick start](https://andrewkimjoseph.gitbook.io/celina-sdk/getting-started/quick-start)
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
+- [Aave](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/aave)
+- [GoodDollar UBI](docs/guides/gooddollar.md) — whitelist, daily entitlement, `prepareClaimUbi` on Celo
 - [Carbon DeFi on Celo](docs/guides/carbon.md) — hybrid Carbon REST + `@bancor/carbon-sdk` (25 operations)
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, and refresh human-backed agents on Celo
 - [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (opt out with `CELINA_ANALYTICS_DISABLED=1`)
@@ -48,7 +50,22 @@ const prepared = await celina.carbon.prepareLimitOrder({
   budget: 100,
 });
 // prepared.preparedFlow?.steps → same signing flow; check prepared.warnings
+
+// GoodDollar UBI (reads + unsigned claim)
+const eligibility = await celina.gooddollar.getUbiClaimEligibility("0xYourAddress");
+const ubiFlow = await celina.gooddollar.prepareClaimUbi("0xYourAddress");
+// ubiFlow.steps → wagmi sendTransaction (G$ to signer, gas in CELO)
 ```
+
+## GoodDollar UBI
+
+Identity whitelist reads, daily entitlement checks, and unsigned `UBISchemeV2.claim()` preparation on Celo mainnet. One claim per verified identity per day; connected wallets resolve via `getWhitelistedRoot`.
+
+| Reads (`celina.gooddollar`) | Prepare (unsigned) |
+|-----------------------------|-------------------|
+| `getWhitelistingInfo`, `getUbiClaimEligibility` | `prepareClaimUbi` |
+
+MCP tools: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read); `claim_daily_gooddollar_ubi` (stdio write with server key). Full workflow: [GoodDollar guide](docs/guides/gooddollar.md).
 
 ## Carbon DeFi
 
