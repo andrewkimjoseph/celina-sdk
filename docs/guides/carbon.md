@@ -58,9 +58,37 @@ Use **0x addresses** on Celo when symbols fail to resolve.
 | `CARBON_SDK_FALLBACK` | Set to `false` to disable SDK fallback for trades |
 | `CELO_RPC_URL` | Required for SDK fallback paths |
 
-## MCP tools
+## MCP tools (25)
 
-Full tool list is registered in `celina-mcp` (`get_carbon_*`, `explore_carbon_*`, `simulate_carbon_strategy`, `carbon_help`, `carbon_learn`, and `prepare_carbon_*`). The hosted MCP at `celina-mcp-host` exposes **read-only** Carbon tools (`carbonWritesEnabled: false`).
+Registered in `celina-mcp` (`src/tools/carbon.tools.ts`). Hosted MCP (`celina-mcp-host`) exposes the **12 read** rows only (`carbonWritesEnabled: false`).
+
+| MCP tool | SDK method (approx.) |
+|----------|----------------------|
+| `get_carbon_strategies` | `carbon.getStrategies` |
+| `get_carbon_strategy` | `carbon.getStrategy` |
+| `get_carbon_trade_quote` | `carbon.getTradeQuote` |
+| `explore_carbon_pair` | `carbon.explorePair` |
+| `resolve_carbon_token` | `carbon.resolveToken` |
+| `get_carbon_activity` | `carbon.getActivity` |
+| `find_carbon_opportunities` | `carbon.findOpportunities` |
+| `get_carbon_protocol_stats` | `carbon.getProtocolStats` |
+| `get_carbon_price_history` | `carbon.getPriceHistory` |
+| `simulate_carbon_strategy` | `carbon.simulateStrategy` |
+| `carbon_help` | `carbon.help` |
+| `carbon_learn` | `carbon.learn` |
+| `prepare_carbon_limit_order` | `carbon.prepareLimitOrder` |
+| `prepare_carbon_range_order` | `carbon.prepareRangeOrder` |
+| `prepare_carbon_recurring_strategy` | `carbon.prepareRecurringStrategy` |
+| `prepare_carbon_concentrated_strategy` | `carbon.prepareConcentratedStrategy` |
+| `prepare_carbon_full_range_strategy` | `carbon.prepareFullRangeStrategy` |
+| `prepare_carbon_reprice_strategy` | `carbon.prepareRepriceStrategy` |
+| `prepare_carbon_edit_strategy` | `carbon.prepareEditStrategy` |
+| `prepare_carbon_deposit_budget` | `carbon.prepareDepositBudget` |
+| `prepare_carbon_withdraw_budget` | `carbon.prepareWithdrawBudget` |
+| `prepare_carbon_pause_strategy` | `carbon.preparePauseStrategy` |
+| `prepare_carbon_resume_strategy` | `carbon.prepareResumeStrategy` |
+| `prepare_carbon_delete_strategy` | `carbon.prepareDeleteStrategy` |
+| `prepare_carbon_trade` | `carbon.prepareTrade` |
 
 ## Contract addresses (Celo mainnet)
 

@@ -6,7 +6,7 @@
 
 # Class: GovernanceService
 
-Defined in: [src/services/governance.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L94)
+Defined in: [src/services/governance.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/governance.service.ts#L94)
 
 Celo on-chain governance proposal reads and CGP enrichment.
 
@@ -16,7 +16,7 @@ Celo on-chain governance proposal reads and CGP enrichment.
 
 > **new GovernanceService**(`clientFactory`): `GovernanceService`
 
-Defined in: [src/services/governance.service.ts:95](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L95)
+Defined in: [src/services/governance.service.ts:95](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/governance.service.ts#L95)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/governance.service.ts:95](https://github.com/andrewkim
 
 > **getGovernanceProposals**(`options?`): `Promise`\<\{ `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `proposals`: `object`[]; \}\>
 
-Defined in: [src/services/governance.service.ts:221](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L221)
+Defined in: [src/services/governance.service.ts:221](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/governance.service.ts#L221)
 
 List governance proposals with pagination and optional CGP metadata.
 
@@ -58,7 +58,7 @@ Proposals with stage names, vote totals, and optional CGP frontmatter
 
 > **getProposalDetails**(`proposalId`): `Promise`\<\{ `content`: `null`; `error`: `string`; `network`: `"mainnet"`; `proposal`: `null`; \} \| \{ `content`: `string` \| `null`; `error`: `null`; `network`: `"mainnet"`; `proposal`: \{ `deposit`: `string`; `expiryTimestamp`: `number` \| `null`; `id`: `number`; `isApproved`: `boolean`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `networkWeight`: `string`; `numTransactions`: `number`; `proposer`: `string`; `stage`: `number`; `stageName`: `"Approval"` \| `"None"` \| `"Queued"` \| `"Referendum"` \| `"Execution"` \| `"Executed"` \| `"Expiration"` \| `"Rejected"` \| `"Withdrawn"`; `timestamp`: `number`; `upvotes`: `number`; `url`: `string`; `votes`: \{ `abstain`: `string`; `no`: `string`; `yes`: `string`; \}; \}; \}\>
 
-Defined in: [src/services/governance.service.ts:304](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/governance.service.ts#L304)
+Defined in: [src/services/governance.service.ts:304](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/governance.service.ts#L304)
 
 Full details for a single proposal, including CGP markdown body when available.
 

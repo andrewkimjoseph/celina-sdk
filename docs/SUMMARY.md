@@ -34,6 +34,7 @@
 * [AccountService](api-reference/services/account.service/classes/AccountService.md)
 * [AaveService](api-reference/services/aave.service/classes/AaveService.md)
 * [BlockchainService](api-reference/services/blockchain.service/classes/BlockchainService.md)
+* [CarbonService](api-reference/services/carbon.service/classes/CarbonService.md)
 * [ContractService](api-reference/services/contract.service/classes/ContractService.md)
 * [EnsService](api-reference/services/ens.service/classes/EnsService.md)
 * [GoodDollarService](api-reference/services/gooddollar.service/classes/GoodDollarService.md)

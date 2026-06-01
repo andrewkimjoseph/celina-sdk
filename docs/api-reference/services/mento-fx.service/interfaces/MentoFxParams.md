@@ -6,7 +6,7 @@
 
 # Interface: MentoFxParams
 
-Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L37)
+Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/mento-fx.service.ts#L37)
 
 Optional parameters for Mento FX swap estimates and prepares.
 
@@ -16,7 +16,7 @@ Optional parameters for Mento FX swap estimates and prepares.
 
 > `optional` **deadlineMinutes?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L41)
+Defined in: [src/services/mento-fx.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/mento-fx.service.ts#L41)
 
 Swap deadline in minutes from now (default `5`).
 
@@ -26,7 +26,7 @@ Swap deadline in minutes from now (default `5`).
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/mento-fx.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L43)
+Defined in: [src/services/mento-fx.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/mento-fx.service.ts#L43)
 
 Address receiving output tokens (default: `from`).
 
@@ -36,6 +36,6 @@ Address receiving output tokens (default: `from`).
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/mento-fx.service.ts#L39)
+Defined in: [src/services/mento-fx.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/mento-fx.service.ts#L39)
 
 Max slippage tolerance in percent (default `0.5`).

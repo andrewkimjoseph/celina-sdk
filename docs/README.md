@@ -8,9 +8,9 @@ Pair with [wagmi](https://wagmi.sh) / viem in the browser — users sign prepare
 
 | Category | Examples |
 |----------|----------|
-| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance proposals, ENS resolution |
+| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance proposals, ENS resolution, Carbon DeFi strategies/pairs/stats |
 | **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
-| **Prepare** | Unsigned tx flows for sends, Mento FX, Uniswap v4, Aave supply/withdraw |
+| **Prepare** | Unsigned tx flows for sends, Mento FX, Uniswap v4, Aave supply/withdraw, Carbon strategies and taker trades |
 
 The SDK never holds or uses private keys. Call `prepare*` methods with the user's wallet address, then pass the returned `steps` to wagmi for signing.
 
@@ -58,6 +58,7 @@ See [Quick start](getting-started/quick-start.md) and [wagmi integration](guides
 | `staking` | balances, validator groups | — |
 | `nft` | NFT info, balance | — |
 | `contract` | `callFunction`, `estimateGas` | — |
+| `carbon` | strategies, pair explore, quotes, simulation, help | `prepareLimitOrder`, `prepareRecurringStrategy`, `prepareTrade`, and 10 more — see [Carbon guide](guides/carbon.md) |
 
 Full method signatures are in [API reference](api-reference/README.md).
 

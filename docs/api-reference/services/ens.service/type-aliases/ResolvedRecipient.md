@@ -8,7 +8,7 @@
 
 > **ResolvedRecipient** = `object`
 
-Defined in: [src/services/ens.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L18)
+Defined in: [src/services/ens.service.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/ens.service.ts#L18)
 
 Address with optional ENS metadata when input was a name.
 
@@ -18,7 +18,7 @@ Address with optional ENS metadata when input was a name.
 
 > **address**: `` `0x${string}` ``
 
-Defined in: [src/services/ens.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L19)
+Defined in: [src/services/ens.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/ens.service.ts#L19)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/services/ens.service.ts:19](https://github.com/andrewkimjoseph/
 
 > `optional` **ens?**: `object`
 
-Defined in: [src/services/ens.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/ens.service.ts#L20)
+Defined in: [src/services/ens.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/ens.service.ts#L20)
 
 #### name
 

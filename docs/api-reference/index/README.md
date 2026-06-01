@@ -6,20 +6,52 @@
 
 # index
 
+## Classes
+
+- [CarbonRestError](classes/CarbonRestError.md)
+- [SelfApiError](classes/SelfApiError.md)
+- [SelfExpiredSessionError](classes/SelfExpiredSessionError.md)
+
 ## Interfaces
 
+- [CarbonPrepareResult](interfaces/CarbonPrepareResult.md)
 - [CelinaClient](interfaces/CelinaClient.md)
 - [SdkConfig](interfaces/SdkConfig.md)
+- [SelfSessionLinks](interfaces/SelfSessionLinks.md)
 
 ## Type Aliases
 
+- [AaveAsset](type-aliases/AaveAsset.md)
+- [CarbonRestSuccess](type-aliases/CarbonRestSuccess.md)
 - [CelinaClientOptions](type-aliases/CelinaClientOptions.md)
+- [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
+
+## Variables
+
+- [AAVE\_POOL](variables/AAVE_POOL.md)
+- [AAVE\_SUPPORTED\_SYMBOLS](variables/AAVE_SUPPORTED_SYMBOLS.md)
+- [CARBON\_CHAIN](variables/CARBON_CHAIN.md)
+- [CELO\_CARBON\_CONTRACTS](variables/CELO_CARBON_CONTRACTS.md)
+- [DEFAULT\_CARBON\_REST\_BASE\_URL](variables/DEFAULT_CARBON_REST_BASE_URL.md)
+- [SELF\_DEMO\_NETWORK](variables/SELF_DEMO_NETWORK.md)
+- [SELF\_HEADERS](variables/SELF_HEADERS.md)
 
 ## Functions
 
+- [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [createCelinaClient](functions/createCelinaClient.md)
+- [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
+- [resolveAaveAsset](functions/resolveAaveAsset.md)
+- [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
+- [selfDemoUrl](functions/selfDemoUrl.md)
 
 ## References
+
+### CarbonWriteBody
+
+Re-exports [CarbonWriteBody](../services/carbon.service/type-aliases/CarbonWriteBody.md)
+
+***
 
 ### ContractCallParams
 
@@ -57,9 +89,21 @@ Re-exports [PreparedTxKind](../types/prepared/type-aliases/PreparedTxKind.md)
 
 ***
 
+### RegisterSelfAgentParams
+
+Re-exports [RegisterSelfAgentParams](../services/self.service/interfaces/RegisterSelfAgentParams.md)
+
+***
+
 ### ResolvedToken
 
 Re-exports [ResolvedToken](../services/token.service/interfaces/ResolvedToken.md)
+
+***
+
+### SelfService
+
+Re-exports [SelfService](../services/self.service/classes/SelfService.md)
 
 ***
 
@@ -78,3 +122,15 @@ Re-exports [serializePreparedFlow](../types/prepared/functions/serializePrepared
 ### UniswapSwapParams
 
 Re-exports [UniswapSwapParams](../services/uniswap.service/interfaces/UniswapSwapParams.md)
+
+***
+
+### VerifySelfAgentParams
+
+Re-exports [VerifySelfAgentParams](../services/self.service/interfaces/VerifySelfAgentParams.md)
+
+***
+
+### VerifySelfRequestParams
+
+Re-exports [VerifySelfRequestParams](../services/self.service/interfaces/VerifySelfRequestParams.md)

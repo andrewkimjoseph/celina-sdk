@@ -6,7 +6,7 @@
 
 # Class: GoodDollarService
 
-Defined in: [src/services/gooddollar.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/gooddollar.service.ts#L24)
+Defined in: [src/services/gooddollar.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/gooddollar.service.ts#L24)
 
 GoodDollar IdentityV4 whitelist status and reverification progress.
 
@@ -16,7 +16,7 @@ GoodDollar IdentityV4 whitelist status and reverification progress.
 
 > **new GoodDollarService**(`clientFactory`): `GoodDollarService`
 
-Defined in: [src/services/gooddollar.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/gooddollar.service.ts#L25)
+Defined in: [src/services/gooddollar.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/gooddollar.service.ts#L25)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/gooddollar.service.ts:25](https://github.com/andrewkim
 
 > **getWhitelistingInfo**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `contract`: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`; `fieldDescriptions`: \{ `lastAuthenticatedOn`: `string`; `whitelistedOn`: `string`; \}; `identity`: \{ `authCount`: `number`; `dateAdded`: `number`; `dateAuthenticated`: `number`; `did`: `string`; `status`: `number`; `whitelistedOnChainId`: `number`; \}; `isCurrentlyWhitelisted`: `boolean`; `lastAuthenticatedOn`: `string` \| `null`; `reverification`: \{ `currentReverificationPeriodDays`: `number`; `daysSinceLastAuthentication`: `number`; `daysUntilReverificationRequired`: `number`; `isReverificationOverdue`: `boolean`; `maxReverificationPeriodDays`: `number`; `reverificationProgressPercent`: `number`; `reverificationRequiredOn`: `string`; \} \| `null`; `status`: `number`; `statusLabel`: `string`; `whitelistedOn`: `string` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/ac50537479efc78e19ba3fd85eca5754d1bcfed8/src/services/gooddollar.service.ts#L32)
+Defined in: [src/services/gooddollar.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/9d8da2ec79a8d0b4bc27f84ffe83d23087f51af1/src/services/gooddollar.service.ts#L32)
 
 GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
 

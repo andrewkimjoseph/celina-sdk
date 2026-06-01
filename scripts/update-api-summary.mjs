@@ -25,6 +25,7 @@ const SERVICE_LINKS = [
   { title: "AccountService", path: "services/account.service/classes/AccountService.md" },
   { title: "AaveService", path: "services/aave.service/classes/AaveService.md" },
   { title: "BlockchainService", path: "services/blockchain.service/classes/BlockchainService.md" },
+  { title: "CarbonService", path: "services/carbon.service/classes/CarbonService.md" },
   { title: "ContractService", path: "services/contract.service/classes/ContractService.md" },
   { title: "EnsService", path: "services/ens.service/classes/EnsService.md" },
   { title: "GoodDollarService", path: "services/gooddollar.service/classes/GoodDollarService.md" },
