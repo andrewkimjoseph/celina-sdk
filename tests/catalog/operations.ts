@@ -15,6 +15,7 @@ import {
   stakingOperations,
 } from "./domains/chain-ext.js";
 import { selfOperations } from "./domains/self.js";
+import { carbonOperations } from "./domains/carbon.js";
 import type { OperationSpec } from "./types.js";
 
 export const OPERATIONS: OperationSpec[] = [
@@ -31,6 +32,7 @@ export const OPERATIONS: OperationSpec[] = [
   ...nftOperations,
   ...contractOperations,
   ...selfOperations,
+  ...carbonOperations,
 ];
 
 export const MCP_OPERATIONS = OPERATIONS.filter(
