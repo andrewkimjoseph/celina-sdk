@@ -12,7 +12,7 @@ Writes and `prepare*` flows are not tracked (on-chain `CELINA` attribution cover
 
 ## Default behavior
 
-Telemetry is **on** for server-side use (MCP, Celeste API routes, scripts) unless you opt out.
+Telemetry is **on** for server-side use (MCP, Celeste AI API routes, scripts) unless you opt out.
 
 Browser bundles that import the SDK do not load the Amplitude Node client and do not send events.
 
