@@ -18,6 +18,9 @@ Requires Node.js ≥ 20.
 
 - [Quick start](https://andrewkimjoseph.gitbook.io/celina-sdk/getting-started/quick-start)
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
+- [Carbon DeFi on Celo](docs/guides/carbon.md) — hybrid Carbon REST + `@bancor/carbon-sdk` (25 operations)
+- [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, and refresh human-backed agents on Celo
+- [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (opt out with `CELINA_ANALYTICS_DISABLED=1`)
 - [API reference](https://andrewkimjoseph.gitbook.io/celina-sdk/api-reference)
 
 Docs source lives in [`docs/`](docs/) in this repository.

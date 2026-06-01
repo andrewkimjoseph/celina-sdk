@@ -6,7 +6,9 @@
 
 - Performs **public RPC reads** (balances, quotes, governance data)
 - Builds **unsigned transaction payloads** for a caller-supplied `from` address
-- **Never holds or uses private keys**
+- **Does not hold CELO wallet keys** — pass prepared `steps` to wagmi/viem for signing
+- **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
+- **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; opt out with `CELINA_ANALYTICS_DISABLED=1` or `analyticsEnabled: false` — see [Telemetry](../guides/telemetry.md)
 
 Consumers pass prepared `steps` to wagmi/viem for wallet signing.
 
@@ -42,6 +44,8 @@ flowchart LR
 | `staking` | StakingService | Validator election staking |
 | `nft` | NftService | ERC-721 / ERC-1155 reads |
 | `contract` | ContractService | Generic contract calls |
+| `carbon` | CarbonService | Carbon DeFi reads and unsigned prepares (REST + SDK) |
+| `self` | SelfService | Self Agent ID verify, register, proof refresh (ai.self.xyz + on-chain registry) |
 
 ## Source layout
 
