@@ -20,6 +20,9 @@ import { NftService } from "./services/nft.service.js";
 import { StakingService } from "./services/staking.service.js";
 import { TokenService } from "./services/token.service.js";
 import { TransactionService } from "./services/transaction.service.js";
+import { CarbonService } from "./services/carbon.service.js";
+import { SelfService } from "./services/self.service.js";
+import { wrapServiceForAnalytics } from "./analytics/wrap-service.js";
 
 /** Optional RPC overrides when creating a Celina client. */
 export type CelinaClientOptions = Partial<SdkConfig>;
@@ -52,6 +55,10 @@ export interface CelinaClient {
   nft: NftService;
   /** Generic read-only contract calls and gas estimates. */
   contract: ContractService;
+  /** Carbon DeFi maker strategies and taker trades on Celo (SDK + REST). */
+  carbon: CarbonService;
+  /** Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry). */
+  self: SelfService;
 }
 
 /**
@@ -62,21 +69,26 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
   const config = resolveSdkConfig(opts);
   const clientFactory = new CeloClientFactory(config);
   const ensClientFactory = new EnsClientFactory(config);
+  const tokenService = new TokenService(clientFactory);
+  const wrap = <T extends object>(key: string, service: T) =>
+    wrapServiceForAnalytics(key, service, config);
 
   return {
-    blockchain: new BlockchainService(clientFactory),
-    account: new AccountService(clientFactory),
-    token: new TokenService(clientFactory),
-    transaction: new TransactionService(clientFactory),
-    mentoFx: new MentoFxService(clientFactory),
-    uniswap: new UniswapService(clientFactory),
-    aave: new AaveService(clientFactory),
-    gooddollar: new GoodDollarService(clientFactory),
-    ens: new EnsService(ensClientFactory),
-    governance: new GovernanceService(clientFactory),
-    staking: new StakingService(clientFactory),
-    nft: new NftService(clientFactory),
-    contract: new ContractService(clientFactory),
+    blockchain: wrap("blockchain", new BlockchainService(clientFactory)),
+    account: wrap("account", new AccountService(clientFactory)),
+    token: wrap("token", tokenService),
+    transaction: wrap("transaction", new TransactionService(clientFactory)),
+    mentoFx: wrap("mentoFx", new MentoFxService(clientFactory)),
+    uniswap: wrap("uniswap", new UniswapService(clientFactory)),
+    aave: wrap("aave", new AaveService(clientFactory)),
+    gooddollar: wrap("gooddollar", new GoodDollarService(clientFactory)),
+    ens: wrap("ens", new EnsService(ensClientFactory)),
+    governance: wrap("governance", new GovernanceService(clientFactory)),
+    staking: wrap("staking", new StakingService(clientFactory)),
+    nft: wrap("nft", new NftService(clientFactory)),
+    contract: wrap("contract", new ContractService(clientFactory)),
+    carbon: wrap("carbon", new CarbonService(config, tokenService)),
+    self: wrap("self", new SelfService(clientFactory, config)),
   };
 }
 
@@ -110,3 +122,36 @@ export {
   resolveAaveAsset,
 } from "./config/aave.js";
 export type { AaveAsset } from "./config/aave.js";
+export type {
+  CarbonPrepareResult,
+  CarbonRestSuccess,
+} from "./types/carbon.js";
+export type { CarbonWriteBody } from "./services/carbon.service.js";
+export {
+  CARBON_CHAIN,
+  CELO_CARBON_CONTRACTS,
+  DEFAULT_CARBON_REST_BASE_URL,
+} from "./config/carbon.js";
+export { CarbonRestError } from "./clients/carbon-rest.js";
+export {
+  SelfService,
+  type VerifySelfAgentParams,
+  type VerifySelfRequestParams,
+  type RegisterSelfAgentParams,
+} from "./services/self.service.js";
+export {
+  SelfApiError,
+  SelfExpiredSessionError,
+} from "./clients/self-api.js";
+export type { SelfRegistrationMode } from "./config/self.js";
+export {
+  selfDemoUrl,
+  SELF_DEMO_NETWORK,
+  SELF_HEADERS,
+} from "./config/self.js";
+export {
+  resolveSelfSessionLinks,
+  formatSelfSessionLinksDisplay,
+  type SelfSessionLinks,
+} from "./utils/self-format.js";
+export { clearSelfSessionsForTests } from "./services/self-session-store.js";
