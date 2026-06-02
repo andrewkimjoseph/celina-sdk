@@ -20,7 +20,10 @@
 * [Mento FX](guides/mento-fx.md)
 * [Uniswap v4](guides/uniswap.md)
 * [Aave](guides/aave.md)
+* [Carbon DeFi on Celo](guides/carbon.md)
 * [GoodDollar UBI](guides/gooddollar.md)
+* [Self Agent ID](guides/self-agent-id.md)
+* [Telemetry](guides/telemetry.md)
 
 ## API reference
 
@@ -59,6 +62,13 @@
 * [ResolvedToken](api-reference/services/token.service/interfaces/ResolvedToken.md)
 * [GovernanceProposalsOptions](api-reference/services/governance.service/interfaces/GovernanceProposalsOptions.md)
 * [ContractCallParams](api-reference/services/contract.service/interfaces/ContractCallParams.md)
+* [CarbonPrepareResult](api-reference/index/interfaces/CarbonPrepareResult.md)
+* [finalizeCarbonPrepare](api-reference/index/functions/finalizeCarbonPrepare.md)
+* [FinalizedCarbonPrepareFlow](api-reference/index/type-aliases/FinalizedCarbonPrepareFlow.md)
+* [appendCelinaCalldataTag](api-reference/index/functions/appendCelinaCalldataTag.md)
+* [CELINA_DATA_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
+* [buildCarbonExecutionSteps](api-reference/index/functions/buildCarbonExecutionSteps.md)
+* [carbonActivityDeepLink](api-reference/index/functions/carbonActivityDeepLink.md)
 
 ## Publishing
 

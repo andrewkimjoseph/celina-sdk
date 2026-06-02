@@ -49,6 +49,13 @@ const TYPE_LINKS = [
   { title: "ResolvedToken", path: "services/token.service/interfaces/ResolvedToken.md" },
   { title: "GovernanceProposalsOptions", path: "services/governance.service/interfaces/GovernanceProposalsOptions.md" },
   { title: "ContractCallParams", path: "services/contract.service/interfaces/ContractCallParams.md" },
+  { title: "CarbonPrepareResult", path: "index/interfaces/CarbonPrepareResult.md" },
+  { title: "finalizeCarbonPrepare", path: "index/functions/finalizeCarbonPrepare.md" },
+  { title: "FinalizedCarbonPrepareFlow", path: "index/type-aliases/FinalizedCarbonPrepareFlow.md" },
+  { title: "appendCelinaCalldataTag", path: "index/functions/appendCelinaCalldataTag.md" },
+  { title: "CELINA_DATA_SUFFIX", path: "index/variables/CELINA_DATA_SUFFIX.md" },
+  { title: "buildCarbonExecutionSteps", path: "index/functions/buildCarbonExecutionSteps.md" },
+  { title: "carbonActivityDeepLink", path: "index/functions/carbonActivityDeepLink.md" },
 ];
 
 function link({ title, path }) {

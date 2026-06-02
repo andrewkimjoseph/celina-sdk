@@ -80,5 +80,5 @@ Full method signatures: [API reference](api-reference/README.md).
 ## Related packages
 
 - [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.4`
-- [`celina-mcp-host`](../../celina-mcp-host/) — hosted read-only endpoint
+- [`celina-mcp-host`](../../celina-mcp-host/) — hosted reads + Carbon prepare (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)

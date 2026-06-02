@@ -6,7 +6,7 @@
 
 # Interface: SdkConfig
 
-Defined in: [src/config/sdk-config.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L2)
+Defined in: [src/config/sdk-config.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L2)
 
 RPC configuration for `createCelinaClient()`.
 
@@ -16,7 +16,7 @@ RPC configuration for `createCelinaClient()`.
 
 > `optional` **amplitudeApiKey?**: `string`
 
-Defined in: [src/config/sdk-config.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L18)
+Defined in: [src/config/sdk-config.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L18)
 
 Override bundled Amplitude project API key.
 
@@ -26,7 +26,7 @@ Override bundled Amplitude project API key.
 
 > `optional` **analyticsDeviceId?**: `string`
 
-Defined in: [src/config/sdk-config.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L20)
+Defined in: [src/config/sdk-config.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L20)
 
 Amplitude `device_id` (default `celina-sdk`).
 
@@ -36,7 +36,7 @@ Amplitude `device_id` (default `celina-sdk`).
 
 > `optional` **analyticsEnabled?**: `boolean`
 
-Defined in: [src/config/sdk-config.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L16)
+Defined in: [src/config/sdk-config.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L16)
 
 Amplitude read telemetry (default on; opt out with `false` or `CELINA_ANALYTICS_DISABLED=1`).
 
@@ -46,7 +46,7 @@ Amplitude read telemetry (default on; opt out with `false` or `CELINA_ANALYTICS_
 
 > `optional` **carbonRestBaseUrl?**: `string`
 
-Defined in: [src/config/sdk-config.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L8)
+Defined in: [src/config/sdk-config.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L8)
 
 Carbon DeFi REST API base URL (default https://mcp.carbondefi.xyz).
 
@@ -56,7 +56,7 @@ Carbon DeFi REST API base URL (default https://mcp.carbondefi.xyz).
 
 > `optional` **carbonSdkFallback?**: `boolean`
 
-Defined in: [src/config/sdk-config.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L10)
+Defined in: [src/config/sdk-config.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L10)
 
 Enable @bancor/carbon-sdk fallback when REST fails (default true).
 
@@ -66,7 +66,7 @@ Enable @bancor/carbon-sdk fallback when REST fails (default true).
 
 > `optional` **ethRpcUrl?**: `string`
 
-Defined in: [src/config/sdk-config.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L6)
+Defined in: [src/config/sdk-config.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L6)
 
 Ethereum mainnet RPC for ENS resolution (optional).
 
@@ -76,7 +76,7 @@ Ethereum mainnet RPC for ENS resolution (optional).
 
 > **rpcUrl**: `string`
 
-Defined in: [src/config/sdk-config.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L4)
+Defined in: [src/config/sdk-config.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L4)
 
 Celo mainnet JSON-RPC URL (default Forno).
 
@@ -86,7 +86,7 @@ Celo mainnet JSON-RPC URL (default Forno).
 
 > `optional` **selfAgentPrivateKey?**: `` `0x${string}` ``
 
-Defined in: [src/config/sdk-config.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L12)
+Defined in: [src/config/sdk-config.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L12)
 
 Self Agent ID signing key (Node only; also reads `SELF_AGENT_PRIVATE_KEY`).
 
@@ -96,6 +96,6 @@ Self Agent ID signing key (Node only; also reads `SELF_AGENT_PRIVATE_KEY`).
 
 > `optional` **selfApiBase?**: `string`
 
-Defined in: [src/config/sdk-config.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/config/sdk-config.ts#L14)
+Defined in: [src/config/sdk-config.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L14)
 
 Self Agent ID REST API base (default https://app.ai.self.xyz).

@@ -27,6 +27,39 @@ flowchart LR
   wallet -->|signed tx| rpc
 ```
 
+## Celina stack
+
+Celina is layered from chain logic through agent tooling:
+
+```mermaid
+flowchart TB
+  sdk["celina-sdk<br/>reads + prepare*"]
+  mcp["celina-mcp<br/>MCP tools"]
+  host["celina-mcp-host<br/>Vercel HTTP"]
+
+  sdk --> mcp
+  mcp --> host
+```
+
+| Layer | Role |
+|-------|------|
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag |
+| **MCP** | Tool names for LLM agents; stdio `execute_*` with server keys; hosted omits server-key writes |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **71 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+
+Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP. See [Carbon DeFi](../guides/carbon.md) for the hosted vs stdio tool split.
+
+## Key utilities
+
+| Export | Purpose |
+|--------|---------|
+| `finalizeCarbonPrepare` | Merge ERC-20 approve steps into Carbon `preparedFlow.steps` after REST prepare |
+| `buildCarbonExecutionSteps` | Build approve + Carbon controller steps for local signing (stdio `execute_carbon_*`) |
+| `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata |
+| `carbonActivityDeepLink` | Post-execution activity explorer URL on celo.carbondefi.xyz |
+
+These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported from the package entry.
+
 ## Client composition
 
 | Property | Service | Responsibility |
@@ -53,10 +86,10 @@ flowchart LR
 |------|---------|
 | `src/index.ts` | Public entry — `createCelinaClient()` and type exports |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
-| `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants |
+| `src/config/` | Token registry, Aave/GoodDollar/Uniswap/Carbon constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
 | `src/types/prepared.ts` | `SerializedPreparedFlow` contract |
-| `src/utils/` | Shared helpers (allowance simulation, formatting) |
+| `src/utils/` | Shared helpers — allowance simulation, `finalizeCarbonPrepare`, Carbon token normalization |
 
 ## Adding a service
 

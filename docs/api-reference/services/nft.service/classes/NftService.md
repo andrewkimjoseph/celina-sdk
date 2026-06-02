@@ -6,7 +6,7 @@
 
 # Class: NftService
 
-Defined in: [src/services/nft.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/services/nft.service.ts#L37)
+Defined in: [src/services/nft.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/nft.service.ts#L37)
 
 ERC-721 / ERC-1155 collection and balance reads with optional metadata fetch.
 
@@ -16,7 +16,7 @@ ERC-721 / ERC-1155 collection and balance reads with optional metadata fetch.
 
 > **new NftService**(`clientFactory`): `NftService`
 
-Defined in: [src/services/nft.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/services/nft.service.ts#L38)
+Defined in: [src/services/nft.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/nft.service.ts#L38)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/nft.service.ts:38](https://github.com/andrewkimjoseph/
 
 > **getNftBalance**(`contractAddress`, `ownerAddress`, `tokenId?`): `Promise`\<\{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC721"`; `tokenId`: `string` \| `null`; \} \| \{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC1155"`; `tokenId`: `string`; \}\>
 
-Defined in: [src/services/nft.service.ts:202](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/services/nft.service.ts#L202)
+Defined in: [src/services/nft.service.ts:202](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/nft.service.ts#L202)
 
 NFT balance for an owner (ERC-721 collection total or ERC-1155 id-specific balance).
 
@@ -74,7 +74,7 @@ When ERC-1155 is detected but `tokenId` is omitted
 
 > **getNftInfo**(`contractAddress`, `tokenId`): `Promise`\<\{ `attributes`: \{ \}; `collection`: \{ `name`: `string`; `symbol`: `string`; `totalSupply`: `string` \| `undefined`; \}; `contractAddress`: `` `0x${string}` ``; `description`: `string` \| `undefined`; `image`: `string` \| `undefined`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `metadataUri`: `string` \| `null`; `name`: `string`; `network`: `"mainnet"`; `owner`: `` `0x${string}` `` \| `null`; `standard`: `NftStandard`; `tokenId`: `string`; \}\>
 
-Defined in: [src/services/nft.service.ts:92](https://github.com/andrewkimjoseph/celina-sdk/blob/f8728c3a6e17d8fef70a1fbf6a9b27bff61756e1/src/services/nft.service.ts#L92)
+Defined in: [src/services/nft.service.ts:92](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/nft.service.ts#L92)
 
 Collection and token metadata for an ERC-721 or ERC-1155 contract.
 

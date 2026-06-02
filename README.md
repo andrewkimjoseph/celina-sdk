@@ -11,8 +11,8 @@ Celina is layered from chain logic through agent tooling:
 | Layer | Package | Role |
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows, Carbon REST + SDK hybrid |
-| **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — read-only public endpoint |
+| **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads + Carbon prepare |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads + Carbon prepare (71 tools); no server-key writes or `execute_carbon_*` |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -111,7 +111,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read)
 ## Related packages
 
 - [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.4` — MCP server (38 Carbon tools on stdio; hosted: 12 read + 13 prepare)
-- [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted read-only MCP endpoint
+- [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`) — reads + Carbon prepare
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 
 ## License
