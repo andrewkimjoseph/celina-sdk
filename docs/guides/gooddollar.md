@@ -35,8 +35,11 @@ const eligibility = await celina.gooddollar.getUbiClaimEligibility("0xYourAddres
 
 if (eligibility.isEligibleToClaim) {
   console.log(eligibility.claimableAmountFormatted); // e.g. "12.5 G$"
+} else if (eligibility.inClaimCooldown) {
+  console.log(eligibility.nextClaimAvailableIn); // e.g. "5 hours 12 minutes"
+  console.log(eligibility.reasons);
 } else {
-  console.log(eligibility.reasons); // e.g. ["already claimed today"]
+  console.log(eligibility.reasons);
 }
 ```
 
@@ -46,12 +49,21 @@ Key fields:
 |-------|---------|
 | `whitelistedRoot` | Verified identity root (connected wallets resolve here) |
 | `isConnectedWallet` | `true` when the checked address maps to a different root |
-| `isEligibleToClaim` | `true` when `claim()` should succeed today |
+| `isEligibleToClaim` | `true` when `claim()` should succeed (matches on-chain `checkEntitlement`) |
 | `claimableAmountFormatted` | Today's G$ amount from `checkEntitlement` |
-| `alreadyClaimedToday` | One claim per identity per day |
-| `reasons` | Human-readable blockers when not eligible |
+| `alreadyClaimedToday` | `hasClaimed(root)` for the current UBI period |
+| `inClaimCooldown` | Same as `alreadyClaimedToday` when a root exists |
+| `lastClaimedAt` | ISO UTC of the root's last successful claim, or `null` |
+| `nextClaimAvailableAt` | ISO UTC when the next UBI period starts |
+| `secondsUntilNextClaim` | Seconds until `nextClaimAvailableAt` |
+| `nextClaimAvailableIn` | Human-readable countdown (hours and minutes) |
+| `ubiPeriodDay` | Current `currentDay` from UBISchemeV2 |
+| `reasons` | Prioritized blockers; cooldown suppresses misleading identity errors |
+| `identity.checkedAddress` | Root used for whitelist/reverification (not the connected wallet) |
 
-Entitlement uses Identity `getWhitelistedRoot` (same check as `UBISchemeV2.claim()`).
+Entitlement uses Identity `getWhitelistedRoot` (same check as `UBISchemeV2.claim()`). Identity status in the entitlement response is evaluated on the **root**, so connected wallets do not surface stale whitelist data on the linked address.
+
+**UBI period vs rolling 24h:** Claims reset at the next UBI day boundary (`periodStart + (day + 1) × 86400`), not `lastClaimed + 24 hours`. The countdown fields reflect that boundary.
 
 ## Prepare claim (unsigned)
 
@@ -93,8 +105,9 @@ G$ is sent to `msg.sender` (the signing wallet). Gas is paid in native CELO.
 
 ## Rules
 
-- **One claim per identity per day** — connected wallet addresses share the same root; claiming from any connected address counts once.
-- **Reverification** — overdue identity reverification blocks eligibility even if the wallet was previously whitelisted.
+- **One claim per identity per UBI period** — connected wallets share one root; `alreadyClaimedToday` and `nextClaimAvailableIn` apply to the root.
+- **Reason priority** — scheme pause/start, then whitelist root, then claim cooldown (with countdown), then root identity/reverification, then zero entitlement.
+- **Reverification** — when not in cooldown, overdue reverification on the **root** blocks eligibility.
 - **Paused scheme** — `schemePaused: true` means no claims until the avatar unpauses UBISchemeV2.
 
 ## Related

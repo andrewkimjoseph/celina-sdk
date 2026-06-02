@@ -16,6 +16,13 @@ import {
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
 import { formatUnixDate } from "../utils/format-date.js";
+import { formatDuration } from "../utils/format-duration.js";
+import {
+  formatUnixDateTimeUtc,
+  formatUnixIso,
+} from "../utils/format-unix-datetime.js";
+
+const SECONDS_PER_DAY = 86400n;
 
 const G_DOLLAR_DECIMALS = 18;
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
@@ -160,7 +167,7 @@ export class GoodDollarService {
       periodStart,
       estimatedDailyUbi,
       dailyUbi,
-      whitelistingInfo,
+      ubiPeriodDay,
     ] = await Promise.all([
       client.readContract({
         address: identityContract,
@@ -194,54 +201,95 @@ export class GoodDollarService {
         abi: ubiSchemeAbi,
         functionName: "dailyUbi",
       }),
-      this.getWhitelistingInfo(address),
+      client.readContract({
+        address: ubiContract,
+        abi: ubiSchemeAbi,
+        functionName: "currentDay",
+      }),
     ]);
 
     const root = whitelistedRoot as `0x${string}`;
     const claimable = claimableAmount as bigint;
+    const periodStartBn = periodStart as bigint;
     const nowSec = BigInt(Math.floor(Date.now() / 1000));
-    const schemeStarted = nowSec >= (periodStart as bigint);
+    const schemeStarted = nowSec >= periodStartBn;
+
+    const identityAddress =
+      root !== ZERO_ADDRESS ? root : address;
 
     let alreadyClaimedToday = false;
+    let lastClaimedSec = 0n;
+
     if (root !== ZERO_ADDRESS) {
-      alreadyClaimedToday = await client.readContract({
-        address: ubiContract,
-        abi: ubiSchemeAbi,
-        functionName: "hasClaimed",
-        args: [root],
-      });
+      const [hasClaimed, lastClaimed] = await Promise.all([
+        client.readContract({
+          address: ubiContract,
+          abi: ubiSchemeAbi,
+          functionName: "hasClaimed",
+          args: [root],
+        }),
+        client.readContract({
+          address: ubiContract,
+          abi: ubiSchemeAbi,
+          functionName: "lastClaimed",
+          args: [root],
+        }),
+      ]);
+      alreadyClaimedToday = hasClaimed;
+      lastClaimedSec = lastClaimed as bigint;
     }
 
+    const whitelistingInfo = await this.getWhitelistingInfo(identityAddress);
+
+    const currentContractDay =
+      schemeStarted && periodStartBn > 0n
+        ? (nowSec - periodStartBn) / SECONDS_PER_DAY
+        : 0n;
+    const nextClaimAt =
+      periodStartBn + (currentContractDay + 1n) * SECONDS_PER_DAY;
+    const secondsUntilNextClaim =
+      nextClaimAt > nowSec ? nextClaimAt - nowSec : 0n;
+    const inClaimCooldown = root !== ZERO_ADDRESS && alreadyClaimedToday;
+
     const reasons: string[] = [];
-    if (root === ZERO_ADDRESS) {
-      reasons.push("not whitelisted");
-    }
-    if (!whitelistingInfo.isCurrentlyWhitelisted) {
-      if (whitelistingInfo.reverification?.isReverificationOverdue) {
-        reasons.push("reverification overdue");
-      } else if (root !== ZERO_ADDRESS) {
-        reasons.push("identity not currently whitelisted");
-      }
-    }
+
     if (schemePaused) {
       reasons.push("scheme paused");
     }
     if (!schemeStarted) {
       reasons.push("scheme not started");
     }
-    if (alreadyClaimedToday) {
-      reasons.push("already claimed today");
-    }
-    if (claimable === 0n && !alreadyClaimedToday && root !== ZERO_ADDRESS) {
-      reasons.push("no entitlement available");
+    if (root === ZERO_ADDRESS) {
+      reasons.push("not whitelisted");
+    } else if (alreadyClaimedToday) {
+      const waitLabel = formatDuration(secondsUntilNextClaim);
+      const atLabel = formatUnixDateTimeUtc(nextClaimAt);
+      reasons.push(
+        `already claimed this period; next claim in ${waitLabel} (${atLabel})`,
+      );
+    } else {
+      if (!whitelistingInfo.isCurrentlyWhitelisted) {
+        if (whitelistingInfo.reverification?.isReverificationOverdue) {
+          reasons.push("reverification overdue");
+        } else {
+          reasons.push("identity not currently whitelisted");
+        }
+      }
+      if (claimable === 0n) {
+        reasons.push("no entitlement available");
+      }
     }
 
     const isEligibleToClaim =
       root !== ZERO_ADDRESS &&
       !schemePaused &&
       schemeStarted &&
-      whitelistingInfo.isCurrentlyWhitelisted &&
       claimable > 0n;
+
+    const lastClaimedAt =
+      lastClaimedSec > 0n ? formatUnixIso(lastClaimedSec) : null;
+    const nextClaimAvailableAt = formatUnixIso(nextClaimAt);
+    const nextClaimAvailableIn = formatDuration(secondsUntilNextClaim);
 
     return {
       address,
@@ -255,6 +303,12 @@ export class GoodDollarService {
       claimableAmountFormatted:
         claimable > 0n ? `${formatUnits(claimable, G_DOLLAR_DECIMALS)} G$` : "0 G$",
       alreadyClaimedToday,
+      inClaimCooldown,
+      lastClaimedAt,
+      nextClaimAvailableAt,
+      secondsUntilNextClaim: secondsUntilNextClaim.toString(),
+      nextClaimAvailableIn,
+      ubiPeriodDay: (ubiPeriodDay as bigint).toString(),
       schemePaused,
       schemeStarted,
       estimatedDailyUbi: (estimatedDailyUbi as bigint).toString(),
@@ -263,6 +317,7 @@ export class GoodDollarService {
       currentDailyUbiFormatted: `${formatUnits(dailyUbi as bigint, G_DOLLAR_DECIMALS)} G$`,
       reasons: isEligibleToClaim ? [] : reasons,
       identity: {
+        checkedAddress: identityAddress,
         isCurrentlyWhitelisted: whitelistingInfo.isCurrentlyWhitelisted,
         statusLabel: whitelistingInfo.statusLabel,
         reverification: whitelistingInfo.reverification,

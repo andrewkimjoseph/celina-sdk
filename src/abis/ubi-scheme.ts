@@ -23,6 +23,13 @@ export const ubiSchemeAbi = [
     outputs: [{ name: "", type: "bool" }],
   },
   {
+    name: "lastClaimed",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
     name: "paused",
     type: "function",
     stateMutability: "view",

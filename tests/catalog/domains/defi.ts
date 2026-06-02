@@ -274,7 +274,13 @@ export const gooddollarOperations: OperationSpec[] = [
       arguments: (fx) => ({ address: fx.wallet }),
     },
     assert: (result) => {
-      assertHasKeys(result, ["isEligibleToClaim", "claimableAmount"]);
+      assertHasKeys(result, [
+        "isEligibleToClaim",
+        "claimableAmount",
+        "secondsUntilNextClaim",
+        "nextClaimAvailableIn",
+        "ubiPeriodDay",
+      ]);
     },
   },
   {
