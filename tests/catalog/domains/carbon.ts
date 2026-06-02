@@ -40,6 +40,23 @@ function carbonPrepare(
   };
 }
 
+function carbonExecute(
+  id: string,
+  tool: string,
+  args: () => Record<string, unknown>,
+): OperationSpec {
+  return {
+    id,
+    domain: "carbon",
+    layer: "write",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresWrites: true,
+    mcp: { tool, arguments: args },
+    assert: (result) => assertHasKeys(result, ["hash", "from"]),
+    skip: () => "Set CELINA_TEST_WRITES=1 to run on-chain Carbon execute tests",
+  };
+}
+
 export const carbonOperations: OperationSpec[] = [
   carbonRead(
     "carbon.getStrategies",
@@ -79,7 +96,7 @@ export const carbonOperations: OperationSpec[] = [
       ["status", "warnings"],
     ),
     skip: () =>
-      "Carbon get_trade_quote on Celo may fail upstream (ENS); run manually when API is healthy",
+      "Carbon get_trade_quote may fail when no maker liquidity exists for the pair",
   },
   carbonRead(
     "carbon.explorePair",
@@ -400,6 +417,127 @@ export const carbonOperations: OperationSpec[] = [
       }),
     () => ({
       wallet_address: CARBON_WALLET,
+      source_token: CELO,
+      target_token: USDC,
+      amount: "1",
+      min_return: "0",
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeLimitOrder",
+    "execute_carbon_limit_order",
+    () => ({
+      base_token: CELO,
+      quote_token: USDC,
+      direction: "buy",
+      price: 0.5,
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeRangeOrder",
+    "execute_carbon_range_order",
+    () => ({
+      base_token: CELO,
+      quote_token: USDC,
+      direction: "buy",
+      price: 0.5,
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeRecurringStrategy",
+    "execute_carbon_recurring_strategy",
+    () => ({
+      base_token: CELO,
+      quote_token: USDC,
+      direction: "buy",
+      price: 0.5,
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeConcentratedStrategy",
+    "execute_carbon_concentrated_strategy",
+    () => ({
+      base_token: CELO,
+      quote_token: USDC,
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeFullRangeStrategy",
+    "execute_carbon_full_range_strategy",
+    () => ({
+      base_token: CELO,
+      quote_token: USDC,
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeRepriceStrategy",
+    "execute_carbon_reprice_strategy",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+      price: 0.5,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeEditStrategy",
+    "execute_carbon_edit_strategy",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+      price: 0.5,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeDepositBudget",
+    "execute_carbon_deposit_budget",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeWithdrawBudget",
+    "execute_carbon_withdraw_budget",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+      budget: 1,
+    }),
+  ),
+  carbonExecute(
+    "carbon.executePauseStrategy",
+    "execute_carbon_pause_strategy",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeResumeStrategy",
+    "execute_carbon_resume_strategy",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeDeleteStrategy",
+    "execute_carbon_delete_strategy",
+    () => ({
+      wallet_address: CARBON_WALLET,
+      strategy_id: "1",
+    }),
+  ),
+  carbonExecute(
+    "carbon.executeTrade",
+    "execute_carbon_trade",
+    () => ({
       source_token: CELO,
       target_token: USDC,
       amount: "1",
