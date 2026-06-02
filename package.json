@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
