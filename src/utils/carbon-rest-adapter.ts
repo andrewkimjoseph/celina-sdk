@@ -1,5 +1,6 @@
 import type { PreparedTx } from "../types/prepared.js";
 import type { CarbonPrepareResult, CarbonRestSuccess, CarbonUnsignedTx } from "../types/carbon.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import { serializePreparedFlow, type SerializedPreparedFlow } from "../types/prepared.js";
 
 function asHex(value: string | undefined): `0x${string}` | undefined {
@@ -10,9 +11,15 @@ function asHex(value: string | undefined): `0x${string}` | undefined {
 
 function collectUnsignedTxs(payload: Record<string, unknown>): CarbonUnsignedTx[] {
   const txs: CarbonUnsignedTx[] = [];
-  const single = payload.transaction;
-  if (single && typeof single === "object") {
-    txs.push(single as CarbonUnsignedTx);
+  const candidates = [
+    payload.transaction,
+    payload.unsigned_transaction,
+    payload.unsignedTransaction,
+  ];
+  for (const single of candidates) {
+    if (single && typeof single === "object") {
+      txs.push(single as CarbonUnsignedTx);
+    }
   }
   const many = payload.transactions;
   if (Array.isArray(many)) {
@@ -34,7 +41,7 @@ function txToPreparedStep(tx: CarbonUnsignedTx, index: number): PreparedTx | nul
   return {
     kind: value && value !== "0" ? "native" : "contract",
     to,
-    data: data === "0x" ? undefined : data,
+    data: data === "0x" ? undefined : appendCelinaCalldataTag(data),
     value,
     description: `Carbon transaction step ${index + 1}`,
   };
@@ -65,8 +72,15 @@ export function normalizeCarbonPrepareResult(
     ? payload.warnings.map(String)
     : [];
   const preparedFlow = carbonRestToPreparedFlow(from, payload, summary);
-  const { status: _s, warnings: _w, transaction: _t, transactions: _ts, ...rest } =
-    payload;
+  const {
+    status: _s,
+    warnings: _w,
+    transaction: _t,
+    transactions: _ts,
+    unsigned_transaction: _ut,
+    unsignedTransaction: _ut2,
+    ...rest
+  } = payload;
   return {
     status: "ok",
     warnings,

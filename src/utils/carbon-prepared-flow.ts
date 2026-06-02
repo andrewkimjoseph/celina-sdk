@@ -1,4 +1,5 @@
 import type { PreparedTx } from "../types/prepared.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
   serializePreparedFlow,
   type SerializedPreparedFlow,
@@ -19,7 +20,9 @@ export function populatedTransactionToPreparedFlow(
   summary: string,
 ): SerializedPreparedFlow {
   const to = (tx.to ?? "") as `0x${string}`;
-  const data = tx.data ? (tx.data as `0x${string}`) : undefined;
+  const data = tx.data
+    ? appendCelinaCalldataTag(tx.data as `0x${string}`)
+    : undefined;
   const value =
     tx.value !== undefined && tx.value !== null
       ? String(tx.value)
