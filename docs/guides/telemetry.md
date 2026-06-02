@@ -5,7 +5,7 @@ On **Node.js**, the SDK sends anonymous usage counts for **read** operations. Ea
 ## What is sent
 
 - Event name only (MCP tool name)
-- A stable `device_id` (default `celina-sdk`)
+- A `device_id` identifying the **npm package** that called `createCelinaClient()` (auto-detected from its `package.json` `name`, sanitized for Amplitude: strip leading `@`, replace `/` and `-` with `_`, e.g. `celeste_ai`, `andrewkimjoseph_celina_mcp`). Falls back to `celina-sdk` when detection fails.
 - No wallet addresses, tool arguments, or private keys
 
 Writes and `prepare*` flows are not tracked (on-chain `CELINA` attribution covers those).
@@ -38,4 +38,4 @@ const celina = createCelinaClient({
 |--------------|---------|
 | `AMPLITUDE_API_KEY` | Replace the bundled project key |
 | `amplitudeApiKey` in `createCelinaClient()` | Same, in code |
-| `CELINA_ANALYTICS_DEVICE_ID` / `analyticsDeviceId` | Change Amplitude `device_id` |
+| `CELINA_ANALYTICS_DEVICE_ID` / `analyticsDeviceId` | Override auto-detected Amplitude `device_id` |

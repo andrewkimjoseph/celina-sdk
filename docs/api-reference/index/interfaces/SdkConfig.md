@@ -28,7 +28,7 @@ Override bundled Amplitude project API key.
 
 Defined in: [src/config/sdk-config.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/sdk-config.ts#L20)
 
-Amplitude `device_id` (default `celina-sdk`).
+Amplitude `device_id`. When omitted, auto-detected from the consuming package `package.json` name (sanitized, e.g. `celeste_ai`, `andrewkimjoseph_celina_mcp`), then `CELINA_ANALYTICS_DEVICE_ID`, then `celina-sdk`.
 
 ***
 
