@@ -118,6 +118,16 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read)
 - [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`) — reads + Carbon prepare
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 
+## Roadmap
+
+- [x] Mento FX routing (`getFxQuote`, `estimateFx`, `prepareFx`)
+- [x] Uniswap v4 swaps (`getSwapQuote`, `estimateSwap`, `prepareSwap`)
+- [x] Aave lending tools (`prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
+- [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)
+- [x] Self Agent ID (`lookupSelfAgent`, registration & lifecycle tools)
+- [x] Carbon DeFi on Celo — 25 operations (12 read + 13 prepare); see [Carbon guide](docs/guides/carbon.md)
+- [ ] Cross-chain bridging — bridge tokens to/from Celo (`getBridgeQuote`, `estimateBridge`, `prepareBridge`)
+
 ## License
 
 MIT
