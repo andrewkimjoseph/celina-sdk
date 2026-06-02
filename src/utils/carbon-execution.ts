@@ -6,6 +6,7 @@ import type { CarbonPrepareResult } from "../types/carbon.js";
 import type { PreparedTx } from "../types/prepared.js";
 import type { TokenService } from "../services/token.service.js";
 import { resolveCarbonTokenAddress } from "./carbon-token.js";
+import { applyCarbonStepLabels } from "./carbon-step-labels.js";
 
 const CARBON_CONTROLLER = CELO_CARBON_CONTRACTS.carbonControllerAddress;
 
@@ -152,5 +153,10 @@ export async function buildCarbonExecutionSteps(
     collectApprovalSpecs(orderMeta),
   );
 
-  return [...approvalSteps, ...carbonSteps];
+  return applyCarbonStepLabels([...approvalSteps, ...carbonSteps], {
+    summary: prepared.preparedFlow?.summary ?? "Carbon transaction",
+    orderMeta,
+    strategyPreview: prepared.strategyPreview,
+    tokenService: deps.tokenService,
+  });
 }
