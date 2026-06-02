@@ -1,6 +1,6 @@
 # Celina SDK
 
-**`@andrewkimjoseph/celina-sdk@0.4.7`** — Celo mainnet library for frontend apps: **reads** and **unsigned transaction preparation** (no private keys).
+**`@andrewkimjoseph/celina-sdk@0.4.8`** — Celo mainnet library for frontend apps: **reads** and **unsigned transaction preparation** (no private keys).
 
 Pair with [wagmi](https://wagmi.sh) / viem in the browser — users sign prepared transactions in their wallet.
 
@@ -8,19 +8,22 @@ Pair with [wagmi](https://wagmi.sh) / viem in the browser — users sign prepare
 
 ```mermaid
 flowchart TB
-  sdk["celina-sdk@0.4.7<br/>reads + prepare*"]
-  mcp["celina-mcp@0.8.4<br/>MCP tools"]
+  sdk["celina-sdk@0.4.8<br/>reads + prepare*"]
+  mcp["celina-mcp@0.8.5<br/>MCP tools"]
   host["celina-mcp-host@0.1.9<br/>Vercel HTTP: read + prepare"]
+  celeste["Celeste AI<br/>SDK + wagmi only"]
 
   sdk --> mcp
   mcp --> host
+  sdk -.->|independent consumer| celeste
 ```
 
 | Layer | What it adds |
 |-------|----------------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag |
-| **MCP** | Tool names for LLM agents; stdio `execute_*` with server keys; hosted omits writes |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — 71 tools (reads + Carbon prepare; no execute) |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag. **Always pass explicit wallet addresses** from your app. |
+| **MCP** | Tool names for LLM agents; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md). |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **72 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+| **Celeste AI** | Independent chat UI — uses **only** this SDK + connected wallet (not celina-mcp) |
 
 Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP.
 
@@ -79,6 +82,6 @@ Full method signatures: [API reference](api-reference/README.md).
 
 ## Related packages
 
-- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.4`
+- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.5`
 - [`celina-mcp-host`](../../celina-mcp-host/) — hosted reads + Carbon prepare (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)

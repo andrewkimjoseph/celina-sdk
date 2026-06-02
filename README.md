@@ -1,6 +1,6 @@
 # Celina SDK
 
-**`@andrewkimjoseph/celina-sdk@0.4.7`** — Celo mainnet library for frontend apps and agents: **reads** and **unsigned transaction preparation** (no private keys).
+**`@andrewkimjoseph/celina-sdk@0.4.8`** — Celo mainnet library for frontend apps and agents: **reads** and **unsigned transaction preparation** (no private keys).
 
 Pair with [wagmi](https://wagmi.sh) / viem — users sign prepared transactions in their wallet.
 
@@ -12,7 +12,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows, Carbon REST + SDK hybrid |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads + Carbon prepare |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads + Carbon prepare (71 tools); no server-key writes or `execute_carbon_*` |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads + Carbon prepare (72 tools); no server-key writes or `execute_carbon_*` |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -92,7 +92,11 @@ Hybrid **Carbon REST** (`https://mcp.carbondefi.xyz`) plus **`@bancor/carbon-sdk
 - **`deep_link`** on prepare responses — Carbon REST trade/disposable UI URL (reference only; signing is via your wallet flow).
 - **`carbonActivityDeepLink(wallet)`** — post-execution activity explorer on [celo.carbondefi.xyz](https://celo.carbondefi.xyz).
 
-Set `CARBON_API_BASE_URL` to override the REST base. Hosted MCP exposes **12 read + 13 prepare** tools (71 total); `execute_carbon_*` requires local stdio with `CELO_PRIVATE_KEY`.
+Set `CARBON_API_BASE_URL` to override the REST base. Hosted MCP exposes **72 tools** (reads + Carbon prepare); `execute_carbon_*` requires local stdio with `CELO_PRIVATE_KEY`.
+
+### MCP session wallet (not in the SDK)
+
+Local **celina-mcp** with `CELO_PRIVATE_KEY` can omit wallet params on many tools and use **`get_wallet_address`** instead of shelling out for the signer. The SDK always requires an explicit `0x…` from your app (e.g. wagmi). See [MCP session wallet](docs/guides/mcp-session-wallet.md). **Celeste AI** is an independent app built on this SDK + browser wallet signing — it does not use celina-mcp.
 
 Full workflow: [Carbon DeFi guide](docs/guides/carbon.md).
 
@@ -110,7 +114,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read)
 
 ## Related packages
 
-- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.4` — MCP server (38 Carbon tools on stdio; hosted: 12 read + 13 prepare)
+- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.5` — MCP server (`get_wallet_address`, optional address on wallet-scoped tools; 85 tools stdio, 72 hosted)
 - [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`) — reads + Carbon prepare
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 

@@ -45,9 +45,19 @@ flowchart TB
 |-------|------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag |
 | **MCP** | Tool names for LLM agents; stdio `execute_*` with server keys; hosted omits server-key writes |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **71 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **72 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
 
-Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP. See [Carbon DeFi](../guides/carbon.md) for the hosted vs stdio tool split.
+Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP. **Celeste AI** is one such app: it depends on this SDK and the user’s browser wallet only, not on celina-mcp.
+
+### Wallet address: SDK vs MCP
+
+| Consumer | Pattern |
+|----------|---------|
+| **SDK in a web app** | Pass `0xYourAddress` on every read/prepare (from wagmi, Privy, etc.) |
+| **celina-mcp stdio + `CELO_PRIVATE_KEY`** | Omit `address` / `wallet_address` / `from` on wallet-scoped MCP tools; optional **`get_wallet_address`** when the agent needs the string |
+| **Hosted MCP** | No server key — always pass explicit addresses |
+
+See [MCP session wallet](../guides/mcp-session-wallet.md) and [Carbon DeFi](../guides/carbon.md) for tool splits.
 
 ## Key utilities
 

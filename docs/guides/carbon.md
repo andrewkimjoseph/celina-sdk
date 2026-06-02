@@ -82,7 +82,9 @@ const preparedFlow = await finalizeCarbonPrepare(
 
 Requires Celo RPC for allowance reads; no private key.
 
-## MCP tools (38 Carbon + 46 core = 71 hosted)
+## MCP tools (38 Carbon on stdio; 72 tools on hosted endpoint)
+
+Hosted catalog includes all Carbon reads and `prepare_carbon_*` (no `execute_carbon_*`). Local stdio adds `execute_carbon_*` and server-key writes. With `CELO_PRIVATE_KEY`, omit `wallet_address` on Carbon reads/prepare or call **`get_wallet_address`** — see [MCP session wallet](mcp-session-wallet.md).
 
 Registered in `celina-mcp` (`src/tools/carbon.tools.ts`).
 
