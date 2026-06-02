@@ -17,8 +17,10 @@ The public Carbon API enforces about **30 requests per minute** per client IP (s
 1. **`get_carbon_strategies`** — list existing maker strategies for the wallet.
 2. **`explore_carbon_pair`** or **`get_carbon_trade_quote`** — understand liquidity and pricing (quote per base; buy budget in quote, sell budget in base).
 3. **`simulate_carbon_strategy`** — backtest before committing capital (REST-only).
-4. **`prepare_carbon_*`** — build unsigned flows; surface **`warnings`** from the API before the user signs.
-5. Sign and broadcast via your wallet (Wagmi, viem, etc.) using `preparedFlow.steps`.
+4. **`prepare_carbon_*`** — build unsigned flows (approve + Carbon controller steps via `finalizeCarbonPrepare`); surface **`warnings`** and **`deep_link`**. No private key.
+5. **`execute_carbon_*`** (celina-mcp stdio only) — prepare + sign/broadcast with `CELO_PRIVATE_KEY`.
+
+Token symbols (`CELO`, `USDT`, …) are normalized to concrete `0x` addresses before Carbon REST (CELO → WCELO/MENTO collateral). Do not call Carbon REST directly with bare symbols.
 
 ## SDK usage
 
@@ -30,25 +32,28 @@ const celina = createCelinaClient({ rpcUrl: process.env.CELO_RPC_URL });
 // Read (REST)
 const strategies = await celina.carbon.getStrategies(wallet);
 
-// Prepare (REST → SerializedPreparedFlow)
+// Prepare (REST → SerializedPreparedFlow) — symbols OK
 const prepared = await celina.carbon.prepareLimitOrder({
   wallet_address: wallet,
-  base_token: "0x471EcE3750Da237a93B120cEadFa0b8eA6E3E25", // CELO
-  quote_token: "0xcebA9300f2b948710d2653dd7D87747AdA2aA3b", // USDC
+  base_token: "CELO",
+  quote_token: "USDC",
   direction: "buy",
   price: 0.5,
   budget: 100,
+  market_price: 0.55,
 });
 
 for (const warning of prepared.warnings) console.warn(warning);
-if (prepared.preparedFlow) {
-  for (const step of prepared.preparedFlow.steps) {
-    // send via wallet
-  }
-}
-```
 
-Use **0x addresses** on Celo when symbols fail to resolve.
+// Local signing (MCP or custom app with private key)
+const steps = await celina.carbon.buildExecutionSteps(wallet, prepared, {
+  direction: "buy",
+  base_token: "CELO",
+  quote_token: "USDC",
+  budget: 100,
+});
+// send steps via viem/wagmi
+```
 
 ## Environment
 
@@ -58,9 +63,33 @@ Use **0x addresses** on Celo when symbols fail to resolve.
 | `CARBON_SDK_FALLBACK` | Set to `false` to disable SDK fallback for trades |
 | `CELO_RPC_URL` | Required for SDK fallback paths |
 
-## MCP tools (25)
+## finalizeCarbonPrepare
 
-Registered in `celina-mcp` (`src/tools/carbon.tools.ts`). Hosted MCP (`celina-mcp-host`) exposes the **12 read** rows only (`carbonWritesEnabled: false`).
+MCP `prepare_carbon_*` and browser apps should call **`finalizeCarbonPrepare`** after REST prepare to merge allowance checks into a complete signing sequence:
+
+```ts
+import { createCelinaClient, finalizeCarbonPrepare } from "@andrewkimjoseph/celina-sdk";
+
+const prepared = await celina.carbon.prepareLimitOrder({ wallet_address, ... });
+const preparedFlow = await finalizeCarbonPrepare(
+  celina.carbon,
+  wallet_address,
+  prepared,
+  { wallet_address, ... },
+);
+// preparedFlow.steps → approve (if needed) + Carbon controller tx(s), all CELINA-tagged
+```
+
+Requires Celo RPC for allowance reads; no private key.
+
+## MCP tools (38 Carbon + 46 core = 71 hosted)
+
+Registered in `celina-mcp` (`src/tools/carbon.tools.ts`).
+
+| Surface | Carbon tools |
+|---------|----------------|
+| **Hosted** (`celina-mcp-host`) | 12 read + 13 `prepare_carbon_*` — no `execute_carbon_*` |
+| **Local stdio** | All 38 Carbon tools (prepare + execute with `CELO_PRIVATE_KEY`) |
 
 | MCP tool | SDK method (approx.) |
 |----------|----------------------|
@@ -89,6 +118,19 @@ Registered in `celina-mcp` (`src/tools/carbon.tools.ts`). Hosted MCP (`celina-mc
 | `prepare_carbon_resume_strategy` | `carbon.prepareResumeStrategy` |
 | `prepare_carbon_delete_strategy` | `carbon.prepareDeleteStrategy` |
 | `prepare_carbon_trade` | `carbon.prepareTrade` |
+| `execute_carbon_limit_order` | `carbonWrite.executeLimitOrder` (MCP) |
+| `execute_carbon_range_order` | `carbonWrite.executeRangeOrder` (MCP) |
+| `execute_carbon_recurring_strategy` | `carbonWrite.executeRecurringStrategy` (MCP) |
+| `execute_carbon_concentrated_strategy` | `carbonWrite.executeConcentratedStrategy` (MCP) |
+| `execute_carbon_full_range_strategy` | `carbonWrite.executeFullRangeStrategy` (MCP) |
+| `execute_carbon_reprice_strategy` | `carbonWrite.executeRepriceStrategy` (MCP) |
+| `execute_carbon_edit_strategy` | `carbonWrite.executeEditStrategy` (MCP) |
+| `execute_carbon_deposit_budget` | `carbonWrite.executeDepositBudget` (MCP) |
+| `execute_carbon_withdraw_budget` | `carbonWrite.executeWithdrawBudget` (MCP) |
+| `execute_carbon_pause_strategy` | `carbonWrite.executePauseStrategy` (MCP) |
+| `execute_carbon_resume_strategy` | `carbonWrite.executeResumeStrategy` (MCP) |
+| `execute_carbon_delete_strategy` | `carbonWrite.executeDeleteStrategy` (MCP) |
+| `execute_carbon_trade` | `carbonWrite.executeTrade` (MCP) |
 
 ## Contract addresses (Celo mainnet)
 

@@ -6,7 +6,7 @@ Methods named `prepare*` return a **serialized prepared flow** — an ordered li
 
 | Method | Service | Typical steps |
 |--------|---------|---------------|
-| `prepareSend` | `transaction` | 1 (native or ERC-20 transfer) |
+| `prepareSend` | `transaction` | 1 (ERC-20 transfer; CELO uses GoldToken) |
 | `prepareFx` | `mentoFx` | 1–2 (optional approve + swap) |
 | `prepareSwap` | `uniswap` | 1–3 (optional ERC-20 + Permit2 approve + swap) |
 | `prepareSupply` | `aave` | 1–2 (optional approve + supply) |
@@ -38,8 +38,8 @@ The `preparedFlow: true` discriminator makes it easy to detect prepared flows in
 
 ### kind values
 
-- **`native`** — CELO transfer (`to` is recipient, `value` is wei)
-- **`erc20`** — ERC-20 call (`to` is token contract, `data` is encoded function)
+- **`native`** — Native-value transfer (`to` is recipient, `value` is wei); rare in Celina prepare flows
+- **`erc20`** — ERC-20 call (`to` is token contract, `data` is encoded function). CELO sends use GoldToken (`0x471E…`) via token duality.
 - **`contract`** — Generic contract call (Aave pool, Mento router, Universal Router, etc.)
 
 ## Multi-step flows
@@ -65,7 +65,7 @@ import { serializePreparedFlow } from "@andrewkimjoseph/celina-sdk";
 
 // prepare* methods already return serialized flows
 const flow = await celina.transaction.prepareSend(from, to, "CELO", "1");
-// flow.steps[0].value === "1000000000000000000"
+// flow.steps[0].value === "0" (amount is in transfer calldata)
 ```
 
 When calling wagmi, convert back to BigInt:
