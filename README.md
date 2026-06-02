@@ -1,6 +1,6 @@
 # Celina SDK
 
-**`@andrewkimjoseph/celina-sdk@0.4.8`** — Celo mainnet library for frontend apps and agents: **reads** and **unsigned transaction preparation** (no private keys).
+Celo mainnet library for frontend apps and agents: **reads** and **unsigned transaction preparation** (no private keys).
 
 Pair with [wagmi](https://wagmi.sh) / viem — users sign prepared transactions in their wallet.
 
