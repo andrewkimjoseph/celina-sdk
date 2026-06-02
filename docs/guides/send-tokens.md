@@ -17,10 +17,12 @@ Returns a single-step flow for both native CELO and ERC-20 tokens.
 
 ## CELO vs ERC-20
 
+On Celo, CELO uses **token duality**: native balance and the GoldToken ERC-20 contract (`0x471E…`) share the same balance. `prepareSend` routes CELO through GoldToken `transfer` (same shape as USDT and other ERC-20 sends) so wallets and fee-abstraction paths handle it reliably.
+
 | Token type | `kind` | `to` | `value` |
 |------------|--------|------|---------|
-| CELO (native) | `native` | recipient address | wei string |
-| ERC-20 (USDm, cUSD, etc.) | `erc20` | token contract | `"0"` |
+| CELO | `erc20` | GoldToken (`0x471E…`) | `"0"` (amount in calldata) |
+| ERC-20 (USDm, USDT, etc.) | `erc20` | token contract | `"0"` |
 
 Token symbols are resolved via the built-in registry (`CELO`, `USDm`, `cUSD`, `cEUR`, etc.) or by contract address.
 

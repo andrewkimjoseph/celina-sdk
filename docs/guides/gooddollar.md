@@ -98,10 +98,10 @@ G$ is sent to `msg.sender` (the signing wallet). Gas is paid in native CELO.
 |------------|------------------|------------|
 | `getWhitelistingInfo` | `get_gooddollar_whitelisting_info` | read |
 | `getUbiClaimEligibility` | `get_gooddollar_ubi_entitlement` | read |
-| `prepareClaimUbi` | — (unsigned; use SDK or Celeste AI) | — |
+| `prepareClaimUbi` | — (unsigned; use SDK + wagmi in your app) | — |
 | — | `claim_daily_gooddollar_ubi` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
 
-[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) exposes `prepare_claim_daily_gooddollar_ubi` for browser wallet signing.
+For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagmi — same pattern as sends and swaps.
 
 ## Rules
 
