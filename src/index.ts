@@ -87,7 +87,7 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     staking: wrap("staking", new StakingService(clientFactory)),
     nft: wrap("nft", new NftService(clientFactory)),
     contract: wrap("contract", new ContractService(clientFactory)),
-    carbon: wrap("carbon", new CarbonService(config, tokenService)),
+    carbon: wrap("carbon", new CarbonService(config, tokenService, clientFactory)),
     self: wrap("self", new SelfService(clientFactory, config)),
   };
 }
@@ -121,6 +121,11 @@ export {
   AAVE_SUPPORTED_SYMBOLS,
   resolveAaveAsset,
 } from "./config/aave.js";
+export { CHAIN, DEFAULT_RPC_URL } from "./config/chains.js";
+export {
+  appendCelinaCalldataTag,
+  CELINA_DATA_SUFFIX,
+} from "./config/celina-tag.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
   GOODDOLLAR_IDENTITY_ADDRESS,
@@ -132,10 +137,22 @@ export type {
 } from "./types/carbon.js";
 export type { CarbonWriteBody } from "./services/carbon.service.js";
 export {
+  CARBON_APP_BASE_URL,
   CARBON_CHAIN,
   CELO_CARBON_CONTRACTS,
   DEFAULT_CARBON_REST_BASE_URL,
+  carbonActivityDeepLink,
 } from "./config/carbon.js";
+export {
+  resolveCarbonTokenAddress,
+  normalizeCarbonWriteBody,
+  CARBON_WRITE_TOKEN_FIELDS,
+} from "./utils/carbon-token.js";
+export { buildCarbonExecutionSteps } from "./utils/carbon-execution.js";
+export {
+  finalizeCarbonPrepare,
+  type FinalizedCarbonPrepareFlow,
+} from "./utils/finalize-carbon-prepare.js";
 export { CarbonRestError } from "./clients/carbon-rest.js";
 export {
   SelfService,
