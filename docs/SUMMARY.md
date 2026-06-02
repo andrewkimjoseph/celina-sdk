@@ -24,6 +24,7 @@
 * [GoodDollar UBI](guides/gooddollar.md)
 * [Self Agent ID](guides/self-agent-id.md)
 * [Telemetry](guides/telemetry.md)
+* [MCP session wallet](guides/mcp-session-wallet.md)
 
 ## API reference
 
