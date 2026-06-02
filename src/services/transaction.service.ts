@@ -11,6 +11,7 @@ import {
   type Hex,
 } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { MENTO_CELO_ADDRESS } from "../config/chains.js";
 import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
 import { normalizeAddress } from "../utils/normalize-address.js";
 import {
@@ -50,11 +51,13 @@ export class TransactionService {
     const resolved = this.tokenService.resolveToken(token);
 
     if (resolved.address === "native") {
-      const value = parseEther(amount);
-      const gas = await client.estimateGas({
+      const tokenAmount = parseEther(amount);
+      const gas = await client.estimateContractGas({
         account: from,
-        to,
-        value,
+        address: MENTO_CELO_ADDRESS,
+        abi: erc20Abi,
+        functionName: "transfer",
+        args: [to, tokenAmount],
       });
 
       return {
@@ -103,16 +106,25 @@ export class TransactionService {
     const resolved = this.tokenService.resolveToken(token);
 
     if (resolved.address === "native") {
+      const tokenAmount = parseEther(amount);
+      const data = taggedCalldata(
+        encodeFunctionData({
+          abi: erc20Abi,
+          functionName: "transfer",
+          args: [to, tokenAmount],
+        }),
+      );
+
       const flow: PreparedFlow = {
         network: "mainnet",
         from,
         summary: `Send ${amount} CELO to ${to}`,
         steps: [
           {
-            kind: "native",
-            to,
-            value: parseEther(amount).toString(),
-            data: CELINA_DATA_SUFFIX,
+            kind: "erc20",
+            to: MENTO_CELO_ADDRESS,
+            data,
+            value: "0",
             description: `Send ${amount} CELO`,
           },
         ],
