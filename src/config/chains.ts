@@ -1,6 +1,6 @@
 /**
  * Single token registry for Celo mainnet.
- * Symbols resolve case-insensitively; legacy aliases (cUSD → USDm) are supported.
+ * Symbols resolve case-insensitively; Mento legacy tickers (cUSD, cKES, PUSO, …) map to XXXm.
  */
 import { celo } from "viem/chains";
 
@@ -25,6 +25,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   {
     symbol: "CELO",
     address: "native",
+    aliases: ["WCELO", "cGLD"],
     decimals: 18,
   },
   {
@@ -45,6 +46,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "BRLm",
+    aliases: ["cREAL", "CREAL"],
     address: "0xe8537a3d056da446677b9e9d6c5db704eaab4787",
     issuer: "Mento",
     useCase: "Brazilian Real-pegged stablecoin",
@@ -52,6 +54,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "XOFm",
+    aliases: ["eXOF"],
     address: "0x73F93dcc49cB8A239e2032663e9475dd5ef29A08",
     issuer: "Mento",
     useCase: "CFA Franc-pegged stablecoin",
@@ -59,6 +62,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "KESm",
+    aliases: ["cKES"],
     address: "0x456a3D042C0DbD3db53D5489e98dFb038553B0d0",
     issuer: "Mento",
     useCase: "Kenyan Shilling-pegged stablecoin",
@@ -66,6 +70,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "PHPm",
+    aliases: ["PUSO"],
     address: "0x105d4A9306D2E55a71d2Eb95B81553AE1dC20d7B",
     issuer: "Mento",
     useCase: "Philippine Peso-pegged stablecoin",
@@ -73,6 +78,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "COPm",
+    aliases: ["cCOP"],
     address: "0x8a567e2ae79ca692bd748ab832081c45de4041ea",
     issuer: "Mento",
     useCase: "Colombian Peso-pegged stablecoin",
@@ -80,6 +86,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "GBPm",
+    aliases: ["cGBP"],
     address: "0xCCF663b1fF11028f0b19058d0f7B674004a40746",
     issuer: "Mento",
     useCase: "British Pound-pegged stablecoin",
@@ -87,6 +94,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "CADm",
+    aliases: ["cCAD"],
     address: "0xff4Ab19391af240c311c54200a492233052B6325",
     issuer: "Mento",
     useCase: "Canadian Dollar-pegged stablecoin",
@@ -94,6 +102,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "AUDm",
+    aliases: ["cAUD"],
     address: "0x7175504C455076F15c04A2F90a8e352281F492F9",
     issuer: "Mento",
     useCase: "Australian Dollar-pegged stablecoin",
@@ -101,6 +110,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "ZARm",
+    aliases: ["cZAR"],
     address: "0x4c35853A3B4e647fD266f4de678dCc8fEC410BF6",
     issuer: "Mento",
     useCase: "South African Rand-pegged stablecoin",
@@ -108,6 +118,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "GHSm",
+    aliases: ["cGHS"],
     address: "0xfAeA5F3404bbA20D3cc2f8C4B0A888F55a3c7313",
     issuer: "Mento",
     useCase: "Ghanaian Cedi-pegged stablecoin",
@@ -115,6 +126,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "NGNm",
+    aliases: ["cNGN", "CNGN"],
     address: "0xE2702Bd97ee33c88c8f6f92DA3B733608aa76F71",
     issuer: "Mento",
     useCase: "Nigerian Naira-pegged stablecoin",
@@ -122,6 +134,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "JPYm",
+    aliases: ["cJPY"],
     address: "0xc45eCF20f3CD864B32D9794d6f76814aE8892e20",
     issuer: "Mento",
     useCase: "Japanese Yen-pegged stablecoin",
@@ -129,6 +142,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
   },
   {
     symbol: "CHFm",
+    aliases: ["cCHF"],
     address: "0xb55a79F398E759E43C95b979163f30eC87Ee131D",
     issuer: "Mento",
     useCase: "Swiss Franc-pegged stablecoin",
@@ -266,6 +280,10 @@ function findKnownTokenExact(token: string): KnownToken | undefined {
   const normalized = token.trim();
   const upper = normalized.toUpperCase();
   const lower = normalized.toLowerCase();
+
+  if (lower === MENTO_CELO_ADDRESS.toLowerCase()) {
+    return KNOWN_TOKENS.find((entry) => entry.symbol === "CELO");
+  }
 
   return KNOWN_TOKENS.find(
     (entry) =>

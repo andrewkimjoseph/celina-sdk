@@ -14,3 +14,10 @@ export const CELO_CARBON_CONTRACTS = {
 } as const;
 
 export const CELO_CHAIN_ID = 42220;
+
+export const CARBON_APP_BASE_URL = "https://celo.carbondefi.xyz";
+
+/** Post-execution activity explorer for a wallet on Carbon DeFi (Celo). */
+export function carbonActivityDeepLink(walletAddress: string): string {
+  return `${CARBON_APP_BASE_URL}/explore/activity?search=${walletAddress}`;
+}
