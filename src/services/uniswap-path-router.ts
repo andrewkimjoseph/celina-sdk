@@ -10,6 +10,7 @@ import {
 } from "../config/uniswap.js";
 import {
   getUniswapPoolIndex,
+  poolsBetween,
   type UniswapPoolIndex,
 } from "./uniswap-pool-discovery.js";
 
@@ -31,7 +32,8 @@ export type UniswapSwapRoute = {
   hops: number;
 };
 
-const MAX_HOPS = 2;
+/** Maximum pools in a route (2 intermediate currencies → 3 pools). */
+const MAX_POOLS = 3;
 
 function otherToken(
   poolKey: UniswapPoolKey,
@@ -86,7 +88,7 @@ function enumeratePaths(
 
   while (queue.length > 0) {
     const node = queue.shift()!;
-    if (node.pools.length >= MAX_HOPS + 1) {
+    if (node.pools.length >= MAX_POOLS) {
       continue;
     }
 
@@ -100,31 +102,26 @@ function enumeratePaths(
         continue;
       }
 
-      const poolKey = index.edges.find((edge) => {
-        const a = edge.tokenA.toLowerCase();
-        const b = edge.tokenB.toLowerCase();
-        return (
-          (a === node.currency && b === neighbor) ||
-          (a === neighbor && b === node.currency)
-        );
-      })?.poolKey;
+      // A pair can have several pools (different fee tiers); branch over each so
+      // the quoter can pick the genuinely best-priced one.
+      for (const poolKey of poolsBetween(
+        index,
+        node.currency as `0x${string}`,
+        neighbor as `0x${string}`,
+      )) {
+        const nextPools = [...node.pools, poolKey];
+        if (neighbor === goal) {
+          results.push(nextPools);
+          continue;
+        }
 
-      if (!poolKey) {
-        continue;
-      }
-
-      const nextPools = [...node.pools, poolKey];
-      if (neighbor === goal) {
-        results.push(nextPools);
-        continue;
-      }
-
-      if (nextPools.length <= MAX_HOPS) {
-        queue.push({
-          currency: neighbor,
-          pools: nextPools,
-          visited: new Set([...node.visited, neighbor]),
-        });
+        if (nextPools.length < MAX_POOLS) {
+          queue.push({
+            currency: neighbor,
+            pools: nextPools,
+            visited: new Set([...node.visited, neighbor]),
+          });
+        }
       }
     }
   }
@@ -198,35 +195,38 @@ export async function findBestUniswapRoute(
   const index = await getUniswapPoolIndex(client);
   const candidatePaths = enumeratePaths(index, currencyIn, currencyOut);
 
+  // Quote every candidate path concurrently; failed quotes (e.g. uninitialized
+  // pools or insufficient liquidity) are dropped rather than aborting the rest.
+  const quotes = await Promise.allSettled(
+    candidatePaths.map(async (pools) => ({
+      pools,
+      amountOut: await quotePath(client, currencyIn, pools, amountIn),
+    })),
+  );
+
   let best: { route: UniswapSwapRoute; amountOut: bigint } | null = null;
 
-  for (const pools of candidatePaths) {
-    try {
-      const amountOut = await quotePath(
-        client,
-        currencyIn,
-        pools,
-        amountIn,
-      );
+  for (const quote of quotes) {
+    if (quote.status !== "fulfilled") {
+      continue;
+    }
 
-      if (amountOut <= 0n) {
-        continue;
-      }
+    const { pools, amountOut } = quote.value;
+    if (amountOut <= 0n) {
+      continue;
+    }
 
-      if (!best || amountOut > best.amountOut) {
-        best = {
-          amountOut,
-          route: {
-            currencyIn,
-            currencyOut,
-            pools,
-            pathKeys: buildPathKeys(pools, currencyIn),
-            hops: pools.length,
-          },
-        };
-      }
-    } catch {
-      // skip paths that fail to quote
+    if (!best || amountOut > best.amountOut) {
+      best = {
+        amountOut,
+        route: {
+          currencyIn,
+          currencyOut,
+          pools,
+          pathKeys: buildPathKeys(pools, currencyIn),
+          hops: pools.length,
+        },
+      };
     }
   }
 

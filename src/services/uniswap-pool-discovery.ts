@@ -31,12 +31,25 @@ export type UniswapPoolIndex = {
   edges: UniswapPoolEdge[];
   /** Currency address (lowercase) → neighbor currencies in the graph. */
   adjacency: Map<string, Set<string>>;
+  /**
+   * Sorted pair key (`tokenLo|tokenHi`, lowercase) → every pool connecting that
+   * pair. A single token pair can have several pools across fee tiers, so the
+   * router must consider all of them to find the best rate.
+   */
+  poolsByPair: Map<string, UniswapPoolKey[]>;
   /** Whether pools came from the v4 subgraph or on-chain hub probing. */
   source: "subgraph" | "onchain";
   fetchedAt: number;
 };
 
 let cachedIndex: UniswapPoolIndex | null = null;
+
+/** Canonical lowercase key for the unordered pair `(a, b)`. */
+function pairKey(a: string, b: string): string {
+  const lo = a.toLowerCase();
+  const hi = b.toLowerCase();
+  return lo < hi ? `${lo}|${hi}` : `${hi}|${lo}`;
+}
 
 /**
  * Compute the Uniswap v4 pool id (keccak256 of sorted pool key fields).
@@ -60,32 +73,54 @@ export function computeUniswapPoolId(poolKey: UniswapPoolKey): `0x${string}` {
   );
 }
 
-function addEdge(
-  edges: UniswapPoolEdge[],
-  adjacency: Map<string, Set<string>>,
-  poolKey: UniswapPoolKey,
-) {
-  const normalized = normalizeUniswapPoolKey(poolKey);
-  const a = normalized.currency0.toLowerCase();
-  const b = normalized.currency1.toLowerCase();
+/**
+ * Build a routing index from raw pool keys: dedup by pool id, then derive the
+ * edge list, currency adjacency, and per-pair pool buckets.
+ */
+function buildPoolIndex(
+  poolKeys: UniswapPoolKey[],
+  source: "subgraph" | "onchain",
+): UniswapPoolIndex {
+  const edges: UniswapPoolEdge[] = [];
+  const adjacency = new Map<string, Set<string>>();
+  const poolsByPair = new Map<string, UniswapPoolKey[]>();
+  const seen = new Set<string>();
 
-  if (edges.some((edge) => edge.poolKey === normalized)) {
-    return;
+  for (const key of poolKeys) {
+    const normalized = normalizeUniswapPoolKey(key);
+    const id = computeUniswapPoolId(normalized);
+    if (seen.has(id)) {
+      continue;
+    }
+    seen.add(id);
+
+    const a = normalized.currency0.toLowerCase();
+    const b = normalized.currency1.toLowerCase();
+
+    edges.push({
+      poolKey: normalized,
+      tokenA: normalized.currency0,
+      tokenB: normalized.currency1,
+    });
+
+    if (!adjacency.has(a)) adjacency.set(a, new Set());
+    if (!adjacency.has(b)) adjacency.set(b, new Set());
+    adjacency.get(a)!.add(b);
+    adjacency.get(b)!.add(a);
+
+    const pk = pairKey(a, b);
+    const bucket = poolsByPair.get(pk);
+    if (bucket) {
+      bucket.push(normalized);
+    } else {
+      poolsByPair.set(pk, [normalized]);
+    }
   }
 
-  edges.push({
-    poolKey: normalized,
-    tokenA: normalized.currency0,
-    tokenB: normalized.currency1,
-  });
-
-  if (!adjacency.has(a)) adjacency.set(a, new Set());
-  if (!adjacency.has(b)) adjacency.set(b, new Set());
-  adjacency.get(a)!.add(b);
-  adjacency.get(b)!.add(a);
+  return { edges, adjacency, poolsByPair, source, fetchedAt: Date.now() };
 }
 
-async function fetchSubgraphPools(): Promise<UniswapPoolEdge[] | null> {
+async function fetchSubgraphPools(): Promise<UniswapPoolKey[] | null> {
   try {
     const response = await fetch(UNISWAP_SUBGRAPH_URL, {
       method: "POST",
@@ -124,21 +159,13 @@ async function fetchSubgraphPools(): Promise<UniswapPoolEdge[] | null> {
       return null;
     }
 
-    const edges: UniswapPoolEdge[] = [];
-    const adjacency = new Map<string, Set<string>>();
-
-    for (const pool of pools) {
-      const poolKey: UniswapPoolKey = {
-        currency0: pool.token0.id as `0x${string}`,
-        currency1: pool.token1.id as `0x${string}`,
-        fee: Number(pool.feeTier),
-        tickSpacing: Number(pool.tickSpacing),
-        hooks: (pool.hooks || UNISWAP_V4.zeroHooks) as `0x${string}`,
-      };
-      addEdge(edges, adjacency, poolKey);
-    }
-
-    return edges;
+    return pools.map((pool) => ({
+      currency0: pool.token0.id as `0x${string}`,
+      currency1: pool.token1.id as `0x${string}`,
+      fee: Number(pool.feeTier),
+      tickSpacing: Number(pool.tickSpacing),
+      hooks: (pool.hooks || UNISWAP_V4.zeroHooks) as `0x${string}`,
+    }));
   } catch {
     return null;
   }
@@ -188,9 +215,8 @@ async function probePoolOnChain(
 }
 
 async function buildOnChainIndex(client: PublicClient): Promise<UniswapPoolIndex> {
-  const edges: UniswapPoolEdge[] = [];
-  const adjacency = new Map<string, Set<string>>();
   const hubs = [...UNISWAP_HUB_CURRENCIES];
+  const probes: Promise<UniswapPoolKey | null>[] = [];
 
   for (let i = 0; i < hubs.length; i++) {
     for (let j = i + 1; j < hubs.length; j++) {
@@ -204,27 +230,18 @@ async function buildOnChainIndex(client: PublicClient): Promise<UniswapPoolIndex
           UNISWAP_DEFAULT_TICK_SPACING[fee] ??
           UNISWAP_DEFAULT_TICK_SPACING[3000]!;
 
-        const poolKey = await probePoolOnChain(
-          client,
-          currency0,
-          currency1,
-          fee,
-          tickSpacing,
+        probes.push(
+          probePoolOnChain(client, currency0, currency1, fee, tickSpacing),
         );
-
-        if (poolKey) {
-          addEdge(edges, adjacency, poolKey);
-        }
       }
     }
   }
 
-  return {
-    edges,
-    adjacency,
-    source: "onchain",
-    fetchedAt: Date.now(),
-  };
+  const poolKeys = (await Promise.all(probes)).filter(
+    (poolKey): poolKey is UniswapPoolKey => poolKey !== null,
+  );
+
+  return buildPoolIndex(poolKeys, "onchain");
 }
 
 /**
@@ -245,29 +262,28 @@ export async function getUniswapPoolIndex(
     return cachedIndex;
   }
 
-  const subgraphEdges = await fetchSubgraphPools();
-  if (subgraphEdges?.length) {
-    const adjacency = new Map<string, Set<string>>();
-    for (const edge of subgraphEdges) {
-      const a = edge.tokenA.toLowerCase();
-      const b = edge.tokenB.toLowerCase();
-      if (!adjacency.has(a)) adjacency.set(a, new Set());
-      if (!adjacency.has(b)) adjacency.set(b, new Set());
-      adjacency.get(a)!.add(b);
-      adjacency.get(b)!.add(a);
-    }
-
-    cachedIndex = {
-      edges: subgraphEdges,
-      adjacency,
-      source: "subgraph",
-      fetchedAt: now,
-    };
+  const subgraphPools = await fetchSubgraphPools();
+  if (subgraphPools?.length) {
+    cachedIndex = buildPoolIndex(subgraphPools, "subgraph");
     return cachedIndex;
   }
 
   cachedIndex = await buildOnChainIndex(client);
   return cachedIndex;
+}
+
+/**
+ * All pools connecting two tokens in a cached index (one per fee tier / hooks).
+ * @param index - Pool graph from `getUniswapPoolIndex`
+ * @param tokenA - First currency address
+ * @param tokenB - Second currency address
+ */
+export function poolsBetween(
+  index: UniswapPoolIndex,
+  tokenA: `0x${string}`,
+  tokenB: `0x${string}`,
+): UniswapPoolKey[] {
+  return index.poolsByPair.get(pairKey(tokenA, tokenB)) ?? [];
 }
 
 /**
@@ -281,18 +297,7 @@ export function findPoolBetween(
   tokenA: `0x${string}`,
   tokenB: `0x${string}`,
 ): UniswapPoolKey | null {
-  const a = tokenA.toLowerCase();
-  const b = tokenB.toLowerCase();
-
-  for (const edge of index.edges) {
-    const e0 = edge.tokenA.toLowerCase();
-    const e1 = edge.tokenB.toLowerCase();
-    if ((e0 === a && e1 === b) || (e0 === b && e1 === a)) {
-      return edge.poolKey;
-    }
-  }
-
-  return null;
+  return poolsBetween(index, tokenA, tokenB)[0] ?? null;
 }
 
 /** Reset cached index (for tests). */
