@@ -88,4 +88,22 @@ export const blockchainOperations: OperationSpec[] = [
       assertHasKeys(result, ["address", "balanceWei"]);
     },
   },
+  {
+    id: "account.getWalletAddress",
+    domain: "blockchain",
+    layer: "read",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    mcp: {
+      tool: "get_wallet_address",
+      arguments: () => ({}),
+    },
+    assert: (result, fx) => {
+      const obj = assertHasKeys(result, ["wallet_address", "has_wallet", "source"]);
+      expect(obj.has_wallet).toBe(true);
+      expect(String(obj.wallet_address).toLowerCase()).toBe(
+        fx.wallet.toLowerCase(),
+      );
+      expect(obj.source).toBe("CELO_PRIVATE_KEY");
+    },
+  },
 ];
