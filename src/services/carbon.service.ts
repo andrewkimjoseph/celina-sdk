@@ -3,6 +3,8 @@
  * REST is primary for all 25 MCP tools; SDK is fallback for quotes/trades when REST fails.
  */
 import type { SdkConfig } from "../config/sdk-config.js";
+import { MENTO_CELO_ADDRESS } from "../config/chains.js";
+import type { CeloClientFactory } from "../clients/celo-client.js";
 import { CarbonRestClient } from "../clients/carbon-rest.js";
 import { CarbonSdkClient } from "../clients/carbon-sdk.js";
 import type { CarbonPrepareResult, CarbonRestSuccess } from "../types/carbon.js";
@@ -10,7 +12,13 @@ import {
   extractWarnings,
   normalizeCarbonPrepareResult,
 } from "../utils/carbon-rest-adapter.js";
+import { buildCarbonExecutionSteps } from "../utils/carbon-execution.js";
+import {
+  normalizeCarbonWriteBody,
+  resolveCarbonTokenAddress,
+} from "../utils/carbon-token.js";
 import type { TokenService } from "./token.service.js";
+import type { PreparedTx } from "../types/prepared.js";
 
 export type CarbonWriteBody = Record<string, unknown> & {
   wallet_address: `0x${string}`;
@@ -27,6 +35,7 @@ export class CarbonService {
   constructor(
     config: SdkConfig,
     private readonly tokenService: TokenService,
+    private readonly clientFactory: CeloClientFactory,
   ) {
     this.rest = new CarbonRestClient(config.carbonRestBaseUrl);
     this.sdk =
@@ -49,8 +58,24 @@ export class CarbonService {
     summary: string,
   ): Promise<CarbonPrepareResult> {
     const from = walletAddress(body.wallet_address);
-    const result = await this.rest.postTool<CarbonRestSuccess>(tool, body);
+    const normalized = normalizeCarbonWriteBody(
+      this.tokenService,
+      body as Record<string, unknown>,
+    ) as CarbonWriteBody;
+    const result = await this.rest.postTool<CarbonRestSuccess>(tool, normalized);
     return normalizeCarbonPrepareResult(from, result, summary);
+  }
+
+  /** Build full on-chain steps (approvals + Carbon tx) for MCP local signing. */
+  async buildExecutionSteps(
+    from: `0x${string}`,
+    prepared: CarbonPrepareResult,
+    orderMeta: Record<string, unknown>,
+  ): Promise<PreparedTx[]> {
+    return buildCarbonExecutionSteps(from, prepared, orderMeta, {
+      tokenService: this.tokenService,
+      clientFactory: this.clientFactory,
+    });
   }
 
   private async withSdkFallback<T>(
@@ -144,19 +169,25 @@ export class CarbonService {
   async getTradeQuote(body: Record<string, unknown>) {
     const amount =
       typeof body.amount === "string" ? Number(body.amount) : body.amount;
-    const normalized = {
+    const normalized = normalizeCarbonWriteBody(this.tokenService, {
       ...body,
       amount,
       ...(body.is_trade_by_target !== undefined
         ? { by_target: body.is_trade_by_target }
         : {}),
-    };
+    });
     return this.withSdkFallback(
       () => this.restRead("get_trade_quote", normalized),
       async () => {
         if (!this.sdk) throw new Error("Carbon SDK fallback unavailable");
-        const sourceToken = String(body.source_token ?? body.token_in);
-        const targetToken = String(body.target_token ?? body.token_out);
+        const sourceToken = resolveCarbonTokenAddress(
+          this.tokenService,
+          String(normalized.source_token ?? normalized.token_in),
+        );
+        const targetToken = resolveCarbonTokenAddress(
+          this.tokenService,
+          String(normalized.target_token ?? normalized.token_out),
+        );
         const amountStr = String(amount);
         const isTradeByTarget = Boolean(
           body.is_trade_by_target ?? body.by_target,
@@ -178,16 +209,26 @@ export class CarbonService {
   }
 
   async prepareTrade(body: CarbonWriteBody) {
+    const normalized = normalizeCarbonWriteBody(
+      this.tokenService,
+      body as Record<string, unknown>,
+    ) as CarbonWriteBody;
     try {
-      return await this.restPrepare("execute_trade", body, "Carbon taker swap");
+      return await this.restPrepare("execute_trade", normalized, "Carbon taker swap");
     } catch (primary) {
       if (!this.sdk) throw primary;
-      const sourceToken = String(body.source_token ?? body.token_in);
-      const targetToken = String(body.target_token ?? body.token_out);
-      const amount = String(body.amount);
-      const minReturn = String(body.min_return ?? "0");
+      const sourceToken = resolveCarbonTokenAddress(
+        this.tokenService,
+        String(normalized.source_token ?? normalized.token_in),
+      );
+      const targetToken = resolveCarbonTokenAddress(
+        this.tokenService,
+        String(normalized.target_token ?? normalized.token_out),
+      );
+      const amount = String(normalized.amount);
+      const minReturn = String(normalized.min_return ?? "0");
       const preparedFlow = await this.sdk.prepareTradeFallback(
-        walletAddress(body.wallet_address),
+        walletAddress(normalized.wallet_address),
         sourceToken,
         targetToken,
         amount,
@@ -216,11 +257,13 @@ export class CarbonService {
       });
     } catch {
       const resolved = this.tokenService.resolveToken(symbolOrName);
+      const address =
+        resolved.address === "native" ? MENTO_CELO_ADDRESS : resolved.address;
       return {
         status: "ok" as const,
         warnings: [] as string[],
         symbol: resolved.symbol,
-        address: resolved.address,
+        address,
         decimals: resolved.decimals,
         source: "celina_registry",
       };
