@@ -1,3 +1,5 @@
+import { detectConsumerPackageName } from "../analytics/consumer-package.js";
+
 /** RPC configuration for `createCelinaClient()`. */
 export interface SdkConfig {
   /** Celo mainnet JSON-RPC URL (default Forno). */
@@ -16,7 +18,11 @@ export interface SdkConfig {
   analyticsEnabled?: boolean;
   /** Override bundled Amplitude project API key. */
   amplitudeApiKey?: string;
-  /** Amplitude `device_id` (default `celina-sdk`). */
+  /**
+   * Amplitude `device_id`. When omitted, auto-detected from the consuming package
+   * `package.json` name (sanitized, e.g. `celeste_ai`, `andrewkimjoseph_celina_mcp`),
+   * then `CELINA_ANALYTICS_DEVICE_ID`, then `celina-sdk`.
+   */
   analyticsDeviceId?: string;
 }
 
@@ -50,6 +56,11 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
         : undefined),
     analyticsEnabled: opts?.analyticsEnabled,
     amplitudeApiKey: opts?.amplitudeApiKey,
-    analyticsDeviceId: opts?.analyticsDeviceId,
+    analyticsDeviceId:
+      opts?.analyticsDeviceId ??
+      (typeof process !== "undefined"
+        ? process.env.CELINA_ANALYTICS_DEVICE_ID
+        : undefined) ??
+      detectConsumerPackageName(),
   };
 }

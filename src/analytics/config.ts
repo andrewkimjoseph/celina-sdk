@@ -31,9 +31,5 @@ export function resolveAmplitudeApiKey(config: SdkConfig): string | undefined {
 }
 
 export function resolveDeviceId(config: SdkConfig): string {
-  return (
-    config.analyticsDeviceId ??
-    process.env.CELINA_ANALYTICS_DEVICE_ID ??
-    DEFAULT_DEVICE_ID
-  );
+  return config.analyticsDeviceId ?? DEFAULT_DEVICE_ID;
 }
