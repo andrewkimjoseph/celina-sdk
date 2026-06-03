@@ -70,7 +70,6 @@
 * [CELINA_DATA_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
 * [buildCarbonExecutionSteps](api-reference/index/functions/buildCarbonExecutionSteps.md)
 * [carbonActivityDeepLink](api-reference/index/functions/carbonActivityDeepLink.md)
-
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)

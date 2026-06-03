@@ -8,7 +8,7 @@
 
 > **resolveAaveAsset**(`token`): [`AaveAsset`](../type-aliases/AaveAsset.md)
 
-Defined in: [src/config/aave.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/config/aave.ts#L66)
+Defined in: [src/config/aave.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/config/aave.ts#L66)
 
 Resolve an Aave V3 Celo asset by symbol or underlying/aToken address.
 

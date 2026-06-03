@@ -52,6 +52,7 @@
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [createCelinaClient](functions/createCelinaClient.md)
 - [finalizeCarbonPrepare](functions/finalizeCarbonPrepare.md)
+- [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
 - [normalizeCarbonWriteBody](functions/normalizeCarbonWriteBody.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)

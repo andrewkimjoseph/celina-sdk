@@ -8,7 +8,7 @@
 
 > **buildCarbonExecutionSteps**(`from`, `prepared`, `orderMeta`, `deps`): `Promise`\<[`PreparedTx`](../../types/prepared/interfaces/PreparedTx.md)[]\>
 
-Defined in: [src/utils/carbon-execution.ts:132](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/utils/carbon-execution.ts#L132)
+Defined in: [src/utils/carbon-execution.ts:133](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/utils/carbon-execution.ts#L133)
 
 Merge ERC-20 approval steps (when needed) with Carbon REST prepared steps for local signing.
 

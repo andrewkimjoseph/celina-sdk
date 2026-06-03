@@ -6,7 +6,7 @@
 
 # Class: AccountService
 
-Defined in: [src/services/account.service.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/account.service.ts#L7)
+Defined in: [src/services/account.service.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/account.service.ts#L7)
 
 CELO mainnet account snapshot for a wallet or contract address.
 
@@ -16,7 +16,7 @@ CELO mainnet account snapshot for a wallet or contract address.
 
 > **new AccountService**(`clientFactory`): `AccountService`
 
-Defined in: [src/services/account.service.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/account.service.ts#L8)
+Defined in: [src/services/account.service.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/account.service.ts#L8)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/account.service.ts:8](https://github.com/andrewkimjose
 
 > **getAccount**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balanceCelo`: `number`; `balanceWei`: `string`; `isContract`: `boolean`; `network`: `string`; `nonce`: `number`; \}\>
 
-Defined in: [src/services/account.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/account.service.ts#L15)
+Defined in: [src/services/account.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/account.service.ts#L15)
 
 Fetch CELO balance, nonce, and whether the address has contract bytecode.
 

@@ -6,7 +6,7 @@
 
 # Class: EnsService
 
-Defined in: [src/services/ens.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/ens.service.ts#L29)
+Defined in: [src/services/ens.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/ens.service.ts#L29)
 
 ENS name and address resolution for send/swap recipients.
 
@@ -16,7 +16,7 @@ ENS name and address resolution for send/swap recipients.
 
 > **new EnsService**(`ensClientFactory`): `EnsService`
 
-Defined in: [src/services/ens.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/ens.service.ts#L30)
+Defined in: [src/services/ens.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/ens.service.ts#L30)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/ens.service.ts:30](https://github.com/andrewkimjoseph/
 
 > **resolveAddressOrEns**(`input`): `Promise`\<[`ResolvedRecipient`](../type-aliases/ResolvedRecipient.md)\>
 
-Defined in: [src/services/ens.service.ts:104](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/ens.service.ts#L104)
+Defined in: [src/services/ens.service.ts:104](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/ens.service.ts#L104)
 
 Accept a raw `0x` address or ENS name; returns address plus optional ENS metadata.
 
@@ -56,7 +56,7 @@ Hex address or ENS name
 
 > **resolveEns**(`name`, `chain?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `chain`: `"ethereum"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia?`: `undefined`; \} \| \{ `address`: `` `0x${string}` ``; `chain`: `"celo"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia`: `"celo"` \| `"ethereum"`; \}\>
 
-Defined in: [src/services/ens.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/ens.service.ts#L38)
+Defined in: [src/services/ens.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/ens.service.ts#L38)
 
 Resolve an ENS name on Celo or Ethereum to an address.
 

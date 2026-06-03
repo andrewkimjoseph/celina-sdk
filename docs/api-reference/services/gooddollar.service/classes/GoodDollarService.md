@@ -6,7 +6,7 @@
 
 # Class: GoodDollarService
 
-Defined in: [src/services/gooddollar.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/gooddollar.service.ts#L49)
+Defined in: [src/services/gooddollar.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/gooddollar.service.ts#L49)
 
 GoodDollar IdentityV4 whitelist, reverification, and daily UBI claim preparation.
 
@@ -16,7 +16,7 @@ GoodDollar IdentityV4 whitelist, reverification, and daily UBI claim preparation
 
 > **new GoodDollarService**(`clientFactory`): `GoodDollarService`
 
-Defined in: [src/services/gooddollar.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/gooddollar.service.ts#L50)
+Defined in: [src/services/gooddollar.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/gooddollar.service.ts#L50)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/gooddollar.service.ts:50](https://github.com/andrewkim
 
 > **getUbiClaimEligibility**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `alreadyClaimedToday`: `boolean`; `claimableAmount`: `string`; `claimableAmountFormatted`: `string`; `contract`: `"0x43d72Ff17701B2DA814620735C39C620Ce0ea4A1"`; `currentDailyUbi`: `string`; `currentDailyUbiFormatted`: `string`; `estimatedDailyUbi`: `string`; `estimatedDailyUbiFormatted`: `string`; `identity`: \{ `checkedAddress`: `` `0x${string}` ``; `isCurrentlyWhitelisted`: `boolean`; `reverification`: \{ `currentReverificationPeriodDays`: `number`; `daysSinceLastAuthentication`: `number`; `daysUntilReverificationRequired`: `number`; `isReverificationOverdue`: `boolean`; `maxReverificationPeriodDays`: `number`; `reverificationProgressPercent`: `number`; `reverificationRequiredOn`: `string`; \} \| `null`; `statusLabel`: `string`; \}; `inClaimCooldown`: `boolean`; `isConnectedWallet`: `boolean`; `isEligibleToClaim`: `boolean`; `lastClaimedAt`: `string` \| `null`; `nextClaimAvailableAt`: `string`; `nextClaimAvailableIn`: `string`; `reasons`: `string`[]; `schemePaused`: `boolean`; `schemeStarted`: `boolean`; `secondsUntilNextClaim`: `string`; `ubiPeriodDay`: `string`; `whitelistedRoot`: `` `0x${string}` `` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:158](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/gooddollar.service.ts#L158)
+Defined in: [src/services/gooddollar.service.ts:158](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/gooddollar.service.ts#L158)
 
 Daily UBI claim eligibility for a wallet against UBISchemeV2 on Celo.
 Resolves connected wallets via Identity `getWhitelistedRoot`.
@@ -55,7 +55,7 @@ Resolves connected wallets via Identity `getWhitelistedRoot`.
 
 > **getWhitelistingInfo**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `contract`: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`; `fieldDescriptions`: \{ `lastAuthenticatedOn`: `string`; `whitelistedOn`: `string`; \}; `identity`: \{ `authCount`: `number`; `dateAdded`: `number`; `dateAuthenticated`: `number`; `did`: `string`; `status`: `number`; `whitelistedOnChainId`: `number`; \}; `isCurrentlyWhitelisted`: `boolean`; `lastAuthenticatedOn`: `string` \| `null`; `reverification`: \{ `currentReverificationPeriodDays`: `number`; `daysSinceLastAuthentication`: `number`; `daysUntilReverificationRequired`: `number`; `isReverificationOverdue`: `boolean`; `maxReverificationPeriodDays`: `number`; `reverificationProgressPercent`: `number`; `reverificationRequiredOn`: `string`; \} \| `null`; `status`: `number`; `statusLabel`: `string`; `whitelistedOn`: `string` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/gooddollar.service.ts#L61)
+Defined in: [src/services/gooddollar.service.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/gooddollar.service.ts#L61)
 
 GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
 
@@ -79,7 +79,7 @@ On-chain status, whitelist dates, field descriptions, and reverification timelin
 
 > **prepareClaimUbi**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/gooddollar.service.ts:332](https://github.com/andrewkimjoseph/celina-sdk/blob/66d378efc4d326c1d282d6fbce18abc9daeb353d/src/services/gooddollar.service.ts#L332)
+Defined in: [src/services/gooddollar.service.ts:332](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/services/gooddollar.service.ts#L332)
 
 Build an unsigned UBISchemeV2 `claim()` transaction for daily G$ UBI.
 Validates whitelist, entitlement, and simulates gas before returning steps.
