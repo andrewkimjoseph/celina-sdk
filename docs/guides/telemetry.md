@@ -16,6 +16,8 @@ Telemetry is **on** for server-side use (MCP, your app's API routes, scripts) un
 
 Browser bundles that import the SDK do not load the Amplitude Node client and do not send events.
 
+On **serverless** hosts (Vercel, AWS Lambda), the SDK **flushes** after each tracked read so events are not dropped when the function freezes at response end. For long streaming handlers you can also call `flushCelinaAnalytics()` from `next/server` `after()` as a safety net.
+
 ## Opt out
 
 **Environment (recommended for production privacy):**
