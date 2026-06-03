@@ -58,11 +58,26 @@ export function trackMcpTool(eventName: string, config: SdkConfig): void {
         return;
       }
       const amplitude = await import("@amplitude/analytics-node");
-      amplitude.track(eventName, undefined, {
+      await amplitude.track(eventName, undefined, {
         device_id: resolveDeviceId(config),
-      });
+      }).promise;
+      // Serverless (Vercel, Lambda) freezes when the handler returns unless we flush.
+      await amplitude.flush().promise;
     } catch {
       // telemetry must not break SDK reads
     }
   })();
+}
+
+/** Await any queued Amplitude events (e.g. end of a Next.js route via `after()`). */
+export async function flushCelinaAnalytics(): Promise<void> {
+  if (!initialized) {
+    return;
+  }
+  try {
+    const amplitude = await import("@amplitude/analytics-node");
+    await amplitude.flush().promise;
+  } catch {
+    // ignore flush failures
+  }
 }
