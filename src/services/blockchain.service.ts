@@ -3,6 +3,60 @@
  */
 import type { CeloClientFactory } from "../clients/celo-client.js";
 
+type TransactionSummaryInput = {
+  hash: `0x${string}`;
+  from: `0x${string}`;
+  to: `0x${string}` | null;
+  value: bigint;
+  nonce: number;
+  gas: bigint;
+  gasPrice?: bigint | null;
+  input: `0x${string}`;
+  blockNumber?: bigint | null;
+  transactionIndex?: number | null;
+  type?: string;
+};
+
+function serializeTransactionSummary(
+  tx: TransactionSummaryInput,
+  extras?: {
+    gasUsed: bigint;
+    status?: string;
+  },
+) {
+  const base = {
+    hash: tx.hash,
+    from: tx.from,
+    to: tx.to,
+    value: tx.value.toString(),
+    valueCelo: Number(tx.value) / 1e18,
+    nonce: tx.nonce,
+    gas: tx.gas.toString(),
+    gasPrice: tx.gasPrice?.toString(),
+    gasPriceGwei: tx.gasPrice ? Number(tx.gasPrice) / 1e9 : undefined,
+    input: tx.input,
+    blockNumber: tx.blockNumber?.toString(),
+    transactionIndex: tx.transactionIndex,
+    type: tx.type,
+  };
+
+  if (!extras) {
+    return base;
+  }
+
+  const gasEfficiency =
+    tx.gas > 0n
+      ? Number((extras.gasUsed * 10000n) / tx.gas) / 100
+      : 0;
+
+  return {
+    ...base,
+    gasUsed: extras.gasUsed.toString(),
+    gasEfficiency,
+    ...(extras.status !== undefined ? { status: extras.status } : {}),
+  };
+}
+
 /** Celo mainnet block and transaction queries. */
 export class BlockchainService {
   constructor(private readonly clientFactory: CeloClientFactory) {}
@@ -45,16 +99,16 @@ export class BlockchainService {
       typeof blockId === "number"
         ? {
             blockNumber: BigInt(blockId),
-            includeTransactions: includeTransactions as false,
+            includeTransactions,
           }
         : blockId === "latest" || blockId === "pending"
           ? {
               blockTag: blockId as "latest" | "pending",
-              includeTransactions: includeTransactions as false,
+              includeTransactions,
             }
           : {
               blockHash: blockId as `0x${string}`,
-              includeTransactions: includeTransactions as false,
+              includeTransactions,
             };
 
     const block = await client.getBlock(blockParams);
@@ -78,7 +132,13 @@ export class BlockchainService {
       gasUtilization,
       miner: block.miner,
       transactionCount: block.transactions.length,
-      transactions: includeTransactions ? block.transactions : undefined,
+      transactions: includeTransactions
+        ? block.transactions.map((tx) =>
+            typeof tx === "string"
+              ? tx
+              : serializeTransactionSummary(tx as TransactionSummaryInput),
+          )
+        : undefined,
     };
   }
 
@@ -135,25 +195,9 @@ export class BlockchainService {
       throw new Error(`Transaction not found: ${hash}`);
     }
 
-    const gasUsed = receipt?.gasUsed ?? 0n;
-    const gasEfficiency =
-      tx.gas > 0n ? Number((gasUsed * 10000n) / tx.gas) / 100 : 0;
-
-    return {
-      hash: tx.hash,
-      from: tx.from,
-      to: tx.to,
-      value: tx.value.toString(),
-      valueCelo: Number(tx.value) / 1e18,
-      nonce: tx.nonce,
-      gas: tx.gas.toString(),
-      gasUsed: gasUsed.toString(),
-      gasEfficiency,
-      gasPrice: tx.gasPrice?.toString(),
-      gasPriceGwei: tx.gasPrice ? Number(tx.gasPrice) / 1e9 : undefined,
-      input: tx.input,
-      blockNumber: tx.blockNumber?.toString(),
+    return serializeTransactionSummary(tx as TransactionSummaryInput, {
+      gasUsed: receipt?.gasUsed ?? 0n,
       status: receipt?.status,
-    };
+    });
   }
 }

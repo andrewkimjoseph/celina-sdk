@@ -6,6 +6,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "account.getAccount": "get_account",
   "account.getWalletAddress": "get_wallet_address",
   "blockchain.getBlock": "get_block",
+  "blockchain.getBlockWithTransactions": "get_block",
   "blockchain.getLatestBlocks": "get_latest_blocks",
   "blockchain.getNetworkStatus": "get_network_status",
   "blockchain.getTransaction": "get_transaction",

@@ -43,6 +43,30 @@ export const blockchainOperations: OperationSpec[] = [
     },
   },
   {
+    id: "blockchain.getBlockWithTransactions",
+    domain: "blockchain",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) =>
+        client.blockchain.getBlock(Number(fx.latestBlockNumber), {
+          includeTransactions: true,
+        }),
+    },
+    mcp: {
+      tool: "get_block",
+      arguments: (fx) => ({
+        blockId: Number(fx.latestBlockNumber),
+        includeTransactions: true,
+      }),
+    },
+    assert: (result) => {
+      const obj = assertHasKeys(result, ["number", "hash", "transactions"]);
+      expect(() => JSON.stringify(result)).not.toThrow();
+      const txs = assertArray(obj.transactions);
+      expect(txs.length).toBeGreaterThan(0);
+    },
+  },
+  {
     id: "blockchain.getLatestBlocks",
     domain: "blockchain",
     layer: "read",
