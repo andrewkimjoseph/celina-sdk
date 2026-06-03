@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../assets/celina-banner.png" alt="Celina — Give your LLM a wallet on Celo">
+</p>
+
 # Celina operations test framework
 
 Live Celo mainnet smoke tests driven by a single operation catalog in `tests/catalog/operations.ts`. Add one `OperationSpec` when you ship a new SDK method or MCP tool.

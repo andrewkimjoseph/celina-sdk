@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../assets/celina-banner.png" alt="Celina — Give your LLM a wallet on Celo">
+</p>
+
 # Celina SDK
 
 **`@andrewkimjoseph/celina-sdk@0.4.8`** — Celo mainnet library for frontend apps: **reads** and **unsigned transaction preparation** (no private keys).
