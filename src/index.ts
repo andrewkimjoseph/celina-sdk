@@ -176,3 +176,4 @@ export {
   type SelfSessionLinks,
 } from "./utils/self-format.js";
 export { clearSelfSessionsForTests } from "./services/self-session-store.js";
+export { flushCelinaAnalytics } from "./analytics/amplitude.js";
