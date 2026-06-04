@@ -1,0 +1,153 @@
+import { z } from "zod";
+import {
+  addressOrEnsSchema,
+  addressSchema,
+  hexDataSchema,
+  optionalWalletAddressSchema,
+  tokenSymbolSchema,
+} from "../schemas/common.js";
+import type { ToolDefinition } from "../types.js";
+import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
+import { resolveWalletFromRuntime } from "../utils/wallet.js";
+
+export const transactionToolDefinitions: ToolDefinition[] = [
+  {
+    name: "estimate_send",
+    description:
+      "Estimates gas for sending CELO or an ERC-20. Recipient can be ENS.",
+    inputSchema: z.object({
+      to: addressOrEnsSchema,
+      token: tokenSymbolSchema.optional(),
+      amount: z.string(),
+      from: optionalWalletAddressSchema,
+    }),
+    families: ["read"],
+    mcp: { title: "Estimate Send", annotations: { readOnlyHint: true } },
+    handler: async (runtime, input) => {
+      const { address, ens } = await runtime.celina.ens.resolveAddressOrEns(
+        input.to as string,
+      );
+      const token = normalizeRegistryTokenInput(
+        (input.token as string | undefined) ?? "CELO",
+      );
+      const amount = input.amount as string;
+      if (runtime.executors?.transaction) {
+        const estimate = await runtime.executors.transaction.estimateSend(
+          address,
+          token,
+          amount,
+        );
+        if (ens) {
+          return Object.assign({}, estimate, { ens });
+        }
+        return estimate;
+      }
+      const sender = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+        address: input.from as string | undefined,
+      });
+      const estimate = await runtime.celina.transaction.estimateSend(
+        sender,
+        address,
+        token,
+        amount,
+      );
+      return ens ? { ...estimate, ens } : estimate;
+    },
+  },
+  {
+    name: "send_token",
+    description:
+      "Send CELO or an ERC-20 on mainnet. Requires CELO_PRIVATE_KEY in MCP server env.",
+    inputSchema: z.object({
+      to: addressOrEnsSchema,
+      token: tokenSymbolSchema.optional(),
+      amount: z.string(),
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    mcp: {
+      title: "Send Token",
+      annotations: { destructiveHint: true, openWorldHint: true },
+    },
+    handler: async (runtime, input) => {
+      const tx = runtime.executors?.transaction;
+      if (!tx) throw new Error("Transaction executor not configured.");
+      const { address, ens } = await runtime.celina.ens.resolveAddressOrEns(
+        input.to as string,
+      );
+      const result = await tx.sendToken(
+        address,
+        normalizeRegistryTokenInput((input.token as string | undefined) ?? "CELO"),
+        input.amount as string,
+      );
+      return ens ? Object.assign({}, result, { ens }) : result;
+    },
+  },
+  {
+    name: "prepare_send",
+    description:
+      "Prepare an unsigned send transaction. User must confirm and sign in wallet.",
+    inputSchema: z.object({
+      to: addressOrEnsSchema,
+      token: z.string(),
+      amount: z.string(),
+      from: optionalWalletAddressSchema,
+    }),
+    families: ["prepare"],
+    surfaces: ["celeste"],
+    handler: async (runtime, input) => {
+      const sender = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      const token = normalizeRegistryTokenInput(input.token as string);
+      const amount = input.amount as string;
+      await runtime.hooks?.beforePrepareSend?.({ sender, token, amount });
+      const { address } = await runtime.celina.ens.resolveAddressOrEns(
+        input.to as string,
+      );
+      return runtime.celina.transaction.prepareSend(
+        sender,
+        address,
+        token,
+        amount,
+      );
+    },
+  },
+  {
+    name: "get_gas_fee_data",
+    description: "Returns current gas fee data including EIP-1559 fees on mainnet.",
+    inputSchema: z.object({}),
+    families: ["read"],
+    mcp: {
+      title: "Get Gas Fee Data",
+      annotations: { readOnlyHint: true, idempotentHint: true },
+    },
+    handler: async (runtime) => runtime.celina.transaction.getGasFeeData(),
+  },
+  {
+    name: "estimate_transaction",
+    description:
+      "Estimates gas for a generic transaction (to/value/data) from a wallet.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+      to: addressSchema,
+      value: z.string().optional(),
+      data: hexDataSchema,
+    }),
+    families: ["read"],
+    mcp: { title: "Estimate Transaction", annotations: { readOnlyHint: true } },
+    handler: async (runtime, input) => {
+      const sender = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+        address: input.from as string | undefined,
+      });
+      return runtime.celina.transaction.estimateTransaction({
+        from: sender,
+        to: input.to as `0x${string}`,
+        value: input.value as string | undefined,
+        data: input.data as `0x${string}` | undefined,
+      });
+    },
+  },
+];
