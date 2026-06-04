@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.4.12",
+  "version": "0.5.0",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -16,6 +16,11 @@
       "types": "./tests/testing-entry.ts",
       "import": "./tests/testing-entry.ts",
       "default": "./tests/testing-entry.ts"
+    },
+    "./tools": {
+      "types": "./build/tools/index.d.ts",
+      "import": "./build/tools/index.js",
+      "default": "./build/tools/index.js"
     }
   },
   "files": [
@@ -69,6 +74,7 @@
   },
   "homepage": "https://andrewkimjoseph.gitbook.io/celina-sdk",
   "dependencies": {
+    "zod": "^3.24.3",
     "@amplitude/analytics-node": "^1.5.21",
     "@noble/ed25519": "^3.1.0",
     "@bancor/carbon-sdk": "0.0.130-DEV",
