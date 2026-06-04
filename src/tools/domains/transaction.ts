@@ -95,7 +95,7 @@ export const transactionToolDefinitions: ToolDefinition[] = [
       from: optionalWalletAddressSchema,
     }),
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,

@@ -2,7 +2,7 @@ export {
   ALL_TOOL_DEFINITIONS,
   getToolNames,
   getMcpToolNames,
-  getCelesteToolNames,
+  getBrowserToolNames,
   getToolsByFamily,
   getToolDefinition,
   validateToolCatalogSnakeCase,

@@ -2,7 +2,7 @@ import type { z } from "zod";
 import type { CelinaClient } from "../index.js";
 import type { CarbonWriteBody } from "../services/carbon.service.js";
 
-export type ToolSurface = "mcp" | "celeste";
+export type ToolSurface = "mcp" | "browser";
 export type ToolFamily = "read" | "prepare" | "execute";
 
 export type WalletInput = {

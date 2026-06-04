@@ -67,7 +67,7 @@ export const aaveToolDefinitions: ToolDefinition[] = [
       from: optionalWalletAddressSchema,
     }),
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,
@@ -90,7 +90,7 @@ export const aaveToolDefinitions: ToolDefinition[] = [
       from: optionalWalletAddressSchema,
     }),
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,

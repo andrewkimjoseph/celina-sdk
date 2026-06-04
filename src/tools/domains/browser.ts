@@ -9,7 +9,7 @@ import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
 import { resolveWalletFromRuntime } from "../utils/wallet.js";
 
-export const celesteToolDefinitions: ToolDefinition[] = [
+export const browserToolDefinitions: ToolDefinition[] = [
   {
     name: "get_swap_quote",
     description:
@@ -20,7 +20,7 @@ export const celesteToolDefinitions: ToolDefinition[] = [
       amount: z.string(),
     }),
     families: ["read"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const from = resolveWalletFromRuntime(runtime, {});
       return getSwapQuoteWithFallback(
@@ -40,7 +40,7 @@ export const celesteToolDefinitions: ToolDefinition[] = [
       protocol: z.enum(["mento_fx", "uniswap_v4"]).optional(),
     }),
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,

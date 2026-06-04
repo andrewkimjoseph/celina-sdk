@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   ALL_TOOL_DEFINITIONS,
-  getCelesteToolNames,
+  getBrowserToolNames,
   getMcpToolNames,
   validateToolCatalogSnakeCase,
 } from "../../src/tools/catalog.js";
@@ -11,11 +11,11 @@ describe("tools catalog", () => {
     expect(() => validateToolCatalogSnakeCase()).not.toThrow();
   });
 
-  it("exposes MCP and Celeste surfaces", () => {
+  it("exposes MCP and browser surfaces", () => {
     expect(getMcpToolNames().length).toBeGreaterThan(50);
-    expect(getCelesteToolNames().length).toBeGreaterThan(30);
-    expect(getCelesteToolNames()).toContain("get_swap_quote");
-    expect(getCelesteToolNames()).not.toContain("send_token");
+    expect(getBrowserToolNames().length).toBeGreaterThan(30);
+    expect(getBrowserToolNames()).toContain("get_swap_quote");
+    expect(getBrowserToolNames()).not.toContain("send_token");
   });
 
   it("has unique tool names", () => {

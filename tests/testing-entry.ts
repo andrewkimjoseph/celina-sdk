@@ -12,7 +12,7 @@ export {
 export {
   ALL_TOOL_DEFINITIONS,
   getMcpToolNames,
-  getCelesteToolNames,
+  getBrowserToolNames,
 } from "../src/tools/catalog.js";
 export { getMainnetFixtures, type MainnetFixtures } from "./fixtures/mainnet.js";
 export {

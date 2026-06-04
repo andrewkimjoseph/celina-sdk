@@ -1,7 +1,7 @@
 import { aaveToolDefinitions } from "./aave.js";
 import { blockchainToolDefinitions } from "./blockchain.js";
 import { carbonToolDefinitions } from "./carbon.js";
-import { celesteToolDefinitions } from "./celeste.js";
+import { browserToolDefinitions } from "./browser.js";
 import { contractToolDefinitions } from "./contract.js";
 import { ensToolDefinitions } from "./ens.js";
 import { gooddollarToolDefinitions } from "./gooddollar.js";
@@ -29,5 +29,5 @@ export const allDomainToolDefinitions = [
   ...contractToolDefinitions,
   ...selfToolDefinitions,
   ...carbonToolDefinitions,
-  ...celesteToolDefinitions,
+  ...browserToolDefinitions,
 ];

@@ -9,7 +9,7 @@ export function filterToolDefinitions(
 ): ToolDefinition[] {
   return definitions.filter((def) => {
     if (options.surface) {
-      const surfaces = def.surfaces ?? ["mcp", "celeste"];
+      const surfaces = def.surfaces ?? ["mcp", "browser"];
       if (!surfaces.includes(options.surface)) {
         return false;
       }

@@ -14,10 +14,10 @@ export function getMcpToolNames(
   return getToolNames({ ...options, surface: "mcp" });
 }
 
-export function getCelesteToolNames(
+export function getBrowserToolNames(
   options: Omit<FilterToolsOptions, "surface"> = {},
 ): string[] {
-  return getToolNames({ ...options, surface: "celeste" });
+  return getToolNames({ ...options, surface: "browser" });
 }
 
 export function getToolsByFamily(family: ToolFamily): ToolDefinition[] {

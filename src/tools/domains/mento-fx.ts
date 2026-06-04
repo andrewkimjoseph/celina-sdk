@@ -88,7 +88,7 @@ export const mentoFxToolDefinitions: ToolDefinition[] = [
       "Prepare Mento FX swap only. For general swaps after get_swap_quote, use prepare_swap.",
     inputSchema: mentoFxWalletSchema,
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,

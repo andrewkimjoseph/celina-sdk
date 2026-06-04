@@ -88,7 +88,7 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
       "Prepare Uniswap v4 swap only. Prefer prepare_swap after get_swap_quote for automatic routing.",
     inputSchema: uniswapWalletSchema,
     families: ["prepare"],
-    surfaces: ["celeste"],
+    surfaces: ["browser"],
     handler: async (runtime, input) => {
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,
