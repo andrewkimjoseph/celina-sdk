@@ -16,6 +16,7 @@ import {
 } from "./domains/chain-ext.js";
 import { selfOperations } from "./domains/self.js";
 import { carbonOperations } from "./domains/carbon.js";
+import { getMcpToolNames } from "../../src/tools/catalog.js";
 import type { OperationSpec } from "./types.js";
 
 export const OPERATIONS: OperationSpec[] = [
@@ -45,4 +46,13 @@ export const SDK_OPERATIONS = OPERATIONS.filter(
     Boolean(spec.sdk),
 );
 
-export const MCP_TOOL_NAMES = MCP_OPERATIONS.map((spec) => spec.mcp.tool);
+/** MCP tool names from the SDK tools catalog (stdio: prepare + execute Carbon). */
+export const MCP_TOOL_NAMES = getMcpToolNames({
+  carbonPrepareEnabled: true,
+  carbonExecuteEnabled: true,
+});
+
+/** @deprecated Use MCP_TOOL_NAMES — kept for tests that import the operations-derived list. */
+export const MCP_TOOL_NAMES_FROM_OPERATIONS = MCP_OPERATIONS.map(
+  (spec) => spec.mcp.tool,
+);

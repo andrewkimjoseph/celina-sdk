@@ -9,6 +9,11 @@ export {
   OPERATIONS,
   SDK_OPERATIONS,
 } from "./catalog/operations.js";
+export {
+  ALL_TOOL_DEFINITIONS,
+  getMcpToolNames,
+  getCelesteToolNames,
+} from "../src/tools/catalog.js";
 export { getMainnetFixtures, type MainnetFixtures } from "./fixtures/mainnet.js";
 export {
   allowsDestructiveTests,
