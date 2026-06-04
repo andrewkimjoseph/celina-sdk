@@ -32,7 +32,7 @@ export type ToolRuntimeHooks = {
     amount: string;
   }) => Promise<void>;
   carbon?: {
-    validateBody?: (toolName: string, body: Record<string, unknown>) => void;
+    validateBody?: (toolName: string, body: CarbonWriteBody) => void;
     prepare?: (
       toolName: string,
       sender: `0x${string}`,
