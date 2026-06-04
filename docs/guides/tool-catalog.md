@@ -145,7 +145,7 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 ## Sample app (Celeste AI)
 
-[Celeste AI](https://github.com/andrewkimjoseph/onchain-agents-hackathon/tree/main/celeste-ai) is a reference Next.js chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight, Carbon market-price fallback, `finalizeCarbonPrepare` via `hooks.carbon`). It is not part of the SDK surface types.
+[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) is a reference Next.js chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight, Carbon market-price fallback, `finalizeCarbonPrepare` via `hooks.carbon`). It is not part of the SDK surface types.
 
 ## Adding a new tool
 
