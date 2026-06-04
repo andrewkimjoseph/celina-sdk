@@ -63,6 +63,7 @@ See [MCP session wallet](../guides/mcp-session-wallet.md) and [Carbon DeFi](../g
 
 | Export | Purpose |
 |--------|---------|
+| `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
 | `finalizeCarbonPrepare` | Merge ERC-20 approve steps into Carbon `preparedFlow.steps` after REST prepare |
 | `buildCarbonExecutionSteps` | Build approve + Carbon controller steps for local signing (stdio `execute_carbon_*`) |
 | `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata |
@@ -95,6 +96,7 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | Path | Purpose |
 |------|---------|
 | `src/index.ts` | Public entry — `createCelinaClient()` and type exports |
+| `src/tools/` | LLM tool catalog — exported as `@andrewkimjoseph/celina-sdk/tools` |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
 | `src/config/` | Token registry, Aave/GoodDollar/Uniswap/Carbon constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |

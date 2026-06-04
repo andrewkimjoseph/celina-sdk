@@ -15,6 +15,7 @@
 
 ## Guides
 
+* [LLM tool catalog](guides/tool-catalog.md)
 * [wagmi integration](guides/wagmi-integration.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)

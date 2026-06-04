@@ -60,7 +60,7 @@ const flow = await celina.transaction.prepareSend("0xFrom", "0xTo", "USDm", "10"
 // flow.steps → wagmi sendTransaction
 ```
 
-See [Quick start](getting-started/quick-start.md) and [wagmi integration](guides/wagmi-integration.md).
+See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/tool-catalog.md) (MCP / Vercel AI SDK), and [wagmi integration](guides/wagmi-integration.md).
 
 ## API overview
 

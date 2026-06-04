@@ -28,11 +28,16 @@ npm i @andrewkimjoseph/celina-sdk
 
 Requires Node.js ≥ 20.
 
+### LLM tool catalog (v0.5+)
+
+For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definitions from `@andrewkimjoseph/celina-sdk/tools` instead of redefining schemas. See [LLM tool catalog](docs/guides/tool-catalog.md) — includes the recommended **`dynamicTool`** pattern so TypeScript does not OOM on large tool sets.
+
 ## Documentation
 
 **Full docs:** [celina-sdk on GitBook](https://andrewkimjoseph.gitbook.io/celina-sdk)
 
 - [Quick start](https://andrewkimjoseph.gitbook.io/celina-sdk/getting-started/quick-start)
+- [LLM tool catalog](docs/guides/tool-catalog.md) — `@andrewkimjoseph/celina-sdk/tools` for MCP and AI SDK hosts
 - [Architecture](docs/concepts/architecture.md) — client composition and stack
 - [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow`, CELINA calldata tag
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
