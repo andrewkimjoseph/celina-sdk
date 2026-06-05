@@ -31,7 +31,7 @@ export class EnsService {
 
   /**
    * Resolve an ENS name on Celo or Ethereum to an address.
-   * @param name - ENS name (e.g. `vitalik.eth`)
+   * @param name - ENS name (e.g. `andrewkimjoseph.celo.eth`)
    * @param chain - `"celo"` tries Celo coin type first, then Ethereum; `"ethereum"` uses ETH only
    * @throws When no address record exists for the name
    */

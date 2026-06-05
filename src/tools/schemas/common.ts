@@ -31,7 +31,7 @@ export const tokenSymbolSchema = z
 export const ensNameSchema = z
   .string()
   .min(3)
-  .describe("ENS name, e.g. celina.eth or vitalik.eth");
+  .describe("ENS name, e.g. celina.eth or andrewkimjoseph.celo.eth");
 
 export const tokenIdSchema = z.string().describe("NFT token ID (decimal string)");
 

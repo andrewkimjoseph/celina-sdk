@@ -66,7 +66,7 @@ Resolve an ENS name on Celo or Ethereum to an address.
 
 `string`
 
-ENS name (e.g. `vitalik.eth`)
+ENS name (e.g. `andrewkimjoseph.celo.eth`)
 
 ##### chain?
 
