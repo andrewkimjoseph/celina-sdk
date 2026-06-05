@@ -75,7 +75,7 @@ const { preparedFlow, warnings, deep_link } = await finalizeCarbonPrepare(
   { direction: "buy", /* order metadata for allowance checks */ },
 );
 
-// preparedFlow.steps → wagmi sendTransaction (approve + Carbon controller steps)
+// preparedFlow.steps → wagmi sendTransactionAsync (approve + Carbon controller steps)
 // warnings → always surface to the user
 // deep_link → optional Carbon UI reference URL (not required for signing)
 ```

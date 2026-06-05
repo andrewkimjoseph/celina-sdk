@@ -21,7 +21,7 @@ export interface PreparedFlow {
 
 /**
  * JSON-safe prepared flow returned by prepare* tools and chat APIs.
- * Consumers (celina-agent TxConfirmCard, wagmi) iterate steps and call sendTransaction.
+ * Consumers (celina-agent TxConfirmCard, wagmi) iterate steps and call sendTransactionAsync (wagmi) or walletClient.sendTransaction (viem).
  */
 export interface SerializedPreparedFlow extends Omit<PreparedFlow, "steps"> {
   steps: PreparedTx[];

@@ -8,7 +8,7 @@
 
 > **FinalizedCarbonPrepareFlow** = [`SerializedPreparedFlow`](../../types/prepared/interfaces/SerializedPreparedFlow.md) & `object`
 
-Defined in: [src/utils/finalize-carbon-prepare.ts:5](https://github.com/andrewkimjoseph/celina-sdk/blob/c8c0fb8f17b5cd5514c6ff9cfdad7b0056765f2d/src/utils/finalize-carbon-prepare.ts#L5)
+Defined in: [src/utils/finalize-carbon-prepare.ts:5](https://github.com/andrewkimjoseph/celina-sdk/blob/67a333d41ec6cd2ab956b67bd79f4d0fc23c254b/src/utils/finalize-carbon-prepare.ts#L5)
 
 ## Type Declaration
 

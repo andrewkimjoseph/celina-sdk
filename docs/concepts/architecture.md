@@ -23,7 +23,7 @@ flowchart LR
   sdk -->|reads| rpc
   app -->|prepareSend etc.| sdk
   sdk -->|SerializedPreparedFlow| app
-  app -->|sendTransaction| wallet
+  app -->|sendTransactionAsync| wallet
   wallet -->|signed tx| rpc
 ```
 

@@ -58,7 +58,7 @@ await celina.token.getStablecoinBalances("0xYourAddress");
 await celina.mentoFx.getFxQuote("USDm", "EURm", "100");
 
 const flow = await celina.transaction.prepareSend("0xFrom", "0xTo", "USDm", "10");
-// flow.steps → wagmi sendTransaction
+// flow.steps → wagmi sendTransactionAsync
 ```
 
 For agent hosts, import the shared catalog:

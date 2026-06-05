@@ -95,7 +95,7 @@ export class TransactionService {
    * @param to - Recipient address
    * @param token - Symbol or contract address
    * @param amount - Human-readable amount
-   * @returns Single-step `SerializedPreparedFlow` for wagmi `sendTransaction`
+   * @returns Single-step `SerializedPreparedFlow` for wagmi `sendTransactionAsync`
    */
   async prepareSend(
     from: `0x${string}`,

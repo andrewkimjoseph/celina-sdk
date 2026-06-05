@@ -2,6 +2,18 @@
 
 Celina SDK prepares unsigned transactions. wagmi signs and broadcasts them from the user's wallet.
 
+## Why `sendTransactionAsync`?
+
+Use **`sendTransactionAsync`** from `useSendTransaction()`, not `sendTransaction`. Celina prepared flows are often multi-step (approve → action), and each step needs:
+
+- an **awaitable hash** to track progress and pass to `waitForTransactionReceipt`
+- **sequential signing** — wait for confirmation before the next step
+- **`try/catch`** when the user rejects in their wallet
+
+`sendTransaction` (non-async) is callback/state-oriented and does not return a hash from the call site, so it is a poor fit for looping over `flow.steps`.
+
+If you use viem directly (no wagmi hook), the same step shape maps to **`walletClient.sendTransaction`** — see [viem without wagmi](#viem-without-wagmi) below.
+
 ## Basic pattern
 
 ```ts

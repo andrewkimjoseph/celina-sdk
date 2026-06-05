@@ -59,7 +59,7 @@ const celina = createCelinaClient();
 await celina.token.getStablecoinBalances("0xYourAddress");
 
 const flow = await celina.transaction.prepareSend("0xFrom", "0xTo", "USDm", "10");
-// flow.steps → pass to wagmi sendTransaction (calldata includes CELINA attribution suffix)
+// flow.steps → pass to wagmi sendTransactionAsync (calldata includes CELINA attribution suffix)
 
 // Carbon DeFi (reads + unsigned strategy/trade prep)
 const strategies = await celina.carbon.getStrategies("0xYourAddress");

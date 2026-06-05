@@ -43,7 +43,7 @@ console.log(flow.steps.length);
 
 ## 4. Sign with wagmi
 
-Pass each step to wagmi's `sendTransaction`:
+Pass each step to wagmi's `sendTransactionAsync`:
 
 ```ts
 import { useSendTransaction } from "wagmi";
