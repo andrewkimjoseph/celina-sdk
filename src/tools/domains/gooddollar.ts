@@ -1,6 +1,11 @@
 import { z } from "zod";
-import { optionalWalletAddressSchema } from "../schemas/common.js";
+import {
+  goodDollarReserveQuoteSchema,
+  goodDollarReserveWalletSchema,
+  optionalWalletAddressSchema,
+} from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
+import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
 import { resolveWalletFromRuntime } from "../utils/wallet.js";
 
 const readOnly = {
@@ -73,6 +78,48 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
         from: input.from as string | undefined,
       });
       return runtime.celina.gooddollar.prepareClaimUbi(sender);
+    },
+  },
+  {
+    name: "get_gooddollar_reserve_quote",
+    description:
+      "GoodDollar reserve quote for G$ ↔ USDm on Celo (MentoBroker bonding curve).",
+    inputSchema: goodDollarReserveQuoteSchema,
+    families: ["read"],
+    mcp: { title: "Get GoodDollar Reserve Quote", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const from = input.from
+        ? resolveWalletFromRuntime(runtime, { from: input.from as string })
+        : undefined;
+      return runtime.celina.gooddollar.getReserveQuote(
+        normalizeRegistryTokenInput(input.token_in as string),
+        normalizeRegistryTokenInput(input.token_out as string),
+        input.amount as string,
+        from,
+      );
+    },
+  },
+  {
+    name: "prepare_gooddollar_reserve_swap",
+    description:
+      "Prepare unsigned GoodDollar reserve swap for G$ ↔ USDm. User must sign in wallet.",
+    inputSchema: goodDollarReserveWalletSchema,
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const sender = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.gooddollar.prepareReserveSwap(
+        sender,
+        normalizeRegistryTokenInput(input.token_in as string),
+        normalizeRegistryTokenInput(input.token_out as string),
+        input.amount as string,
+        {
+          recipient: input.recipient as `0x${string}` | undefined,
+          slippageTolerance: input.slippage_tolerance as number | undefined,
+        },
+      );
     },
   },
 ];

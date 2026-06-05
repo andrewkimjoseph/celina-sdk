@@ -97,3 +97,15 @@ export const uniswapWalletSchema = uniswapQuoteSchema.extend({
   slippage_tolerance: z.number().min(0).max(20).optional(),
   deadline_minutes: z.number().int().positive().optional(),
 });
+
+export const goodDollarReserveQuoteSchema = z.object({
+  token_in: tokenSymbolSchema.describe("GoodDollar or G$"),
+  token_out: tokenSymbolSchema.describe("USDm or cUSD"),
+  amount: z.string().describe("Human-readable amount of token_in"),
+  from: optionalWalletAddressSchema,
+});
+
+export const goodDollarReserveWalletSchema = goodDollarReserveQuoteSchema.extend({
+  recipient: addressSchema.optional(),
+  slippage_tolerance: z.number().min(0).max(20).optional(),
+});
