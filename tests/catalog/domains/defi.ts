@@ -1,5 +1,7 @@
 import type { OperationSpec } from "../types.js";
 import { assertHasKeys } from "../../helpers/assert.js";
+import { getSwapQuoteWithFallback } from "../../../src/tools/swap-routing.js";
+import { GOODDOLLAR_MENTO_BROKER } from "../../../src/config/gooddollar.js";
 
 function fromAddress(fx: Parameters<OperationSpec["assert"]>[1]): `0x${string}` {
   return fx.signerAddress ?? fx.wallet;
@@ -310,4 +312,137 @@ export const gooddollarOperations: OperationSpec[] = [
       assertHasKeys(result, ["hash"]);
     },
   },
+  {
+    id: "gooddollar.getReserveQuote.sell",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.gooddollar.getReserveQuote("GoodDollar", "USDm", "1000"),
+    },
+    mcp: {
+      tool: "get_gooddollar_reserve_quote",
+      arguments: () => ({
+        token_in: "GoodDollar",
+        token_out: "USDm",
+        amount: "1000",
+      }),
+    },
+    assert: (result) => {
+      const quote = result as { protocol?: string; expectedOut?: string };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+      if (parseExpectedOut(quote.expectedOut) <= 0) {
+        throw new Error("Expected positive reserve output for G$ → USDm");
+      }
+    },
+  },
+  {
+    id: "gooddollar.getReserveQuote.buy",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.gooddollar.getReserveQuote("USDm", "GoodDollar", "100"),
+    },
+    mcp: {
+      tool: "get_gooddollar_reserve_quote",
+      arguments: () => ({
+        token_in: "USDm",
+        token_out: "GoodDollar",
+        amount: "100",
+      }),
+    },
+    assert: (result) => {
+      const quote = result as { protocol?: string; expectedOut?: string };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+      if (parseExpectedOut(quote.expectedOut) <= 1000) {
+        throw new Error("Expected reserve to return substantially more G$ than Uniswap");
+      }
+    },
+  },
+  {
+    id: "swap.getSwapQuoteWithFallback.gdUsd",
+    domain: "swap",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        getSwapQuoteWithFallback(client, "GoodDollar", "USDm", "1000"),
+    },
+    assert: (result) => {
+      const quote = result as { protocol?: string };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+    },
+  },
+  {
+    id: "swap.getSwapQuoteWithFallback.usdGd",
+    domain: "swap",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        getSwapQuoteWithFallback(client, "USDm", "GoodDollar", "100"),
+    },
+    assert: (result) => {
+      const quote = result as { protocol?: string };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+    },
+  },
+  {
+    id: "gooddollar.prepareReserveSwap.sell",
+    domain: "gooddollar",
+    layer: "prepare",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.prepareReserveSwap(
+          fromAddress(fx),
+          "GoodDollar",
+          "USDm",
+          "1000",
+        ),
+    },
+    assert: (result) => {
+      const flow = result as { steps?: Array<{ to?: string }> };
+      assertHasKeys(result, ["from", "steps"]);
+      const last = flow.steps?.at(-1);
+      if (last?.to?.toLowerCase() !== GOODDOLLAR_MENTO_BROKER.toLowerCase()) {
+        throw new Error("Expected final reserve swap step to target MentoBroker");
+      }
+    },
+  },
+  {
+    id: "gooddollar.prepareReserveSwap.buy",
+    domain: "gooddollar",
+    layer: "prepare",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.prepareReserveSwap(
+          fromAddress(fx),
+          "USDm",
+          "GoodDollar",
+          "10",
+        ),
+    },
+    assert: (result) => {
+      const flow = result as { steps?: Array<{ to?: string }> };
+      assertHasKeys(result, ["from", "steps"]);
+      const last = flow.steps?.at(-1);
+      if (last?.to?.toLowerCase() !== GOODDOLLAR_MENTO_BROKER.toLowerCase()) {
+        throw new Error("Expected final reserve swap step to target MentoBroker");
+      }
+    },
+  },
 ];
+
+function parseExpectedOut(value: string | undefined): number {
+  const n = Number(String(value ?? "").replace(/,/g, ""));
+  return Number.isFinite(n) ? n : 0;
+}
