@@ -1,20 +1,40 @@
 /**
- * GoodDollar IdentityV4 whitelist and reverification reads on Celo mainnet.
+ * GoodDollar IdentityV4 whitelist, reverification reads, UBI claims, and reserve swaps on Celo mainnet.
  */
-import { concat, encodeFunctionData, formatUnits, type Hex } from "viem";
+import {
+  concat,
+  encodeFunctionData,
+  erc20Abi,
+  formatUnits,
+  maxUint256,
+  type Hex,
+} from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { goodDollarBrokerAbi } from "../abis/gooddollar-broker.js";
 import { goodDollarIdentityAbi } from "../abis/gooddollar-identity.js";
 import { ubiSchemeAbi } from "../abis/ubi-scheme.js";
 import {
+  GOODDOLLAR_CUSD_EXCHANGE_ID,
   GOODDOLLAR_IDENTITY_ADDRESS,
+  GOODDOLLAR_MENTO_BROKER,
+  GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+  GOODDOLLAR_RESERVE_COLLATERAL,
+  GOODDOLLAR_TOKEN_ADDRESS,
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
+  isGoodDollarUsdReservePair,
 } from "../config/gooddollar.js";
 import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
 import {
   type PreparedFlow,
+  type PreparedTx,
   serializePreparedFlow,
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
+import {
+  ALLOWANCE_MAPPING_SLOTS,
+  erc20AllowanceStateOverride,
+} from "../utils/erc20-allowance-storage.js";
+import { TokenService, type ResolvedToken } from "./token.service.js";
 import { formatUnixDate } from "../utils/format-date.js";
 import { formatDuration } from "../utils/format-duration.js";
 import {
@@ -45,9 +65,49 @@ function taggedCalldata(data: Hex): Hex {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
-/** GoodDollar IdentityV4 whitelist, reverification, and daily UBI claim preparation. */
+/** Optional parameters for GoodDollar reserve swap prepares. */
+export interface GoodDollarReserveSwapParams {
+  /** Max slippage tolerance in percent (default `0.5`). */
+  slippageTolerance?: number;
+  /** Address receiving output tokens (default: `from`). */
+  recipient?: `0x${string}`;
+}
+
+const DEFAULT_RESERVE_SLIPPAGE = 0.5;
+
+function trimDisplayDecimals(value: string): string {
+  const num = Number(value);
+  if (!Number.isFinite(num)) {
+    return value;
+  }
+  if (Math.abs(num) >= 1000) {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }
+  if (Math.abs(num) >= 1) {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  }
+  return num.toLocaleString(undefined, { maximumSignificantDigits: 6 });
+}
+
+function applySlippage(amountOut: bigint, slippagePercent: number): bigint {
+  const bps = BigInt(Math.round(slippagePercent * 100));
+  return (amountOut * (10000n - bps)) / 10000n;
+}
+
+function tokenAddress(token: ResolvedToken): `0x${string}` {
+  if (token.address === "native") {
+    throw new Error(`${token.symbol} is native CELO; GoodDollar reserve swaps require ERC-20 tokens.`);
+  }
+  return token.address;
+}
+
+/** GoodDollar IdentityV4 whitelist, reverification, daily UBI claim, and reserve swap preparation. */
 export class GoodDollarService {
-  constructor(private readonly clientFactory: CeloClientFactory) {}
+  private readonly tokenService: TokenService;
+
+  constructor(private readonly clientFactory: CeloClientFactory) {
+    this.tokenService = new TokenService(clientFactory);
+  }
 
   private getPublicClient() {
     return this.clientFactory.getClients().public;
@@ -367,6 +427,270 @@ export class GoodDollarService {
           description: "Claim daily GoodDollar UBI",
         },
       ],
+    };
+
+    return serializePreparedFlow(flow);
+  }
+
+  private resolveReservePair(tokenIn: string, tokenOut: string) {
+    if (!isGoodDollarUsdReservePair(tokenIn, tokenOut)) {
+      throw new Error(
+        `No GoodDollar reserve route for ${tokenIn} → ${tokenOut}. Supported: GoodDollar ↔ USDm.`,
+      );
+    }
+
+    const resolvedIn = this.tokenService.resolveToken(tokenIn);
+    const resolvedOut = this.tokenService.resolveToken(tokenOut);
+    const tokenInAddr = tokenAddress(resolvedIn);
+    const tokenOutAddr = tokenAddress(resolvedOut);
+
+    const gdAddr = GOODDOLLAR_TOKEN_ADDRESS.toLowerCase();
+    const collateralAddr = GOODDOLLAR_RESERVE_COLLATERAL.toLowerCase();
+    const inLower = tokenInAddr.toLowerCase();
+    const outLower = tokenOutAddr.toLowerCase();
+
+    if (
+      !(
+        (inLower === gdAddr && outLower === collateralAddr) ||
+        (inLower === collateralAddr && outLower === gdAddr)
+      )
+    ) {
+      throw new Error(
+        `No GoodDollar reserve route for ${resolvedIn.symbol} → ${resolvedOut.symbol}.`,
+      );
+    }
+
+    return { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr };
+  }
+
+  private reserveOptions(params?: GoodDollarReserveSwapParams) {
+    return {
+      slippageTolerance: params?.slippageTolerance ?? DEFAULT_RESERVE_SLIPPAGE,
+    };
+  }
+
+  private baseReserveQuoteFields(
+    resolvedIn: ResolvedToken,
+    resolvedOut: ResolvedToken,
+    amount: string,
+    expectedOutWei: bigint,
+  ) {
+    return {
+      protocol: "gooddollar_reserve" as const,
+      network: "mainnet" as const,
+      tokenIn: resolvedIn.symbol,
+      tokenOut: resolvedOut.symbol,
+      amountIn: amount,
+      expectedOut: formatUnits(expectedOutWei, resolvedOut.decimals),
+      routeHops: 1,
+      broker: GOODDOLLAR_MENTO_BROKER,
+      exchangeProvider: GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+      exchangeId: GOODDOLLAR_CUSD_EXCHANGE_ID,
+    };
+  }
+
+  /**
+   * Expected GoodDollar reserve output for G$ ↔ USDm — no wallet required.
+   */
+  async getReserveQuote(
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    from?: `0x${string}`,
+  ) {
+    const { public: client } = this.clientFactory.getClients();
+    const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
+      this.resolveReservePair(tokenIn, tokenOut);
+    const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+
+    if (from) {
+      await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+        spendToken: tokenInAddr,
+      });
+    }
+
+    const expectedOutWei = await client.readContract({
+      address: GOODDOLLAR_MENTO_BROKER,
+      abi: goodDollarBrokerAbi,
+      functionName: "getAmountOut",
+      args: [
+        GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+        GOODDOLLAR_CUSD_EXCHANGE_ID,
+        tokenInAddr,
+        tokenOutAddr,
+        amountInWei,
+      ],
+    });
+
+    return this.baseReserveQuoteFields(
+      resolvedIn,
+      resolvedOut,
+      amount,
+      expectedOutWei,
+    );
+  }
+
+  private async buildReserveSwap(
+    from: `0x${string}`,
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    params?: GoodDollarReserveSwapParams,
+  ) {
+    const { public: client } = this.clientFactory.getClients();
+    const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
+      this.resolveReservePair(tokenIn, tokenOut);
+    const recipient = params?.recipient ?? from;
+    const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+    const { slippageTolerance } = this.reserveOptions(params);
+
+    await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+      spendToken: tokenInAddr,
+    });
+
+    const expectedOutWei = await client.readContract({
+      address: GOODDOLLAR_MENTO_BROKER,
+      abi: goodDollarBrokerAbi,
+      functionName: "getAmountOut",
+      args: [
+        GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+        GOODDOLLAR_CUSD_EXCHANGE_ID,
+        tokenInAddr,
+        tokenOutAddr,
+        amountInWei,
+      ],
+    });
+
+    const amountOutMin = applySlippage(expectedOutWei, slippageTolerance);
+
+    const swapData = taggedCalldata(
+      encodeFunctionData({
+        abi: goodDollarBrokerAbi,
+        functionName: "swapIn",
+        args: [
+          GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+          GOODDOLLAR_CUSD_EXCHANGE_ID,
+          tokenInAddr,
+          tokenOutAddr,
+          amountInWei,
+          amountOutMin,
+        ],
+      }),
+    );
+
+    return {
+      client,
+      from,
+      recipient,
+      resolvedIn,
+      resolvedOut,
+      tokenInAddr,
+      tokenOutAddr,
+      amount,
+      amountInWei,
+      expectedOutWei,
+      amountOutMin,
+      swapData,
+    };
+  }
+
+  /**
+   * Build unsigned GoodDollar reserve swap steps (approve + swapIn when needed).
+   */
+  async prepareReserveSwap(
+    from: `0x${string}`,
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    params?: GoodDollarReserveSwapParams,
+  ): Promise<SerializedPreparedFlow> {
+    const built = await this.buildReserveSwap(from, tokenIn, tokenOut, amount, params);
+    const {
+      client,
+      resolvedIn,
+      resolvedOut,
+      tokenInAddr,
+      amountInWei,
+      expectedOutWei,
+      swapData,
+      recipient,
+    } = built;
+
+    const displayIn = trimDisplayDecimals(built.amount);
+    const displayOut = trimDisplayDecimals(
+      formatUnits(expectedOutWei, resolvedOut.decimals),
+    );
+
+    const steps: PreparedTx[] = [];
+
+    const allowance = await client.readContract({
+      address: tokenInAddr,
+      abi: erc20Abi,
+      functionName: "allowance",
+      args: [from, GOODDOLLAR_MENTO_BROKER],
+    });
+
+    if (allowance < amountInWei) {
+      steps.push({
+        kind: "erc20",
+        to: tokenInAddr,
+        data: taggedCalldata(
+          encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "approve",
+            args: [GOODDOLLAR_MENTO_BROKER, maxUint256],
+          }),
+        ),
+        value: "0",
+        description: `Approve ${resolvedIn.symbol} for GoodDollar reserve`,
+      });
+    }
+
+    steps.push({
+      kind: "contract",
+      to: GOODDOLLAR_MENTO_BROKER,
+      data: swapData,
+      value: "0",
+      description: `Swap ${displayIn} ${resolvedIn.symbol} → ~${displayOut} ${resolvedOut.symbol} via GoodDollar reserve`,
+    });
+
+    const swapEstimateRequest = {
+      account: from,
+      to: GOODDOLLAR_MENTO_BROKER,
+      data: swapData,
+      value: 0n,
+    };
+
+    if (allowance < amountInWei) {
+      for (const mappingSlot of ALLOWANCE_MAPPING_SLOTS) {
+        try {
+          await client.estimateGas({
+            ...swapEstimateRequest,
+            stateOverride: erc20AllowanceStateOverride(
+              tokenInAddr,
+              from,
+              GOODDOLLAR_MENTO_BROKER,
+              maxUint256,
+              mappingSlot,
+            ),
+          });
+          break;
+        } catch (error) {
+          const isLast = mappingSlot === ALLOWANCE_MAPPING_SLOTS.at(-1);
+          if (isLast) {
+            throw error;
+          }
+        }
+      }
+    } else {
+      await client.estimateGas(swapEstimateRequest);
+    }
+
+    const flow: PreparedFlow = {
+      network: "mainnet",
+      from,
+      summary: `GoodDollar reserve: ${displayIn} ${resolvedIn.symbol} → ${displayOut} ${resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
+      steps,
     };
 
     return serializePreparedFlow(flow);

@@ -43,7 +43,7 @@ export interface CelinaClient {
   uniswap: UniswapService;
   /** Aave V3 `prepareSupply` and `prepareWithdraw` flows on Celo. */
   aave: AaveService;
-  /** GoodDollar IdentityV4 whitelist status and daily UBI claim preparation. */
+  /** GoodDollar IdentityV4 whitelist, UBI claims, and G$ ↔ USDm reserve swaps. */
   gooddollar: GoodDollarService;
   /** Celo and Ethereum ENS resolution. */
   ens: EnsService;
@@ -128,9 +128,16 @@ export {
 } from "./config/celina-tag.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
+  GOODDOLLAR_CUSD_EXCHANGE_ID,
   GOODDOLLAR_IDENTITY_ADDRESS,
+  GOODDOLLAR_MENTO_BROKER,
+  GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+  GOODDOLLAR_RESERVE_COLLATERAL,
+  GOODDOLLAR_TOKEN_ADDRESS,
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
+  isGoodDollarUsdReservePair,
 } from "./config/gooddollar.js";
+export type { GoodDollarReserveSwapParams } from "./services/gooddollar.service.js";
 export type {
   CarbonPrepareResult,
   CarbonRestSuccess,
