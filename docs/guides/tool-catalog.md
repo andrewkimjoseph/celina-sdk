@@ -73,7 +73,7 @@ const mcpTools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
 
 Helpers: `getToolNames()`, `getMcpToolNames()`, `getBrowserToolNames()`, `getToolDefinition(name)`.
 
-Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Browser-only swap routing (`get_swap_quote`, `prepare_swap`) lives in `domains/browser.ts`.
+Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Browser-only swap routing (`get_swap_quote`, `prepare_swap`) lives in `domains/browser.ts`. GoodDollar reserve quotes (`get_gooddollar_reserve_quote`, `prepare_gooddollar_reserve_swap`) live in `domains/gooddollar.ts` and are included in aggregated swap routing for G$ ↔ USDm.
 
 ## MCP host (reference)
 

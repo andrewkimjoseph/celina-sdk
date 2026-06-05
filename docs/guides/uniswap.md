@@ -4,6 +4,8 @@ Swap tokens via Uniswap v4 on Celo mainnet (Universal Router + Permit2).
 
 Use this when Mento FX has no route — for example `GoodDollar` → `USDT`.
 
+For **GoodDollar ↔ USDm**, prefer the [GoodDollar reserve](gooddollar.md) via `get_swap_quote` or `get_gooddollar_reserve_quote` — Uniswap v4 pools for that pair are typically illiquid.
+
 ## Get a quote (no wallet)
 
 ```ts

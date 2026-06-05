@@ -92,13 +92,48 @@ for (const step of flow.steps) {
 
 G$ is sent to `msg.sender` (the signing wallet). Gas is paid in native CELO.
 
+## Reserve swaps (G$ ↔ USDm)
+
+For **GoodDollar ↔ USDm**, use the on-chain **MentoBroker reserve** (bonding curve), not Uniswap. `get_swap_quote` auto-selects this route for G$ ↔ USDm pairs.
+
+| Contract | Address |
+|----------|---------|
+| MentoBroker | `0x88de45906D4F5a57315c133620cfa484cB297541` |
+| MentoExchangeProvider | `0x2fFBB49055d487DdBBb0C052Cd7c2a02A7971e41` |
+
+```ts
+const quote = await celina.gooddollar.getReserveQuote("GoodDollar", "USDm", "1000");
+// quote.protocol === "gooddollar_reserve"
+
+const flow = await celina.gooddollar.prepareReserveSwap(
+  from,
+  "USDm",
+  "GoodDollar",
+  "10",
+);
+// 1–2 steps: optional ERC-20 approve + broker swapIn
+```
+
+Or use aggregated routing:
+
+```ts
+import { getSwapQuoteWithFallback } from "@andrewkimjoseph/celina-sdk/tools";
+
+const best = await getSwapQuoteWithFallback(celina, "GoodDollar", "USDm", "1000");
+// best.protocol === "gooddollar_reserve"
+```
+
+For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the fallback when Mento FX has no route.
+
 ## MCP tool mapping
 
 | SDK method | MCP tool (stdio) | Hosted MCP |
 |------------|------------------|------------|
 | `getWhitelistingInfo` | `get_gooddollar_whitelisting_info` | read |
 | `getUbiClaimEligibility` | `get_gooddollar_ubi_entitlement` | read |
+| `getReserveQuote` | `get_gooddollar_reserve_quote` | read |
 | `prepareClaimUbi` | — (unsigned; use SDK + wagmi in your app) | — |
+| `prepareReserveSwap` | `prepare_gooddollar_reserve_swap` | browser prepare |
 | — | `claim_daily_gooddollar_ubi` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
 
 For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagmi — same pattern as sends and swaps.
@@ -114,6 +149,6 @@ For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagm
 
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
-- [Uniswap v4](uniswap.md) — swap G$ to other stables
+- [Uniswap v4](uniswap.md) — swap G$ to other tokens when reserve does not apply (e.g. G$ → USDT)
 - [GoodDollarService API](../api-reference/services/gooddollar.service/classes/GoodDollarService.md)
 - [GoodDollar core contracts](https://docs.gooddollar.org/for-developers/core-contracts)
