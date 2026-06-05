@@ -6,11 +6,11 @@ This guide applies to **[celina-mcp](https://www.npmjs.com/package/@andrewkimjos
 
 | Runtime | Who is “the user”? | How the wallet is known |
 |---------|-------------------|-------------------------|
-| **celina-sdk** in your app | Connected browser wallet | You pass `0x…` on every read/prepare (e.g. wagmi `useAccount()`) |
+| **celina-sdk** / `surface: "browser"` | Connected browser wallet | You pass `0x…` on every read/prepare (e.g. wagmi `useAccount()`); no `get_wallet_address` |
 | **celina-mcp** stdio + `CELO_PRIVATE_KEY` | MCP server signer | Omit `address` / `wallet_address` / `from` on wallet-scoped tools; they default to the configured key |
-| **Hosted MCP** (`mcp.usecelina.xyz`) | N/A (no server key) | Pass explicit addresses on every wallet-scoped tool |
+| **Hosted MCP** (`mcp.usecelina.xyz`) | N/A (no server key) | Pass explicit addresses on every wallet-scoped tool; key-dependent tools fail without local keys |
 
-**Celeste AI** is an independent open-source chat app: it uses **only** `@andrewkimjoseph/celina-sdk` and the user’s connected wallet (wagmi). It does not run celina-mcp and does not use `get_wallet_address`.
+Browser agent hosts use the same tool catalog with `surface: "browser"` — see [Tool catalog](tool-catalog.md). They do not run celina-mcp and do not use `get_wallet_address`.
 
 ## `get_wallet_address`
 

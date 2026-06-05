@@ -143,9 +143,9 @@ Runtime validation still uses each definition’s Zod schema inside the AI SDK; 
 
 If your app depends on Zod 4, keep using the catalog schemas as-is and the `unknown` → `FlexibleSchema` cast above. Aligning your app to Zod 3 avoids duplicate majors but is optional.
 
-## Sample app (Celeste AI)
+## Sample browser app
 
-[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) is a reference Next.js chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight, Carbon market-price fallback, `finalizeCarbonPrepare` via `hooks.carbon`). It is not part of the SDK surface types.
+[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) in the monorepo is a reference **browser surface** chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight, Carbon market-price fallback, `finalizeCarbonPrepare` via `hooks.carbon`). It uses the SDK tool catalog directly — not celina-mcp.
 
 ## Adding a new tool
 

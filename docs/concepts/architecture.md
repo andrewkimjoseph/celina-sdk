@@ -33,21 +33,24 @@ Celina is layered from chain logic through agent tooling:
 
 ```mermaid
 flowchart TB
-  sdk["celina-sdk<br/>reads + prepare*"]
-  mcp["celina-mcp<br/>MCP tools"]
-  host["celina-mcp-host<br/>Vercel HTTP"]
+  sdk["celina-sdk<br/>reads + prepare* + /tools catalog"]
+  mcp["celina-mcp<br/>registerSdkTools"]
+  host["celina-mcp-host<br/>Streamable HTTP"]
+  browser["Browser agent hosts<br/>surface: browser"]
 
   sdk --> mcp
   mcp --> host
+  sdk --> browser
 ```
 
 | Layer | Role |
 |-------|------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag |
-| **MCP** | Tool names for LLM agents; stdio `execute_*` with server keys; hosted omits server-key writes |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
+| **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys; hosted profile omits `execute_carbon_*` |
 | **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **72 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+| **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
-Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP. **Celeste AI** is one such app: it depends on this SDK and the user’s browser wallet only, not on celina-mcp.
+Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
 
 ### Wallet address: SDK vs MCP
 

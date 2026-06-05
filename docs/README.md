@@ -4,32 +4,32 @@
 
 # Celina SDK
 
-**`@andrewkimjoseph/celina-sdk@0.4.8`** — Celo mainnet library for frontend apps: **reads** and **unsigned transaction preparation** (no private keys).
+**`@andrewkimjoseph/celina-sdk`** — Celo mainnet library for agent builders: **reads**, **unsigned transaction preparation**, and a shared **LLM tool catalog** (`/tools` export) that powers celina-mcp and browser wallet apps from one source of truth.
 
-Pair with [wagmi](https://wagmi.sh) / viem in the browser — users sign prepared transactions in their wallet.
+Pair with [wagmi](https://wagmi.sh) / viem when users sign in their wallet, or register the catalog in MCP / AI SDK hosts when building agents.
 
 ## Celina stack
 
 ```mermaid
 flowchart TB
-  sdk["celina-sdk@0.4.8<br/>reads + prepare*"]
-  mcp["celina-mcp@0.8.5<br/>MCP tools"]
-  host["celina-mcp-host@0.1.9<br/>Vercel HTTP: read + prepare"]
-  celeste["Celeste AI<br/>SDK + wagmi only"]
+  sdk["celina-sdk<br/>reads + prepare* + /tools catalog"]
+  mcp["celina-mcp<br/>registers catalog for MCP"]
+  host["celina-mcp-host<br/>Streamable HTTP: read + prepare"]
+  browser["Browser agent hosts<br/>surface: browser + wagmi"]
 
   sdk --> mcp
   mcp --> host
-  sdk -.->|independent consumer| celeste
+  sdk --> browser
 ```
 
 | Layer | What it adds |
 |-------|----------------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag. **Always pass explicit wallet addresses** from your app. |
-| **MCP** | Tool names for LLM agents; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md). |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **72 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
-| **Celeste AI** | Independent chat UI — uses **only** this SDK + connected wallet (not celina-mcp) |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared Zod schemas and handlers for MCP and browser surfaces |
+| **MCP** | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **72 tools** (reads + Carbon prepare; `execute_carbon_*` omitted) |
+| **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys |
 
-Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagmi) without MCP.
+Third-party apps can consume the programmatic client only, or wire the full tool catalog into Vercel AI SDK / custom orchestrators — see [LLM tool catalog](guides/tool-catalog.md).
 
 ## What you can do
 
@@ -38,6 +38,7 @@ Third-party apps can consume the SDK directly (e.g. custom Next.js UIs with wagm
 | **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI, Carbon strategies/pairs/stats |
 | **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
 | **Prepare** | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, Carbon strategies and taker trades |
+| **Tool catalog** | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface`, `families`, and Carbon flags |
 
 The SDK never holds or uses CELO wallet keys. Call `prepare*` with the user's address, then pass `steps` to wagmi.
 
@@ -60,7 +61,19 @@ const flow = await celina.transaction.prepareSend("0xFrom", "0xTo", "USDm", "10"
 // flow.steps → wagmi sendTransaction
 ```
 
-See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/tool-catalog.md) (MCP / Vercel AI SDK), and [wagmi integration](guides/wagmi-integration.md).
+For agent hosts, import the shared catalog:
+
+```ts
+import { filterToolDefinitions, ALL_TOOL_DEFINITIONS } from "@andrewkimjoseph/celina-sdk/tools";
+
+const tools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
+  surface: "browser",
+  carbonPrepareEnabled: true,
+  carbonExecuteEnabled: false,
+});
+```
+
+See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/tool-catalog.md), and [wagmi integration](guides/wagmi-integration.md).
 
 ## API overview
 
@@ -86,6 +99,6 @@ Full method signatures: [API reference](api-reference/README.md).
 
 ## Related packages
 
-- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.5`
+- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) — MCP server; registers SDK tool catalog
 - [`celina-mcp-host`](../../celina-mcp-host/) — hosted reads + Carbon prepare (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)
