@@ -59,6 +59,8 @@ const flow = await celina.mentoFx.prepareFx(from, "USDm", "EURm", "100");
 
 Sign and confirm each step sequentially. Do not skip or reorder steps.
 
+MCP stdio **`execute_*`** tools (Mento FX, Uniswap, GoodDollar reserve, etc.) use the same prepared steps internally — they sign and broadcast with `CELO_PRIVATE_KEY` instead of returning unsigned flows to the user.
+
 ## Carbon prepare and `finalizeCarbonPrepare`
 
 Carbon REST returns a partial prepare payload (`CarbonPrepareResult`). MCP `prepare_carbon_*` tools and browser apps should call **`finalizeCarbonPrepare`** to merge ERC-20 allowance checks into a complete signing sequence:

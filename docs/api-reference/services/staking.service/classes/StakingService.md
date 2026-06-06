@@ -6,7 +6,7 @@
 
 # Class: StakingService
 
-Defined in: [src/services/staking.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L30)
+Defined in: [src/services/staking.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L30)
 
 Validator election staking reads via Celo core contracts.
 
@@ -16,7 +16,7 @@ Validator election staking reads via Celo core contracts.
 
 > **new StakingService**(`clientFactory`): `StakingService`
 
-Defined in: [src/services/staking.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L31)
+Defined in: [src/services/staking.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L31)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/staking.service.ts:31](https://github.com/andrewkimjos
 
 > **getActivatableStakes**(`address`): `Promise`\<\{ `activatableGroups`: `string`[]; `address`: `` `0x${string}` ``; `groupToIsActivatable`: `Record`\<`string`, `boolean`\>; `network`: `"mainnet"`; `summary`: \{ `activatableGroupsFormatted?`: `undefined`; `message`: `string`; `totalActivatableGroups`: `number`; `totalPendingGroups`: `number`; \}; \} \| \{ `activatableGroups`: `string`[]; `address`: `` `0x${string}` ``; `groupToIsActivatable`: `Record`\<`string`, `boolean`\>; `network`: `"mainnet"`; `summary`: \{ `activatableGroupsFormatted`: `string`[]; `message`: `string`; `totalActivatableGroups`: `number`; `totalPendingGroups`: `number`; \}; \}\>
 
-Defined in: [src/services/staking.service.ts:143](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L143)
+Defined in: [src/services/staking.service.ts:143](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L143)
 
 Pending stakes that can be activated in the current epoch.
 
@@ -62,7 +62,7 @@ When `address` is not a valid hex address
 
 > **getStakingBalances**(`address`): `Promise`\<\{ `active`: `string`; `activeFormatted`: `string`; `address`: `` `0x${string}` ``; `groups`: `object`[]; `network`: `"mainnet"`; `pending`: `string`; `pendingFormatted`: `string`; `total`: `string`; `totalFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L43)
+Defined in: [src/services/staking.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L43)
 
 Active and pending CELO vote balances per validator group for an account.
 
@@ -90,7 +90,7 @@ When `address` is not a valid hex address
 
 > **getTotalStakingInfo**(): `Promise`\<\{ `network`: `"mainnet"`; `summary`: \{ `message`: `string`; `networkParticipation`: `string`; \}; `totalVotes`: `string`; `totalVotesCelo`: `number`; `totalVotesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:544](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L544)
+Defined in: [src/services/staking.service.ts:544](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L544)
 
 Network-wide total active staking votes across all validator groups.
 
@@ -106,7 +106,7 @@ Total votes in wei and human-readable CELO formatting
 
 > **getValidatorGroupDetails**(`groupAddress`): `Promise`\<\{ `address`: `` `0x${string}` ``; `capacity`: `string`; `capacityFormatted`: `string`; `eligible`: `boolean`; `lastSlashed`: `number` \| `null`; `members`: `object`[]; `name`: `string`; `network`: `"mainnet"`; `numElected`: `number`; `numMembers`: `number`; `votes`: `string`; `votesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:385](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L385)
+Defined in: [src/services/staking.service.ts:385](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L385)
 
 Detailed validator group profile including member validators and scores.
 
@@ -134,7 +134,7 @@ When `groupAddress` is not a valid hex address
 
 > **getValidatorGroups**(`options?`): `Promise`\<\{ `groups`: `object`[]; `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `totalVotes`: `string`; `totalVotesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:210](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/staking.service.ts#L210)
+Defined in: [src/services/staking.service.ts:210](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/staking.service.ts#L210)
 
 Paginated list of validator groups registered on Celo.
 

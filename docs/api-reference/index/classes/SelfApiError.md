@@ -6,7 +6,7 @@
 
 # Class: SelfApiError
 
-Defined in: [src/clients/self-api.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/self-api.ts#L11)
+Defined in: [src/clients/self-api.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/self-api.ts#L11)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [src/clients/self-api.ts:11](https://github.com/andrewkimjoseph/celi
 
 > **new SelfApiError**(`message`): `SelfApiError`
 
-Defined in: [src/clients/self-api.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/self-api.ts#L12)
+Defined in: [src/clients/self-api.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/self-api.ts#L12)
 
 #### Parameters
 

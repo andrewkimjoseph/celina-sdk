@@ -8,6 +8,6 @@
 
 > `const` **CARBON\_CHAIN**: `"celo"`
 
-Defined in: [src/config/carbon.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/config/carbon.ts#L3)
+Defined in: [src/config/carbon.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/config/carbon.ts#L3)
 
 Carbon DeFi on Celo mainnet — contract addresses and API defaults.

@@ -47,7 +47,7 @@ flowchart TB
 |-------|------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys; hosted profile omits `execute_carbon_*` |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **73 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **75 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).

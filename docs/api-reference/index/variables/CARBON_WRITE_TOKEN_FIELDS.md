@@ -8,6 +8,6 @@
 
 > `const` **CARBON\_WRITE\_TOKEN\_FIELDS**: readonly \[`"base_token"`, `"quote_token"`, `"source_token"`, `"target_token"`, `"token_in"`, `"token_out"`, `"token"`\]
 
-Defined in: [src/utils/carbon-token.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/utils/carbon-token.ts#L7)
+Defined in: [src/utils/carbon-token.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/utils/carbon-token.ts#L7)
 
 Token fields normalized before Carbon REST write calls.

@@ -8,7 +8,7 @@
 
 > **resolveCarbonTokenAddress**(`tokenService`, `tokenOrAddress`): `` `0x${string}` ``
 
-Defined in: [src/utils/carbon-token.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/utils/carbon-token.ts#L21)
+Defined in: [src/utils/carbon-token.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/utils/carbon-token.ts#L21)
 
 Resolve a Carbon token symbol or address to a concrete `0x` ERC-20 address.
 CELO registry entries map to WCELO/MENTO collateral (Carbon does not accept `"native"`).

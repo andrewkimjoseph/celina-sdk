@@ -6,7 +6,7 @@
 
 # Class: CarbonRestError
 
-Defined in: [src/clients/carbon-rest.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/carbon-rest.ts#L6)
+Defined in: [src/clients/carbon-rest.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/carbon-rest.ts#L6)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [src/clients/carbon-rest.ts:6](https://github.com/andrewkimjoseph/ce
 
 > **new CarbonRestError**(`message`, `toolName`, `statusCode?`): `CarbonRestError`
 
-Defined in: [src/clients/carbon-rest.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/carbon-rest.ts#L7)
+Defined in: [src/clients/carbon-rest.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/carbon-rest.ts#L7)
 
 #### Parameters
 
@@ -96,7 +96,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [src/clients/carbon-rest.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/carbon-rest.ts#L10)
+Defined in: [src/clients/carbon-rest.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/carbon-rest.ts#L10)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [src/clients/carbon-rest.ts:10](https://github.com/andrewkimjoseph/c
 
 > `readonly` **toolName**: `string`
 
-Defined in: [src/clients/carbon-rest.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/clients/carbon-rest.ts#L9)
+Defined in: [src/clients/carbon-rest.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/clients/carbon-rest.ts#L9)
 
 ***
 

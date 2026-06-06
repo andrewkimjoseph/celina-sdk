@@ -8,6 +8,6 @@
 
 > `const` **GOODDOLLAR\_UBI\_SCHEME\_ADDRESS**: `"0x43d72Ff17701B2DA814620735C39C620Ce0ea4A1"`
 
-Defined in: [src/config/gooddollar.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/config/gooddollar.ts#L6)
+Defined in: [src/config/gooddollar.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/config/gooddollar.ts#L6)
 
 GoodDollar UBISchemeV2 contract on Celo mainnet.

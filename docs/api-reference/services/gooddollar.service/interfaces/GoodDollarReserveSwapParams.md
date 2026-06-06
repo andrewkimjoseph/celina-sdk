@@ -6,7 +6,7 @@
 
 # Interface: GoodDollarReserveSwapParams
 
-Defined in: [src/services/gooddollar.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/gooddollar.service.ts#L69)
+Defined in: [src/services/gooddollar.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/gooddollar.service.ts#L69)
 
 Optional parameters for GoodDollar reserve swap prepares.
 
@@ -16,7 +16,7 @@ Optional parameters for GoodDollar reserve swap prepares.
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar.service.ts:73](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/gooddollar.service.ts#L73)
+Defined in: [src/services/gooddollar.service.ts:73](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/gooddollar.service.ts#L73)
 
 Address receiving output tokens (default: `from`).
 
@@ -26,6 +26,6 @@ Address receiving output tokens (default: `from`).
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/gooddollar.service.ts:71](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/gooddollar.service.ts#L71)
+Defined in: [src/services/gooddollar.service.ts:71](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/gooddollar.service.ts#L71)
 
 Max slippage tolerance in percent (default `0.5`).

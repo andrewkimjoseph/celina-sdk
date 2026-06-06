@@ -6,7 +6,7 @@
 
 # Class: AaveService
 
-Defined in: [src/services/aave.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/aave.service.ts#L24)
+Defined in: [src/services/aave.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/aave.service.ts#L24)
 
 Aave V3 supply and withdraw prepared flows on Celo mainnet.
 
@@ -16,7 +16,7 @@ Aave V3 supply and withdraw prepared flows on Celo mainnet.
 
 > **new AaveService**(`clientFactory`): `AaveService`
 
-Defined in: [src/services/aave.service.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/aave.service.ts#L27)
+Defined in: [src/services/aave.service.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/aave.service.ts#L27)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/aave.service.ts:27](https://github.com/andrewkimjoseph
 
 > **prepareSupply**(`from`, `token`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:107](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/aave.service.ts#L107)
+Defined in: [src/services/aave.service.ts:107](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/aave.service.ts#L107)
 
 Build unsigned Aave V3 supply steps (approve + supply when needed).
 
@@ -70,7 +70,7 @@ Human-readable supply amount
 
 > **prepareWithdraw**(`from`, `token`, `amount`, `withdrawMax?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:172](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/aave.service.ts#L172)
+Defined in: [src/services/aave.service.ts:172](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/aave.service.ts#L172)
 
 Build unsigned Aave V3 withdraw step on Celo.
 

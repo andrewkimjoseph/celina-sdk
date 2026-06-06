@@ -132,9 +132,13 @@ For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the fallback when Ment
 | `getWhitelistingInfo` | `get_gooddollar_whitelisting_info` | read |
 | `getUbiClaimEligibility` | `get_gooddollar_ubi_entitlement` | read |
 | `getReserveQuote` | `get_gooddollar_reserve_quote` | read |
-| `prepareClaimUbi` | — (unsigned; use SDK + wagmi in your app) | — |
+| `estimateReserveSwap` | `estimate_gooddollar_reserve_swap` | read* (*needs `CELO_PRIVATE_KEY` for gas sim) |
 | `prepareReserveSwap` | `prepare_gooddollar_reserve_swap` | browser prepare |
+| — | `execute_gooddollar_reserve_swap` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
+| `prepareClaimUbi` | — (unsigned; use SDK + wagmi in your app) | — |
 | — | `claim_daily_gooddollar_ubi` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
+
+**Stdio MCP flow (G$ ↔ USDm):** `get_gooddollar_reserve_quote` → `estimate_gooddollar_reserve_swap` → `execute_gooddollar_reserve_swap`.
 
 For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagmi — same pattern as sends and swaps.
 

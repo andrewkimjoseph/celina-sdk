@@ -6,7 +6,7 @@
 
 # Class: CarbonService
 
-Defined in: [src/services/carbon.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L31)
+Defined in: [src/services/carbon.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L31)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [src/services/carbon.service.ts:31](https://github.com/andrewkimjose
 
 > **new CarbonService**(`config`, `tokenService`, `clientFactory`): `CarbonService`
 
-Defined in: [src/services/carbon.service.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L35)
+Defined in: [src/services/carbon.service.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L35)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: [src/services/carbon.service.ts:35](https://github.com/andrewkimjose
 
 > **buildExecutionSteps**(`from`, `prepared`, `orderMeta`): `Promise`\<[`PreparedTx`](../../../types/prepared/interfaces/PreparedTx.md)[]\>
 
-Defined in: [src/services/carbon.service.ts:70](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L70)
+Defined in: [src/services/carbon.service.ts:70](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L70)
 
 Build full on-chain steps (approvals + Carbon tx) for MCP local signing.
 
@@ -68,7 +68,7 @@ Build full on-chain steps (approvals + Carbon tx) for MCP local signing.
 
 > **explorePair**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:249](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L249)
+Defined in: [src/services/carbon.service.ts:249](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L249)
 
 #### Parameters
 
@@ -86,7 +86,7 @@ Defined in: [src/services/carbon.service.ts:249](https://github.com/andrewkimjos
 
 > **findOpportunities**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:277](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L277)
+Defined in: [src/services/carbon.service.ts:277](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L277)
 
 #### Parameters
 
@@ -104,7 +104,7 @@ Defined in: [src/services/carbon.service.ts:277](https://github.com/andrewkimjos
 
 > **getActivity**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:273](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L273)
+Defined in: [src/services/carbon.service.ts:273](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L273)
 
 #### Parameters
 
@@ -122,7 +122,7 @@ Defined in: [src/services/carbon.service.ts:273](https://github.com/andrewkimjos
 
 > **getPriceHistory**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:289](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L289)
+Defined in: [src/services/carbon.service.ts:289](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L289)
 
 #### Parameters
 
@@ -140,7 +140,7 @@ Defined in: [src/services/carbon.service.ts:289](https://github.com/andrewkimjos
 
 > **getProtocolStats**(`body?`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:281](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L281)
+Defined in: [src/services/carbon.service.ts:281](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L281)
 
 #### Parameters
 
@@ -158,7 +158,7 @@ Defined in: [src/services/carbon.service.ts:281](https://github.com/andrewkimjos
 
 > **getStrategies**(`walletAddress`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:95](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L95)
+Defined in: [src/services/carbon.service.ts:95](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L95)
 
 #### Parameters
 
@@ -176,7 +176,7 @@ Defined in: [src/services/carbon.service.ts:95](https://github.com/andrewkimjose
 
 > **getStrategy**(`strategyId`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:99](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L99)
+Defined in: [src/services/carbon.service.ts:99](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L99)
 
 #### Parameters
 
@@ -194,7 +194,7 @@ Defined in: [src/services/carbon.service.ts:99](https://github.com/andrewkimjose
 
 > **getTradeQuote**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:169](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L169)
+Defined in: [src/services/carbon.service.ts:169](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L169)
 
 #### Parameters
 
@@ -212,7 +212,7 @@ Defined in: [src/services/carbon.service.ts:169](https://github.com/andrewkimjos
 
 > **help**(`topic?`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:310](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L310)
+Defined in: [src/services/carbon.service.ts:310](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L310)
 
 #### Parameters
 
@@ -230,7 +230,7 @@ Defined in: [src/services/carbon.service.ts:310](https://github.com/andrewkimjos
 
 > **learn**(`topic?`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:314](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L314)
+Defined in: [src/services/carbon.service.ts:314](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L314)
 
 #### Parameters
 
@@ -248,7 +248,7 @@ Defined in: [src/services/carbon.service.ts:314](https://github.com/andrewkimjos
 
 > **prepareConcentratedStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:121](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L121)
+Defined in: [src/services/carbon.service.ts:121](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L121)
 
 #### Parameters
 
@@ -266,7 +266,7 @@ Defined in: [src/services/carbon.service.ts:121](https://github.com/andrewkimjos
 
 > **prepareDeleteStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:163](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L163)
+Defined in: [src/services/carbon.service.ts:163](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L163)
 
 #### Parameters
 
@@ -284,7 +284,7 @@ Defined in: [src/services/carbon.service.ts:163](https://github.com/andrewkimjos
 
 > **prepareDepositBudget**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:147](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L147)
+Defined in: [src/services/carbon.service.ts:147](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L147)
 
 #### Parameters
 
@@ -302,7 +302,7 @@ Defined in: [src/services/carbon.service.ts:147](https://github.com/andrewkimjos
 
 > **prepareEditStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:143](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L143)
+Defined in: [src/services/carbon.service.ts:143](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L143)
 
 #### Parameters
 
@@ -320,7 +320,7 @@ Defined in: [src/services/carbon.service.ts:143](https://github.com/andrewkimjos
 
 > **prepareFullRangeStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:129](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L129)
+Defined in: [src/services/carbon.service.ts:129](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L129)
 
 #### Parameters
 
@@ -338,7 +338,7 @@ Defined in: [src/services/carbon.service.ts:129](https://github.com/andrewkimjos
 
 > **prepareLimitOrder**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:105](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L105)
+Defined in: [src/services/carbon.service.ts:105](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L105)
 
 #### Parameters
 
@@ -356,7 +356,7 @@ Defined in: [src/services/carbon.service.ts:105](https://github.com/andrewkimjos
 
 > **preparePauseStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:155](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L155)
+Defined in: [src/services/carbon.service.ts:155](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L155)
 
 #### Parameters
 
@@ -374,7 +374,7 @@ Defined in: [src/services/carbon.service.ts:155](https://github.com/andrewkimjos
 
 > **prepareRangeOrder**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:109](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L109)
+Defined in: [src/services/carbon.service.ts:109](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L109)
 
 #### Parameters
 
@@ -392,7 +392,7 @@ Defined in: [src/services/carbon.service.ts:109](https://github.com/andrewkimjos
 
 > **prepareRecurringStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:113](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L113)
+Defined in: [src/services/carbon.service.ts:113](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L113)
 
 #### Parameters
 
@@ -410,7 +410,7 @@ Defined in: [src/services/carbon.service.ts:113](https://github.com/andrewkimjos
 
 > **prepareRepriceStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:139](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L139)
+Defined in: [src/services/carbon.service.ts:139](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L139)
 
 #### Parameters
 
@@ -428,7 +428,7 @@ Defined in: [src/services/carbon.service.ts:139](https://github.com/andrewkimjos
 
 > **prepareResumeStrategy**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:159](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L159)
+Defined in: [src/services/carbon.service.ts:159](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L159)
 
 #### Parameters
 
@@ -446,7 +446,7 @@ Defined in: [src/services/carbon.service.ts:159](https://github.com/andrewkimjos
 
 > **prepareTrade**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:211](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L211)
+Defined in: [src/services/carbon.service.ts:211](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L211)
 
 #### Parameters
 
@@ -464,7 +464,7 @@ Defined in: [src/services/carbon.service.ts:211](https://github.com/andrewkimjos
 
 > **prepareWithdrawBudget**(`body`): `Promise`\<[`CarbonPrepareResult`](../../../index/interfaces/CarbonPrepareResult.md)\>
 
-Defined in: [src/services/carbon.service.ts:151](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L151)
+Defined in: [src/services/carbon.service.ts:151](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L151)
 
 #### Parameters
 
@@ -482,7 +482,7 @@ Defined in: [src/services/carbon.service.ts:151](https://github.com/andrewkimjos
 
 > **resolveToken**(`symbolOrName`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:253](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L253)
+Defined in: [src/services/carbon.service.ts:253](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L253)
 
 #### Parameters
 
@@ -500,7 +500,7 @@ Defined in: [src/services/carbon.service.ts:253](https://github.com/andrewkimjos
 
 > **simulateStrategy**(`body`): `Promise`\<[`CarbonRestSuccess`](../../../index/type-aliases/CarbonRestSuccess.md) & `object`\>
 
-Defined in: [src/services/carbon.service.ts:298](https://github.com/andrewkimjoseph/celina-sdk/blob/e071b6ef176a1c725fb3cc7d17c5bc0b9767d108/src/services/carbon.service.ts#L298)
+Defined in: [src/services/carbon.service.ts:298](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L298)
 
 #### Parameters
 
