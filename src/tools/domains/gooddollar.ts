@@ -13,6 +13,13 @@ const readOnly = {
   idempotentHint: true,
 } as const;
 
+function mapReserveWalletOptions(input: Record<string, unknown>) {
+  return {
+    recipient: input.recipient as `0x${string}` | undefined,
+    slippageTolerance: input.slippage_tolerance as number | undefined,
+  };
+}
+
 export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_whitelisting_info",
@@ -96,6 +103,69 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
         from,
+      );
+    },
+  },
+  {
+    name: "estimate_gooddollar_reserve_swap",
+    description:
+      "Estimate gas for a GoodDollar reserve swap (G$ ↔ USDm), including ERC-20 approval when needed.",
+    inputSchema: goodDollarReserveWalletSchema,
+    families: ["read"],
+    surfaces: ["mcp"],
+    mcp: {
+      title: "Estimate GoodDollar Reserve Swap",
+      annotations: readOnly,
+    },
+    handler: async (runtime, input) => {
+      const sender = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      const tokenIn = normalizeRegistryTokenInput(input.token_in as string);
+      const tokenOut = normalizeRegistryTokenInput(input.token_out as string);
+      const amount = input.amount as string;
+      const options = mapReserveWalletOptions(input);
+      if (runtime.executors?.gooddollarWrite) {
+        return runtime.executors.gooddollarWrite.estimateReserveSwap(
+          tokenIn,
+          tokenOut,
+          amount,
+          {
+            ...options,
+            recipient: options.recipient ?? sender,
+          },
+        );
+      }
+      return runtime.celina.gooddollar.estimateReserveSwap(
+        sender,
+        tokenIn,
+        tokenOut,
+        amount,
+        options,
+      );
+    },
+  },
+  {
+    name: "execute_gooddollar_reserve_swap",
+    description:
+      "Execute a GoodDollar reserve swap (G$ ↔ USDm) on mainnet. Requires CELO_PRIVATE_KEY.",
+    inputSchema: goodDollarReserveWalletSchema,
+    families: ["execute"],
+    surfaces: ["mcp"],
+    mcp: {
+      title: "Execute GoodDollar Reserve Swap",
+      annotations: { destructiveHint: true, openWorldHint: true },
+    },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.gooddollarWrite;
+      if (!write) {
+        throw new Error("GoodDollar write executor not configured.");
+      }
+      return write.executeReserveSwap(
+        normalizeRegistryTokenInput(input.token_in as string),
+        normalizeRegistryTokenInput(input.token_out as string),
+        input.amount as string,
+        mapReserveWalletOptions(input),
       );
     },
   },

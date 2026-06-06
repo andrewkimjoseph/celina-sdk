@@ -440,6 +440,50 @@ export const gooddollarOperations: OperationSpec[] = [
       }
     },
   },
+  {
+    id: "gooddollar.estimateReserveSwap.sell",
+    domain: "gooddollar",
+    layer: "read",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.estimateReserveSwap(
+          fromAddress(fx),
+          "GoodDollar",
+          "USDm",
+          "1000",
+        ),
+    },
+    mcp: {
+      tool: "estimate_gooddollar_reserve_swap",
+      arguments: () => ({
+        token_in: "GoodDollar",
+        token_out: "USDm",
+        amount: "1000",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["expectedOut", "approvalNeeded", "swapGas"]);
+    },
+  },
+  {
+    id: "gooddollar.executeReserveSwap.sell",
+    domain: "gooddollar",
+    layer: "write",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresWrites: true,
+    mcp: {
+      tool: "execute_gooddollar_reserve_swap",
+      arguments: () => ({
+        token_in: "GoodDollar",
+        token_out: "USDm",
+        amount: "1",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["hash"]);
+    },
+  },
 ];
 
 function parseExpectedOut(value: string | undefined): number {

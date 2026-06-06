@@ -129,6 +129,24 @@ export type CarbonWriteExecutors = {
 
 export type GoodDollarWriteExecutors = {
   claimDailyUbi: () => Promise<unknown>;
+  estimateReserveSwap: (
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    options?: {
+      recipient?: `0x${string}`;
+      slippageTolerance?: number;
+    },
+  ) => Promise<unknown>;
+  executeReserveSwap: (
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    options?: {
+      recipient?: `0x${string}`;
+      slippageTolerance?: number;
+    },
+  ) => Promise<unknown>;
 };
 
 export type SelfExecutors = {

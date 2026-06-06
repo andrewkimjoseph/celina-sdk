@@ -591,6 +591,133 @@ export class GoodDollarService {
       expectedOutWei,
       amountOutMin,
       swapData,
+      slippageTolerance,
+    };
+  }
+
+  private buildReserveApprovalData(): Hex {
+    return taggedCalldata(
+      encodeFunctionData({
+        abi: erc20Abi,
+        functionName: "approve",
+        args: [GOODDOLLAR_MENTO_BROKER, maxUint256],
+      }),
+    );
+  }
+
+  private async estimateReserveSwapGas(
+    client: ReturnType<CeloClientFactory["getClients"]>["public"],
+    from: `0x${string}`,
+    swapData: Hex,
+    tokenInAddr: `0x${string}`,
+    approvalNeeded: boolean,
+  ): Promise<string> {
+    const swapEstimateRequest = {
+      account: from,
+      to: GOODDOLLAR_MENTO_BROKER,
+      data: swapData,
+      value: 0n,
+    };
+
+    if (!approvalNeeded) {
+      const gas = await client.estimateGas(swapEstimateRequest);
+      return gas.toString();
+    }
+
+    for (const mappingSlot of ALLOWANCE_MAPPING_SLOTS) {
+      try {
+        const gas = await client.estimateGas({
+          ...swapEstimateRequest,
+          stateOverride: erc20AllowanceStateOverride(
+            tokenInAddr,
+            from,
+            GOODDOLLAR_MENTO_BROKER,
+            maxUint256,
+            mappingSlot,
+          ),
+        });
+        return gas.toString();
+      } catch (error) {
+        const isLast = mappingSlot === ALLOWANCE_MAPPING_SLOTS.at(-1);
+        if (isLast) {
+          throw error;
+        }
+      }
+    }
+
+    throw new Error(
+      "Could not estimate GoodDollar reserve swap gas: failed to simulate ERC-20 allowance for this token.",
+    );
+  }
+
+  /**
+   * Simulate gas for a GoodDollar reserve swap from `from`, including approval if needed.
+   */
+  async estimateReserveSwap(
+    from: `0x${string}`,
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    params?: GoodDollarReserveSwapParams,
+  ) {
+    const built = await this.buildReserveSwap(from, tokenIn, tokenOut, amount, params);
+    const {
+      client,
+      resolvedIn,
+      resolvedOut,
+      tokenInAddr,
+      amountInWei,
+      expectedOutWei,
+      amountOutMin,
+      swapData,
+      slippageTolerance,
+      recipient,
+    } = built;
+
+    const allowance = await client.readContract({
+      address: tokenInAddr,
+      abi: erc20Abi,
+      functionName: "allowance",
+      args: [from, GOODDOLLAR_MENTO_BROKER],
+    });
+
+    const approvalNeeded = allowance < amountInWei;
+    const approvalGas = approvalNeeded
+      ? (
+          await client.estimateGas({
+            account: from,
+            to: tokenInAddr,
+            data: this.buildReserveApprovalData(),
+          })
+        ).toString()
+      : undefined;
+
+    const swapGas = await this.estimateReserveSwapGas(
+      client,
+      from,
+      swapData,
+      tokenInAddr,
+      approvalNeeded,
+    );
+
+    const approvalGasBig = approvalGas ? BigInt(approvalGas) : 0n;
+    const totalGas = (approvalGasBig + BigInt(swapGas)).toString();
+
+    return {
+      ...this.baseReserveQuoteFields(
+        resolvedIn,
+        resolvedOut,
+        amount,
+        expectedOutWei,
+      ),
+      from,
+      recipient,
+      amountOutMin: formatUnits(amountOutMin, resolvedOut.decimals),
+      approvalNeeded,
+      approvalGas,
+      swapGas,
+      totalGas,
+      slippageTolerance,
     };
   }
 
@@ -634,13 +761,7 @@ export class GoodDollarService {
       steps.push({
         kind: "erc20",
         to: tokenInAddr,
-        data: taggedCalldata(
-          encodeFunctionData({
-            abi: erc20Abi,
-            functionName: "approve",
-            args: [GOODDOLLAR_MENTO_BROKER, maxUint256],
-          }),
-        ),
+        data: this.buildReserveApprovalData(),
         value: "0",
         description: `Approve ${resolvedIn.symbol} for GoodDollar reserve`,
       });
@@ -654,37 +775,13 @@ export class GoodDollarService {
       description: `Swap ${displayIn} ${resolvedIn.symbol} → ~${displayOut} ${resolvedOut.symbol} via GoodDollar reserve`,
     });
 
-    const swapEstimateRequest = {
-      account: from,
-      to: GOODDOLLAR_MENTO_BROKER,
-      data: swapData,
-      value: 0n,
-    };
-
-    if (allowance < amountInWei) {
-      for (const mappingSlot of ALLOWANCE_MAPPING_SLOTS) {
-        try {
-          await client.estimateGas({
-            ...swapEstimateRequest,
-            stateOverride: erc20AllowanceStateOverride(
-              tokenInAddr,
-              from,
-              GOODDOLLAR_MENTO_BROKER,
-              maxUint256,
-              mappingSlot,
-            ),
-          });
-          break;
-        } catch (error) {
-          const isLast = mappingSlot === ALLOWANCE_MAPPING_SLOTS.at(-1);
-          if (isLast) {
-            throw error;
-          }
-        }
-      }
-    } else {
-      await client.estimateGas(swapEstimateRequest);
-    }
+    await this.estimateReserveSwapGas(
+      client,
+      from,
+      swapData,
+      tokenInAddr,
+      allowance < amountInWei,
+    );
 
     const flow: PreparedFlow = {
       network: "mainnet",

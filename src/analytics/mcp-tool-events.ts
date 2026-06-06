@@ -25,6 +25,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "contract.callFunction": "call_contract_function",
   "contract.estimateGas": "estimate_contract_gas",
   "ens.resolveEns": "resolve_ens",
+  "gooddollar.estimateReserveSwap.sell": "estimate_gooddollar_reserve_swap",
   "gooddollar.getReserveQuote.buy": "get_gooddollar_reserve_quote",
   "gooddollar.getReserveQuote.sell": "get_gooddollar_reserve_quote",
   "gooddollar.getUbiClaimEligibility": "get_gooddollar_ubi_entitlement",
