@@ -16,7 +16,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows, Carbon REST + SDK hybrid |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads + Carbon prepare |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads + Carbon prepare (72 tools); no server-key writes or `execute_carbon_*` |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads + Carbon prepare (73 tools); no server-key writes or `execute_carbon_*` |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -42,7 +42,7 @@ For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definiti
 - [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow`, CELINA calldata tag
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [Carbon DeFi on Celo](docs/guides/carbon.md) — hybrid REST + `@bancor/carbon-sdk` (25 operations)
-- [GoodDollar UBI](docs/guides/gooddollar.md) — whitelist, daily entitlement, `prepareClaimUbi`
+- [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
 - [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (`CELINA_ANALYTICS_DISABLED=1`)
 - [API reference](https://andrewkimjoseph.gitbook.io/celina-sdk/api-reference)
@@ -78,6 +78,16 @@ const prepared = await celina.carbon.prepareLimitOrder({
 // GoodDollar UBI (reads + unsigned claim)
 const eligibility = await celina.gooddollar.getUbiClaimEligibility("0xYourAddress");
 const ubiFlow = await celina.gooddollar.prepareClaimUbi("0xYourAddress");
+
+// GoodDollar reserve (G$ ↔ USDm — bonding curve, not Uniswap)
+const reserveQuote = await celina.gooddollar.getReserveQuote("GoodDollar", "USDm", "1000");
+// reserveQuote.protocol === "gooddollar_reserve"
+const reserveFlow = await celina.gooddollar.prepareReserveSwap(
+  "0xFrom",
+  "GoodDollar",
+  "USDm",
+  "1000",
+);
 ```
 
 ## Prepared flows and calldata tagging
@@ -101,7 +111,7 @@ Hybrid **Carbon REST** (`https://mcp.carbondefi.xyz`) plus **`@bancor/carbon-sdk
 - **`deep_link`** on prepare responses — Carbon REST trade/disposable UI URL (reference only; signing is via your wallet flow).
 - **`carbonActivityDeepLink(wallet)`** — post-execution activity explorer on [celo.carbondefi.xyz](https://celo.carbondefi.xyz).
 
-Set `CARBON_API_BASE_URL` to override the REST base. Hosted MCP exposes **72 tools** (reads + Carbon prepare); `execute_carbon_*` requires local stdio with `CELO_PRIVATE_KEY`.
+Set `CARBON_API_BASE_URL` to override the REST base. Hosted MCP exposes **73 tools** (reads + Carbon prepare); `execute_carbon_*` requires local stdio with `CELO_PRIVATE_KEY`.
 
 ### MCP session wallet (not in the SDK)
 
@@ -109,21 +119,23 @@ Local **celina-mcp** with `CELO_PRIVATE_KEY` can omit wallet params on many tool
 
 Full workflow: [Carbon DeFi guide](docs/guides/carbon.md).
 
-## GoodDollar UBI
+## GoodDollar
 
-Identity whitelist reads, daily entitlement checks, and unsigned `UBISchemeV2.claim()` preparation. One claim per verified identity per day.
+Identity whitelist reads, daily UBI entitlement, unsigned UBI claim, and **G$ ↔ USDm reserve swaps** via the on-chain MentoBroker bonding curve.
 
 | Reads | Prepare |
 |-------|---------|
-| `getWhitelistingInfo`, `getUbiClaimEligibility` | `prepareClaimUbi` |
+| `getWhitelistingInfo`, `getUbiClaimEligibility`, `getReserveQuote` | `prepareClaimUbi`, `prepareReserveSwap` |
 
-MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read); `claim_daily_gooddollar_ubi` (stdio write with server key). Browser apps: `prepareClaimUbi` + wagmi.
+For **G$ ↔ USDm**, use `getReserveQuote` / `prepareReserveSwap` (or aggregated `getSwapQuoteWithFallback` from `@andrewkimjoseph/celina-sdk/tools`) — not Uniswap. For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the AMM fallback.
+
+MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_gooddollar_reserve_quote` (read); `claim_daily_gooddollar_ubi` (stdio write with server key). Browser apps: `prepareClaimUbi`, `prepareReserveSwap`, or `prepare_swap` + wagmi.
 
 [GoodDollar guide](docs/guides/gooddollar.md)
 
 ## Related packages
 
-- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.5` — MCP server (`get_wallet_address`, optional address on wallet-scoped tools; 85 tools stdio, 72 hosted)
+- [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) `@0.8.13` — MCP server (`get_wallet_address`, optional address on wallet-scoped tools; 86 tools stdio, 73 hosted)
 - [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`) — reads + Carbon prepare
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 
@@ -131,6 +143,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement` (read)
 
 - [x] Mento FX routing (`getFxQuote`, `estimateFx`, `prepareFx`)
 - [x] Uniswap v4 swaps (`getSwapQuote`, `estimateSwap`, `prepareSwap`)
+- [x] GoodDollar reserve swaps (`getReserveQuote`, `prepareReserveSwap`) — G$ ↔ USDm via MentoBroker
 - [x] Aave lending tools (`prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
 - [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)
 - [x] Self Agent ID (`lookupSelfAgent`, registration & lifecycle tools)

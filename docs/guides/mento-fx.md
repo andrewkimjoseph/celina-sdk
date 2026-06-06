@@ -2,6 +2,8 @@
 
 Swap stablecoins via Mento FX on Celo mainnet.
 
+**G$ ↔ USDm is not Mento FX** — use the [GoodDollar reserve](gooddollar.md) (`getReserveQuote` / `get_gooddollar_reserve_quote`) for that pair.
+
 ## Get a quote (no wallet)
 
 ```ts

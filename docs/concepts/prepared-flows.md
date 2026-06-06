@@ -12,6 +12,7 @@ Methods named `prepare*` return a **serialized prepared flow** — an ordered li
 | `prepareSupply` | `aave` | 1–2 (optional approve + supply) |
 | `prepareWithdraw` | `aave` | 1 (withdraw) |
 | `prepareClaimUbi` | `gooddollar` | 1 (UBI claim) |
+| `prepareReserveSwap` | `gooddollar` | 1–2 (optional ERC-20 approve + MentoBroker `swapIn`) |
 | 13 `prepare*` methods | `carbon` | 1–2+ (optional approve + Carbon controller tx) — see **`finalizeCarbonPrepare`** below |
 
 ## SerializedPreparedFlow shape
@@ -113,5 +114,5 @@ Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalld
 - [Mento FX](../guides/mento-fx.md)
 - [Uniswap v4](../guides/uniswap.md)
 - [Aave](../guides/aave.md)
-- [GoodDollar UBI](../guides/gooddollar.md)
+- [GoodDollar](../guides/gooddollar.md)
 - [Carbon DeFi on Celo](../guides/carbon.md)

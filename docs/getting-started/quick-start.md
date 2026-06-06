@@ -22,6 +22,9 @@ const quote = await celina.mentoFx.getFxQuote("USDm", "EURm", "100");
 
 // Uniswap v4 quote (no wallet needed)
 const swapQuote = await celina.uniswap.getSwapQuote("USDC", "USDT", "100");
+
+// GoodDollar reserve quote — G$ ↔ USDm (no wallet needed)
+const reserveQuote = await celina.gooddollar.getReserveQuote("GoodDollar", "USDm", "1000");
 ```
 
 ## 3. Prepare an unsigned transaction
