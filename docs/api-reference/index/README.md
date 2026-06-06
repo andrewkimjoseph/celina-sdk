@@ -39,7 +39,12 @@
 - [CHAIN](variables/CHAIN.md)
 - [DEFAULT\_CARBON\_REST\_BASE\_URL](variables/DEFAULT_CARBON_REST_BASE_URL.md)
 - [DEFAULT\_RPC\_URL](variables/DEFAULT_RPC_URL.md)
+- [GOODDOLLAR\_CUSD\_EXCHANGE\_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
 - [GOODDOLLAR\_IDENTITY\_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
+- [GOODDOLLAR\_MENTO\_BROKER](variables/GOODDOLLAR_MENTO_BROKER.md)
+- [GOODDOLLAR\_MENTO\_EXCHANGE\_PROVIDER](variables/GOODDOLLAR_MENTO_EXCHANGE_PROVIDER.md)
+- [GOODDOLLAR\_RESERVE\_COLLATERAL](variables/GOODDOLLAR_RESERVE_COLLATERAL.md)
+- [GOODDOLLAR\_TOKEN\_ADDRESS](variables/GOODDOLLAR_TOKEN_ADDRESS.md)
 - [GOODDOLLAR\_UBI\_SCHEME\_ADDRESS](variables/GOODDOLLAR_UBI_SCHEME_ADDRESS.md)
 - [SELF\_DEMO\_NETWORK](variables/SELF_DEMO_NETWORK.md)
 - [SELF\_HEADERS](variables/SELF_HEADERS.md)
@@ -54,6 +59,7 @@
 - [finalizeCarbonPrepare](functions/finalizeCarbonPrepare.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
+- [isGoodDollarUsdReservePair](functions/isGoodDollarUsdReservePair.md)
 - [normalizeCarbonWriteBody](functions/normalizeCarbonWriteBody.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveCarbonTokenAddress](functions/resolveCarbonTokenAddress.md)
@@ -71,6 +77,12 @@ Re-exports [CarbonWriteBody](../services/carbon.service/type-aliases/CarbonWrite
 ### ContractCallParams
 
 Re-exports [ContractCallParams](../services/contract.service/interfaces/ContractCallParams.md)
+
+***
+
+### GoodDollarReserveSwapParams
+
+Re-exports [GoodDollarReserveSwapParams](../services/gooddollar.service/interfaces/GoodDollarReserveSwapParams.md)
 
 ***
 

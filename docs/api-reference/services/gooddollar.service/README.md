@@ -9,3 +9,7 @@
 ## Classes
 
 - [GoodDollarService](classes/GoodDollarService.md)
+
+## Interfaces
+
+- [GoodDollarReserveSwapParams](interfaces/GoodDollarReserveSwapParams.md)
