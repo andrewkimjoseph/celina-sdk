@@ -41,6 +41,7 @@ import {
   formatUnixDateTimeUtc,
   formatUnixIso,
 } from "../utils/format-unix-datetime.js";
+import { resolveUbiPeriodEligibility } from "../utils/gooddollar-ubi-period.js";
 
 const SECONDS_PER_DAY = 86400n;
 
@@ -277,7 +278,13 @@ export class GoodDollarService {
     const identityAddress =
       root !== ZERO_ADDRESS ? root : address;
 
-    let alreadyClaimedToday = false;
+    const contractDay = ubiPeriodDay as bigint;
+    const computedDay =
+      schemeStarted && periodStartBn > 0n
+        ? (nowSec - periodStartBn) / SECONDS_PER_DAY
+        : 0n;
+
+    let claimedForOnChainDay = false;
     let lastClaimedSec = 0n;
 
     if (root !== ZERO_ADDRESS) {
@@ -295,21 +302,28 @@ export class GoodDollarService {
           args: [root],
         }),
       ]);
-      alreadyClaimedToday = hasClaimed;
+      claimedForOnChainDay = hasClaimed;
       lastClaimedSec = lastClaimed as bigint;
     }
 
     const whitelistingInfo = await this.getWhitelistingInfo(identityAddress);
 
-    const currentContractDay =
-      schemeStarted && periodStartBn > 0n
-        ? (nowSec - periodStartBn) / SECONDS_PER_DAY
-        : 0n;
+    const periodState = resolveUbiPeriodEligibility({
+      contractDay,
+      computedDay,
+      claimedForOnChainDay,
+      hasRoot: root !== ZERO_ADDRESS,
+      schemePaused,
+      schemeStarted,
+      isWhitelisted: whitelistingInfo.isCurrentlyWhitelisted,
+      claimable,
+    });
+
+    const { alreadyClaimedToday, inClaimCooldown } = periodState;
     const nextClaimAt =
-      periodStartBn + (currentContractDay + 1n) * SECONDS_PER_DAY;
+      periodStartBn + (computedDay + 1n) * SECONDS_PER_DAY;
     const secondsUntilNextClaim =
-      nextClaimAt > nowSec ? nextClaimAt - nowSec : 0n;
-    const inClaimCooldown = root !== ZERO_ADDRESS && alreadyClaimedToday;
+      inClaimCooldown && nextClaimAt > nowSec ? nextClaimAt - nowSec : 0n;
 
     const reasons: string[] = [];
 
@@ -340,11 +354,7 @@ export class GoodDollarService {
       }
     }
 
-    const isEligibleToClaim =
-      root !== ZERO_ADDRESS &&
-      !schemePaused &&
-      schemeStarted &&
-      claimable > 0n;
+    const isEligibleToClaim = periodState.isEligibleToClaim;
 
     const lastClaimedAt =
       lastClaimedSec > 0n ? formatUnixIso(lastClaimedSec) : null;
