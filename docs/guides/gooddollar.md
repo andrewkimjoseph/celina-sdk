@@ -49,10 +49,10 @@ Key fields:
 |-------|---------|
 | `whitelistedRoot` | Verified identity root (connected wallets resolve here) |
 | `isConnectedWallet` | `true` when the checked address maps to a different root |
-| `isEligibleToClaim` | `true` when `claim()` should succeed (matches on-chain `checkEntitlement`) |
-| `claimableAmountFormatted` | Today's G$ amount from `checkEntitlement` |
-| `alreadyClaimedToday` | `hasClaimed(root)` for the current UBI period |
-| `inClaimCooldown` | Same as `alreadyClaimedToday` when a root exists |
+| `isEligibleToClaim` | `true` when on-chain `claim()` should succeed (not raw `checkEntitlement` alone) |
+| `claimableAmountFormatted` | Amount from `checkEntitlement` (may be `estimateNextDailyUBI` during day-roll) |
+| `alreadyClaimedToday` | Claimed for the current on-chain period; `false` during day-roll window |
+| `inClaimCooldown` | Same as `alreadyClaimedToday` when a root exists; `false` during day-roll window |
 | `lastClaimedAt` | ISO UTC of the root's last successful claim, or `null` |
 | `nextClaimAvailableAt` | ISO UTC when the next UBI period starts |
 | `secondsUntilNextClaim` | Seconds until `nextClaimAvailableAt` |
@@ -63,7 +63,9 @@ Key fields:
 
 Entitlement uses Identity `getWhitelistedRoot` (same check as `UBISchemeV2.claim()`). Identity status in the entitlement response is evaluated on the **root**, so connected wallets do not surface stale whitelist data on the linked address.
 
-**UBI period vs rolling 24h:** Claims reset at the next UBI day boundary (`periodStart + (day + 1) × 86400`), not `lastClaimed + 24 hours`. The countdown fields reflect that boundary.
+**UBI period vs rolling 24h:** Claims reset at the next UBI day boundary (`periodStart + (day + 1) × 86400`, aligned to 12:00 UTC), not `lastClaimed + 24 hours`. The countdown fields reflect that boundary.
+
+**Day-roll window:** After the UTC period boundary, `currentDay` on-chain may lag until the first `claim()` calls `setDay()`. During that window `hasClaimed` can still be `true` while `checkEntitlement` returns a positive estimate — `isEligibleToClaim` accounts for this and matches on-chain `claim()` behavior.
 
 ## Prepare claim (unsigned)
 
