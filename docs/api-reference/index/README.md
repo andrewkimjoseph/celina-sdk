@@ -64,6 +64,7 @@
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveCarbonTokenAddress](functions/resolveCarbonTokenAddress.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
+- [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)
 - [selfDemoUrl](functions/selfDemoUrl.md)
 
 ## References

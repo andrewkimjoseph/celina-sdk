@@ -8,6 +8,6 @@
 
 > `const` **CELINA\_DATA\_SUFFIX**: `` `0x${string}` ``
 
-Defined in: [src/config/celina-tag.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/config/celina-tag.ts#L4)
+Defined in: [src/config/celina-tag.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/config/celina-tag.ts#L4)
 
 Calldata suffix appended to prepared transactions for on-chain Celina attribution.

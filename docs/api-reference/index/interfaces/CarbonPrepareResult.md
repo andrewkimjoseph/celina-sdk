@@ -6,7 +6,7 @@
 
 # Interface: CarbonPrepareResult
 
-Defined in: [src/types/carbon.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L28)
+Defined in: [src/types/carbon.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L28)
 
 Write-tool response after REST → Celina adapter.
 
@@ -22,7 +22,7 @@ Remaining Carbon API fields (market price, simulation, etc.).
 
 > `optional` **preparedFlow?**: [`SerializedPreparedFlow`](../../types/prepared/interfaces/SerializedPreparedFlow.md)
 
-Defined in: [src/types/carbon.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L31)
+Defined in: [src/types/carbon.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L31)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/types/carbon.ts:31](https://github.com/andrewkimjoseph/celina-s
 
 > **status**: `"ok"`
 
-Defined in: [src/types/carbon.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L29)
+Defined in: [src/types/carbon.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L29)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/types/carbon.ts:29](https://github.com/andrewkimjoseph/celina-s
 
 > `optional` **strategyPreview?**: `unknown`
 
-Defined in: [src/types/carbon.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L32)
+Defined in: [src/types/carbon.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L32)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [src/types/carbon.ts:32](https://github.com/andrewkimjoseph/celina-s
 
 > **warnings**: `string`[]
 
-Defined in: [src/types/carbon.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L30)
+Defined in: [src/types/carbon.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L30)

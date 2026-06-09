@@ -8,7 +8,7 @@
 - Builds **unsigned transaction payloads** for a caller-supplied `from` address
 - **Does not hold CELO wallet keys** — pass prepared `steps` to wagmi/viem for signing
 - **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
-- **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; opt out with `CELINA_ANALYTICS_DISABLED=1` or `analyticsEnabled: false` — see [Telemetry](../guides/telemetry.md)
+- **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `CELINA_ANALYTICS_DISABLED=1` or `analyticsEnabled: false`
 
 Consumers pass prepared `steps` to wagmi/viem for wallet signing.
 

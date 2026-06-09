@@ -8,6 +8,6 @@
 
 > `const` **GOODDOLLAR\_MENTO\_EXCHANGE\_PROVIDER**: `"0x2fFBB49055d487DdBBb0C052Cd7c2a02A7971e41"`
 
-Defined in: [src/config/gooddollar.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/config/gooddollar.ts#L18)
+Defined in: [src/config/gooddollar.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/config/gooddollar.ts#L18)
 
 GoodDollar MentoExchangeProvider on Celo mainnet.

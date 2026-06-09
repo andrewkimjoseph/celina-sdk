@@ -8,7 +8,7 @@
 
 > **CarbonRestSuccess** = `object`
 
-Defined in: [src/types/carbon.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L4)
+Defined in: [src/types/carbon.ts:4](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L4)
 
 Carbon REST success envelope (tool-specific fields merged).
 
@@ -22,7 +22,7 @@ Carbon REST success envelope (tool-specific fields merged).
 
 > **status**: `"ok"`
 
-Defined in: [src/types/carbon.ts:5](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L5)
+Defined in: [src/types/carbon.ts:5](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L5)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [src/types/carbon.ts:5](https://github.com/andrewkimjoseph/celina-sd
 
 > `optional` **warnings?**: `string`[]
 
-Defined in: [src/types/carbon.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/types/carbon.ts#L6)
+Defined in: [src/types/carbon.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/types/carbon.ts#L6)

@@ -8,7 +8,7 @@
 
 > **carbonActivityDeepLink**(`walletAddress`): `string`
 
-Defined in: [src/config/carbon.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/config/carbon.ts#L21)
+Defined in: [src/config/carbon.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/config/carbon.ts#L21)
 
 Post-execution activity explorer for a wallet on Carbon DeFi (Celo).
 

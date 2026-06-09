@@ -8,7 +8,7 @@
 
 > **CarbonWriteBody** = `Record`\<`string`, `unknown`\> & `object`
 
-Defined in: [src/services/carbon.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/carbon.service.ts#L23)
+Defined in: [src/services/carbon.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/carbon.service.ts#L23)
 
 ## Type Declaration
 

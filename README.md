@@ -44,7 +44,7 @@ For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definiti
 - [Carbon DeFi on Celo](docs/guides/carbon.md) — hybrid REST + `@bancor/carbon-sdk` (25 operations)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
-- [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (`CELINA_ANALYTICS_DISABLED=1`)
+- [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (`device_id` per project, `user_id` per wallet; `CELINA_ANALYTICS_DISABLED=1`)
 - [API reference](https://andrewkimjoseph.gitbook.io/celina-sdk/api-reference)
 
 Docs source lives in [`docs/`](docs/) in this repository.

@@ -6,7 +6,7 @@
 
 # Interface: VerifySelfRequestParams
 
-Defined in: [src/services/self.service.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L57)
+Defined in: [src/services/self.service.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L57)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/self.service.ts:57](https://github.com/andrewkimjoseph
 
 > `optional` **agentKey?**: `` `0x${string}` ``
 
-Defined in: [src/services/self.service.ts:64](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L64)
+Defined in: [src/services/self.service.ts:64](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L64)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/self.service.ts:64](https://github.com/andrewkimjoseph
 
 > **agentSignature**: `` `0x${string}` ``
 
-Defined in: [src/services/self.service.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L58)
+Defined in: [src/services/self.service.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L58)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/self.service.ts:58](https://github.com/andrewkimjoseph
 
 > **agentTimestamp**: `string`
 
-Defined in: [src/services/self.service.ts:59](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L59)
+Defined in: [src/services/self.service.ts:59](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L59)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/services/self.service.ts:59](https://github.com/andrewkimjoseph
 
 > `optional` **body?**: `string`
 
-Defined in: [src/services/self.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L62)
+Defined in: [src/services/self.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L62)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [src/services/self.service.ts:62](https://github.com/andrewkimjoseph
 
 > `optional` **keytype?**: `string`
 
-Defined in: [src/services/self.service.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L63)
+Defined in: [src/services/self.service.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L63)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [src/services/self.service.ts:63](https://github.com/andrewkimjoseph
 
 > **method**: `string`
 
-Defined in: [src/services/self.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L60)
+Defined in: [src/services/self.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L60)
 
 ***
 
@@ -62,4 +62,4 @@ Defined in: [src/services/self.service.ts:60](https://github.com/andrewkimjoseph
 
 > **path**: `string`
 
-Defined in: [src/services/self.service.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/9aa8703fbb6f796ec6f1362b133c7fd2f4baefc2/src/services/self.service.ts#L61)
+Defined in: [src/services/self.service.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/self.service.ts#L61)
