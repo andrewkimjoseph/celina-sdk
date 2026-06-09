@@ -20,6 +20,21 @@ import {
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
 import { TokenService } from "./token.service.js";
+import {
+  insufficientBalanceEstimateMessage,
+  isInsufficientBalanceSimulationError,
+} from "../utils/transaction-errors.js";
+
+export type SendEstimateResult = {
+  network: "mainnet";
+  from: `0x${string}`;
+  to: `0x${string}`;
+  token: string;
+  amount: string;
+  gas: string | null;
+  insufficientBalance?: boolean;
+  message?: string;
+};
 
 function taggedCalldata(data: Hex): Hex {
   return concat([data, CELINA_DATA_SUFFIX]);
@@ -39,54 +54,60 @@ export class TransactionService {
    * @param to - Recipient address
    * @param token - Symbol (e.g. `CELO`, `USDm`) or contract address
    * @param amount - Human-readable amount (e.g. `"10"`)
-   * @returns Gas estimate in units as a decimal string
+   * @returns Gas estimate in units as a decimal string, or a structured insufficient-balance result when simulation reverts.
    */
   async estimateSend(
     from: `0x${string}`,
     to: `0x${string}`,
     token: string,
     amount: string,
-  ) {
+  ): Promise<SendEstimateResult> {
     const { public: client } = this.clientFactory.getClients();
     const resolved = this.tokenService.resolveToken(token);
 
-    if (resolved.address === "native") {
-      const tokenAmount = parseEther(amount);
-      const gas = await client.estimateContractGas({
-        account: from,
-        address: MENTO_CELO_ADDRESS,
-        abi: erc20Abi,
-        functionName: "transfer",
-        args: [to, tokenAmount],
-      });
-
-      return {
-        network: "mainnet" as const,
-        from,
-        to,
-        token: resolved.symbol,
-        amount,
-        gas: gas.toString(),
-      };
-    }
-
-    const tokenAmount = this.tokenService.parseAmount(amount, resolved.decimals);
-    const gas = await client.estimateContractGas({
-      account: from,
-      address: resolved.address,
-      abi: erc20Abi,
-      functionName: "transfer",
-      args: [to, tokenAmount],
-    });
-
-    return {
+    const base = {
       network: "mainnet" as const,
       from,
       to,
       token: resolved.symbol,
       amount,
-      gas: gas.toString(),
     };
+
+    try {
+      if (resolved.address === "native") {
+        const tokenAmount = parseEther(amount);
+        const gas = await client.estimateContractGas({
+          account: from,
+          address: MENTO_CELO_ADDRESS,
+          abi: erc20Abi,
+          functionName: "transfer",
+          args: [to, tokenAmount],
+        });
+
+        return { ...base, gas: gas.toString() };
+      }
+
+      const tokenAmount = this.tokenService.parseAmount(amount, resolved.decimals);
+      const gas = await client.estimateContractGas({
+        account: from,
+        address: resolved.address,
+        abi: erc20Abi,
+        functionName: "transfer",
+        args: [to, tokenAmount],
+      });
+
+      return { ...base, gas: gas.toString() };
+    } catch (error) {
+      if (isInsufficientBalanceSimulationError(error)) {
+        return {
+          ...base,
+          gas: null,
+          insufficientBalance: true,
+          message: insufficientBalanceEstimateMessage(resolved.symbol),
+        };
+      }
+      throw error;
+    }
   }
 
   /**
