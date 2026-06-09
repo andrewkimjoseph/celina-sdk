@@ -46,7 +46,6 @@ export const transactionToolDefinitions: ToolDefinition[] = [
         from: input.from as string | undefined,
         address: input.from as string | undefined,
       });
-      await runtime.hooks?.beforePrepareSend?.({ sender, token, amount });
       const estimate = await runtime.celina.transaction.estimateSend(
         sender,
         address,
