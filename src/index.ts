@@ -184,3 +184,4 @@ export {
 } from "./utils/self-format.js";
 export { clearSelfSessionsForTests } from "./services/self-session-store.js";
 export { flushCelinaAnalytics } from "./analytics/amplitude.js";
+export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";

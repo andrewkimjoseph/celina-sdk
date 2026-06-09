@@ -24,6 +24,11 @@ export interface SdkConfig {
    * then `CELINA_ANALYTICS_DEVICE_ID`, then `celina-sdk`.
    */
   analyticsDeviceId?: string;
+  /**
+   * Default wallet for read telemetry `user_id` when args omit an address
+   * (e.g. MCP session signer with `CELO_PRIVATE_KEY`).
+   */
+  analyticsWalletAddress?: string;
 }
 
 /** Default Celo RPC when `rpcUrl` is omitted. */
@@ -62,5 +67,6 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
         ? process.env.CELINA_ANALYTICS_DEVICE_ID
         : undefined) ??
       detectConsumerPackageName(),
+    analyticsWalletAddress: opts?.analyticsWalletAddress,
   };
 }

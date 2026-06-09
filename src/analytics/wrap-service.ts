@@ -22,7 +22,8 @@ export function wrapServiceForAnalytics<T extends object>(
         return value;
       }
 
-      const eventName = MCP_TOOL_EVENT_BY_SDK_METHOD[`${serviceKey}.${prop}`];
+      const methodKey = `${serviceKey}.${prop}`;
+      const eventName = MCP_TOOL_EVENT_BY_SDK_METHOD[methodKey];
       if (!eventName) {
         return value.bind(target);
       }
@@ -30,13 +31,14 @@ export function wrapServiceForAnalytics<T extends object>(
       const fn = value as (...args: unknown[]) => unknown;
       return (...args: unknown[]) => {
         const result = fn.apply(target, args);
+        const context = { methodKey, args };
         if (result !== null && typeof result === "object" && "then" in result) {
           return (result as Promise<unknown>).then((resolved) => {
-            trackMcpTool(eventName, config);
+            trackMcpTool(eventName, config, context);
             return resolved;
           });
         }
-        trackMcpTool(eventName, config);
+        trackMcpTool(eventName, config, context);
         return result;
       };
     },
