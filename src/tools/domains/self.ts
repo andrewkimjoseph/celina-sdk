@@ -1,6 +1,6 @@
 import { selfDemoUrl } from "../../config/self.js";
 import { z } from "zod";
-import { addressSchema, httpRequestPathSchema } from "../schemas/common.js";
+import { addressSchema, httpRequestPathSchema, positiveIntSchema } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 
 const SELF_DEMO_VERIFY_URL = selfDemoUrl("/api/demo/verify");
@@ -48,7 +48,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     name: "lookup_self_agent",
     description: "Look up a Self Agent ID by numeric on-chain ID.",
     inputSchema: z.object({
-      agent_id: z.number().int().positive(),
+      agent_id: positiveIntSchema,
     }),
     families: ["read"],
     surfaces: ["mcp"],
@@ -140,7 +140,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     description:
       "Start a human proof refresh after on-chain proof expiry. Returns qr_code_url and deep_link.",
     inputSchema: z.object({
-      agent_id: z.number().int().positive().optional(),
+      agent_id: positiveIntSchema.optional(),
     }),
     families: ["execute"],
     surfaces: ["mcp"],

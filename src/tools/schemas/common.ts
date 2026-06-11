@@ -44,6 +44,17 @@ function normalizeBlockId(value: unknown): unknown {
   return value;
 }
 
+function normalizePositiveInt(value: unknown): unknown {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (/^\d+$/.test(trimmed)) {
+      return Number(trimmed);
+    }
+    return trimmed;
+  }
+  return value;
+}
+
 export const blockIdSchema = z.preprocess(
   normalizeBlockId,
   z.union([
@@ -52,6 +63,11 @@ export const blockIdSchema = z.preprocess(
     z.number().int().nonnegative(),
     z.string().regex(/^0x[a-fA-F0-9]+$/, "Invalid block hash"),
   ]),
+);
+
+export const positiveIntSchema = z.preprocess(
+  normalizePositiveInt,
+  z.number().int().positive(),
 );
 
 export const tokenSymbolSchema = z
