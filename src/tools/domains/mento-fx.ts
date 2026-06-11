@@ -22,17 +22,12 @@ export const mentoFxToolDefinitions: ToolDefinition[] = [
     inputSchema: mentoFxQuoteSchema,
     families: ["read"],
     mcp: { title: "Get Mento FX Quote", annotations: { readOnlyHint: true } },
-    handler: async (runtime, input) => {
-      const from = input.from
-        ? resolveWalletFromRuntime(runtime, { from: input.from as string })
-        : undefined;
-      return runtime.celina.mentoFx.getFxQuote(
+    handler: async (runtime, input) =>
+      runtime.celina.mentoFx.getFxQuote(
         normalizeRegistryTokenInput(input.token_in as string),
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
-        from,
-      );
-    },
+      ),
   },
   {
     name: "estimate_mento_fx",

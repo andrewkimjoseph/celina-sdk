@@ -389,16 +389,16 @@ export class UniswapService {
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
    * @param amount - Human-readable input amount
-   * @param from - When set, verifies input token balance before route discovery
+   * @param _from - Deprecated; ignored. Balance checks run on prepare/estimate only.
    */
   async getSwapQuote(
     tokenIn: string,
     tokenOut: string,
     amount: string,
-    from?: `0x${string}`,
+    _from?: `0x${string}`,
   ) {
     try {
-      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, undefined, from);
+      const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, undefined, undefined);
       return {
         ...this.baseQuoteFields(
           built.resolvedIn,

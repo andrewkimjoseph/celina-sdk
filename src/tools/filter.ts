@@ -9,7 +9,9 @@ function requireExplicitWalletAddresses(
   definitions: ToolDefinition[],
 ): ToolDefinition[] {
   return definitions.map((def) => {
-    const inputSchema = requireWalletParamsInInputSchema(def.inputSchema);
+    const inputSchema = requireWalletParamsInInputSchema(def.inputSchema, {
+      toolName: def.name,
+    });
     if (inputSchema === def.inputSchema) {
       return def;
     }

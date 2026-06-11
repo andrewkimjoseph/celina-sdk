@@ -21,17 +21,12 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
     inputSchema: uniswapQuoteSchema,
     families: ["read"],
     mcp: { title: "Get Uniswap Quote", annotations: { readOnlyHint: true } },
-    handler: async (runtime, input) => {
-      const from = input.from
-        ? resolveWalletFromRuntime(runtime, { from: input.from as string })
-        : undefined;
-      return runtime.celina.uniswap.getSwapQuote(
+    handler: async (runtime, input) =>
+      runtime.celina.uniswap.getSwapQuote(
         normalizeRegistryTokenInput(input.token_in as string),
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
-        from,
-      );
-    },
+      ),
   },
   {
     name: "estimate_uniswap_swap",

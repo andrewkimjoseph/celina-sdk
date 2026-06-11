@@ -22,14 +22,41 @@ describe("requireWalletParamsInInputSchema", () => {
 });
 
 describe("hosted MCP wallet params", () => {
+  const hostedOptions = {
+    surface: "mcp" as const,
+    serverKeyToolsEnabled: false,
+    carbonExecuteEnabled: false,
+    selfSessionToolsEnabled: false,
+    estimateToolsEnabled: false,
+  };
+
+  it("keeps from optional on get_mento_fx_quote", () => {
+    const def = filterToolDefinitions(ALL_TOOL_DEFINITIONS, hostedOptions).find(
+      (tool) => tool.name === "get_mento_fx_quote",
+    );
+
+    expect(def).toBeDefined();
+    expect(
+      def!.inputSchema.safeParse({
+        token_in: "USDm",
+        token_out: "EURm",
+        amount: "1",
+      }).success,
+    ).toBe(true);
+    expect(
+      def!.inputSchema.safeParse({
+        token_in: "USDm",
+        token_out: "EURm",
+        amount: "1",
+        from: "0xC1C860804EFdA544fe79194d1a37e60b846CEdeb",
+      }).success,
+    ).toBe(true);
+  });
+
   it("requires address on get_celo_balances when serverKeyToolsEnabled is false", () => {
-    const def = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
-      surface: "mcp",
-      serverKeyToolsEnabled: false,
-      carbonExecuteEnabled: false,
-      selfSessionToolsEnabled: false,
-      estimateToolsEnabled: false,
-    }).find((tool) => tool.name === "get_celo_balances");
+    const def = filterToolDefinitions(ALL_TOOL_DEFINITIONS, hostedOptions).find(
+      (tool) => tool.name === "get_celo_balances",
+    );
 
     expect(def).toBeDefined();
     expect(def!.inputSchema.safeParse({}).success).toBe(false);

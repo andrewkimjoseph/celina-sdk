@@ -501,23 +501,18 @@ export class GoodDollarService {
 
   /**
    * Expected GoodDollar reserve output for G$ ↔ USDm — no wallet required.
+   * @param _from - Deprecated; ignored. Balance checks run on prepare/estimate only.
    */
   async getReserveQuote(
     tokenIn: string,
     tokenOut: string,
     amount: string,
-    from?: `0x${string}`,
+    _from?: `0x${string}`,
   ) {
     const { public: client } = this.clientFactory.getClients();
     const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
       this.resolveReservePair(tokenIn, tokenOut);
     const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
-
-    if (from) {
-      await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
-        spendToken: tokenInAddr,
-      });
-    }
 
     const expectedOutWei = await client.readContract({
       address: GOODDOLLAR_MENTO_BROKER,

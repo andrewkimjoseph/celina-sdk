@@ -95,17 +95,12 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     inputSchema: goodDollarReserveQuoteSchema,
     families: ["read"],
     mcp: { title: "Get GoodDollar Reserve Quote", annotations: readOnly },
-    handler: async (runtime, input) => {
-      const from = input.from
-        ? resolveWalletFromRuntime(runtime, { from: input.from as string })
-        : undefined;
-      return runtime.celina.gooddollar.getReserveQuote(
+    handler: async (runtime, input) =>
+      runtime.celina.gooddollar.getReserveQuote(
         normalizeRegistryTokenInput(input.token_in as string),
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
-        from,
-      );
-    },
+      ),
   },
   {
     name: "estimate_gooddollar_reserve_swap",
