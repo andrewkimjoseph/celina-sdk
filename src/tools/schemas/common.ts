@@ -17,12 +17,29 @@ export const addressOrEnsSchema = z
     "Recipient 0x address or ENS name (e.g. andrewkimjoseph.celo.eth, celina.eth)",
   );
 
-export const blockIdSchema = z.union([
-  z.number().int().nonnegative(),
-  z.string().regex(/^0x[a-fA-F0-9]+$/, "Invalid block hash"),
-  z.literal("latest"),
-  z.literal("pending"),
-]);
+function normalizeBlockId(value: unknown): unknown {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (trimmed === "latest" || trimmed === "pending") {
+      return trimmed;
+    }
+    if (/^\d+$/.test(trimmed)) {
+      return Number(trimmed);
+    }
+    return trimmed;
+  }
+  return value;
+}
+
+export const blockIdSchema = z.preprocess(
+  normalizeBlockId,
+  z.union([
+    z.literal("latest"),
+    z.literal("pending"),
+    z.number().int().nonnegative(),
+    z.string().regex(/^0x[a-fA-F0-9]+$/, "Invalid block hash"),
+  ]),
+);
 
 export const tokenSymbolSchema = z
   .string()

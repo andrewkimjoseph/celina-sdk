@@ -35,7 +35,7 @@ export const blockchainOperations: OperationSpec[] = [
     mcp: {
       tool: "get_block",
       arguments: (fx) => ({
-        blockId: Number(fx.latestBlockNumber),
+        block_id: Number(fx.latestBlockNumber),
       }),
     },
     assert: (result) => {
@@ -55,8 +55,8 @@ export const blockchainOperations: OperationSpec[] = [
     mcp: {
       tool: "get_block",
       arguments: (fx) => ({
-        blockId: Number(fx.latestBlockNumber),
-        includeTransactions: true,
+        block_id: Number(fx.latestBlockNumber),
+        include_transactions: true,
       }),
     },
     assert: (result) => {
