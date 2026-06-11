@@ -4,7 +4,7 @@ import {
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
-import { resolveWalletFromRuntime } from "../utils/wallet.js";
+import { resolveWalletFromRuntime, useMcpServerExecutor } from "../utils/wallet.js";
 
 function mapMentoWalletOptions(input: Record<string, unknown>) {
   return {
@@ -41,10 +41,9 @@ export const mentoFxToolDefinitions: ToolDefinition[] = [
     families: ["read"],
     mcp: { title: "Estimate Mento FX", annotations: { readOnlyHint: true } },
     handler: async (runtime, input) => {
-      const sender = resolveWalletFromRuntime(runtime, {
-        from: input.from as string | undefined,
-      });
-      if (runtime.executors?.mentoFx) {
+      const from = input.from as string | undefined;
+      const sender = resolveWalletFromRuntime(runtime, { from });
+      if (runtime.executors?.mentoFx && useMcpServerExecutor(runtime, from)) {
         return runtime.executors.mentoFx.estimate(
           normalizeRegistryTokenInput(input.token_in as string),
           normalizeRegistryTokenInput(input.token_out as string),
@@ -67,6 +66,7 @@ export const mentoFxToolDefinitions: ToolDefinition[] = [
     inputSchema: mentoFxWalletSchema,
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Execute Mento FX",
       annotations: { destructiveHint: true, openWorldHint: true },

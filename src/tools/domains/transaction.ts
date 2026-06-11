@@ -8,7 +8,7 @@ import {
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
-import { resolveWalletFromRuntime } from "../utils/wallet.js";
+import { resolveWalletFromRuntime, useMcpServerExecutor } from "../utils/wallet.js";
 
 export const transactionToolDefinitions: ToolDefinition[] = [
   {
@@ -31,7 +31,11 @@ export const transactionToolDefinitions: ToolDefinition[] = [
         (input.token as string | undefined) ?? "CELO",
       );
       const amount = input.amount as string;
-      if (runtime.executors?.transaction) {
+      const from = input.from as string | undefined;
+      if (
+        runtime.executors?.transaction &&
+        useMcpServerExecutor(runtime, from)
+      ) {
         const estimate = await runtime.executors.transaction.estimateSend(
           address,
           token,
@@ -43,8 +47,8 @@ export const transactionToolDefinitions: ToolDefinition[] = [
         return estimate;
       }
       const sender = resolveWalletFromRuntime(runtime, {
-        from: input.from as string | undefined,
-        address: input.from as string | undefined,
+        from,
+        address: from,
       });
       const estimate = await runtime.celina.transaction.estimateSend(
         sender,
@@ -66,6 +70,7 @@ export const transactionToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Send Token",
       annotations: { destructiveHint: true, openWorldHint: true },

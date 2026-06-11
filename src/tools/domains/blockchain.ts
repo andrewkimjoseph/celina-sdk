@@ -67,6 +67,7 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({}),
     families: ["read"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: { title: "Get Wallet Address", annotations: readOnly },
     handler: async (runtime) => {
       if (!runtime.mcpWallet?.hasWallet) {

@@ -4,6 +4,10 @@ import type { CarbonWriteBody } from "../services/carbon.service.js";
 
 export type ToolSurface = "mcp" | "browser";
 export type ToolFamily = "read" | "prepare" | "execute";
+export type ToolEnvRequirement =
+  | "CELO_PRIVATE_KEY"
+  | "SELF_AGENT_PRIVATE_KEY"
+  | "SELF_SESSION";
 
 export type WalletInput = {
   address?: string;
@@ -190,6 +194,7 @@ export interface ToolDefinition {
   inputSchema: z.ZodTypeAny;
   families: ToolFamily[];
   surfaces?: ToolSurface[];
+  requiresEnv?: ToolEnvRequirement[];
   mcp?: McpToolMeta;
   handler: (runtime: ToolRuntime, input: Record<string, unknown>) => Promise<unknown>;
 }
@@ -200,4 +205,8 @@ export type FilterToolsOptions = {
   names?: string[];
   carbonPrepareEnabled?: boolean;
   carbonExecuteEnabled?: boolean;
+  /** When false, omit tools that require CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY. Default true. */
+  serverKeyToolsEnabled?: boolean;
+  /** When false, omit Self registration session tools. Default true. */
+  selfSessionToolsEnabled?: boolean;
 };

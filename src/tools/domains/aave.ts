@@ -22,6 +22,7 @@ export const aaveToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Supply Aave",
       annotations: { destructiveHint: true, openWorldHint: true },
@@ -43,6 +44,7 @@ export const aaveToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Withdraw Aave",
       annotations: { destructiveHint: true, openWorldHint: true },

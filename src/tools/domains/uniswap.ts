@@ -4,7 +4,7 @@ import {
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
-import { resolveWalletFromRuntime } from "../utils/wallet.js";
+import { resolveWalletFromRuntime, useMcpServerExecutor } from "../utils/wallet.js";
 
 function mapUniswapWalletOptions(input: Record<string, unknown>) {
   return {
@@ -41,10 +41,9 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
     families: ["read"],
     mcp: { title: "Estimate Uniswap Swap", annotations: { readOnlyHint: true } },
     handler: async (runtime, input) => {
-      const sender = resolveWalletFromRuntime(runtime, {
-        from: input.from as string | undefined,
-      });
-      if (runtime.executors?.uniswap) {
+      const from = input.from as string | undefined;
+      const sender = resolveWalletFromRuntime(runtime, { from });
+      if (runtime.executors?.uniswap && useMcpServerExecutor(runtime, from)) {
         return runtime.executors.uniswap.estimate(
           normalizeRegistryTokenInput(input.token_in as string),
           normalizeRegistryTokenInput(input.token_out as string),
@@ -67,6 +66,7 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
     inputSchema: uniswapWalletSchema,
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Execute Uniswap Swap",
       annotations: { destructiveHint: true, openWorldHint: true },

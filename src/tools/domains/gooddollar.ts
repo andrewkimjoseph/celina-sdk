@@ -6,7 +6,7 @@ import {
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
-import { resolveWalletFromRuntime } from "../utils/wallet.js";
+import { resolveWalletFromRuntime, useMcpServerExecutor } from "../utils/wallet.js";
 
 const readOnly = {
   readOnlyHint: true,
@@ -59,6 +59,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({}),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Claim Daily GoodDollar UBI",
       annotations: { destructiveHint: true, openWorldHint: true },
@@ -118,14 +119,16 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
       annotations: readOnly,
     },
     handler: async (runtime, input) => {
-      const sender = resolveWalletFromRuntime(runtime, {
-        from: input.from as string | undefined,
-      });
+      const from = input.from as string | undefined;
+      const sender = resolveWalletFromRuntime(runtime, { from });
       const tokenIn = normalizeRegistryTokenInput(input.token_in as string);
       const tokenOut = normalizeRegistryTokenInput(input.token_out as string);
       const amount = input.amount as string;
       const options = mapReserveWalletOptions(input);
-      if (runtime.executors?.gooddollarWrite) {
+      if (
+        runtime.executors?.gooddollarWrite &&
+        useMcpServerExecutor(runtime, from)
+      ) {
         return runtime.executors.gooddollarWrite.estimateReserveSwap(
           tokenIn,
           tokenOut,
@@ -152,6 +155,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     inputSchema: goodDollarReserveWalletSchema,
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["CELO_PRIVATE_KEY"],
     mcp: {
       title: "Execute GoodDollar Reserve Swap",
       annotations: { destructiveHint: true, openWorldHint: true },

@@ -22,4 +22,19 @@ describe("tools catalog", () => {
     const names = ALL_TOOL_DEFINITIONS.map((d) => d.name);
     expect(new Set(names).size).toBe(names.length);
   });
+
+  it("hosted MCP profile omits server-key and Self session tools", () => {
+    const hosted = getMcpToolNames({
+      carbonExecuteEnabled: false,
+      serverKeyToolsEnabled: false,
+      selfSessionToolsEnabled: false,
+    });
+    expect(hosted).toHaveLength(60);
+    expect(hosted).not.toContain("send_token");
+    expect(hosted).not.toContain("get_wallet_address");
+    expect(hosted).not.toContain("register_self_agent");
+    expect(hosted).not.toContain("execute_carbon_limit_order");
+    expect(hosted).toContain("prepare_carbon_limit_order");
+    expect(hosted).toContain("estimate_send");
+  });
 });

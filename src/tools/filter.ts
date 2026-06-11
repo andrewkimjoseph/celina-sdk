@@ -33,6 +33,22 @@ export function filterToolDefinitions(
       return false;
     }
 
+    if (options.serverKeyToolsEnabled === false && def.requiresEnv?.length) {
+      if (
+        def.requiresEnv.includes("CELO_PRIVATE_KEY") ||
+        def.requiresEnv.includes("SELF_AGENT_PRIVATE_KEY")
+      ) {
+        return false;
+      }
+    }
+
+    if (
+      options.selfSessionToolsEnabled === false &&
+      def.requiresEnv?.includes("SELF_SESSION")
+    ) {
+      return false;
+    }
+
     return true;
   });
 }

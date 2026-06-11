@@ -100,6 +100,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_SESSION"],
     mcp: {
       title: "Register Self Agent",
       annotations: { destructiveHint: true, openWorldHint: true },
@@ -124,6 +125,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     }),
     families: ["read"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_SESSION"],
     mcp: {
       title: "Check Self Registration",
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: true },
@@ -138,6 +140,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({}),
     families: ["read"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Get Self Agent Identity",
       annotations: { readOnlyHint: true, idempotentHint: true },
@@ -153,6 +156,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Refresh Self Proof",
       annotations: { openWorldHint: true },
@@ -168,6 +172,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({}),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Deregister Self Agent",
       annotations: { destructiveHint: true, openWorldHint: true },
@@ -185,6 +190,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     }),
     families: ["read"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Sign Self Agent Request",
       annotations: { readOnlyHint: true, idempotentHint: true },
@@ -202,6 +208,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     }),
     families: ["execute"],
     surfaces: ["mcp"],
+    requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Authenticated Self Fetch",
       annotations: { openWorldHint: true },
