@@ -237,7 +237,7 @@ export const KNOWN_TOKENS: KnownToken[] = [
     aliases: ["G$", "GD"],
     address: "0x62B8B11039FcfE5aB0C56E502b1C372A3d2a9c7A",
     issuer: "GoodDollar",
-    useCase: "UBI-focused stablecoin for financial inclusion",
+    useCase: "UBI-focused token for financial inclusion",
     decimals: 18,
   },
 ];
