@@ -134,12 +134,25 @@ export const carbonToolDefinitions: ToolDefinition[] = [
   {
     name: "get_carbon_activity",
     description: "Trade and event history for a wallet or strategy on Carbon.",
-    inputSchema: z.object({}).passthrough(),
+    inputSchema: z
+      .object({
+        wallet_address: optionalWalletAddressSchema,
+        strategy_id: z.string().optional(),
+      })
+      .passthrough(),
     families: ["read"],
     mcp: { title: "Get Carbon Activity", annotations: readOnly },
     handler: async (runtime, input) => {
+      const strategyId = input.strategy_id as string | undefined;
+      const explicitWallet = input.wallet_address as string | undefined;
+      if (strategyId) {
+        return runtime.celina.carbon.getActivity({
+          ...input,
+          ...(explicitWallet ? { wallet_address: explicitWallet } : {}),
+        });
+      }
       const wallet_address = resolveWalletFromRuntime(runtime, {
-        wallet_address: input.wallet_address as string | undefined,
+        wallet_address: explicitWallet,
       });
       return runtime.celina.carbon.getActivity({ ...input, wallet_address });
     },

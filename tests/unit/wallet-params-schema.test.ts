@@ -66,4 +66,21 @@ describe("hosted MCP wallet params", () => {
       }).success,
     ).toBe(true);
   });
+
+  it("requires wallet_address or strategy_id on get_carbon_activity when hosted", () => {
+    const def = filterToolDefinitions(ALL_TOOL_DEFINITIONS, hostedOptions).find(
+      (tool) => tool.name === "get_carbon_activity",
+    );
+
+    expect(def).toBeDefined();
+    expect(def!.inputSchema.safeParse({}).success).toBe(false);
+    expect(
+      def!.inputSchema.safeParse({
+        wallet_address: "0xC1C860804EFdA544fe79194d1a37e60b846CEdeb",
+      }).success,
+    ).toBe(true);
+    expect(def!.inputSchema.safeParse({ strategy_id: "9186" }).success).toBe(
+      true,
+    );
+  });
 });
