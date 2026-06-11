@@ -209,4 +209,6 @@ export type FilterToolsOptions = {
   serverKeyToolsEnabled?: boolean;
   /** When false, omit Self registration session tools. Default true. */
   selfSessionToolsEnabled?: boolean;
+  /** When false, omit estimate_* gas simulation tools. Default true. */
+  estimateToolsEnabled?: boolean;
 };

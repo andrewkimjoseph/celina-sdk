@@ -2,6 +2,7 @@ import type { FilterToolsOptions, ToolDefinition } from "./types.js";
 
 const CARBON_PREPARE_PREFIX = "prepare_carbon_";
 const CARBON_EXECUTE_PREFIX = "execute_carbon_";
+const ESTIMATE_PREFIX = "estimate_";
 
 export function filterToolDefinitions(
   definitions: ToolDefinition[],
@@ -30,6 +31,10 @@ export function filterToolDefinitions(
     }
 
     if (def.name.startsWith(CARBON_EXECUTE_PREFIX) && options.carbonExecuteEnabled === false) {
+      return false;
+    }
+
+    if (def.name.startsWith(ESTIMATE_PREFIX) && options.estimateToolsEnabled === false) {
       return false;
     }
 
