@@ -17,7 +17,7 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   "gooddollar.getUbiClaimEligibility": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getWhitelistingInfo": { positional: 0, objectKeys: ["address"] },
   "nft.getNftBalance": { objectKeys: ["address"] },
-  "self.verifySelfAgent": { objectKeys: ["address"] },
+  "self.verifySelfAgent": { objectKeys: ["address","agent_address"] },
   "staking.getActivatableStakes": { positional: 0, objectKeys: ["address"] },
   "staking.getStakingBalances": { positional: 0, objectKeys: ["address"] },
   "token.getBalances": { objectKeys: ["address"] },

@@ -42,12 +42,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: true },
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).verifyAgent({
-        agentAddress: input.agent_address,
-        requireAge: input.require_age,
-        requireOfac: input.require_ofac,
-        requireSelfProvider: input.require_self_provider,
-      }),
+      requireSelf(runtime).verifyAgent(input),
   },
   {
     name: "lookup_self_agent",
@@ -107,14 +102,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
       responseKind: "self_session",
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).registerAgent({
-        mode: input.mode,
-        minimumAge: input.minimum_age,
-        ofac: input.ofac,
-        humanAddress: input.human_address,
-        agentName: input.agent_name,
-        agentDescription: input.agent_description,
-      }),
+      requireSelf(runtime).registerAgent(input),
   },
   {
     name: "check_self_registration",
@@ -163,7 +151,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
       responseKind: "self_session",
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).refreshProof({ agentId: input.agent_id }),
+      requireSelf(runtime).refreshProof(input),
   },
   {
     name: "deregister_self_agent",

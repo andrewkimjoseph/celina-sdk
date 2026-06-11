@@ -12,6 +12,8 @@ const walletOutPath = join(root, "src/analytics/wallet-extract.ts");
 
 const WALLET_ARG_KEYS = new Set([
   "address",
+  "agentAddress",
+  "agent_address",
   "wallet_address",
   "from",
   "owner",
