@@ -45,7 +45,7 @@ import {
   resolveSelfSessionLinks,
   truncateBody,
 } from "../utils/self-format.js";
-import { computeSigningMessage } from "../utils/self-signing.js";
+import { canonicalizeSigningUrl, computeSigningMessage } from "../utils/self-signing.js";
 
 export interface VerifySelfAgentParams {
   agentAddress: `0x${string}`;
@@ -400,6 +400,15 @@ export class SelfService {
       agentKey,
     } = params;
 
+    if (path.includes("..")) {
+      return {
+        valid: false,
+        reason: "Invalid request path",
+      };
+    }
+
+    const signingPath = canonicalizeSigningUrl(path);
+
     const ts = parseInt(agentTimestamp, 10);
     if (Number.isNaN(ts) || Math.abs(Date.now() - ts) > SELF_DEFAULT_MAX_AGE_MS) {
       return {
@@ -411,7 +420,7 @@ export class SelfService {
     const message = computeSigningMessage(
       agentTimestamp,
       method,
-      path,
+      signingPath,
       body,
     );
     let signerAddress: `0x${string}`;

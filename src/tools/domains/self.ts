@@ -1,6 +1,6 @@
 import { selfDemoUrl } from "../../config/self.js";
 import { z } from "zod";
-import { addressSchema } from "../schemas/common.js";
+import { addressSchema, httpRequestPathSchema } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 
 const SELF_DEMO_VERIFY_URL = selfDemoUrl("/api/demo/verify");
@@ -62,12 +62,12 @@ export const selfToolDefinitions: ToolDefinition[] = [
   {
     name: "verify_self_request",
     description:
-      "Verify incoming HTTP request headers signed by a Self Agent.",
+      "Verify incoming HTTP request headers signed by a Self Agent (not file system access).",
     inputSchema: z.object({
       agent_signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
       agent_timestamp: z.string(),
       method: z.string(),
-      path: z.string(),
+      request_path: httpRequestPathSchema,
       body: z.string().optional(),
       keytype: z.string().optional(),
       agent_key: z.string().regex(/^0x[a-fA-F0-9]+$/).optional(),

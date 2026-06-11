@@ -52,7 +52,7 @@ export const selfOperations: OperationSpec[] = [
           agentSignature: args.agent_signature as `0x${string}`,
           agentTimestamp: String(args.agent_timestamp),
           method: String(args.method),
-          path: String(args.path),
+          path: String(args.request_path ?? args.path),
           body: typeof args.body === "string" ? args.body : undefined,
           keytype: typeof args.keytype === "string" ? args.keytype : undefined,
           agentKey: args.agent_key as `0x${string}` | undefined,

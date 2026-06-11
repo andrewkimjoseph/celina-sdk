@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { canonicalizeSigningUrl } from "../../utils/self-signing.js";
 
 export const addressSchema = z
   .string()
@@ -61,6 +62,28 @@ export const ensNameSchema = z
   .string()
   .min(3)
   .describe("ENS name, e.g. celina.eth or andrewkimjoseph.celo.eth");
+
+function normalizeHttpRequestPath(value: unknown): unknown {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+  return value;
+}
+
+export const httpRequestPathSchema = z.preprocess(
+  normalizeHttpRequestPath,
+  z
+    .string()
+    .min(1)
+    .refine(
+      (s) => !s.includes(".."),
+      "HTTP request path must not contain '..'",
+    )
+    .transform((s) => canonicalizeSigningUrl(s))
+    .describe(
+      "HTTP request path or URL path+query that was signed — not a filesystem path.",
+    ),
+);
 
 export const tokenIdSchema = z.string().describe("NFT token ID (decimal string)");
 
