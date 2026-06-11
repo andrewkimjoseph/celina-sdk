@@ -10,6 +10,18 @@ export const optionalWalletAddressSchema = addressSchema
     "Wallet on Celo mainnet. Omit to use the connected wallet or MCP CELO_PRIVATE_KEY signer.",
   );
 
+export const requiredWalletAddressSchema = addressSchema.describe(
+  "Wallet on Celo mainnet (0x address).",
+);
+
+/** Input keys that default to the MCP signer when omitted on local stdio. */
+export const WALLET_PARAM_KEYS = [
+  "address",
+  "wallet_address",
+  "from",
+  "from_address",
+] as const;
+
 export const addressOrEnsSchema = z
   .string()
   .min(3)
