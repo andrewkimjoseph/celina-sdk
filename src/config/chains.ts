@@ -248,11 +248,15 @@ export type Stablecoin = KnownToken & {
   useCase: string;
 };
 
+/** In KNOWN_TOKENS but not fiat-pegged stablecoins — use get_token_balance / domain tools. */
+const STABLECOIN_SCAN_EXCLUDED = new Set<string>(["GoodDollar", "WETH"]);
+
 export const STABLECOINS = KNOWN_TOKENS.filter(
   (token): token is Stablecoin =>
     token.address !== "native" &&
     token.issuer !== undefined &&
-    token.useCase !== undefined,
+    token.useCase !== undefined &&
+    !STABLECOIN_SCAN_EXCLUDED.has(token.symbol),
 );
 
 export const KNOWN_TOKEN_SYMBOLS = KNOWN_TOKENS.flatMap((token) => [

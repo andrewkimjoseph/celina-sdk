@@ -105,7 +105,8 @@ export class TokenService {
   }
 
   /**
-   * Scan registry stablecoins for an address; omits zero balances by default.
+   * Scan fiat-pegged registry stablecoins for an address; omits zero balances by default.
+   * GoodDollar and WETH are excluded — use `getTokenBalance` or GoodDollar tools.
    * @param address - Wallet to scan
    * @param options.stablecoins - Subset of registry symbols to check
    * @param options.includeZero - Include tokens with zero balance
