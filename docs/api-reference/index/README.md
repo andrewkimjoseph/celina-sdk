@@ -8,13 +8,11 @@
 
 ## Classes
 
-- [CarbonRestError](classes/CarbonRestError.md)
 - [SelfApiError](classes/SelfApiError.md)
 - [SelfExpiredSessionError](classes/SelfExpiredSessionError.md)
 
 ## Interfaces
 
-- [CarbonPrepareResult](interfaces/CarbonPrepareResult.md)
 - [CelinaClient](interfaces/CelinaClient.md)
 - [SdkConfig](interfaces/SdkConfig.md)
 - [SelfSessionLinks](interfaces/SelfSessionLinks.md)
@@ -22,22 +20,15 @@
 ## Type Aliases
 
 - [AaveAsset](type-aliases/AaveAsset.md)
-- [CarbonRestSuccess](type-aliases/CarbonRestSuccess.md)
 - [CelinaClientOptions](type-aliases/CelinaClientOptions.md)
-- [FinalizedCarbonPrepareFlow](type-aliases/FinalizedCarbonPrepareFlow.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
 
 ## Variables
 
 - [AAVE\_POOL](variables/AAVE_POOL.md)
 - [AAVE\_SUPPORTED\_SYMBOLS](variables/AAVE_SUPPORTED_SYMBOLS.md)
-- [CARBON\_APP\_BASE\_URL](variables/CARBON_APP_BASE_URL.md)
-- [CARBON\_CHAIN](variables/CARBON_CHAIN.md)
-- [CARBON\_WRITE\_TOKEN\_FIELDS](variables/CARBON_WRITE_TOKEN_FIELDS.md)
 - [CELINA\_DATA\_SUFFIX](variables/CELINA_DATA_SUFFIX.md)
-- [CELO\_CARBON\_CONTRACTS](variables/CELO_CARBON_CONTRACTS.md)
 - [CHAIN](variables/CHAIN.md)
-- [DEFAULT\_CARBON\_REST\_BASE\_URL](variables/DEFAULT_CARBON_REST_BASE_URL.md)
 - [DEFAULT\_RPC\_URL](variables/DEFAULT_RPC_URL.md)
 - [GOODDOLLAR\_CUSD\_EXCHANGE\_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
 - [GOODDOLLAR\_IDENTITY\_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
@@ -52,28 +43,17 @@
 ## Functions
 
 - [appendCelinaCalldataTag](functions/appendCelinaCalldataTag.md)
-- [buildCarbonExecutionSteps](functions/buildCarbonExecutionSteps.md)
-- [carbonActivityDeepLink](functions/carbonActivityDeepLink.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [createCelinaClient](functions/createCelinaClient.md)
-- [finalizeCarbonPrepare](functions/finalizeCarbonPrepare.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
 - [isGoodDollarUsdReservePair](functions/isGoodDollarUsdReservePair.md)
-- [normalizeCarbonWriteBody](functions/normalizeCarbonWriteBody.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
-- [resolveCarbonTokenAddress](functions/resolveCarbonTokenAddress.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
 - [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)
 - [selfDemoUrl](functions/selfDemoUrl.md)
 
 ## References
-
-### CarbonWriteBody
-
-Re-exports [CarbonWriteBody](../services/carbon.service/type-aliases/CarbonWriteBody.md)
-
-***
 
 ### ContractCallParams
 

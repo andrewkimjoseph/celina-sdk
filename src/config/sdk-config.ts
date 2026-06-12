@@ -6,10 +6,6 @@ export interface SdkConfig {
   rpcUrl: string;
   /** Ethereum mainnet RPC for ENS resolution (optional). */
   ethRpcUrl?: string;
-  /** Carbon DeFi REST API base URL (default https://mcp.carbondefi.xyz). */
-  carbonRestBaseUrl?: string;
-  /** Enable @bancor/carbon-sdk fallback when REST fails (default true). */
-  carbonSdkFallback?: boolean;
   /** Self Agent ID signing key (Node only; also reads `SELF_AGENT_PRIVATE_KEY`). */
   selfAgentPrivateKey?: `0x${string}`;
   /** Self Agent ID REST API base (default https://app.ai.self.xyz). */
@@ -48,11 +44,6 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
   return {
     rpcUrl: opts?.rpcUrl ?? DEFAULT_RPC_URL,
     ethRpcUrl: opts?.ethRpcUrl,
-    carbonRestBaseUrl:
-      opts?.carbonRestBaseUrl ??
-      process.env.CARBON_API_BASE_URL ??
-      "https://mcp.carbondefi.xyz",
-    carbonSdkFallback: opts?.carbonSdkFallback ?? true,
     selfAgentPrivateKey,
     selfApiBase:
       opts?.selfApiBase ??

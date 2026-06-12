@@ -12,8 +12,8 @@ describe("tools catalog", () => {
   });
 
   it("exposes MCP and browser surfaces", () => {
-    expect(getMcpToolNames().length).toBeGreaterThan(50);
-    expect(getBrowserToolNames().length).toBeGreaterThan(30);
+    expect(getMcpToolNames().length).toBeGreaterThan(30);
+    expect(getBrowserToolNames().length).toBeGreaterThan(20);
     expect(getBrowserToolNames()).toContain("get_swap_quote");
     expect(getBrowserToolNames()).not.toContain("send_token");
   });
@@ -25,18 +25,15 @@ describe("tools catalog", () => {
 
   it("hosted MCP profile omits server-key, Self session, and estimate tools", () => {
     const hosted = getMcpToolNames({
-      carbonExecuteEnabled: false,
       serverKeyToolsEnabled: false,
       selfSessionToolsEnabled: false,
       estimateToolsEnabled: false,
     });
-    expect(hosted).toHaveLength(54);
+    expect(hosted).toHaveLength(29);
     expect(hosted).not.toContain("send_token");
     expect(hosted).not.toContain("get_wallet_address");
     expect(hosted).not.toContain("register_self_agent");
     expect(hosted).not.toContain("estimate_send");
-    expect(hosted).not.toContain("execute_carbon_limit_order");
-    expect(hosted).toContain("prepare_carbon_limit_order");
     expect(hosted).toContain("get_mento_fx_quote");
   });
 });

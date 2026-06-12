@@ -6,7 +6,7 @@
 
 # Interface: ResolvedToken
 
-Defined in: [src/services/token.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/token.service.ts#L15)
+Defined in: [src/services/token.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/671d3f90a836646c5a311cc0f8c6691cf3fc4dad/src/services/token.service.ts#L15)
 
 Resolved Celo mainnet registry token (symbol, address, decimals).
 
@@ -16,7 +16,7 @@ Resolved Celo mainnet registry token (symbol, address, decimals).
 
 > **address**: `` `0x${string}` `` \| `"native"`
 
-Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/token.service.ts#L17)
+Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/671d3f90a836646c5a311cc0f8c6691cf3fc4dad/src/services/token.service.ts#L17)
 
 Registry address, or `"native"` for CELO.
 
@@ -26,7 +26,7 @@ Registry address, or `"native"` for CELO.
 
 > **decimals**: `number`
 
-Defined in: [src/services/token.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/token.service.ts#L21)
+Defined in: [src/services/token.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/671d3f90a836646c5a311cc0f8c6691cf3fc4dad/src/services/token.service.ts#L21)
 
 Token decimals for amount parsing.
 
@@ -36,6 +36,6 @@ Token decimals for amount parsing.
 
 > **symbol**: `string`
 
-Defined in: [src/services/token.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/799ca3b35fabfa75db63588d6f0b7b89da8e5271/src/services/token.service.ts#L19)
+Defined in: [src/services/token.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/671d3f90a836646c5a311cc0f8c6691cf3fc4dad/src/services/token.service.ts#L19)
 
 Canonical registry symbol (e.g. `USDm`, `GoodDollar`).

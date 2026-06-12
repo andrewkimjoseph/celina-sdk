@@ -20,7 +20,6 @@ import { NftService } from "./services/nft.service.js";
 import { StakingService } from "./services/staking.service.js";
 import { TokenService } from "./services/token.service.js";
 import { TransactionService } from "./services/transaction.service.js";
-import { CarbonService } from "./services/carbon.service.js";
 import { SelfService } from "./services/self.service.js";
 import { wrapServiceForAnalytics } from "./analytics/wrap-service.js";
 
@@ -55,8 +54,6 @@ export interface CelinaClient {
   nft: NftService;
   /** Generic read-only contract calls and gas estimates. */
   contract: ContractService;
-  /** Carbon DeFi maker strategies and taker trades on Celo (SDK + REST). */
-  carbon: CarbonService;
   /** Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry). */
   self: SelfService;
 }
@@ -87,7 +84,6 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     staking: wrap("staking", new StakingService(clientFactory)),
     nft: wrap("nft", new NftService(clientFactory)),
     contract: wrap("contract", new ContractService(clientFactory)),
-    carbon: wrap("carbon", new CarbonService(config, tokenService, clientFactory)),
     self: wrap("self", new SelfService(clientFactory, config)),
   };
 }
@@ -138,29 +134,6 @@ export {
   isGoodDollarUsdReservePair,
 } from "./config/gooddollar.js";
 export type { GoodDollarReserveSwapParams } from "./services/gooddollar.service.js";
-export type {
-  CarbonPrepareResult,
-  CarbonRestSuccess,
-} from "./types/carbon.js";
-export type { CarbonWriteBody } from "./services/carbon.service.js";
-export {
-  CARBON_APP_BASE_URL,
-  CARBON_CHAIN,
-  CELO_CARBON_CONTRACTS,
-  DEFAULT_CARBON_REST_BASE_URL,
-  carbonActivityDeepLink,
-} from "./config/carbon.js";
-export {
-  resolveCarbonTokenAddress,
-  normalizeCarbonWriteBody,
-  CARBON_WRITE_TOKEN_FIELDS,
-} from "./utils/carbon-token.js";
-export { buildCarbonExecutionSteps } from "./utils/carbon-execution.js";
-export {
-  finalizeCarbonPrepare,
-  type FinalizedCarbonPrepareFlow,
-} from "./utils/finalize-carbon-prepare.js";
-export { CarbonRestError } from "./clients/carbon-rest.js";
 export {
   SelfService,
   type VerifySelfAgentParams,

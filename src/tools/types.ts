@@ -1,6 +1,5 @@
 import type { z } from "zod";
 import type { CelinaClient } from "../index.js";
-import type { CarbonWriteBody } from "../services/carbon.service.js";
 
 export type ToolSurface = "mcp" | "browser";
 export type ToolFamily = "read" | "prepare" | "execute";
@@ -35,16 +34,6 @@ export type ToolRuntimeHooks = {
     token: string;
     amount: string;
   }) => Promise<void>;
-  carbon?: {
-    validateBody?: (toolName: string, body: CarbonWriteBody) => void;
-    prepare?: (
-      toolName: string,
-      sender: `0x${string}`,
-      prepareFn: (body: CarbonWriteBody) => Promise<unknown>,
-      body: CarbonWriteBody,
-      options?: { marketPriceFallback?: boolean; concentrated?: boolean },
-    ) => Promise<unknown>;
-  };
 };
 
 export type TransactionExecutors = {
@@ -115,22 +104,6 @@ export type AaveExecutors = {
   ) => Promise<unknown>;
 };
 
-export type CarbonWriteExecutors = {
-  executeLimitOrder: (body: Record<string, unknown>) => Promise<unknown>;
-  executeRangeOrder: (body: Record<string, unknown>) => Promise<unknown>;
-  executeRecurringStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeConcentratedStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeFullRangeStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeRepriceStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeEditStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeDepositBudget: (body: Record<string, unknown>) => Promise<unknown>;
-  executeWithdrawBudget: (body: Record<string, unknown>) => Promise<unknown>;
-  executePauseStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeResumeStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeDeleteStrategy: (body: Record<string, unknown>) => Promise<unknown>;
-  executeTrade: (body: Record<string, unknown>) => Promise<unknown>;
-};
-
 export type GoodDollarWriteExecutors = {
   claimDailyUbi: () => Promise<unknown>;
   estimateReserveSwap: (
@@ -171,7 +144,6 @@ export type ToolRuntimeExecutors = {
   mentoFx?: MentoFxExecutors;
   uniswap?: UniswapExecutors;
   aave?: AaveExecutors;
-  carbonWrite?: CarbonWriteExecutors;
   gooddollarWrite?: GoodDollarWriteExecutors;
   self?: SelfExecutors;
 };
@@ -203,8 +175,6 @@ export type FilterToolsOptions = {
   surface?: ToolSurface;
   families?: ToolFamily[];
   names?: string[];
-  carbonPrepareEnabled?: boolean;
-  carbonExecuteEnabled?: boolean;
   /** When false, omit tools that require CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY. Default true. */
   serverKeyToolsEnabled?: boolean;
   /** When false, omit Self registration session tools. Default true. */

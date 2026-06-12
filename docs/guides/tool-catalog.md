@@ -44,22 +44,18 @@ Handlers receive a **`ToolRuntime`**: `{ celina, resolveWallet, hooks?, executor
 
 - **`celina`** — `ReturnType<typeof createCelinaClient>` (reads + unsigned prepare).
 - **`resolveWallet(input?)`** — host supplies how `address` / `wallet_address` / `from` map to `0x…`.
-- **`hooks`** — optional host overrides (e.g. send preflight, Carbon prepare enrichment). Browser chat hosts set these; MCP usually does not.
-- **`executors`** — MCP-only signed execution (`sendToken`, `executeFx`, `execute_carbon_*`, etc.). Not used in wallet-signing browser apps.
+- **`hooks`** — optional host overrides (e.g. send preflight). Browser chat hosts set these; MCP usually does not.
+- **`executors`** — MCP-only signed execution (`sendToken`, `executeFx`, etc.). Not used in wallet-signing browser apps.
 
 ## Filtering by host
 
 ```ts
 const browserTools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
   surface: "browser",
-  carbonPrepareEnabled: true,
-  carbonExecuteEnabled: false, // user signs in wallet; no server-key execute
 });
 
 const mcpTools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
   surface: "mcp",
-  carbonPrepareEnabled: true,
-  carbonExecuteEnabled: true, // stdio with CELO_PRIVATE_KEY
 });
 ```
 
@@ -68,8 +64,7 @@ const mcpTools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
 | `surface` | `"mcp"` or `"browser"` — only tools that list that surface |
 | `families` | Subset: read / prepare / execute |
 | `names` | Allow-list by tool name |
-| `carbonPrepareEnabled` | `false` hides `prepare_carbon_*` |
-| `carbonExecuteEnabled` | `false` hides `execute_carbon_*` |
+| `serverKeyToolsEnabled` | `false` hides tools requiring `CELO_PRIVATE_KEY` or `SELF_AGENT_PRIVATE_KEY` |
 
 Helpers: `getToolNames()`, `getMcpToolNames()`, `getBrowserToolNames()`, `getToolDefinition(name)`.
 
@@ -114,8 +109,6 @@ const runtime: ToolRuntime = {
 
 const definitions = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
   surface: "browser",
-  carbonPrepareEnabled: true,
-  carbonExecuteEnabled: false,
 });
 
 const tools: ToolSet = {};
@@ -145,7 +138,7 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 ## Sample browser app
 
-[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) in the monorepo is a reference **browser surface** chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight, Carbon market-price fallback, `finalizeCarbonPrepare` via `hooks.carbon`). It uses the SDK tool catalog directly — not celina-mcp.
+[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) is a reference **browser surface** chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight). It uses the SDK tool catalog directly — not celina-mcp.
 
 ## Adding a new tool
 
@@ -156,7 +149,7 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
    - Call `resolveWalletFromRuntime` or `runtime.resolveWallet` for wallet-scoped reads/prepares.
 3. **Export** via `domains/index.ts` if you added a new file.
 4. **Wire the host:**
-   - MCP: definitions are picked up automatically after filter; adjust Carbon options in `registerSdkTools` if needed.
+   - MCP: definitions are picked up automatically after filter.
    - Browser chat: extend `ToolRuntime.hooks` in your adapter if the tool needs host-specific behavior; update the app system prompt.
 5. **Test:** `npm run test:unit` in celina-sdk (`tools-catalog.test.ts`); run integration tests in MCP or your browser app.
 
@@ -166,8 +159,6 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 | Export | Use |
 |--------|-----|
-| `finalizeCarbonPrepare` | Package root — merge approve steps after Carbon REST prepare |
-| `runCarbonPrepare` | Catalog helper for MCP-style Carbon prepare handlers |
 | `getSwapQuoteWithFallback` / `prepareSwapWithFallback` | Browser swap routing (Mento + Uniswap) |
 | Schemas in `tools` (`addressSchema`, …) | Reuse in custom tools |
 
@@ -175,5 +166,4 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 - [Architecture](../concepts/architecture.md) — stack and wallet-address rules
 - [Prepared flows](../concepts/prepared-flows.md) — `SerializedPreparedFlow` for `prepare_*` tools
-- [Carbon DeFi](carbon.md) — Carbon tool split (read / prepare / execute)
 - [MCP session wallet](mcp-session-wallet.md) — omitting address on MCP stdio

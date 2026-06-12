@@ -9,3 +9,7 @@
 ## Classes
 
 - [TransactionService](classes/TransactionService.md)
+
+## Type Aliases
+
+- [SendEstimateResult](type-aliases/SendEstimateResult.md)

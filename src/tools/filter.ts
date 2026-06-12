@@ -1,14 +1,7 @@
 import { requireWalletParamsInInputSchema } from "./schemas/wallet-params.js";
 import type { FilterToolsOptions, ToolDefinition } from "./types.js";
 
-const CARBON_PREPARE_PREFIX = "prepare_carbon_";
-const CARBON_EXECUTE_PREFIX = "execute_carbon_";
 const ESTIMATE_PREFIX = "estimate_";
-
-/** Tools where hosted MCP accepts wallet params OR an alternate identifier. */
-const HOSTED_WALLET_ALTERNATIVES: Record<string, readonly string[]> = {
-  get_carbon_activity: ["strategy_id"],
-};
 
 function requireExplicitWalletAddresses(
   definitions: ToolDefinition[],
@@ -16,7 +9,6 @@ function requireExplicitWalletAddresses(
   return definitions.map((def) => {
     const inputSchema = requireWalletParamsInInputSchema(def.inputSchema, {
       toolName: def.name,
-      walletAlternatives: HOSTED_WALLET_ALTERNATIVES[def.name],
     });
     if (inputSchema === def.inputSchema) {
       return def;
@@ -44,14 +36,6 @@ export function filterToolDefinitions(
     }
 
     if (options.names?.length && !options.names.includes(def.name)) {
-      return false;
-    }
-
-    if (def.name.startsWith(CARBON_PREPARE_PREFIX) && options.carbonPrepareEnabled === false) {
-      return false;
-    }
-
-    if (def.name.startsWith(CARBON_EXECUTE_PREFIX) && options.carbonExecuteEnabled === false) {
       return false;
     }
 

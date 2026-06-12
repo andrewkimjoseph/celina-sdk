@@ -45,9 +45,9 @@ flowchart TB
 
 | Layer | Role |
 |-------|------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
-| **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys; hosted profile omits `execute_carbon_*` |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **75 tools** (reads + Carbon prepare; no `execute_carbon_*`) |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
+| **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **29 tools** (reads + prepare; no server-key writes) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
@@ -60,17 +60,14 @@ Third-party apps can use the programmatic client only, or wire the tool catalog 
 | **celina-mcp stdio + `CELO_PRIVATE_KEY`** | Omit `address` / `wallet_address` / `from` on wallet-scoped MCP tools; optional **`get_wallet_address`** when the agent needs the string |
 | **Hosted MCP** | No server key — always pass explicit addresses |
 
-See [MCP session wallet](../guides/mcp-session-wallet.md) and [Carbon DeFi](../guides/carbon.md) for tool splits.
+See [MCP session wallet](../guides/mcp-session-wallet.md) for wallet param rules.
 
 ## Key utilities
 
 | Export | Purpose |
 |--------|---------|
 | `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
-| `finalizeCarbonPrepare` | Merge ERC-20 approve steps into Carbon `preparedFlow.steps` after REST prepare |
-| `buildCarbonExecutionSteps` | Build approve + Carbon controller steps for local signing (stdio `execute_carbon_*`) |
 | `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata |
-| `carbonActivityDeepLink` | Post-execution activity explorer URL on celo.carbondefi.xyz |
 
 These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported from the package entry.
 
@@ -91,7 +88,6 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | `staking` | StakingService | Validator election staking |
 | `nft` | NftService | ERC-721 / ERC-1155 reads |
 | `contract` | ContractService | Generic contract calls |
-| `carbon` | CarbonService | Carbon DeFi reads and unsigned prepares (REST + SDK) |
 | `self` | SelfService | Self Agent ID verify, register, proof refresh (ai.self.xyz + on-chain registry) |
 
 ## Source layout
@@ -101,10 +97,10 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | `src/index.ts` | Public entry — `createCelinaClient()` and type exports |
 | `src/tools/` | LLM tool catalog — exported as `@andrewkimjoseph/celina-sdk/tools` |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
-| `src/config/` | Token registry, Aave/GoodDollar/Uniswap/Carbon constants, `celina-tag` |
+| `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
 | `src/types/prepared.ts` | `SerializedPreparedFlow` contract |
-| `src/utils/` | Shared helpers — allowance simulation, `finalizeCarbonPrepare`, Carbon token normalization |
+| `src/utils/` | Shared helpers — allowance simulation, token normalization |
 
 ## Adding a service
 

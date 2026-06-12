@@ -13,7 +13,6 @@ Methods named `prepare*` return a **serialized prepared flow** — an ordered li
 | `prepareWithdraw` | `aave` | 1 (withdraw) |
 | `prepareClaimUbi` | `gooddollar` | 1 (UBI claim) |
 | `prepareReserveSwap` | `gooddollar` | 1–2 (optional ERC-20 approve + MentoBroker `swapIn`) |
-| 13 `prepare*` methods | `carbon` | 1–2+ (optional approve + Carbon controller tx) — see **`finalizeCarbonPrepare`** below |
 
 ## SerializedPreparedFlow shape
 
@@ -61,32 +60,6 @@ Sign and confirm each step sequentially. Do not skip or reorder steps.
 
 MCP stdio **`execute_*`** tools (Mento FX, Uniswap, GoodDollar reserve, etc.) use the same prepared steps internally — they sign and broadcast with `CELO_PRIVATE_KEY` instead of returning unsigned flows to the user.
 
-## Carbon prepare and `finalizeCarbonPrepare`
-
-Carbon REST returns a partial prepare payload (`CarbonPrepareResult`). MCP `prepare_carbon_*` tools and browser apps should call **`finalizeCarbonPrepare`** to merge ERC-20 allowance checks into a complete signing sequence:
-
-```ts
-import { createCelinaClient, finalizeCarbonPrepare } from "@andrewkimjoseph/celina-sdk";
-
-const celina = createCelinaClient();
-const prepared = await celina.carbon.prepareLimitOrder({ /* … */ });
-
-const { preparedFlow, warnings, deep_link } = await finalizeCarbonPrepare(
-  celina.carbon,
-  wallet,
-  prepared,
-  { direction: "buy", /* order metadata for allowance checks */ },
-);
-
-// preparedFlow.steps → wagmi sendTransactionAsync (approve + Carbon controller steps)
-// warnings → always surface to the user
-// deep_link → optional Carbon UI reference URL (not required for signing)
-```
-
-Carbon responses also carry **`warnings`** and optional **`deep_link`** outside `SerializedPreparedFlow`. Always show warnings in your UI.
-
-See [Carbon DeFi on Celo](../guides/carbon.md) for the full agent workflow.
-
 ## JSON serialization
 
 `value` fields are decimal strings (not BigInt) so flows serialize cleanly over JSON APIs:
@@ -107,7 +80,7 @@ value: step.value ? BigInt(step.value) : undefined
 
 ## Celina data suffix
 
-Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, GoodDollar, and **Carbon controller transactions** (not just ERC-20 approvals). You do not need to modify `data` before passing it to wagmi.
+Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi.
 
 ## Related
 
@@ -117,4 +90,3 @@ Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalld
 - [Uniswap v4](../guides/uniswap.md)
 - [Aave](../guides/aave.md)
 - [GoodDollar](../guides/gooddollar.md)
-- [Carbon DeFi on Celo](../guides/carbon.md)

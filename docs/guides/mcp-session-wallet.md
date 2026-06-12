@@ -24,7 +24,7 @@ Read-only MCP tool with **no parameters**. Returns:
 }
 ```
 
-Call it when the agent needs the signer address as **data** (logging, comparisons, copy-paste). For everyday “my balances” or “my Carbon strategies”, omit address fields instead.
+Call it when the agent needs the signer address as **data** (logging, comparisons, copy-paste). For everyday “my balances”, omit address fields instead.
 
 Fails with a clear error when `CELO_PRIVATE_KEY` is not set (hosted endpoint or read-only stdio).
 
@@ -35,7 +35,6 @@ When `CELO_PRIVATE_KEY` is configured, these parameters are **optional** and def
 | Parameter | Example tools |
 |-----------|----------------|
 | `address` | `get_account`, `get_celo_balances`, `get_stablecoin_balances`, `get_token_balance`, staking reads, GoodDollar reads, `get_nft_balance` |
-| `wallet_address` | `get_carbon_strategies`, `get_carbon_activity`, all `prepare_carbon_*` |
 | `from` | `estimate_transaction` |
 | `fromAddress` | `call_contract_function`, `estimate_contract_gas` |
 

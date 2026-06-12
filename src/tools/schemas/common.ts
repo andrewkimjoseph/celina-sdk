@@ -121,13 +121,6 @@ export const hexDataSchema = z
   .optional()
   .describe("Optional transaction calldata (hex)");
 
-export const carbonWriteSchema = z
-  .object({
-    wallet_address: optionalWalletAddressSchema,
-    from: addressSchema.optional(),
-  })
-  .passthrough();
-
 export const mentoFxQuoteSchema = z.object({
   token_in: tokenSymbolSchema.describe("Input token symbol or address"),
   token_out: tokenSymbolSchema.describe("Output token symbol or address"),

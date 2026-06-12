@@ -11,8 +11,6 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   Record<string, WalletExtractRule>
 > = {
   "account.getAccount": { positional: 0, objectKeys: ["address"] },
-  "carbon.getActivity": { objectKeys: ["address","wallet_address"] },
-  "carbon.getStrategies": { positional: 0, objectKeys: ["address","wallet_address"] },
   "contract.estimateGas": { objectKeys: ["fromAddress"] },
   "gooddollar.getUbiClaimEligibility": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getWhitelistingInfo": { positional: 0, objectKeys: ["address"] },

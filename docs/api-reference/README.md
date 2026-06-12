@@ -10,7 +10,6 @@
 - [services/aave.service](services/aave.service/README.md)
 - [services/account.service](services/account.service/README.md)
 - [services/blockchain.service](services/blockchain.service/README.md)
-- [services/carbon.service](services/carbon.service/README.md)
 - [services/contract.service](services/contract.service/README.md)
 - [services/ens.service](services/ens.service/README.md)
 - [services/gooddollar.service](services/gooddollar.service/README.md)

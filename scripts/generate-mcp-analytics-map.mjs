@@ -75,12 +75,6 @@ function parseWalletFromChunk(id, chunk) {
 for (const file of readdirSync(domainsDir).filter((f) => f.endsWith(".ts"))) {
   const content = readFileSync(join(domainsDir, file), "utf8");
 
-  for (const match of content.matchAll(
-    /carbonRead\(\s*\n?\s*"([^"]+)",\s*\n?\s*"([^"]+)"/g,
-  )) {
-    map[match[1]] = match[2];
-  }
-
   for (const chunk of content.split(/id: "/).slice(1)) {
     const id = chunk.split('"')[0];
     if (!chunk.includes('layer: "read"')) continue;
@@ -88,29 +82,6 @@ for (const file of readdirSync(domainsDir).filter((f) => f.endsWith(".ts"))) {
     if (mcpMatch) {
       map[id] = mcpMatch[1];
       parseWalletFromChunk(id, chunk);
-    }
-  }
-
-  for (const match of content.matchAll(
-    /carbonRead\(\s*\n?\s*"([^"]+)",\s*\n?\s*"([^"]+)"[\s\S]*?\(\)\s*=>\s*\(\{([^}]+)\}/g,
-  )) {
-    const id = match[1];
-    map[id] = match[2];
-    const body = match[3];
-    const keys = [];
-    for (const key of WALLET_ARG_KEYS) {
-      if (new RegExp(`${key}:`).test(body)) {
-        keys.push(key);
-      }
-    }
-    if (keys.length > 0) {
-      mergeWalletRule(id, { objectKeys: keys });
-    }
-    if (/getStrategies\(/.test(match[0]) || /\.getStrategies\(/.test(match[0])) {
-      mergeWalletRule(id, { positional: 0 });
-    }
-    if (/getActivity\(/.test(match[0])) {
-      mergeWalletRule(id, { objectKeys: ["wallet_address"] });
     }
   }
 }

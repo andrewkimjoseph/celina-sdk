@@ -24,9 +24,9 @@ flowchart TB
 
 | Layer | What it adds |
 |-------|----------------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, Carbon REST hybrid, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared Zod schemas and handlers for MCP and browser surfaces |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared Zod schemas and handlers for MCP and browser surfaces |
 | **MCP** | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **75 tools** (reads + GoodDollar reserve estimate + Carbon prepare; `execute_carbon_*` omitted) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **29 tools** (reads + prepare; no server-key writes) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys |
 
 Third-party apps can consume the programmatic client only, or wire the full tool catalog into Vercel AI SDK / custom orchestrators — see [LLM tool catalog](guides/tool-catalog.md).
@@ -35,10 +35,10 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 | Category | Examples |
 |----------|----------|
-| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI, Carbon strategies/pairs/stats |
+| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI |
 | **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
-| **Prepare** | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, Carbon strategies and taker trades |
-| **Tool catalog** | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface`, `families`, and Carbon flags |
+| **Prepare** | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim |
+| **Tool catalog** | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface` and `families` |
 
 The SDK never holds or uses CELO wallet keys. Call `prepare*` with the user's address, then pass `steps` to wagmi.
 
@@ -68,8 +68,6 @@ import { filterToolDefinitions, ALL_TOOL_DEFINITIONS } from "@andrewkimjoseph/ce
 
 const tools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
   surface: "browser",
-  carbonPrepareEnabled: true,
-  carbonExecuteEnabled: false,
 });
 ```
 
@@ -92,7 +90,6 @@ See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/too
 | `staking` | balances, validator groups | — |
 | `nft` | NFT info, balance | — |
 | `contract` | `callFunction`, `estimateGas` | — |
-| `carbon` | strategies, pair explore, quotes, simulation, help | 13 `prepare*` methods — [Carbon guide](guides/carbon.md) |
 | `self` | verify, lookup, session lifecycle | agent signing (Node + `selfAgentPrivateKey`) |
 
 Full method signatures: [API reference](api-reference/README.md).
@@ -100,5 +97,5 @@ Full method signatures: [API reference](api-reference/README.md).
 ## Related packages
 
 - [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) — MCP server; registers SDK tool catalog
-- [`celina-mcp-host`](../../celina-mcp-host/) — hosted reads + Carbon prepare (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
+- [`celina-mcp-host`](../../celina-mcp-host/) — hosted reads (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)

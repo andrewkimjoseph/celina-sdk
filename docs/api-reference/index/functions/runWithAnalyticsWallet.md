@@ -8,7 +8,7 @@
 
 > **runWithAnalyticsWallet**\<`T`\>(`address`, `fn`): `T`
 
-Defined in: src/analytics/wallet-context.ts:82
+Defined in: [src/analytics/wallet-context.ts:82](https://github.com/andrewkimjoseph/celina-sdk/blob/671d3f90a836646c5a311cc0f8c6691cf3fc4dad/src/analytics/wallet-context.ts#L82)
 
 Run async/sync work with a request-scoped analytics wallet (singleton SDK clients).
 
