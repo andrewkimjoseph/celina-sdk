@@ -115,7 +115,6 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 - [x] Aave lending tools (`prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
 - [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)
 - [x] Self Agent ID (`lookupSelfAgent`, registration & lifecycle tools)
-- [ ] Cross-chain bridging — bridge tokens to/from Celo (`getBridgeQuote`, `estimateBridge`, `prepareBridge`)
 
 ## License
 
