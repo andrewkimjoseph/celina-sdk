@@ -48,3 +48,28 @@ describe("get_proposal_details inputSchema", () => {
     expect(parsed).toEqual({ proposal_id: 295 });
   });
 });
+
+describe("verify_self_agent inputSchema", () => {
+  it("treats empty optional form fields as omitted", () => {
+    const definition = getToolDefinition("verify_self_agent");
+    expect(definition).toBeDefined();
+    const parsed = definition!.inputSchema.parse({
+      agent_address: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      require_age: "",
+      require_ofac: "",
+      require_self_provider: "",
+    });
+    expect(parsed).toEqual({
+      agent_address: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+    });
+  });
+
+  it("coerces require_age string literals", () => {
+    const definition = getToolDefinition("verify_self_agent");
+    const parsed = definition!.inputSchema.parse({
+      agent_address: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      require_age: "18",
+    });
+    expect(parsed.require_age).toBe(18);
+  });
+});

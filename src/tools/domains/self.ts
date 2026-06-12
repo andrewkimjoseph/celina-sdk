@@ -1,20 +1,28 @@
 import { selfDemoUrl } from "../../config/self.js";
 import { z } from "zod";
-import { addressSchema, httpRequestPathSchema, positiveIntSchema } from "../schemas/common.js";
+import {
+  addressSchema,
+  httpRequestPathSchema,
+  optionalAgeLiteralSchema,
+  optionalBooleanSchema,
+  optionalEnumSchema,
+  optionalHexKeySchema,
+  optionalPositiveIntSchema,
+  optionalStringSchema,
+  positiveIntSchema,
+} from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 
 const SELF_DEMO_VERIFY_URL = selfDemoUrl("/api/demo/verify");
 
-const selfRegistrationModeSchema = z
-  .enum([
-    "linked",
-    "wallet-free",
-    "smartwallet",
-    "self-custody",
-    "ed25519",
-    "ed25519-linked",
-  ])
-  .optional();
+const selfRegistrationModeSchema = optionalEnumSchema([
+  "linked",
+  "wallet-free",
+  "smartwallet",
+  "self-custody",
+  "ed25519",
+  "ed25519-linked",
+]);
 
 function requireSelf(runtime: import("../types.js").ToolRuntime) {
   const self = runtime.executors?.self;
@@ -31,9 +39,9 @@ export const selfToolDefinitions: ToolDefinition[] = [
       "Verify whether an agent address is backed by a real human on Self Agent ID (Celo mainnet).",
     inputSchema: z.object({
       agent_address: addressSchema,
-      require_age: z.union([z.literal(0), z.literal(18), z.literal(21)]).optional(),
-      require_ofac: z.boolean().optional(),
-      require_self_provider: z.boolean().optional(),
+      require_age: optionalAgeLiteralSchema,
+      require_ofac: optionalBooleanSchema,
+      require_self_provider: optionalBooleanSchema,
     }),
     families: ["read"],
     surfaces: ["mcp"],
@@ -68,9 +76,9 @@ export const selfToolDefinitions: ToolDefinition[] = [
       agent_timestamp: z.string(),
       method: z.string(),
       request_path: httpRequestPathSchema,
-      body: z.string().optional(),
-      keytype: z.string().optional(),
-      agent_key: z.string().regex(/^0x[a-fA-F0-9]+$/).optional(),
+      body: optionalStringSchema,
+      keytype: optionalStringSchema,
+      agent_key: optionalHexKeySchema,
     }),
     families: ["read"],
     surfaces: ["mcp"],
@@ -87,11 +95,11 @@ export const selfToolDefinitions: ToolDefinition[] = [
       "Start Self Agent ID registration. Returns qr_code_url and deep_link — present BOTH to the user.",
     inputSchema: z.object({
       mode: selfRegistrationModeSchema,
-      minimum_age: z.union([z.literal(0), z.literal(18), z.literal(21)]).optional(),
-      ofac: z.boolean().optional(),
+      minimum_age: optionalAgeLiteralSchema,
+      ofac: optionalBooleanSchema,
       human_address: addressSchema.optional(),
-      agent_name: z.string().optional(),
-      agent_description: z.string().optional(),
+      agent_name: optionalStringSchema,
+      agent_description: optionalStringSchema,
     }),
     families: ["execute"],
     surfaces: ["mcp"],
@@ -140,7 +148,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     description:
       "Start a human proof refresh after on-chain proof expiry. Returns qr_code_url and deep_link.",
     inputSchema: z.object({
-      agent_id: positiveIntSchema.optional(),
+      agent_id: optionalPositiveIntSchema,
     }),
     families: ["execute"],
     surfaces: ["mcp"],
@@ -174,7 +182,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({
       method: z.enum(["GET", "POST", "PUT", "DELETE"]),
       url: z.string().url(),
-      body: z.string().optional(),
+      body: optionalStringSchema,
     }),
     families: ["read"],
     surfaces: ["mcp"],
@@ -191,8 +199,8 @@ export const selfToolDefinitions: ToolDefinition[] = [
     inputSchema: z.object({
       method: z.enum(["GET", "POST", "PUT", "DELETE"]),
       url: z.string().url(),
-      body: z.string().optional(),
-      content_type: z.string().optional(),
+      body: optionalStringSchema,
+      content_type: optionalStringSchema,
     }),
     families: ["execute"],
     surfaces: ["mcp"],

@@ -44,15 +44,59 @@ function normalizeBlockId(value: unknown): unknown {
   return value;
 }
 
+function normalizeOptionalEmpty(value: unknown): unknown {
+  if (value === "" || value === null) {
+    return undefined;
+  }
+  return value;
+}
+
 function normalizePositiveInt(value: unknown): unknown {
   if (typeof value === "string") {
     const trimmed = value.trim();
+    if (trimmed === "") {
+      return undefined;
+    }
     if (/^\d+$/.test(trimmed)) {
       return Number(trimmed);
     }
     return trimmed;
   }
   return value;
+}
+
+function normalizeOptionalBoolean(value: unknown): unknown {
+  const empty = normalizeOptionalEmpty(value);
+  if (empty === undefined) {
+    return undefined;
+  }
+  if (typeof empty === "string") {
+    const trimmed = empty.trim().toLowerCase();
+    if (trimmed === "true" || trimmed === "1") {
+      return true;
+    }
+    if (trimmed === "false" || trimmed === "0") {
+      return false;
+    }
+  }
+  return empty;
+}
+
+function normalizeAgeLiteral(value: unknown): unknown {
+  const empty = normalizeOptionalEmpty(value);
+  if (empty === undefined) {
+    return undefined;
+  }
+  if (typeof empty === "string") {
+    const trimmed = empty.trim();
+    if (trimmed === "") {
+      return undefined;
+    }
+    if (/^\d+$/.test(trimmed)) {
+      return Number(trimmed);
+    }
+  }
+  return empty;
 }
 
 function normalizeDecimalNumber(value: unknown): unknown {
@@ -80,6 +124,41 @@ export const positiveIntSchema = z.preprocess(
   normalizePositiveInt,
   z.number().int().positive(),
 );
+
+export const optionalPositiveIntSchema = z.preprocess(
+  normalizePositiveInt,
+  z.number().int().positive().optional(),
+);
+
+export const optionalAgeLiteralSchema = z.preprocess(
+  normalizeAgeLiteral,
+  z.union([z.literal(0), z.literal(18), z.literal(21)]).optional(),
+);
+
+export const optionalBooleanSchema = z.preprocess(
+  normalizeOptionalBoolean,
+  z.boolean().optional(),
+);
+
+export const optionalStringSchema = z.preprocess(
+  normalizeOptionalEmpty,
+  z.string().optional(),
+);
+
+export const optionalHexKeySchema = z.preprocess(
+  normalizeOptionalEmpty,
+  z.string().regex(/^0x[a-fA-F0-9]+$/).optional(),
+);
+
+/** Treat empty form strings as omitted for optional enum fields. */
+export function optionalEnumSchema<T extends [string, ...string[]]>(
+  values: T,
+) {
+  return z.preprocess(
+    normalizeOptionalEmpty,
+    z.enum(values).optional(),
+  );
+}
 
 export const nonNegativeIntSchema = z.preprocess(
   normalizePositiveInt,

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   nonNegativeIntSchema,
+  optionalBooleanSchema,
   optionalBoundedPositiveInt,
   paginationFields,
 } from "../schemas/common.js";
@@ -12,8 +13,8 @@ export const governanceToolDefinitions: ToolDefinition[] = [
     description:
       "Returns Celo governance proposals with pagination. Set include_metadata=false for faster responses.",
     inputSchema: z.object({
-      include_inactive: z.boolean().optional(),
-      include_metadata: z.boolean().optional(),
+      include_inactive: optionalBooleanSchema,
+      include_metadata: optionalBooleanSchema,
       ...paginationFields,
       page_size: optionalBoundedPositiveInt(20),
     }),
