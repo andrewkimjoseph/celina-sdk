@@ -55,6 +55,17 @@ function normalizePositiveInt(value: unknown): unknown {
   return value;
 }
 
+function normalizeDecimalNumber(value: unknown): unknown {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+      return Number(trimmed);
+    }
+    return trimmed;
+  }
+  return value;
+}
+
 export const blockIdSchema = z.preprocess(
   normalizeBlockId,
   z.union([
@@ -69,6 +80,35 @@ export const positiveIntSchema = z.preprocess(
   normalizePositiveInt,
   z.number().int().positive(),
 );
+
+export const nonNegativeIntSchema = z.preprocess(
+  normalizePositiveInt,
+  z.number().int().min(0),
+);
+
+export const coercedNumberSchema = z.preprocess(
+  normalizeDecimalNumber,
+  z.number(),
+);
+
+export const slippageToleranceSchema = z.preprocess(
+  normalizeDecimalNumber,
+  z.number().min(0).max(20),
+);
+
+/** Optional positive integer with an upper bound (e.g. page_size caps). */
+export function optionalBoundedPositiveInt(max: number) {
+  return z
+    .preprocess(normalizePositiveInt, z.number().int().min(1).max(max))
+    .optional();
+}
+
+/** Optional positive integer with min/max (e.g. get_latest_blocks count). */
+export function optionalBoundedPositiveIntRange(min: number, max: number) {
+  return z
+    .preprocess(normalizePositiveInt, z.number().int().min(min).max(max))
+    .optional();
+}
 
 export const tokenSymbolSchema = z
   .string()
@@ -109,10 +149,10 @@ export const abiSchema = z
   .describe("Contract ABI as a JSON array");
 
 export const paginationFields = {
-  page: z.number().int().min(1).optional(),
-  page_size: z.number().int().min(1).optional(),
-  offset: z.number().int().min(0).optional(),
-  limit: z.number().int().min(1).optional(),
+  page: positiveIntSchema.optional(),
+  page_size: positiveIntSchema.optional(),
+  offset: nonNegativeIntSchema.optional(),
+  limit: positiveIntSchema.optional(),
 } as const;
 
 export const hexDataSchema = z
@@ -132,16 +172,10 @@ export const mentoFxWalletSchema = mentoFxQuoteSchema.extend({
   recipient: addressSchema
     .optional()
     .describe("Address that receives output tokens (defaults to signer)"),
-  slippage_tolerance: z
-    .number()
-    .min(0)
-    .max(20)
+  slippage_tolerance: slippageToleranceSchema
     .optional()
     .describe("Max slippage in percent (default 0.5)"),
-  deadline_minutes: z
-    .number()
-    .int()
-    .positive()
+  deadline_minutes: positiveIntSchema
     .optional()
     .describe("Transaction deadline in minutes (default 5)"),
 });
@@ -155,8 +189,8 @@ export const uniswapQuoteSchema = z.object({
 
 export const uniswapWalletSchema = uniswapQuoteSchema.extend({
   recipient: addressSchema.optional(),
-  slippage_tolerance: z.number().min(0).max(20).optional(),
-  deadline_minutes: z.number().int().positive().optional(),
+  slippage_tolerance: slippageToleranceSchema.optional(),
+  deadline_minutes: positiveIntSchema.optional(),
 });
 
 export const goodDollarReserveQuoteSchema = z.object({
@@ -168,5 +202,5 @@ export const goodDollarReserveQuoteSchema = z.object({
 
 export const goodDollarReserveWalletSchema = goodDollarReserveQuoteSchema.extend({
   recipient: addressSchema.optional(),
-  slippage_tolerance: z.number().min(0).max(20).optional(),
+  slippage_tolerance: slippageToleranceSchema.optional(),
 });

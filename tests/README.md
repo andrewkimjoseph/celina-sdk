@@ -63,6 +63,8 @@ Writes and destructive Self flows are **off by default** so `npm test` does not 
 
 At least one of `sdk` or `mcp` must be set. SDK-only prepare methods (no MCP tool yet) still belong in the catalog for SDK regression.
 
+**Naming:** `sdk.invoke` uses the **camelCase** TypeScript client API (`pageSize`, `tokenIn`, …). `mcp.arguments` must use **snake_case tool input keys only** (`page_size`, `token_in`, …) — never copy SDK option names into MCP arguments. Unit tests enforce this for every `MCP_OPERATIONS` entry.
+
 ## Fixtures
 
 Stable mainnet constants live in `tests/fixtures/mainnet.ts`. A recent transaction hash is resolved once per process from the latest block.

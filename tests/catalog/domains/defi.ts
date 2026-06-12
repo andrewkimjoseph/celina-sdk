@@ -18,8 +18,8 @@ export const mentoFxOperations: OperationSpec[] = [
     mcp: {
       tool: "get_mento_fx_quote",
       arguments: () => ({
-        tokenIn: "USDm",
-        tokenOut: "EURm",
+        token_in: "USDm",
+        token_out: "EURm",
         amount: "1",
       }),
     },
@@ -39,8 +39,8 @@ export const mentoFxOperations: OperationSpec[] = [
     mcp: {
       tool: "estimate_mento_fx",
       arguments: () => ({
-        tokenIn: "USDm",
-        tokenOut: "EURm",
+        token_in: "USDm",
+        token_out: "EURm",
         amount: "1",
       }),
     },
@@ -69,8 +69,8 @@ export const mentoFxOperations: OperationSpec[] = [
     mcp: {
       tool: "execute_mento_fx",
       arguments: () => ({
-        tokenIn: "USDm",
-        tokenOut: "EURm",
+        token_in: "USDm",
+        token_out: "EURm",
         amount: "0.01",
       }),
     },
@@ -91,8 +91,8 @@ export const uniswapOperations: OperationSpec[] = [
     mcp: {
       tool: "get_uniswap_quote",
       arguments: () => ({
-        tokenIn: "CELO",
-        tokenOut: "USDC",
+        token_in: "CELO",
+        token_out: "USDC",
         amount: "0.001",
       }),
     },
@@ -117,8 +117,8 @@ export const uniswapOperations: OperationSpec[] = [
     mcp: {
       tool: "estimate_uniswap_swap",
       arguments: () => ({
-        tokenIn: "CELO",
-        tokenOut: "USDC",
+        token_in: "CELO",
+        token_out: "USDC",
         amount: "0.001",
       }),
     },
@@ -152,8 +152,8 @@ export const uniswapOperations: OperationSpec[] = [
     mcp: {
       tool: "execute_uniswap_swap",
       arguments: () => ({
-        tokenIn: "CELO",
-        tokenOut: "USDC",
+        token_in: "CELO",
+        token_out: "USDC",
         amount: "0.001",
       }),
     },

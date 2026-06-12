@@ -1,6 +1,8 @@
 import { z } from "zod";
 import {
   blockIdSchema,
+  nonNegativeIntSchema,
+  optionalBoundedPositiveIntRange,
   optionalWalletAddressSchema,
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
@@ -38,8 +40,8 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
     name: "get_latest_blocks",
     description: "Fetch the most recent blocks on Celo mainnet.",
     inputSchema: z.object({
-      count: z.number().int().min(1).max(100).optional(),
-      offset: z.number().int().min(0).optional(),
+      count: optionalBoundedPositiveIntRange(1, 100),
+      offset: nonNegativeIntSchema.optional(),
     }),
     families: ["read"],
     mcp: { title: "Get Latest Blocks", annotations: readOnly },

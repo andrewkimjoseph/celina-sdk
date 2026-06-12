@@ -11,13 +11,16 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   Record<string, WalletExtractRule>
 > = {
   "account.getAccount": { positional: 0, objectKeys: ["address"] },
-  "contract.estimateGas": { objectKeys: ["fromAddress"] },
+  "contract.callFunction": { objectKeys: ["address"] },
+  "contract.estimateGas": { objectKeys: ["address"] },
   "gooddollar.getUbiClaimEligibility": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getWhitelistingInfo": { positional: 0, objectKeys: ["address"] },
   "nft.getNftBalance": { objectKeys: ["address"] },
+  "nft.getNftInfo": { objectKeys: ["address"] },
   "self.verifySelfAgent": { objectKeys: ["address","agent_address"] },
   "staking.getActivatableStakes": { positional: 0, objectKeys: ["address"] },
   "staking.getStakingBalances": { positional: 0, objectKeys: ["address"] },
+  "staking.getValidatorGroupDetails": { objectKeys: ["address"] },
   "token.getBalances": { objectKeys: ["address"] },
   "token.getStablecoinBalances": { positional: 0, objectKeys: ["address"] },
   "token.getTokenBalance": { positional: 1, objectKeys: ["address"] },

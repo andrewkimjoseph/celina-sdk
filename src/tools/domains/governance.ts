@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { paginationFields } from "../schemas/common.js";
+import {
+  nonNegativeIntSchema,
+  optionalBoundedPositiveInt,
+  paginationFields,
+} from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 
 export const governanceToolDefinitions: ToolDefinition[] = [
@@ -11,7 +15,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
       include_inactive: z.boolean().optional(),
       include_metadata: z.boolean().optional(),
       ...paginationFields,
-      page_size: z.number().int().min(1).max(20).optional(),
+      page_size: optionalBoundedPositiveInt(20),
     }),
     families: ["read"],
     mcp: {
@@ -33,7 +37,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
     description:
       "Returns detailed information about a Celo governance proposal.",
     inputSchema: z.object({
-      proposal_id: z.number().int().min(0),
+      proposal_id: nonNegativeIntSchema,
     }),
     families: ["read"],
     mcp: {

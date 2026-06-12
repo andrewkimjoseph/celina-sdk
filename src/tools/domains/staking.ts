@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   addressSchema,
+  optionalBoundedPositiveInt,
   optionalWalletAddressSchema,
   paginationFields,
 } from "../schemas/common.js";
@@ -51,7 +52,7 @@ export const stakingToolDefinitions: ToolDefinition[] = [
       "Paginated validator groups with votes, capacity, and member counts.",
     inputSchema: z.object({
       ...paginationFields,
-      page_size: z.number().int().min(1).max(50).optional(),
+      page_size: optionalBoundedPositiveInt(50),
     }),
     families: ["read"],
     mcp: { title: "Get Validator Groups", annotations: readOnly },

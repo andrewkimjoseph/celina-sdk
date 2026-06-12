@@ -6,6 +6,8 @@ export {
   getToolsByFamily,
   getToolDefinition,
   validateToolCatalogSnakeCase,
+  assertSnakeCaseRecordKeys,
+  getToolInputSchemaShape,
 } from "./catalog.js";
 export { filterToolDefinitions } from "./filter.js";
 export {

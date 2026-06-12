@@ -13,7 +13,7 @@ export const governanceOperations: OperationSpec[] = [
     },
     mcp: {
       tool: "get_governance_proposals",
-      arguments: () => ({ page: 1, pageSize: 5 }),
+      arguments: () => ({ page: 1, page_size: 5 }),
     },
     assert: (result) => {
       const obj = assertHasKeys(result, ["proposals", "pagination"]);
@@ -30,7 +30,7 @@ export const governanceOperations: OperationSpec[] = [
     },
     mcp: {
       tool: "get_proposal_details",
-      arguments: (fx) => ({ proposalId: fx.proposalId }),
+      arguments: (fx) => ({ proposal_id: fx.proposalId }),
     },
     assert: (result) => {
       assertHasKeys(result, ["proposal"]);
@@ -79,7 +79,7 @@ export const stakingOperations: OperationSpec[] = [
     },
     mcp: {
       tool: "get_validator_groups",
-      arguments: () => ({ page: 1, pageSize: 5 }),
+      arguments: () => ({ page: 1, page_size: 5 }),
     },
     assert: (result) => {
       const obj = assertHasKeys(result, ["groups"]);
@@ -96,7 +96,7 @@ export const stakingOperations: OperationSpec[] = [
     },
     mcp: {
       tool: "get_validator_group_details",
-      arguments: (fx) => ({ groupAddress: fx.validatorGroup }),
+      arguments: (fx) => ({ group_address: fx.validatorGroup }),
     },
     assert: (result) => {
       assertHasKeys(result, ["address", "name"]);
@@ -131,8 +131,8 @@ export const nftOperations: OperationSpec[] = [
     mcp: {
       tool: "get_nft_info",
       arguments: (fx) => ({
-        contractAddress: fx.saidContract,
-        tokenId: fx.saidTokenId,
+        contract_address: fx.saidContract,
+        token_id: fx.saidTokenId,
       }),
     },
     assert: (result) => {
@@ -150,7 +150,7 @@ export const nftOperations: OperationSpec[] = [
     mcp: {
       tool: "get_nft_balance",
       arguments: (fx) => ({
-        contractAddress: fx.saidContract,
+        contract_address: fx.saidContract,
         address: fx.saidOwner,
       }),
     },
@@ -177,10 +177,10 @@ export const contractOperations: OperationSpec[] = [
     mcp: {
       tool: "call_contract_function",
       arguments: (fx) => ({
-        contractAddress: fx.usdm,
+        contract_address: fx.usdm,
         abi: fx.erc20SymbolAbi,
-        functionName: "symbol",
-        functionArgs: [],
+        function_name: "symbol",
+        function_args: [],
       }),
     },
     assert: (result) => {
@@ -205,11 +205,11 @@ export const contractOperations: OperationSpec[] = [
     mcp: {
       tool: "estimate_contract_gas",
       arguments: (fx) => ({
-        contractAddress: fx.usdm,
+        contract_address: fx.usdm,
         abi: fx.erc20SymbolAbi,
-        functionName: "symbol",
-        functionArgs: [],
-        fromAddress: fx.signerAddress ?? fx.wallet,
+        function_name: "symbol",
+        function_args: [],
+        from_address: fx.signerAddress ?? fx.wallet,
       }),
     },
     assert: (result) => {

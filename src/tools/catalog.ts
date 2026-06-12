@@ -28,19 +28,31 @@ export function getToolDefinition(name: string): ToolDefinition | undefined {
   return ALL_TOOL_DEFINITIONS.find((d) => d.name === name);
 }
 
-export function assertSnakeCaseInputKeys(definition: ToolDefinition): void {
-  const shape = definition.inputSchema;
-  if (!shape || typeof shape !== "object" || !("shape" in shape)) {
-    return;
-  }
-  const keys = Object.keys((shape as { shape: Record<string, unknown> }).shape);
+const SNAKE_CASE_KEY = /^[a-z][a-z0-9]*(_[a-z0-9]+)*$/;
+
+export function assertSnakeCaseRecordKeys(label: string, keys: string[]): void {
   for (const key of keys) {
-    if (key !== key.toLowerCase() || key.includes("-")) {
+    if (!SNAKE_CASE_KEY.test(key)) {
       throw new Error(
-        `Tool "${definition.name}" input key "${key}" must be snake_case.`,
+        `${label}: key "${key}" must be snake_case (lowercase letters, digits, underscores).`,
       );
     }
   }
+}
+
+export function getToolInputSchemaShape(
+  definition: ToolDefinition,
+): Record<string, unknown> | undefined {
+  const shape = definition.inputSchema;
+  if (!shape || typeof shape !== "object" || !("shape" in shape)) {
+    return undefined;
+  }
+  return (shape as { shape: Record<string, unknown> }).shape;
+}
+
+export function assertSnakeCaseInputKeys(definition: ToolDefinition): void {
+  const keys = Object.keys(getToolInputSchemaShape(definition) ?? {});
+  assertSnakeCaseRecordKeys(`Tool "${definition.name}" input`, keys);
 }
 
 export function validateToolCatalogSnakeCase(): void {
