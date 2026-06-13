@@ -3,6 +3,7 @@
  * Maps SDK method keys (catalog OperationSpec.id) to MCP tool event names.
  */
 export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
+  "aave.getBalances": "get_aave_balances",
   "account.getAccount": "get_account",
   "account.getWalletAddress": "get_wallet_address",
   "blockchain.getBlock": "get_block",

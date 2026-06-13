@@ -10,6 +10,7 @@ export type WalletExtractRule = {
 export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   Record<string, WalletExtractRule>
 > = {
+  "aave.getBalances": { positional: 0, objectKeys: ["address"] },
   "account.getAccount": { positional: 0, objectKeys: ["address"] },
   "contract.callFunction": { objectKeys: ["address"] },
   "contract.estimateGas": { objectKeys: ["address"] },

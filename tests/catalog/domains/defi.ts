@@ -165,6 +165,21 @@ export const uniswapOperations: OperationSpec[] = [
 
 export const aaveOperations: OperationSpec[] = [
   {
+    id: "aave.getBalances",
+    domain: "aave",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.aave.getBalances(fx.wallet),
+    },
+    mcp: {
+      tool: "get_aave_balances",
+      arguments: (fx) => ({ address: fx.wallet }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["address", "balances", "market"]);
+    },
+  },
+  {
     id: "aave.prepareSupply",
     domain: "aave",
     layer: "prepare",

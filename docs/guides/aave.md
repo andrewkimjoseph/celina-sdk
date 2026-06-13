@@ -57,7 +57,20 @@ Insufficient CELO balance. ... Aave requires wrapped CELO (ERC-20), not native C
 
 ## Balance checks
 
-`prepareSupply` checks underlying token balance before building steps. `prepareWithdraw` checks aToken balance for partial withdraws.
+**Supplied positions (aTokens):**
+
+```ts
+const positions = await celina.aave.getBalances(from);
+// MCP: get_aave_balances
+```
+
+Returns aToken holdings in underlying token units (including accrued interest). Omits zero balances by default.
+
+**Underlying wallet balance before supply:**
+
+Use `get_celo_balances` or `get_token_balance` — see [TokenService](../api-reference/services/token.service/classes/TokenService.md).
+
+`prepareSupply` checks underlying token balance before building steps. `prepareWithdraw` checks aToken balance for partial withdraws. aToken `balanceOf` returns the redeemable underlying amount including interest.
 
 ## Multi-step supply
 

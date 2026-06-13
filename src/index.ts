@@ -40,7 +40,7 @@ export interface CelinaClient {
   mentoFx: MentoFxService;
   /** Uniswap v4 quotes, estimates, and `prepareSwap` flows. */
   uniswap: UniswapService;
-  /** Aave V3 `prepareSupply` and `prepareWithdraw` flows on Celo. */
+  /** Aave V3 `getBalances`, `prepareSupply`, and `prepareWithdraw` on Celo. */
   aave: AaveService;
   /** GoodDollar IdentityV4 whitelist, UBI claims, and G$ ↔ USDm reserve swaps. */
   gooddollar: GoodDollarService;

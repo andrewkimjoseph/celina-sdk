@@ -16,7 +16,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, and `prepare*` flows |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (29 tools); no server-key writes |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (30 tools); no server-key writes |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -112,7 +112,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 - [x] Mento FX routing (`getFxQuote`, `estimateFx`, `prepareFx`)
 - [x] Uniswap v4 swaps (`getSwapQuote`, `estimateSwap`, `prepareSwap`)
 - [x] GoodDollar reserve swaps (`getReserveQuote`, `prepareReserveSwap`) — G$ ↔ USDm via MentoBroker
-- [x] Aave lending tools (`prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
+- [x] Aave tools (`getBalances` / MCP `get_aave_balances`, `prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
 - [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)
 - [x] Self Agent ID (`lookupSelfAgent`, registration & lifecycle tools)
 

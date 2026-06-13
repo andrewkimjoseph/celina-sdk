@@ -12,7 +12,32 @@ const aaveTokenField = tokenSymbolSchema.describe(
   `Aave asset symbol on Celo (${supported}). Pass the symbol only.`,
 );
 
+const readOnly = {
+  readOnlyHint: true,
+  idempotentHint: true,
+} as const;
+
 export const aaveToolDefinitions: ToolDefinition[] = [
+  {
+    name: "get_aave_balances",
+    description: `Read supplied Aave V3 balances (aToken holdings) on Celo in underlying token units including accrued interest. Supported: ${supported}. Omit address to use the session wallet when CELO_PRIVATE_KEY is set.`,
+    inputSchema: z.object({
+      address: optionalWalletAddressSchema,
+      tokens: z.array(aaveTokenField).optional(),
+      include_zero: z.boolean().optional(),
+    }),
+    families: ["read"],
+    mcp: { title: "Get Aave Balances", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const target = resolveWalletFromRuntime(runtime, {
+        address: input.address as string | undefined,
+      });
+      return runtime.celina.aave.getBalances(target, {
+        tokens: input.tokens as string[] | undefined,
+        includeZero: input.include_zero as boolean | undefined,
+      });
+    },
+  },
   {
     name: "supply_aave",
     description: `Supply tokens to Aave V3 on Celo. Supported: ${supported}. Requires CELO_PRIVATE_KEY.`,

@@ -1,8 +1,9 @@
 /** Aave V3 on Celo: prepareSupply and prepareWithdraw return multi-step flows (approve + pool call). */
-import { concat, encodeFunctionData, erc20Abi } from "viem";
+import { concat, encodeFunctionData, erc20Abi, formatUnits } from "viem";
 import { aavePoolAbi } from "../abis/aave-pool.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
 import {
+  AAVE_ASSETS,
   AAVE_POOL,
   resolveAaveAsset,
   type AaveAsset,
@@ -20,7 +21,7 @@ function taggedCalldata(data: `0x${string}`): `0x${string}` {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
-/** Aave V3 supply and withdraw prepared flows on Celo mainnet. */
+/** Aave V3 supplied balance reads and supply/withdraw prepared flows on Celo mainnet. */
 export class AaveService {
   private readonly tokenService: TokenService;
 
@@ -59,6 +60,19 @@ export class AaveService {
     }
   }
 
+  private async readATokenBalance(
+    asset: AaveAsset,
+    publicClient: CeloClients["public"],
+    owner: `0x${string}`,
+  ): Promise<bigint> {
+    return publicClient.readContract({
+      address: asset.aToken,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [owner],
+    });
+  }
+
   private async assertATokenBalance(
     asset: AaveAsset,
     publicClient: CeloClients["public"],
@@ -68,18 +82,78 @@ export class AaveService {
     const token = this.tokenService.resolveToken(asset.symbol);
     const required = this.tokenService.parseAmount(amount, token.decimals);
 
-    const balance = await publicClient.readContract({
-      address: asset.aToken,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [owner],
-    });
+    const balance = await this.readATokenBalance(asset, publicClient, owner);
 
     if (balance < required) {
       throw new Error(
         `Insufficient Aave ${asset.symbol} supply balance. Required ${amount} ${asset.symbol}, available ${balance.toString()} raw aToken units.`,
       );
     }
+  }
+
+  /**
+   * Supplied Aave V3 positions (aToken balances) for an address on Celo mainnet.
+   * Amounts are in underlying token units including accrued interest.
+   */
+  async getBalances(
+    address: `0x${string}`,
+    options?: {
+      tokens?: string[];
+      includeZero?: boolean;
+    },
+  ) {
+    const assets = options?.tokens
+      ? options.tokens.map((token) => resolveAaveAsset(token))
+      : Object.values(AAVE_ASSETS);
+
+    const { public: client } = this.clientFactory.getClients();
+
+    const results = await client.multicall({
+      contracts: assets.map((asset) => ({
+        address: asset.aToken,
+        abi: erc20Abi,
+        functionName: "balanceOf" as const,
+        args: [address] as const,
+      })),
+      allowFailure: true,
+    });
+
+    const balances = assets.map((asset, index) => {
+      const result = results[index];
+      const token = this.tokenService.resolveToken(asset.symbol);
+
+      if (result.status === "failure") {
+        return {
+          symbol: asset.symbol,
+          underlying: asset.underlying,
+          aToken: asset.aToken,
+          raw: "0",
+          formatted: "0",
+          readError: true as const,
+        };
+      }
+
+      const raw = result.result as bigint;
+      return {
+        symbol: asset.symbol,
+        underlying: asset.underlying,
+        aToken: asset.aToken,
+        raw: raw.toString(),
+        formatted: formatUnits(raw, token.decimals),
+      };
+    });
+
+    const filtered = options?.includeZero
+      ? balances
+      : balances.filter((balance) => balance.raw !== "0");
+
+    return {
+      network: "mainnet" as const,
+      address,
+      market: AAVE_POOL,
+      totalChecked: assets.length,
+      balances: filtered,
+    };
   }
 
   private async needsApproval(
@@ -188,12 +262,7 @@ export class AaveService {
 
     const resolved = this.tokenService.resolveToken(asset.symbol);
     const amountWei = withdrawMax
-      ? await publicClient.readContract({
-          address: asset.aToken,
-          abi: erc20Abi,
-          functionName: "balanceOf",
-          args: [from],
-        })
+      ? await this.readATokenBalance(asset, publicClient, from)
       : this.tokenService.parseAmount(amount!, resolved.decimals);
 
     if (amountWei === 0n) {
