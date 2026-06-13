@@ -1,4 +1,4 @@
-import { expect } from "vitest";
+import assert from "node:assert/strict";
 import type { OperationSpec } from "../types.js";
 import { assertArray, assertHasKeys } from "../../helpers/assert.js";
 
@@ -17,7 +17,7 @@ export const governanceOperations: OperationSpec[] = [
     },
     assert: (result) => {
       const obj = assertHasKeys(result, ["proposals", "pagination"]);
-      expect(Array.isArray(obj.proposals)).toBe(true);
+      assert.equal(Array.isArray(obj.proposals), true);
     },
   },
   {

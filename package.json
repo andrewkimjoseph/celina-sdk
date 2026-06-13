@@ -13,9 +13,9 @@
       "default": "./build/index.js"
     },
     "./testing": {
-      "types": "./tests/testing-entry.ts",
-      "import": "./tests/testing-entry.ts",
-      "default": "./tests/testing-entry.ts"
+      "types": "./build/tests/testing-entry.d.ts",
+      "import": "./build/tests/testing-entry.js",
+      "default": "./build/tests/testing-entry.js"
     },
     "./tools": {
       "types": "./build/tools/index.d.ts",
@@ -25,16 +25,12 @@
   },
   "files": [
     "build/",
-    "tests/catalog/",
-    "tests/fixtures/",
-    "tests/helpers/",
-    "tests/testing-entry.ts",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "prebuild": "node scripts/generate-mcp-analytics-map.mjs",
-    "build": "npm run prebuild && rm -rf build && tsc",
+    "build": "npm run prebuild && rm -rf build && tsc && tsc -p tsconfig.testing.json",
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:unit": "vitest run --config vitest.unit.config.ts",
