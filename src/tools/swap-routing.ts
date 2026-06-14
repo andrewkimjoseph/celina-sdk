@@ -29,8 +29,12 @@ function parseExpectedOut(value: string): number {
   return Number.isFinite(n) ? n : 0;
 }
 
+function isMentoMarketClosedError(message: string): boolean {
+  return /mento fx market is currently closed/i.test(message);
+}
+
 function isMentoRouteError(message: string): boolean {
-  return /no mento fx route|mento fx market is currently closed/i.test(message);
+  return /no mento fx route/i.test(message);
 }
 
 function isUniswapRouteError(message: string): boolean {
@@ -204,6 +208,11 @@ export async function getSwapQuoteWithFallback(
     const balanceError = failures.find(isInsufficientBalanceError);
     if (balanceError) {
       throw new Error(balanceError);
+    }
+
+    const marketClosedError = failures.find(isMentoMarketClosedError);
+    if (marketClosedError) {
+      throw new Error(marketClosedError);
     }
 
     throw new Error(
