@@ -275,7 +275,32 @@ export const gooddollarOperations: OperationSpec[] = [
       arguments: (fx) => ({ address: fx.wallet }),
     },
     assert: (result) => {
-      assertHasKeys(result, ["isCurrentlyWhitelisted"]);
+      assertHasKeys(result, [
+        "isWhitelisted",
+        "whitelistedRoot",
+        "isConnectedWallet",
+        "checkedAddress",
+      ]);
+    },
+  },
+  {
+    id: "gooddollar.getIdentityLink",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.gooddollar.getIdentityLink(fx.wallet),
+    },
+    mcp: {
+      tool: "get_gooddollar_identity_link",
+      arguments: (fx) => ({ address: fx.wallet }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, [
+        "whitelistedRoot",
+        "isConnectedWallet",
+        "checkedAddress",
+        "isWhitelisted",
+      ]);
     },
   },
   {

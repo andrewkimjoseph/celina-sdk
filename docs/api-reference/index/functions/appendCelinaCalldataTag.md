@@ -8,7 +8,7 @@
 
 > **appendCelinaCalldataTag**(`data`): `` `0x${string}` ``
 
-Defined in: [src/config/celina-tag.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/config/celina-tag.ts#L7)
+Defined in: [src/config/celina-tag.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/config/celina-tag.ts#L7)
 
 Append CELINA suffix to calldata; no-op when empty or already tagged.
 

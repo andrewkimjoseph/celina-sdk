@@ -8,4 +8,4 @@
 
 > `const` **DEFAULT\_RPC\_URL**: `"https://forno.celo.org"` = `"https://forno.celo.org"`
 
-Defined in: [src/config/chains.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/config/chains.ts#L9)
+Defined in: [src/config/chains.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/config/chains.ts#L9)

@@ -8,7 +8,7 @@
 
 > **clearSelfSessionsForTests**(): `void`
 
-Defined in: [src/services/self-session-store.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self-session-store.ts#L63)
+Defined in: [src/services/self-session-store.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self-session-store.ts#L63)
 
 ## Returns
 

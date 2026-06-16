@@ -20,10 +20,14 @@ function mapReserveWalletOptions(input: Record<string, unknown>) {
   };
 }
 
+const NON_IDENTITY_RESERVE_NOTE =
+  " Uses the literal signing wallet address for balances; does not resolve GoodDollar identity roots.";
+
 export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_whitelisting_info",
-    description: "Check GoodDollar IdentityV4 whitelist status for a wallet.",
+    description:
+      "Check GoodDollar IdentityV4 whitelist status for a wallet. Connected wallets resolve to their verified root; returns isWhitelisted, whitelistedRoot, and checkedAddress.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),
@@ -37,9 +41,25 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     },
   },
   {
+    name: "get_gooddollar_identity_link",
+    description:
+      "How a wallet links to GoodDollar IdentityV4: whitelisted root, connected-to root, and live whitelist status.",
+    inputSchema: z.object({
+      address: optionalWalletAddressSchema,
+    }),
+    families: ["read"],
+    mcp: { title: "Get GoodDollar Identity Link", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const target = resolveWalletFromRuntime(runtime, {
+        address: input.address as string | undefined,
+      });
+      return runtime.celina.gooddollar.getIdentityLink(target);
+    },
+  },
+  {
     name: "get_gooddollar_ubi_entitlement",
     description:
-      "Daily GoodDollar UBI claim eligibility: whitelist root, claimable G$, already claimed.",
+      "Daily GoodDollar UBI claim eligibility: whitelist root, claimable G$, already claimed. Nested identity.isWhitelisted reflects the resolved root.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),
@@ -91,7 +111,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_reserve_quote",
     description:
-      "GoodDollar reserve quote for G$ ↔ USDm on Celo (MentoBroker bonding curve).",
+      `GoodDollar reserve quote for G$ ↔ USDm on Celo (MentoBroker bonding curve).${NON_IDENTITY_RESERVE_NOTE}`,
     inputSchema: goodDollarReserveQuoteSchema,
     families: ["read"],
     mcp: { title: "Get GoodDollar Reserve Quote", annotations: readOnly },
@@ -105,7 +125,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "estimate_gooddollar_reserve_swap",
     description:
-      "Estimate gas for a GoodDollar reserve swap (G$ ↔ USDm), including ERC-20 approval when needed.",
+      `Estimate gas for a GoodDollar reserve swap (G$ ↔ USDm), including ERC-20 approval when needed.${NON_IDENTITY_RESERVE_NOTE}`,
     inputSchema: goodDollarReserveWalletSchema,
     families: ["read"],
     surfaces: ["mcp"],
@@ -171,7 +191,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_gooddollar_reserve_swap",
     description:
-      "Prepare unsigned GoodDollar reserve swap for G$ ↔ USDm. User must sign in wallet.",
+      `Prepare unsigned GoodDollar reserve swap for G$ ↔ USDm. User must sign in wallet.${NON_IDENTITY_RESERVE_NOTE}`,
     inputSchema: goodDollarReserveWalletSchema,
     families: ["prepare"],
     surfaces: ["browser"],

@@ -8,7 +8,7 @@
 
 > **flushCelinaAnalytics**(): `Promise`\<`void`\>
 
-Defined in: [src/analytics/amplitude.ts:101](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/analytics/amplitude.ts#L101)
+Defined in: [src/analytics/amplitude.ts:101](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/analytics/amplitude.ts#L101)
 
 Await any queued Amplitude events (e.g. end of a Next.js route via `after()`).
 

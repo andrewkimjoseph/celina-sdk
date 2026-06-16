@@ -47,7 +47,7 @@ flowchart TB
 |-------|------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **30 tools** (reads + prepare; no server-key writes) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **31 tools** (reads + prepare; no server-key writes) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
@@ -82,7 +82,7 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | `mentoFx` | MentoFxService | Mento FX quotes and swaps |
 | `uniswap` | UniswapService | Uniswap v4 quotes and swaps |
 | `aave` | AaveService | Aave V3 supplied balance reads, supply/withdraw |
-| `gooddollar` | GoodDollarService | Identity whitelist, UBI entitlement, reserve quote/prepare (G$ ↔ USDm), `prepareClaimUbi` |
+| `gooddollar` | GoodDollarService | Identity link, whitelist (connected-wallet root resolution), UBI entitlement, reserve quote/prepare (G$ ↔ USDm), `prepareClaimUbi` |
 | `ens` | EnsService | ENS resolution (Celo + Ethereum) |
 | `governance` | GovernanceService | Celo governance proposals |
 | `staking` | StakingService | Validator election staking |

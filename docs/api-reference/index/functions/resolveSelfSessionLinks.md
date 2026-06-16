@@ -8,7 +8,7 @@
 
 > **resolveSelfSessionLinks**(`input`): [`SelfSessionLinks`](../interfaces/SelfSessionLinks.md)
 
-Defined in: [src/utils/self-format.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/utils/self-format.ts#L16)
+Defined in: [src/utils/self-format.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/utils/self-format.ts#L16)
 
 ## Parameters
 

@@ -12,11 +12,14 @@ const readOnly = {
   idempotentHint: true,
 } as const;
 
+const NON_IDENTITY_BALANCE_NOTE =
+  " Reads on-chain balances for the given address only; GoodDollar connected-wallet identity is not resolved.";
+
 export const tokenToolDefinitions: ToolDefinition[] = [
   {
     name: "get_celo_balances",
     description:
-      "Balances for named registry tokens on Celo mainnet. Default tokens: CELO + USDm.",
+      `Balances for named registry tokens on Celo mainnet. Default tokens: CELO + USDm.${NON_IDENTITY_BALANCE_NOTE}`,
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
       tokens: z.array(tokenSymbolSchema).optional(),
@@ -36,7 +39,7 @@ export const tokenToolDefinitions: ToolDefinition[] = [
   {
     name: "get_stablecoin_balances",
     description:
-      "Scan fiat-pegged registry stablecoins (Mento *m, USDT, USDC, etc.) for an address in one call. Omits zero balances by default. Excludes GoodDollar (G$) and WETH — use get_token_balance or GoodDollar tools for those.",
+      `Scan fiat-pegged registry stablecoins (Mento *m, USDT, USDC, etc.) for an address in one call. Omits zero balances by default. Excludes GoodDollar (G$) and WETH — use get_token_balance or GoodDollar tools for those.${NON_IDENTITY_BALANCE_NOTE}`,
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
       stablecoins: z.array(z.string()).optional(),
@@ -71,7 +74,7 @@ export const tokenToolDefinitions: ToolDefinition[] = [
   {
     name: "get_token_balance",
     description:
-      "Balance for one registry token. Pass a symbol or known registry contract address.",
+      `Balance for one registry token. Pass a symbol or known registry contract address.${NON_IDENTITY_BALANCE_NOTE}`,
     inputSchema: z.object({
       token: tokenSymbolSchema,
       address: optionalWalletAddressSchema,

@@ -114,18 +114,33 @@ export class GoodDollarService {
     return this.clientFactory.getClients().public;
   }
 
-  /**
-   * GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
-   * @param address - Wallet to check against IdentityV4
-   * @returns On-chain status, whitelist dates, field descriptions, and reverification timeline
-   */
-  async getWhitelistingInfo(address: `0x${string}`) {
+  private async resolveWhitelistedRoot(address: `0x${string}`) {
+    const client = this.getPublicClient();
+    const rootResult = await client.readContract({
+      address: GOODDOLLAR_IDENTITY_ADDRESS,
+      abi: goodDollarIdentityAbi,
+      functionName: "getWhitelistedRoot",
+      args: [address],
+    });
+    const root = rootResult as `0x${string}`;
+    const hasRoot = root !== ZERO_ADDRESS;
+    const identityAddress = hasRoot ? root : address;
+    return {
+      queried: address,
+      root: hasRoot ? root : null,
+      identityAddress,
+      isConnectedWallet:
+        hasRoot && root.toLowerCase() !== address.toLowerCase(),
+    };
+  }
+
+  private async fetchWhitelistingData(identityAddress: `0x${string}`) {
     const { public: client } = this.clientFactory.getClients();
     const contract = GOODDOLLAR_IDENTITY_ADDRESS;
 
     const [
       identityResult,
-      isCurrentlyWhitelisted,
+      isWhitelisted,
       maxReverificationPeriodDays,
       reverifyDaysOptions,
     ] = await Promise.all([
@@ -133,13 +148,13 @@ export class GoodDollarService {
         address: contract,
         abi: goodDollarIdentityAbi,
         functionName: "identities",
-        args: [address],
+        args: [identityAddress],
       }),
       client.readContract({
         address: contract,
         abi: goodDollarIdentityAbi,
         functionName: "isWhitelisted",
-        args: [address],
+        args: [identityAddress],
       }),
       client.readContract({
         address: contract,
@@ -186,9 +201,8 @@ export class GoodDollarService {
         : null;
 
     return {
-      address,
       contract,
-      isCurrentlyWhitelisted,
+      isWhitelisted,
       status: statusNum,
       statusLabel: statusLabel(statusNum),
       whitelistedOn: isWhitelistedStatus ? formatUnixDate(dateAddedNum) : null,
@@ -213,29 +227,84 @@ export class GoodDollarService {
   }
 
   /**
+   * How a wallet links to GoodDollar IdentityV4 (root vs connected account).
+   * @param address - Wallet to inspect
+   */
+  async getIdentityLink(address: `0x${string}`) {
+    const client = this.getPublicClient();
+    const link = await this.resolveWhitelistedRoot(address);
+
+    const [connectedTo, isWhitelisted] = await Promise.all([
+      client.readContract({
+        address: GOODDOLLAR_IDENTITY_ADDRESS,
+        abi: goodDollarIdentityAbi,
+        functionName: "connectedAccounts",
+        args: [address],
+      }),
+      client.readContract({
+        address: GOODDOLLAR_IDENTITY_ADDRESS,
+        abi: goodDollarIdentityAbi,
+        functionName: "isWhitelisted",
+        args: [link.identityAddress],
+      }),
+    ]);
+
+    const connectedToAddr = connectedTo as `0x${string}`;
+    const isWhitelistedRoot =
+      link.root !== null &&
+      link.root.toLowerCase() === address.toLowerCase();
+
+    return {
+      address,
+      contract: GOODDOLLAR_IDENTITY_ADDRESS,
+      whitelistedRoot: link.root,
+      isConnectedWallet: link.isConnectedWallet,
+      isWhitelistedRoot,
+      connectedTo:
+        connectedToAddr !== ZERO_ADDRESS ? connectedToAddr : null,
+      checkedAddress: link.identityAddress,
+      isWhitelisted,
+    };
+  }
+
+  /**
+   * GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
+   * Resolves connected wallets via Identity `getWhitelistedRoot`.
+   * @param address - Wallet to check against IdentityV4
+   * @returns On-chain status, whitelist dates, field descriptions, and reverification timeline
+   */
+  async getWhitelistingInfo(address: `0x${string}`) {
+    const link = await this.resolveWhitelistedRoot(address);
+    const data = await this.fetchWhitelistingData(link.identityAddress);
+
+    return {
+      address,
+      whitelistedRoot: link.root,
+      isConnectedWallet: link.isConnectedWallet,
+      checkedAddress: link.identityAddress,
+      ...data,
+    };
+  }
+
+  /**
    * Daily UBI claim eligibility for a wallet against UBISchemeV2 on Celo.
    * Resolves connected wallets via Identity `getWhitelistedRoot`.
    */
   async getUbiClaimEligibility(address: `0x${string}`) {
     const client = this.getPublicClient();
     const ubiContract = GOODDOLLAR_UBI_SCHEME_ADDRESS;
-    const identityContract = GOODDOLLAR_IDENTITY_ADDRESS;
+    const link = await this.resolveWhitelistedRoot(address);
+    const root = link.root;
 
     const [
-      whitelistedRoot,
       claimableAmount,
       schemePaused,
       periodStart,
       estimatedDailyUbi,
       dailyUbi,
       ubiPeriodDay,
+      whitelistingData,
     ] = await Promise.all([
-      client.readContract({
-        address: identityContract,
-        abi: goodDollarIdentityAbi,
-        functionName: "getWhitelistedRoot",
-        args: [address],
-      }),
       client.readContract({
         address: ubiContract,
         abi: ubiSchemeAbi,
@@ -267,16 +336,13 @@ export class GoodDollarService {
         abi: ubiSchemeAbi,
         functionName: "currentDay",
       }),
+      this.fetchWhitelistingData(link.identityAddress),
     ]);
 
-    const root = whitelistedRoot as `0x${string}`;
     const claimable = claimableAmount as bigint;
     const periodStartBn = periodStart as bigint;
     const nowSec = BigInt(Math.floor(Date.now() / 1000));
     const schemeStarted = nowSec >= periodStartBn;
-
-    const identityAddress =
-      root !== ZERO_ADDRESS ? root : address;
 
     const contractDay = ubiPeriodDay as bigint;
     const computedDay =
@@ -287,7 +353,7 @@ export class GoodDollarService {
     let claimedForOnChainDay = false;
     let lastClaimedSec = 0n;
 
-    if (root !== ZERO_ADDRESS) {
+    if (root !== null) {
       const [hasClaimed, lastClaimed] = await Promise.all([
         client.readContract({
           address: ubiContract,
@@ -306,16 +372,14 @@ export class GoodDollarService {
       lastClaimedSec = lastClaimed as bigint;
     }
 
-    const whitelistingInfo = await this.getWhitelistingInfo(identityAddress);
-
     const periodState = resolveUbiPeriodEligibility({
       contractDay,
       computedDay,
       claimedForOnChainDay,
-      hasRoot: root !== ZERO_ADDRESS,
+      hasRoot: root !== null,
       schemePaused,
       schemeStarted,
-      isWhitelisted: whitelistingInfo.isCurrentlyWhitelisted,
+      isWhitelisted: whitelistingData.isWhitelisted,
       claimable,
     });
 
@@ -333,7 +397,7 @@ export class GoodDollarService {
     if (!schemeStarted) {
       reasons.push("scheme not started");
     }
-    if (root === ZERO_ADDRESS) {
+    if (root === null) {
       reasons.push("not whitelisted");
     } else if (alreadyClaimedToday) {
       const waitLabel = formatDuration(secondsUntilNextClaim);
@@ -342,8 +406,8 @@ export class GoodDollarService {
         `already claimed this period; next claim in ${waitLabel} (${atLabel})`,
       );
     } else {
-      if (!whitelistingInfo.isCurrentlyWhitelisted) {
-        if (whitelistingInfo.reverification?.isReverificationOverdue) {
+      if (!whitelistingData.isWhitelisted) {
+        if (whitelistingData.reverification?.isReverificationOverdue) {
           reasons.push("reverification overdue");
         } else {
           reasons.push("identity not currently whitelisted");
@@ -364,10 +428,8 @@ export class GoodDollarService {
     return {
       address,
       contract: ubiContract,
-      whitelistedRoot: root === ZERO_ADDRESS ? null : root,
-      isConnectedWallet:
-        root !== ZERO_ADDRESS &&
-        root.toLowerCase() !== address.toLowerCase(),
+      whitelistedRoot: root,
+      isConnectedWallet: link.isConnectedWallet,
       isEligibleToClaim,
       claimableAmount: claimable.toString(),
       claimableAmountFormatted:
@@ -387,10 +449,10 @@ export class GoodDollarService {
       currentDailyUbiFormatted: `${formatUnits(dailyUbi as bigint, G_DOLLAR_DECIMALS)} G$`,
       reasons: isEligibleToClaim ? [] : reasons,
       identity: {
-        checkedAddress: identityAddress,
-        isCurrentlyWhitelisted: whitelistingInfo.isCurrentlyWhitelisted,
-        statusLabel: whitelistingInfo.statusLabel,
-        reverification: whitelistingInfo.reverification,
+        checkedAddress: link.identityAddress,
+        isWhitelisted: whitelistingData.isWhitelisted,
+        statusLabel: whitelistingData.statusLabel,
+        reverification: whitelistingData.reverification,
       },
     };
   }
@@ -424,10 +486,14 @@ export class GoodDollarService {
       functionName: "claim",
     });
 
+    const summary = eligibility.isConnectedWallet && eligibility.whitelistedRoot
+      ? `Claim daily GoodDollar UBI (${eligibility.claimableAmountFormatted}) via connected wallet → root ${eligibility.whitelistedRoot}`
+      : `Claim daily GoodDollar UBI (${eligibility.claimableAmountFormatted})`;
+
     const flow: PreparedFlow = {
       network: "mainnet",
       from,
-      summary: `Claim daily GoodDollar UBI (${eligibility.claimableAmountFormatted})`,
+      summary,
       steps: [
         {
           kind: "contract",

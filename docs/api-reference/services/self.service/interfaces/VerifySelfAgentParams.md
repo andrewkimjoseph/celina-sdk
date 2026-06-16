@@ -6,7 +6,7 @@
 
 # Interface: VerifySelfAgentParams
 
-Defined in: [src/services/self.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self.service.ts#L50)
+Defined in: [src/services/self.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self.service.ts#L50)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/self.service.ts:50](https://github.com/andrewkimjoseph
 
 > **agentAddress**: `` `0x${string}` ``
 
-Defined in: [src/services/self.service.ts:51](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self.service.ts#L51)
+Defined in: [src/services/self.service.ts:51](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self.service.ts#L51)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/self.service.ts:51](https://github.com/andrewkimjoseph
 
 > `optional` **requireAge?**: `0` \| `18` \| `21`
 
-Defined in: [src/services/self.service.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self.service.ts#L52)
+Defined in: [src/services/self.service.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self.service.ts#L52)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/self.service.ts:52](https://github.com/andrewkimjoseph
 
 > `optional` **requireOfac?**: `boolean`
 
-Defined in: [src/services/self.service.ts:53](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self.service.ts#L53)
+Defined in: [src/services/self.service.ts:53](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self.service.ts#L53)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [src/services/self.service.ts:53](https://github.com/andrewkimjoseph
 
 > `optional` **requireSelfProvider?**: `boolean`
 
-Defined in: [src/services/self.service.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/c4138c1333e37c3188f9b6d876cbd4e95b2408f1/src/services/self.service.ts#L54)
+Defined in: [src/services/self.service.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/self.service.ts#L54)

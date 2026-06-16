@@ -155,12 +155,16 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 `validateToolCatalogSnakeCase()` (unit tests) guards non–snake_case Zod keys.
 
-## Related exports
+## Website tool docs sync
 
-| Export | Use |
-|--------|-----|
-| `getSwapQuoteWithFallback` / `prepareSwapWithFallback` | Browser swap routing (Mento + Uniswap) |
-| Schemas in `tools` (`addressSchema`, …) | Reuse in custom tools |
+[celina-website](https://github.com/andrewkimjoseph/celina-website) derives its MCP tool pages from this catalog:
+
+1. `npm run build` in celina-sdk (compiles `src/tools/website-sync.ts`).
+2. `npm run generate:website-tools` writes `celina-website/src/data/tools.generated.ts` (names, descriptions, categories, inputs).
+3. Rich `returns` / `examples` live in `celina-website/src/data/tools.overrides.ts`.
+4. `celina-website` `prebuild` runs sync automatically.
+
+Helpers exported from `@andrewkimjoseph/celina-sdk/tools`: `getWebsiteToolBaselines`, `getHostedMcpToolCount`, `getMcpToolNameSet`, `toWebsiteToolBaseline`.
 
 ## See also
 

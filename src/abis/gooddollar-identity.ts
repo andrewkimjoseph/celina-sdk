@@ -30,6 +30,13 @@ export const goodDollarIdentityAbi = [
     outputs: [{ name: "whitelisted", type: "address" }],
   },
   {
+    name: "connectedAccounts",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "", type: "address" }],
+  },
+  {
     name: "authenticationPeriod",
     type: "function",
     stateMutability: "view",

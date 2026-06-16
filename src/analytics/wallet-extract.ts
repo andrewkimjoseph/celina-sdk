@@ -14,6 +14,7 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   "account.getAccount": { positional: 0, objectKeys: ["address"] },
   "contract.callFunction": { objectKeys: ["address"] },
   "contract.estimateGas": { objectKeys: ["address"] },
+  "gooddollar.getIdentityLink": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getUbiClaimEligibility": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getWhitelistingInfo": { positional: 0, objectKeys: ["address"] },
   "nft.getNftBalance": { objectKeys: ["address"] },

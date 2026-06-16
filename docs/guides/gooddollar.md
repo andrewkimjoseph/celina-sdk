@@ -17,14 +17,31 @@ import {
 } from "@andrewkimjoseph/celina-sdk";
 ```
 
+## Identity link
+
+```ts
+const link = await celina.gooddollar.getIdentityLink("0xYourAddress");
+// link.whitelistedRoot, link.isConnectedWallet, link.connectedTo, link.isWhitelisted
+```
+
+Use this when you need to know how a wallet maps to GoodDollar IdentityV4 before calling whitelist or UBI tools.
+
 ## Whitelist status
 
 ```ts
 const info = await celina.gooddollar.getWhitelistingInfo("0xYourAddress");
-// info.isCurrentlyWhitelisted, info.reverification, info.statusLabel, …
+// info.isWhitelisted, info.whitelistedRoot, info.checkedAddress, info.reverification, …
 ```
 
-Uses IdentityV4 `identities`, `isWhitelisted`, and reverification timeline fields.
+Resolves connected wallets via Identity `getWhitelistedRoot`. Identity reads (`identities`, `isWhitelisted`, reverification) run on the **root** (`checkedAddress`), not the literal connected address.
+
+| Field | Meaning |
+|-------|---------|
+| `address` | Wallet you queried |
+| `whitelistedRoot` | Verified identity root, or `null` |
+| `isConnectedWallet` | `true` when the queried wallet maps to a different root |
+| `checkedAddress` | Identity used for whitelist/reverification reads |
+| `isWhitelisted` | Live whitelist status on `checkedAddress` |
 
 ## Daily UBI entitlement
 
@@ -60,6 +77,7 @@ Key fields:
 | `ubiPeriodDay` | Current `currentDay` from UBISchemeV2 |
 | `reasons` | Prioritized blockers; cooldown suppresses misleading identity errors |
 | `identity.checkedAddress` | Root used for whitelist/reverification (not the connected wallet) |
+| `identity.isWhitelisted` | Live whitelist status on the root |
 
 Entitlement uses Identity `getWhitelistedRoot` (same check as `UBISchemeV2.claim()`). Identity status in the entitlement response is evaluated on the **root**, so connected wallets do not surface stale whitelist data on the linked address.
 
@@ -127,10 +145,20 @@ const best = await getSwapQuoteWithFallback(celina, "GoodDollar", "USDm", "1000"
 
 For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the fallback when Mento FX has no route.
 
+## Non-identity tools
+
+These tools use the **literal wallet address** you pass. They do **not** resolve GoodDollar connected-wallet identity roots:
+
+- `get_celo_balances`, `get_stablecoin_balances`, `get_token_balance`
+- `get_gooddollar_reserve_quote`, `estimate_gooddollar_reserve_swap`, `execute_gooddollar_reserve_swap`, `prepare_gooddollar_reserve_swap`
+
+A connected wallet's G$ balance is that wallet's on-chain balance, not the root's.
+
 ## MCP tool mapping
 
 | SDK method | MCP tool (stdio) | Hosted MCP |
 |------------|------------------|------------|
+| `getIdentityLink` | `get_gooddollar_identity_link` | read |
 | `getWhitelistingInfo` | `get_gooddollar_whitelisting_info` | read |
 | `getUbiClaimEligibility` | `get_gooddollar_ubi_entitlement` | read |
 | `getReserveQuote` | `get_gooddollar_reserve_quote` | read |
