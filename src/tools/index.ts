@@ -34,9 +34,13 @@ export { normalizeRegistryTokenInput } from "./utils/normalize-token.js";
 export {
   deriveToolAvailability,
   getHostedMcpToolCount,
+  getHostedMcpToolDefinitions,
+  getHostedMcpToolNames,
   getMcpToolNameSet,
   getWebsiteToolBaselines,
+  HOSTED_MCP_FILTER,
   toWebsiteToolBaseline,
+  TOOL_CATEGORY_BY_NAME,
   type WebsiteToolAvailability,
   type WebsiteToolBaseline,
   type WebsiteToolCategory,

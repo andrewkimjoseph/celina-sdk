@@ -38,7 +38,7 @@ export interface WebsiteToolBaseline {
   }>;
 }
 
-const HOSTED_FILTER: FilterToolsOptions = {
+export const HOSTED_MCP_FILTER: FilterToolsOptions = {
   surface: "mcp",
   serverKeyToolsEnabled: false,
   selfSessionToolsEnabled: false,
@@ -63,7 +63,7 @@ const STDIO_ONLY_TOOLS = new Set([
   "check_self_registration",
 ]);
 
-const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
+export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   get_network_status: "Blockchain",
   get_block: "Blockchain",
   get_latest_blocks: "Blockchain",
@@ -195,8 +195,16 @@ export function deriveToolAvailability(
   return "both";
 }
 
+export function getHostedMcpToolDefinitions(): ToolDefinition[] {
+  return filterToolDefinitions(ALL_TOOL_DEFINITIONS, HOSTED_MCP_FILTER);
+}
+
+export function getHostedMcpToolNames(): string[] {
+  return getHostedMcpToolDefinitions().map((d) => d.name);
+}
+
 export function getHostedMcpToolCount(): number {
-  return filterToolDefinitions(ALL_TOOL_DEFINITIONS, HOSTED_FILTER).length;
+  return getHostedMcpToolDefinitions().length;
 }
 
 export function getWebsiteToolBaselines(): WebsiteToolBaseline[] {
