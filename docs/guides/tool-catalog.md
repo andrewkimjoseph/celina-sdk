@@ -138,7 +138,7 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 
 ## Sample browser app
 
-[Celeste AI](https://github.com/andrewkimjoseph/celeste-ai) is a reference **browser surface** chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight). It uses the SDK tool catalog directly — not celina-mcp.
+[Celeste AI](https://celeste.usecelina.xyz) is a reference **browser surface** chat UI: `filterToolDefinitions(..., { surface: "browser" })`, wagmi signing, and host hooks in `celeste-ai/src/lib/chat-tools/sdk-adapter.ts` (send preflight). It uses the SDK tool catalog directly — not celina-mcp.
 
 ## Adding a new tool
 
