@@ -8,6 +8,6 @@
 
 > **EnsResolveChain** = `"celo"` \| `"ethereum"`
 
-Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/ens.service.ts#L13)
+Defined in: [src/services/ens.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/services/ens.service.ts#L13)
 
 Chain used for ENS resolution.

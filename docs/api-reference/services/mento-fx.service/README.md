@@ -13,3 +13,7 @@
 ## Interfaces
 
 - [MentoFxParams](interfaces/MentoFxParams.md)
+
+## Functions
+
+- [formatDisplayAmount](functions/formatDisplayAmount.md)

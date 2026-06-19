@@ -6,7 +6,7 @@
 
 # Class: ContractService
 
-Defined in: [src/services/contract.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/contract.service.ts#L41)
+Defined in: [src/services/contract.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/services/contract.service.ts#L41)
 
 Read-only and gas-estimation helpers for arbitrary contracts.
 
@@ -16,7 +16,7 @@ Read-only and gas-estimation helpers for arbitrary contracts.
 
 > **new ContractService**(`clientFactory`): `ContractService`
 
-Defined in: [src/services/contract.service.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/contract.service.ts#L42)
+Defined in: [src/services/contract.service.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/services/contract.service.ts#L42)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/contract.service.ts:42](https://github.com/andrewkimjo
 
 > **callFunction**(`params`): `Promise`\<\{ `contractAddress`: `` `0x${string}` ``; `error?`: `undefined`; `functionName`: `string`; `network`: `"mainnet"`; `result`: `unknown`; `success`: `boolean`; \} \| \{ `contractAddress`: `` `0x${string}` ``; `error`: `string`; `functionName`: `string`; `network`: `"mainnet"`; `result`: `null`; `success`: `boolean`; \}\>
 
-Defined in: [src/services/contract.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/contract.service.ts#L49)
+Defined in: [src/services/contract.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/services/contract.service.ts#L49)
 
 Simulate a read-only contract call (`eth_call`).
 
@@ -58,7 +58,7 @@ Decoded result on success; `{ success: false, error }` on revert
 
 > **estimateGas**(`params`): `Promise`\<\{ `contractAddress`: `` `0x${string}` ``; `error?`: `undefined`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \} \| \{ `contractAddress`: `` `0x${string}` ``; `error`: `string`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \}\>
 
-Defined in: [src/services/contract.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/services/contract.service.ts#L94)
+Defined in: [src/services/contract.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/services/contract.service.ts#L94)
 
 Estimate gas for a contract call from `fromAddress`.
 

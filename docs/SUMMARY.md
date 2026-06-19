@@ -17,6 +17,7 @@
 
 * [LLM tool catalog](guides/tool-catalog.md)
 * [wagmi integration](guides/wagmi-integration.md)
+* [Prepared-step simulation](guides/prepared-step-simulation.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)
 * [Uniswap v4](guides/uniswap.md)
@@ -49,6 +50,13 @@
 * [StakingService](api-reference/services/staking.service/classes/StakingService.md)
 * [TokenService](api-reference/services/token.service/classes/TokenService.md)
 * [TransactionService](api-reference/services/transaction.service/classes/TransactionService.md)
+
+### Simulation
+
+* [Overview](api-reference/simulation/README.md)
+* [simulatePreparedStep](api-reference/simulation/functions/simulatePreparedStep.md)
+* [SimulatePreparedStepOptions](api-reference/simulation/type-aliases/SimulatePreparedStepOptions.md)
+* [SimulatePreparedStepParams](api-reference/simulation/type-aliases/SimulatePreparedStepParams.md)
 
 ### Types
 

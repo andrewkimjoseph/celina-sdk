@@ -59,8 +59,11 @@ for (const step of flow.steps) {
 
 Transfer calldata includes a Celina data suffix for on-chain attribution. No changes needed before signing.
 
+Before signing, call `simulatePreparedStep` for each step — see [Prepared-step simulation](prepared-step-simulation.md).
+
 ## Related
 
+- [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [transaction API](../api-reference/services/transaction.service/classes/TransactionService.md)

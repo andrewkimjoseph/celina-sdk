@@ -32,6 +32,10 @@ Requires Node.js ≥ 20.
 
 For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definitions from `@andrewkimjoseph/celina-sdk/tools` instead of redefining schemas. See [LLM tool catalog](docs/guides/tool-catalog.md) — includes the recommended **`dynamicTool`** pattern so TypeScript does not OOM on large tool sets.
 
+### Sign-time simulation (v0.9.6+)
+
+Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkimjoseph/celina-sdk/simulation` — browser-safe, no Node analytics. See [Prepared-step simulation](docs/guides/prepared-step-simulation.md).
+
 ## Documentation
 
 **Full docs:** [celina-sdk on GitBook](https://andrewkimjoseph.gitbook.io/celina-sdk)
@@ -40,6 +44,7 @@ For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definiti
 - [LLM tool catalog](docs/guides/tool-catalog.md) — `@andrewkimjoseph/celina-sdk/tools` for MCP and AI SDK hosts
 - [Architecture](docs/concepts/architecture.md) — client composition and stack
 - [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow`, CELINA calldata tag
+- [Prepared-step simulation](docs/guides/prepared-step-simulation.md) — `simulatePreparedStep` before wallet send
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
@@ -58,7 +63,7 @@ const celina = createCelinaClient();
 await celina.token.getStablecoinBalances("0xYourAddress");
 
 const flow = await celina.transaction.prepareSend("0xFrom", "0xTo", "USDm", "10");
-// flow.steps → pass to wagmi sendTransactionAsync (calldata includes CELINA attribution suffix)
+// flow.steps → simulate each step, then wagmi sendTransactionAsync (see /simulation)
 
 // GoodDollar UBI (reads + unsigned claim)
 const eligibility = await celina.gooddollar.getUbiClaimEligibility("0xYourAddress");
@@ -81,7 +86,9 @@ All `prepare*` methods return a **`SerializedPreparedFlow`**: ordered unsigned s
 
 Every step with calldata gets a **CELINA attribution suffix** (`appendCelinaCalldataTag`) — sends, Mento FX, Uniswap, Aave, and GoodDollar. Pass `step.data` to wagmi unchanged.
 
-See [Prepared flows](docs/concepts/prepared-flows.md).
+Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
+
+See [Prepared flows](docs/concepts/prepared-flows.md) and [Prepared-step simulation](docs/guides/prepared-step-simulation.md).
 
 ### MCP session wallet (not in the SDK)
 

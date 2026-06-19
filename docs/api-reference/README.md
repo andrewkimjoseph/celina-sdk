@@ -21,4 +21,5 @@
 - [services/token.service](services/token.service/README.md)
 - [services/transaction.service](services/transaction.service/README.md)
 - [services/uniswap.service](services/uniswap.service/README.md)
+- [simulation](simulation/README.md)
 - [types/prepared](types/prepared/README.md)

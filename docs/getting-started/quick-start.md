@@ -44,25 +44,39 @@ console.log(flow.steps.length);
 // 1 (single ERC-20 transfer)
 ```
 
-## 4. Sign with wagmi
+## 4. Simulate and sign with wagmi
 
-Pass each step to wagmi's `sendTransactionAsync`:
+Simulate each step immediately before signing to catch reverts before gas is spent:
 
 ```ts
-import { useSendTransaction } from "wagmi";
+import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
+import { useSendTransaction, usePublicClient } from "wagmi";
+import { waitForTransactionReceipt } from "wagmi/actions";
+import { config } from "./wagmi-config";
 
 const { sendTransactionAsync } = useSendTransaction();
+const publicClient = usePublicClient();
 
 for (const step of flow.steps) {
-  await sendTransactionAsync({
+  await simulatePreparedStep(publicClient!, {
+    account: fromAddress,
+    step,
+  });
+
+  const hash = await sendTransactionAsync({
     to: step.to,
     data: step.data,
     value: step.value ? BigInt(step.value) : undefined,
   });
+
+  const receipt = await waitForTransactionReceipt(config, { hash });
+  if (receipt.status === "reverted") {
+    throw new Error(`Transaction reverted: ${hash}`);
+  }
 }
 ```
 
-See [wagmi integration](../guides/wagmi-integration.md) for error handling, multi-step flows, and React patterns.
+See [Prepared-step simulation](../guides/prepared-step-simulation.md) and [wagmi integration](../guides/wagmi-integration.md) for error handling, multi-step flows, and React patterns.
 
 ## Next steps
 

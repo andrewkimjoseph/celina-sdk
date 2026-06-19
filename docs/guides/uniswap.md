@@ -95,8 +95,11 @@ Wait for each step to confirm before sending the next.
 
 For apps that support both, quote Mento FX and Uniswap in parallel and pick the better `expectedOut`.
 
+Before signing, call `simulatePreparedStep` for each step — see [Prepared-step simulation](prepared-step-simulation.md).
+
 ## Related
 
+- [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [Mento FX](mento-fx.md)

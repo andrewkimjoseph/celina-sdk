@@ -76,8 +76,11 @@ Use `get_celo_balances` or `get_token_balance` — see [TokenService](../api-ref
 
 When allowance is insufficient, supply flows include an approve step first. Wait for approval confirmation before sending the supply transaction — same pattern as [Mento FX](mento-fx.md).
 
+Before signing, call `simulatePreparedStep` for each step — see [Prepared-step simulation](prepared-step-simulation.md).
+
 ## Related
 
+- [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [AaveService API](../api-reference/services/aave.service/classes/AaveService.md)

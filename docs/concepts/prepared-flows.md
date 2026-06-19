@@ -58,7 +58,15 @@ const flow = await celina.mentoFx.prepareFx(from, "USDm", "EURm", "100");
 
 Sign and confirm each step sequentially. Do not skip or reorder steps.
 
-MCP stdio **`execute_*`** tools (Mento FX, Uniswap, GoodDollar reserve, etc.) use the same prepared steps internally — they sign and broadcast with `CELO_PRIVATE_KEY` instead of returning unsigned flows to the user.
+## Sign-time simulation
+
+Call `simulatePreparedStep` from `@andrewkimjoseph/celina-sdk/simulation` **per step, immediately before** `sendTransactionAsync` — after any prior step is mined. Simulation uses current chain state; simulating step 2 before step 1 confirms falsely fails with insufficient allowance.
+
+Local stdio MCP **`execute_*`** tools use the same helper internally before signing with `CELO_PRIVATE_KEY`.
+
+See [Prepared-step simulation](../guides/prepared-step-simulation.md).
+
+Those MCP tools sign and broadcast with `CELO_PRIVATE_KEY` instead of returning unsigned flows to the user.
 
 ## JSON serialization
 
@@ -84,6 +92,7 @@ Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalld
 
 ## Related
 
+- [Prepared-step simulation](../guides/prepared-step-simulation.md)
 - [wagmi integration](../guides/wagmi-integration.md)
 - [Send tokens](../guides/send-tokens.md)
 - [Mento FX](../guides/mento-fx.md)

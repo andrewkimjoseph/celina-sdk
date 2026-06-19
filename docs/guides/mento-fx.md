@@ -88,8 +88,11 @@ When the user has not approved the Mento router to spend their input token, `pre
 
 Wait for the approval to confirm before sending the swap transaction.
 
+Before signing, call `simulatePreparedStep` for each step — see [Prepared-step simulation](prepared-step-simulation.md).
+
 ## Related
 
+- [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [MentoFxService API](../api-reference/services/mento-fx.service/classes/MentoFxService.md)

@@ -52,6 +52,10 @@ flowchart TB
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
 
+### Sign-time guard
+
+Browser hosts and local MCP simulate each prepared step immediately before broadcast via `@andrewkimjoseph/celina-sdk/simulation`. Wallet-specific logic (MiniPay fee currency, gas buffer UX) stays in the host app — not in the SDK.
+
 ### Wallet address: SDK vs MCP
 
 | Consumer | Pattern |
@@ -67,6 +71,7 @@ See [MCP session wallet](../guides/mcp-session-wallet.md) for wallet param rules
 | Export | Purpose |
 |--------|---------|
 | `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
+| `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run each `PreparedTx` before broadcast |
 | `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata |
 
 These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported from the package entry.
@@ -100,6 +105,7 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
 | `src/types/prepared.ts` | `SerializedPreparedFlow` contract |
+| `src/simulation/` | `simulatePreparedStep` for sign-time revert checks |
 | `src/utils/` | Shared helpers — allowance simulation, token normalization |
 
 ## Adding a service

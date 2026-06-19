@@ -181,6 +181,7 @@ For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagm
 
 ## Related
 
+- [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [Uniswap v4](uniswap.md) — swap G$ to other tokens when reserve does not apply (e.g. G$ → USDT)

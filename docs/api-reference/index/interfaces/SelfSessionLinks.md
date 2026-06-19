@@ -6,7 +6,7 @@
 
 # Interface: SelfSessionLinks
 
-Defined in: [src/utils/self-format.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/utils/self-format.ts#L11)
+Defined in: [src/utils/self-format.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/utils/self-format.ts#L11)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/utils/self-format.ts:11](https://github.com/andrewkimjoseph/cel
 
 > **deep\_link**: `string`
 
-Defined in: [src/utils/self-format.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/utils/self-format.ts#L13)
+Defined in: [src/utils/self-format.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/utils/self-format.ts#L13)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [src/utils/self-format.ts:13](https://github.com/andrewkimjoseph/cel
 
 > **qr\_code\_url**: `string`
 
-Defined in: [src/utils/self-format.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/5ca8be517fae54f45a80efded22f3312ee23795e/src/utils/self-format.ts#L12)
+Defined in: [src/utils/self-format.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/utils/self-format.ts#L12)

@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["src/index.ts", "src/services/*.service.ts", "src/types/prepared.ts"],
+  "entryPoints": ["src/index.ts", "src/services/*.service.ts", "src/types/prepared.ts", "src/simulation/index.ts"],
   "entryPointStrategy": "expand",
   "out": "docs/api-reference",
   "plugin": ["typedoc-plugin-markdown"],

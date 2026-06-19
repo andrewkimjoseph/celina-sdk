@@ -19,3 +19,7 @@ npm i wagmi viem @tanstack/react-query
 ```
 
 Celina SDK prepares unsigned transactions; wagmi/viem handles signing and broadcasting.
+
+## Optional: sign-time simulation
+
+For wallet apps, import `@andrewkimjoseph/celina-sdk/simulation` and call `simulatePreparedStep` immediately before each send. The subpath is browser-safe (viem + types only; no Node analytics). See [Prepared-step simulation](../guides/prepared-step-simulation.md).

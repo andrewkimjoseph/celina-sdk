@@ -38,6 +38,7 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 | **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI |
 | **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
 | **Prepare** | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim |
+| **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` before each wallet send |
 | **Tool catalog** | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface` and `families` |
 
 The SDK never holds or uses CELO wallet keys. Call `prepare*` with the user's address, then pass `steps` to wagmi.
@@ -71,7 +72,7 @@ const tools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
 });
 ```
 
-See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/tool-catalog.md), and [wagmi integration](guides/wagmi-integration.md).
+See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/tool-catalog.md), [Prepared-step simulation](guides/prepared-step-simulation.md), and [wagmi integration](guides/wagmi-integration.md).
 
 ## API overview
 
