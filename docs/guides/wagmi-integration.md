@@ -94,17 +94,28 @@ Some prepare methods return multiple steps (approve + action):
 
 **Sign steps in order.** Wait for each transaction to confirm before sending the next — the swap/supply will fail if the approval is not yet mined.
 
+Simulate each step immediately before signing to avoid gas spent on reverts. See [Prepared-step simulation](prepared-step-simulation.md).
+
 ```ts
+import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "./wagmi-config";
 
 for (const step of flow.steps) {
+  await simulatePreparedStep(publicClient, {
+    account: address,
+    step,
+  });
+
   const hash = await sendTransactionAsync({
     to: step.to,
     data: step.data,
     value: step.value ? BigInt(step.value) : undefined,
   });
-  await waitForTransactionReceipt(config, { hash });
+  const receipt = await waitForTransactionReceipt(config, { hash });
+  if (receipt.status === "reverted") {
+    throw new Error(`Transaction reverted: ${hash}`);
+  }
 }
 ```
 
@@ -126,7 +137,7 @@ console.log(`Approval steps: ${swapEstimate.approvalStepsNeeded}`);
 ## Error handling
 
 - **User rejects signature** — wagmi throws; catch and show a friendly message.
-- **Insufficient balance** — prepare methods may throw during simulation (Aave) or the on-chain tx will revert.
+- **Insufficient balance** — prepare methods may throw during balance checks; `simulatePreparedStep` catches reverts before the wallet opens.
 - **Wrong `from` address** — always pass the connected wallet address as `from`.
 
 ```ts
@@ -170,3 +181,4 @@ for (const step of flow.steps) {
 - [Uniswap v4](uniswap.md)
 - [Aave](aave.md)
 - [Prepared flows](../concepts/prepared-flows.md)
+- [Prepared-step simulation](prepared-step-simulation.md)
