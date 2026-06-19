@@ -3,9 +3,7 @@
  * Used when estimating swap/send gas before on-chain approval is confirmed.
  */
 import {
-  decodeFunctionData,
   encodeAbiParameters,
-  erc20Abi,
   keccak256,
   pad,
   parseAbiParameters,
@@ -14,8 +12,6 @@ import {
   type Hex,
   type StateOverride,
 } from "viem";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
-import type { PreparedTx } from "../types/prepared.js";
 
 /** Common base slots for ERC-20 allowance mappings (Mento stablecoins use 7). */
 const ALLOWANCE_MAPPING_SLOTS = [
@@ -94,44 +90,3 @@ export function isLikelyTransferFailed(error: unknown): boolean {
 
 /** Mapping base slots to probe when simulating ERC-20 allowance (exported for tests). */
 export { ALLOWANCE_MAPPING_SLOTS };
-
-export type Erc20ApproveCall = {
-  token: `0x${string}`;
-  spender: `0x${string}`;
-  amount: bigint;
-};
-
-/** Strip CELINA attribution suffix before ABI decode. */
-export function stripCelinaCalldataSuffix(data: Hex): Hex {
-  if (!data || data === "0x") {
-    return data;
-  }
-  const suffix = CELINA_DATA_SUFFIX.slice(2);
-  if (data.toLowerCase().endsWith(suffix.toLowerCase())) {
-    return `0x${data.slice(2, data.length - suffix.length)}` as Hex;
-  }
-  return data;
-}
-
-/** Parse ERC-20 approve from a prepared step (handles CELINA calldata suffix). */
-export function parseTaggedErc20Approve(step: PreparedTx): Erc20ApproveCall | null {
-  if (!step.data || step.data === "0x") {
-    return null;
-  }
-  try {
-    const decoded = decodeFunctionData({
-      abi: erc20Abi,
-      data: stripCelinaCalldataSuffix(step.data),
-    });
-    if (decoded.functionName !== "approve") {
-      return null;
-    }
-    return {
-      token: step.to,
-      spender: decoded.args[0] as `0x${string}`,
-      amount: decoded.args[1] as bigint,
-    };
-  } catch {
-    return null;
-  }
-}

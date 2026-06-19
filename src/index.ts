@@ -158,20 +158,3 @@ export {
 export { clearSelfSessionsForTests } from "./services/self-session-store.js";
 export { flushCelinaAnalytics } from "./analytics/amplitude.js";
 export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";
-export { isMiniPayBrowser } from "./utils/minipay.js";
-export {
-  MINIPAY_FEE_CURRENCIES,
-  feeCurrencySymbol,
-  resolveMiniPayFeeCurrency,
-  type ResolveMiniPayFeeCurrencyOptions,
-} from "./utils/celo-fee-currency.js";
-export {
-  simulatePreparedStep,
-  simulatePreparedStepWithFeeCurrency,
-  type SimulatePreparedStepParams,
-} from "./utils/simulate-prepared-step.js";
-export {
-  parseTaggedErc20Approve,
-  stripCelinaCalldataSuffix,
-  type Erc20ApproveCall,
-} from "./utils/erc20-allowance-storage.js";
