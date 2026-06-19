@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -26,6 +26,11 @@
       "types": "./build/a2a/index.d.ts",
       "import": "./build/a2a/index.js",
       "default": "./build/a2a/index.js"
+    },
+    "./preflight": {
+      "types": "./build/preflight.d.ts",
+      "import": "./build/preflight.js",
+      "default": "./build/preflight.js"
     },
     "./oasf": {
       "types": "./build/oasf/index.d.ts",

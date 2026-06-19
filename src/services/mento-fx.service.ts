@@ -61,7 +61,7 @@ function trimDisplayDecimals(value: string): string {
 }
 
 /** Human-friendly amount for UI labels (handles raw base-unit integers). */
-function formatDisplayAmount(amount: string, decimals: number): string {
+export function formatDisplayAmount(amount: string, decimals: number): string {
   const trimmed = amount.trim();
   const approx = trimmed.startsWith("~");
   let numeric = approx ? trimmed.slice(1).trim() : trimmed;
@@ -81,18 +81,7 @@ function formatDisplayAmount(amount: string, decimals: number): string {
     }
   }
 
-  if (/^\d+$/.test(numeric)) {
-    try {
-      const human = formatUnits(BigInt(numeric), decimals);
-      const asNumber = Number(human);
-      if (Number.isFinite(asNumber) && asNumber >= 0 && asNumber < 1_000_000_000) {
-        numeric = trimDisplayDecimals(human);
-        return approx ? `~${numeric}` : numeric;
-      }
-    } catch {
-      // keep numeric as-is
-    }
-  } else {
+  if (/^\d+(?:\.\d+)?$/.test(numeric)) {
     numeric = trimDisplayDecimals(numeric);
   }
 
