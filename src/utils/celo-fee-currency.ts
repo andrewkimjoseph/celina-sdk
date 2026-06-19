@@ -1,10 +1,26 @@
 import { erc20Abi, type PublicClient } from "viem";
 
-/** MiniPay fee currencies (USDT, USDm, USDC) — never CELO. */
+/**
+ * MiniPay gas currencies — never CELO.
+ * Balance checks use ERC-20 token addresses; eth_estimateGas / send use feeCurrency
+ * (CIP-64 adapters for 6-decimal USDT/USDC, token address for 18-decimal USDm).
+ */
 export const MINIPAY_FEE_CURRENCIES = [
-  { symbol: "USDT", address: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e" as const },
-  { symbol: "USDm", address: "0x765de816845861e75a25fca122bb6898b8b1282a" as const },
-  { symbol: "USDC", address: "0xceba9300f2b948710d2653dd7b07f33a8b32118c" as const },
+  {
+    symbol: "USDT",
+    token: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e" as const,
+    feeCurrency: "0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72" as const,
+  },
+  {
+    symbol: "USDm",
+    token: "0x765de816845861e75a25fca122bb6898b8b1282a" as const,
+    feeCurrency: "0x765de816845861e75a25fca122bb6898b8b1282a" as const,
+  },
+  {
+    symbol: "USDC",
+    token: "0xceba9300f2b948710d2653dd7b07f33a8b32118c" as const,
+    feeCurrency: "0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B" as const,
+  },
 ] as const;
 
 export type ResolveMiniPayFeeCurrencyOptions = {
@@ -29,8 +45,8 @@ export async function resolveMiniPayFeeCurrency(
   const isMiniPay = options?.isMiniPay ?? false;
 
   const results = await publicClient.multicall({
-    contracts: MINIPAY_FEE_CURRENCIES.map((token) => ({
-      address: token.address,
+    contracts: MINIPAY_FEE_CURRENCIES.map((entry) => ({
+      address: entry.token,
       abi: erc20Abi,
       functionName: "balanceOf" as const,
       args: [from] as const,
@@ -59,7 +75,7 @@ export async function resolveMiniPayFeeCurrency(
   }
 
   if (bestIndex >= 0 && bestBalance > 0n) {
-    return MINIPAY_FEE_CURRENCIES[bestIndex]!.address;
+    return MINIPAY_FEE_CURRENCIES[bestIndex]!.feeCurrency;
   }
 
   if (isMiniPay) {
@@ -71,13 +87,17 @@ export async function resolveMiniPayFeeCurrency(
   return undefined;
 }
 
-/** Symbol for a known MiniPay fee currency address (for error messages). */
+/** Symbol for a known MiniPay fee currency or token address (for error messages). */
 export function feeCurrencySymbol(address: `0x${string}` | undefined): string {
   if (!address) {
     return "CELO";
   }
   const lower = address.toLowerCase();
-  const match = MINIPAY_FEE_CURRENCIES.find((t) => t.address.toLowerCase() === lower);
+  const match = MINIPAY_FEE_CURRENCIES.find(
+    (entry) =>
+      entry.token.toLowerCase() === lower ||
+      entry.feeCurrency.toLowerCase() === lower,
+  );
   if (match) {
     return match.symbol;
   }

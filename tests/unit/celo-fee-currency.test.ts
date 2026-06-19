@@ -14,14 +14,29 @@ describe("resolveMiniPayFeeCurrency", () => {
   const from = "0xA3872860EE9FEaB369c1a5E911CeCc2F4c40f702" as const;
 
   it("returns explicit override", async () => {
-    const usdt = MINIPAY_FEE_CURRENCIES[0]!.address;
+    const usdtAdapter = MINIPAY_FEE_CURRENCIES[0]!.feeCurrency;
     const multicall = vi.fn();
     const client = mockPublicClient(multicall);
     const result = await resolveMiniPayFeeCurrency(client, from, {
-      feeCurrency: usdt,
+      feeCurrency: usdtAdapter,
     });
-    expect(result).toBe(usdt);
+    expect(result).toBe(usdtAdapter);
     expect(multicall).not.toHaveBeenCalled();
+  });
+
+  it("returns USDT adapter when USDT balance wins", async () => {
+    const client = mockPublicClient(
+      vi.fn().mockResolvedValue([
+        { status: "success", result: 1_000_000n },
+        { status: "success", result: 500n },
+        { status: "success", result: 500n },
+      ]),
+    );
+    const result = await resolveMiniPayFeeCurrency(client, from, {
+      isMiniPay: true,
+    });
+    expect(result).toBe(MINIPAY_FEE_CURRENCIES[0]!.feeCurrency);
+    expect(result).not.toBe(MINIPAY_FEE_CURRENCIES[0]!.token);
   });
 
   it("picks highest stable balance with USDT tiebreak", async () => {
@@ -35,7 +50,7 @@ describe("resolveMiniPayFeeCurrency", () => {
     const result = await resolveMiniPayFeeCurrency(client, from, {
       isMiniPay: true,
     });
-    expect(result).toBe(MINIPAY_FEE_CURRENCIES[0]!.address);
+    expect(result).toBe(MINIPAY_FEE_CURRENCIES[0]!.feeCurrency);
   });
 
   it("throws in MiniPay when no stable balance", async () => {
@@ -71,7 +86,8 @@ describe("feeCurrencySymbol", () => {
     expect(feeCurrencySymbol(undefined)).toBe("CELO");
   });
 
-  it("returns USDT for USDT address", () => {
-    expect(feeCurrencySymbol(MINIPAY_FEE_CURRENCIES[0]!.address)).toBe("USDT");
+  it("returns USDT for token and adapter addresses", () => {
+    expect(feeCurrencySymbol(MINIPAY_FEE_CURRENCIES[0]!.token)).toBe("USDT");
+    expect(feeCurrencySymbol(MINIPAY_FEE_CURRENCIES[0]!.feeCurrency)).toBe("USDT");
   });
 });
