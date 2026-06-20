@@ -20,7 +20,7 @@ const readOnly = {
 export const aaveToolDefinitions: ToolDefinition[] = [
   {
     name: "get_aave_balances",
-    description: `Read supplied Aave V3 balances (aToken holdings) on Celo in underlying token units including accrued interest. Supported: ${supported}. Omit address to use the session wallet when CELO_PRIVATE_KEY is set.`,
+    description: `Read supplied Aave V3 balances (aToken holdings) on Celo in underlying token units including accrued interest. Each balance has formatted (human-readable, e.g. "0.000002") and raw (atomic units — do not quote raw to users). Supported: ${supported}. Omit address to use the session wallet when CELO_PRIVATE_KEY is set.`,
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
       tokens: z.array(aaveTokenField).optional(),
@@ -109,7 +109,8 @@ export const aaveToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "prepare_aave_withdraw",
-    description: "Prepare unsigned Aave V3 withdraw. User signs in wallet.",
+    description:
+      "Prepare unsigned Aave V3 withdraw. User signs in wallet. For full/max/all withdrawals set withdraw_max true — do not pass a human amount unless the user names a specific partial amount.",
     inputSchema: z.object({
       token: z.string(),
       amount: z.string().optional(),

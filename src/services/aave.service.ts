@@ -86,7 +86,7 @@ export class AaveService {
 
     if (balance < required) {
       throw new Error(
-        `Insufficient Aave ${asset.symbol} supply balance. Required ${amount} ${asset.symbol}, available ${balance.toString()} raw aToken units.`,
+        `Insufficient Aave ${asset.symbol} supply balance. Required ${amount} ${asset.symbol}, available ${formatUnits(balance, token.decimals)} ${asset.symbol}.`,
       );
     }
   }
