@@ -405,6 +405,90 @@ export const gooddollarOperations: OperationSpec[] = [
     },
   },
   {
+    id: "gooddollar.getReserveQuote.sell.exactOut",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.gooddollar.getReserveQuote("GoodDollar", "USDm", "0.6", {
+          amountSide: "out",
+        }),
+    },
+    mcp: {
+      tool: "get_gooddollar_reserve_quote",
+      arguments: () => ({
+        token_in: "GoodDollar",
+        token_out: "USDm",
+        amount: "0.6",
+        amount_side: "out",
+      }),
+    },
+    assert: (result) => {
+      const quote = result as {
+        protocol?: string;
+        amountIn?: string;
+        expectedOut?: string;
+        amountSide?: string;
+      };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+      if (quote.amountSide !== "out") {
+        throw new Error(`Expected amountSide out, got ${quote.amountSide}`);
+      }
+      const out = parseExpectedOut(quote.expectedOut);
+      const input = parseExpectedOut(quote.amountIn);
+      if (Math.abs(out - 0.6) > 0.01) {
+        throw new Error(`Expected ~0.6 USDm out, got ${quote.expectedOut}`);
+      }
+      if (input <= 1) {
+        throw new Error(`Expected large G$ input for 0.6 USDm, got ${quote.amountIn}`);
+      }
+    },
+  },
+  {
+    id: "gooddollar.getReserveQuote.buy.exactOut",
+    domain: "gooddollar",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.gooddollar.getReserveQuote("USDm", "GoodDollar", "100", {
+          amountSide: "out",
+        }),
+    },
+    mcp: {
+      tool: "get_gooddollar_reserve_quote",
+      arguments: () => ({
+        token_in: "USDm",
+        token_out: "GoodDollar",
+        amount: "100",
+        amount_side: "out",
+      }),
+    },
+    assert: (result) => {
+      const quote = result as {
+        protocol?: string;
+        amountIn?: string;
+        expectedOut?: string;
+        amountSide?: string;
+      };
+      if (quote.protocol !== "gooddollar_reserve") {
+        throw new Error(`Expected gooddollar_reserve, got ${quote.protocol}`);
+      }
+      if (quote.amountSide !== "out") {
+        throw new Error(`Expected amountSide out, got ${quote.amountSide}`);
+      }
+      const out = parseExpectedOut(quote.expectedOut);
+      const input = parseExpectedOut(quote.amountIn);
+      if (Math.abs(out - 100) > 1) {
+        throw new Error(`Expected ~100 G$ out, got ${quote.expectedOut}`);
+      }
+      if (Math.abs(input - 100) > 5) {
+        throw new Error(`Expected ~100 USDm in for 100 G$ out, got ${quote.amountIn}`);
+      }
+    },
+  },
+  {
     id: "swap.getSwapQuoteWithFallback.gdUsd",
     domain: "swap",
     layer: "read",
@@ -454,6 +538,37 @@ export const gooddollarOperations: OperationSpec[] = [
       const last = flow.steps?.at(-1);
       if (last?.to?.toLowerCase() !== GOODDOLLAR_MENTO_BROKER.toLowerCase()) {
         throw new Error("Expected final reserve swap step to target MentoBroker");
+      }
+    },
+  },
+  {
+    id: "gooddollar.prepareReserveSwap.sell.exactOut",
+    domain: "gooddollar",
+    layer: "prepare",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) =>
+        client.gooddollar.prepareReserveSwap(
+          fromAddress(fx),
+          "GoodDollar",
+          "USDm",
+          "0.01",
+          { amountSide: "out" },
+        ),
+    },
+    assert: (result) => {
+      const flow = result as { steps?: Array<{ to?: string }>; summary?: string };
+      assertHasKeys(result, ["from", "steps", "summary"]);
+      const last = flow.steps?.at(-1);
+      if (last?.to?.toLowerCase() !== GOODDOLLAR_MENTO_BROKER.toLowerCase()) {
+        throw new Error("Expected final reserve swap step to target MentoBroker");
+      }
+      const summary = flow.summary ?? "";
+      if (!/0\.01\s+USDm/i.test(summary)) {
+        throw new Error(`Expected 0.01 USDm in prepare summary, got: ${summary}`);
+      }
+      if (/0\.00006995/.test(summary)) {
+        throw new Error(`Prepare used micro G$ input instead of exact-out resolve: ${summary}`);
       }
     },
   },

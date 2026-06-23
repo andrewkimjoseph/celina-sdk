@@ -272,10 +272,21 @@ export const uniswapWalletSchema = uniswapQuoteSchema.extend({
   deadline_minutes: positiveIntSchema.optional(),
 });
 
+export const goodDollarReserveAmountSideSchema = z
+  .enum(["in", "out"])
+  .optional()
+  .default("in")
+  .describe(
+    "'in': amount is token_in spend (default). 'out': amount is desired token_out receive amount.",
+  );
+
 export const goodDollarReserveQuoteSchema = z.object({
   token_in: tokenSymbolSchema.describe("GoodDollar or G$"),
   token_out: tokenSymbolSchema.describe("USDm or cUSD"),
-  amount: z.string().describe("Human-readable amount of token_in"),
+  amount: z
+    .string()
+    .describe("Human-readable amount; paired with amount_side (in = spend, out = receive)"),
+  amount_side: goodDollarReserveAmountSideSchema,
   from: optionalWalletAddressSchema,
 });
 

@@ -66,12 +66,25 @@ function taggedCalldata(data: Hex): Hex {
   return concat([data, CELINA_DATA_SUFFIX]);
 }
 
+export type GoodDollarReserveAmountSide = "in" | "out";
+
 /** Optional parameters for GoodDollar reserve swap prepares. */
 export interface GoodDollarReserveSwapParams {
   /** Max slippage tolerance in percent (default `0.5`). */
   slippageTolerance?: number;
   /** Address receiving output tokens (default: `from`). */
   recipient?: `0x${string}`;
+  /**
+   * `in` (default): `amount` is token_in spend. `out`: `amount` is desired token_out;
+   * SDK resolves required token_in via MentoBroker `getAmountIn`.
+   */
+  amountSide?: GoodDollarReserveAmountSide;
+}
+
+export interface GoodDollarReserveQuoteOptions {
+  /** @deprecated Ignored; balance checks run on prepare/estimate only. */
+  from?: `0x${string}`;
+  amountSide?: GoodDollarReserveAmountSide;
 }
 
 const DEFAULT_RESERVE_SLIPPAGE = 0.5;
@@ -548,16 +561,18 @@ export class GoodDollarService {
   private baseReserveQuoteFields(
     resolvedIn: ResolvedToken,
     resolvedOut: ResolvedToken,
-    amount: string,
+    amountIn: string,
     expectedOutWei: bigint,
+    amountSide: GoodDollarReserveAmountSide,
   ) {
     return {
       protocol: "gooddollar_reserve" as const,
       network: "mainnet" as const,
       tokenIn: resolvedIn.symbol,
       tokenOut: resolvedOut.symbol,
-      amountIn: amount,
+      amountIn,
       expectedOut: formatUnits(expectedOutWei, resolvedOut.decimals),
+      amountSide,
       routeHops: 1,
       broker: GOODDOLLAR_MENTO_BROKER,
       exchangeProvider: GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
@@ -565,39 +580,90 @@ export class GoodDollarService {
     };
   }
 
-  /**
-   * Expected GoodDollar reserve output for G$ ↔ USDm — no wallet required.
-   * @param _from - Deprecated; ignored. Balance checks run on prepare/estimate only.
-   */
-  async getReserveQuote(
-    tokenIn: string,
-    tokenOut: string,
+  private async resolveReserveAmount(
+    client: ReturnType<CeloClientFactory["getClients"]>["public"],
+    resolvedIn: ResolvedToken,
+    resolvedOut: ResolvedToken,
+    tokenInAddr: `0x${string}`,
+    tokenOutAddr: `0x${string}`,
     amount: string,
-    _from?: `0x${string}`,
+    amountSide: GoodDollarReserveAmountSide = "in",
   ) {
-    const { public: client } = this.clientFactory.getClients();
-    const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
-      this.resolveReservePair(tokenIn, tokenOut);
-    const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+    if (amountSide === "in") {
+      const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+      const expectedOutWei = await client.readContract({
+        address: GOODDOLLAR_MENTO_BROKER,
+        abi: goodDollarBrokerAbi,
+        functionName: "getAmountOut",
+        args: [
+          GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
+          GOODDOLLAR_CUSD_EXCHANGE_ID,
+          tokenInAddr,
+          tokenOutAddr,
+          amountInWei,
+        ],
+      });
 
-    const expectedOutWei = await client.readContract({
+      return {
+        amountIn: amount,
+        amountInWei,
+        expectedOutWei,
+        amountSide: "in" as const,
+      };
+    }
+
+    const expectedOutWei = this.tokenService.parseAmount(amount, resolvedOut.decimals);
+    const amountInWei = await client.readContract({
       address: GOODDOLLAR_MENTO_BROKER,
       abi: goodDollarBrokerAbi,
-      functionName: "getAmountOut",
+      functionName: "getAmountIn",
       args: [
         GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
         GOODDOLLAR_CUSD_EXCHANGE_ID,
         tokenInAddr,
         tokenOutAddr,
-        amountInWei,
+        expectedOutWei,
       ],
     });
+
+    return {
+      amountIn: trimDisplayDecimals(formatUnits(amountInWei, resolvedIn.decimals)),
+      amountInWei,
+      expectedOutWei,
+      amountSide: "out" as const,
+    };
+  }
+
+  /**
+   * Expected GoodDollar reserve output for G$ ↔ USDm — no wallet required.
+   * Balance checks run on prepare/estimate only.
+   */
+  async getReserveQuote(
+    tokenIn: string,
+    tokenOut: string,
+    amount: string,
+    options?: GoodDollarReserveQuoteOptions,
+  ) {
+    const { public: client } = this.clientFactory.getClients();
+    const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
+      this.resolveReservePair(tokenIn, tokenOut);
+    const amountSide = options?.amountSide ?? "in";
+    const resolved = await this.resolveReserveAmount(
+      client,
+      resolvedIn,
+      resolvedOut,
+      tokenInAddr,
+      tokenOutAddr,
+      amount,
+      amountSide,
+    );
 
     return this.baseReserveQuoteFields(
       resolvedIn,
       resolvedOut,
-      amount,
-      expectedOutWei,
+      resolved.amountIn,
+      resolved.expectedOutWei,
+      resolved.amountSide,
     );
   }
 
@@ -612,24 +678,21 @@ export class GoodDollarService {
     const { resolvedIn, resolvedOut, tokenInAddr, tokenOutAddr } =
       this.resolveReservePair(tokenIn, tokenOut);
     const recipient = params?.recipient ?? from;
-    const amountInWei = this.tokenService.parseAmount(amount, resolvedIn.decimals);
+    const amountSide = params?.amountSide ?? "in";
     const { slippageTolerance } = this.reserveOptions(params);
+    const resolved = await this.resolveReserveAmount(
+      client,
+      resolvedIn,
+      resolvedOut,
+      tokenInAddr,
+      tokenOutAddr,
+      amount,
+      amountSide,
+    );
+    const { amountIn, amountInWei, expectedOutWei } = resolved;
 
-    await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
+    await this.tokenService.assertSpendableBalance(from, resolvedIn, amountIn, {
       spendToken: tokenInAddr,
-    });
-
-    const expectedOutWei = await client.readContract({
-      address: GOODDOLLAR_MENTO_BROKER,
-      abi: goodDollarBrokerAbi,
-      functionName: "getAmountOut",
-      args: [
-        GOODDOLLAR_MENTO_EXCHANGE_PROVIDER,
-        GOODDOLLAR_CUSD_EXCHANGE_ID,
-        tokenInAddr,
-        tokenOutAddr,
-        amountInWei,
-      ],
     });
 
     const amountOutMin = applySlippage(expectedOutWei, slippageTolerance);
@@ -657,12 +720,13 @@ export class GoodDollarService {
       resolvedOut,
       tokenInAddr,
       tokenOutAddr,
-      amount,
+      amountIn,
       amountInWei,
       expectedOutWei,
       amountOutMin,
       swapData,
       slippageTolerance,
+      amountSide: resolved.amountSide,
     };
   }
 
@@ -778,8 +842,9 @@ export class GoodDollarService {
       ...this.baseReserveQuoteFields(
         resolvedIn,
         resolvedOut,
-        amount,
+        built.amountIn,
         expectedOutWei,
+        built.amountSide,
       ),
       from,
       recipient,
@@ -814,7 +879,7 @@ export class GoodDollarService {
       recipient,
     } = built;
 
-    const displayIn = trimDisplayDecimals(built.amount);
+    const displayIn = trimDisplayDecimals(built.amountIn);
     const displayOut = trimDisplayDecimals(
       formatUnits(expectedOutWei, resolvedOut.decimals),
     );

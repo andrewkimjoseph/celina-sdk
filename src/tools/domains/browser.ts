@@ -4,7 +4,10 @@ import {
   prepareSwapWithFallback,
   type SwapProtocol,
 } from "../swap-routing.js";
-import { uniswapWalletSchema } from "../schemas/common.js";
+import {
+  goodDollarReserveAmountSideSchema,
+  uniswapWalletSchema,
+} from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
 import { resolveWalletFromRuntime } from "../utils/wallet.js";
@@ -38,6 +41,7 @@ export const browserToolDefinitions: ToolDefinition[] = [
       "Prepare unsigned swap using the best route (Mento FX, GoodDollar reserve, or Uniswap v4).",
     inputSchema: uniswapWalletSchema.extend({
       protocol: z.enum(["mento_fx", "uniswap_v4", "gooddollar_reserve"]).optional(),
+      amount_side: goodDollarReserveAmountSideSchema,
     }),
     families: ["prepare"],
     surfaces: ["browser"],
@@ -45,6 +49,7 @@ export const browserToolDefinitions: ToolDefinition[] = [
       const sender = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,
       });
+      const amountSide = input.amount_side === "out" ? "out" : "in";
       return prepareSwapWithFallback(
         runtime.celina,
         sender,
@@ -55,6 +60,7 @@ export const browserToolDefinitions: ToolDefinition[] = [
           recipient: input.recipient as `0x${string}` | undefined,
           slippageTolerance: input.slippage_tolerance as number | undefined,
           deadlineMinutes: input.deadline_minutes as number | undefined,
+          amountSide,
         },
         input.protocol as SwapProtocol | undefined,
       );

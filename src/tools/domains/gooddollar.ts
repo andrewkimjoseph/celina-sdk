@@ -14,9 +14,17 @@ const readOnly = {
 } as const;
 
 function mapReserveWalletOptions(input: Record<string, unknown>) {
+  const amountSide = input.amount_side === "out" ? "out" : "in";
   return {
     recipient: input.recipient as `0x${string}` | undefined,
     slippageTolerance: input.slippage_tolerance as number | undefined,
+    amountSide: amountSide as "in" | "out",
+  };
+}
+
+function mapReserveQuoteOptions(input: Record<string, unknown>) {
+  return {
+    amountSide: input.amount_side === "out" ? ("out" as const) : ("in" as const),
   };
 }
 
@@ -111,7 +119,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_reserve_quote",
     description:
-      `GoodDollar reserve quote for G$ ↔ USDm on Celo (MentoBroker bonding curve).${NON_IDENTITY_RESERVE_NOTE}`,
+      `GoodDollar reserve quote for G$ ↔ USDm on Celo (MentoBroker bonding curve). Use amount_side "out" when the user names the amount they want to receive (e.g. "get 0.6 USDm").${NON_IDENTITY_RESERVE_NOTE}`,
     inputSchema: goodDollarReserveQuoteSchema,
     families: ["read"],
     mcp: { title: "Get GoodDollar Reserve Quote", annotations: readOnly },
@@ -120,6 +128,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
         normalizeRegistryTokenInput(input.token_in as string),
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
+        mapReserveQuoteOptions(input),
       ),
   },
   {
@@ -191,7 +200,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_gooddollar_reserve_swap",
     description:
-      `Prepare unsigned GoodDollar reserve swap for G$ ↔ USDm. User must sign in wallet.${NON_IDENTITY_RESERVE_NOTE}`,
+      `Prepare unsigned GoodDollar reserve swap for G$ ↔ USDm. User must sign in wallet. Use amount_side "out" when the user names the receive amount (same params as quote).${NON_IDENTITY_RESERVE_NOTE}`,
     inputSchema: goodDollarReserveWalletSchema,
     families: ["prepare"],
     surfaces: ["browser"],
@@ -204,10 +213,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
         normalizeRegistryTokenInput(input.token_in as string),
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
-        {
-          recipient: input.recipient as `0x${string}` | undefined,
-          slippageTolerance: input.slippage_tolerance as number | undefined,
-        },
+        mapReserveWalletOptions(input),
       );
     },
   },

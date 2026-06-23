@@ -22,6 +22,7 @@ export interface SwapPrepareParams {
   recipient?: `0x${string}`;
   slippageTolerance?: number;
   deadlineMinutes?: number;
+  amountSide?: "in" | "out";
 }
 
 function parseExpectedOut(value: string): number {
@@ -124,7 +125,7 @@ async function tryGoodDollarReserveQuote(
     tokenIn,
     tokenOut,
     amount,
-    from,
+    { from },
   );
   return {
     protocol: "gooddollar_reserve" as const,
@@ -265,6 +266,7 @@ export async function prepareSwapWithFallback(
     return celina.gooddollar.prepareReserveSwap(from, tokenIn, tokenOut, amount, {
       recipient: params?.recipient,
       slippageTolerance: params?.slippageTolerance,
+      amountSide: params?.amountSide,
     });
   }
 

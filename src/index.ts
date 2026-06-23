@@ -133,7 +133,7 @@ export {
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
   isGoodDollarUsdReservePair,
 } from "./config/gooddollar.js";
-export type { GoodDollarReserveSwapParams } from "./services/gooddollar.service.js";
+export type { GoodDollarReserveSwapParams, GoodDollarReserveQuoteOptions, GoodDollarReserveAmountSide } from "./services/gooddollar.service.js";
 export {
   SelfService,
   type VerifySelfAgentParams,

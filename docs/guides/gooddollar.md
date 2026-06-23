@@ -125,13 +125,20 @@ For **GoodDollar ↔ USDm**, use the on-chain **MentoBroker reserve** (bonding c
 const quote = await celina.gooddollar.getReserveQuote("GoodDollar", "USDm", "1000");
 // quote.protocol === "gooddollar_reserve"
 
+// Fixed output: how much G$ to receive 0.6 USDm?
+const exactOut = await celina.gooddollar.getReserveQuote("GoodDollar", "USDm", "0.6", {
+  amountSide: "out",
+});
+// exactOut.amountIn — G$ spend; exactOut.expectedOut === "0.6"
+
 const flow = await celina.gooddollar.prepareReserveSwap(
   from,
-  "USDm",
   "GoodDollar",
-  "10",
+  "USDm",
+  "0.6",
+  { amountSide: "out" },
 );
-// 1–2 steps: optional ERC-20 approve + broker swapIn
+// Same params as quote — 1–2 steps: optional ERC-20 approve + broker swapIn
 ```
 
 Or use aggregated routing:
