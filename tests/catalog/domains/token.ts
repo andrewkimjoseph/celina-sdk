@@ -1,4 +1,3 @@
-import { expect } from "vitest";
 import type { OperationSpec } from "../types.js";
 import { assertHasKeys } from "../../helpers/assert.js";
 

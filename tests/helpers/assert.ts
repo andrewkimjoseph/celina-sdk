@@ -1,20 +1,20 @@
-import { expect } from "vitest";
+import assert from "node:assert/strict";
 
 export function assertDefined(result: unknown): asserts result is NonNullable<unknown> {
-  expect(result).toBeDefined();
-  expect(result).not.toBeNull();
+  assert.notEqual(result, undefined);
+  assert.notEqual(result, null);
 }
 
 export function assertObject(result: unknown): Record<string, unknown> {
   assertDefined(result);
-  expect(typeof result).toBe("object");
-  expect(Array.isArray(result)).toBe(false);
+  assert.equal(typeof result, "object");
+  assert.equal(Array.isArray(result), false);
   return result as Record<string, unknown>;
 }
 
 export function assertArray(result: unknown): unknown[] {
   assertDefined(result);
-  expect(Array.isArray(result)).toBe(true);
+  assert.equal(Array.isArray(result), true);
   return result as unknown[];
 }
 
@@ -24,7 +24,7 @@ export function assertHasKeys(
 ): Record<string, unknown> {
   const obj = assertObject(result);
   for (const key of keys) {
-    expect(obj).toHaveProperty(key);
+    assert.ok(key in obj, `Expected object to have property ${key}`);
   }
   return obj;
 }

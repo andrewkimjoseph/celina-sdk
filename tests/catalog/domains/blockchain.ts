@@ -1,10 +1,10 @@
-import { expect } from "vitest";
+import assert from "node:assert/strict";
 import type { OperationSpec } from "../types.js";
 import { assertArray, assertHasKeys } from "../../helpers/assert.js";
 
 function expectNumberLike(value: unknown): void {
-  expect(value).toBeDefined();
-  expect(Number(value)).not.toBeNaN();
+  assert.notEqual(value, undefined);
+  assert.equal(Number.isNaN(Number(value)), false);
 }
 
 export const blockchainOperations: OperationSpec[] = [
@@ -61,9 +61,9 @@ export const blockchainOperations: OperationSpec[] = [
     },
     assert: (result) => {
       const obj = assertHasKeys(result, ["number", "hash", "transactions"]);
-      expect(() => JSON.stringify(result)).not.toThrow();
+      assert.doesNotThrow(() => JSON.stringify(result));
       const txs = assertArray(obj.transactions);
-      expect(txs.length).toBeGreaterThan(0);
+      assert.ok(txs.length > 0);
     },
   },
   {
@@ -79,7 +79,7 @@ export const blockchainOperations: OperationSpec[] = [
     },
     assert: (result) => {
       const blocks = assertArray(result);
-      expect(blocks.length).toBeGreaterThan(0);
+      assert.ok(blocks.length > 0);
     },
   },
   {
@@ -123,11 +123,12 @@ export const blockchainOperations: OperationSpec[] = [
     },
     assert: (result, fx) => {
       const obj = assertHasKeys(result, ["wallet_address", "has_wallet", "source"]);
-      expect(obj.has_wallet).toBe(true);
-      expect(String(obj.wallet_address).toLowerCase()).toBe(
+      assert.equal(obj.has_wallet, true);
+      assert.equal(
+        String(obj.wallet_address).toLowerCase(),
         fx.wallet.toLowerCase(),
       );
-      expect(obj.source).toBe("CELO_PRIVATE_KEY");
+      assert.equal(obj.source, "CELO_PRIVATE_KEY");
     },
   },
 ];
