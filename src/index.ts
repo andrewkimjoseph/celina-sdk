@@ -8,6 +8,10 @@ import { CeloClientFactory } from "./clients/celo-client.js";
 import { EnsClientFactory } from "./clients/ens-client.js";
 import { resolveSdkConfig, type SdkConfig } from "./config/sdk-config.js";
 import { AccountService } from "./services/account.service.js";
+import {
+  AgentKarmaService,
+  type AgentKarmaServiceConfig,
+} from "./services/agentkarma.service.js";
 import { AaveService } from "./services/aave.service.js";
 import { BlockchainService } from "./services/blockchain.service.js";
 import { ContractService } from "./services/contract.service.js";
@@ -24,7 +28,13 @@ import { SelfService } from "./services/self.service.js";
 import { wrapServiceForAnalytics } from "./analytics/wrap-service.js";
 
 /** Optional RPC overrides when creating a Celina client. */
-export type CelinaClientOptions = Partial<SdkConfig>;
+export type CelinaClientOptions = Partial<SdkConfig> & {
+  /**
+   * Optional AgentKarma reputation adapter config (baseUrl, timeout, fetch, …).
+   * Omit to read from https://agentkarma.io with SDK defaults.
+   */
+  agentKarma?: AgentKarmaServiceConfig;
+};
 
 /** Domain services for Celo mainnet reads and unsigned transaction preparation. */
 export interface CelinaClient {
@@ -56,6 +66,12 @@ export interface CelinaClient {
   contract: ContractService;
   /** Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry). */
   self: SelfService;
+  /**
+   * Optional AgentKarma reputation insight (read-only, agentkarma.io).
+   * Ecosystem adapter: Provider/Consumer karma, ERC-8004 Celo agents, and
+   * local trust-policy checks. Never routes, signs, or holds custody.
+   */
+  agentKarma: AgentKarmaService;
 }
 
 /**
@@ -85,6 +101,9 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     nft: wrap("nft", new NftService(clientFactory)),
     contract: wrap("contract", new ContractService(clientFactory)),
     self: wrap("self", new SelfService(clientFactory, config)),
+    // Optional ecosystem adapter. Not analytics-wrapped: AgentKarma is an
+    // external reputation service, not a Celo on-chain read Celina tracks.
+    agentKarma: new AgentKarmaService(opts?.agentKarma),
   };
 }
 
@@ -158,3 +177,25 @@ export {
 export { clearSelfSessionsForTests } from "./services/self-session-store.js";
 export { flushCelinaAnalytics } from "./analytics/amplitude.js";
 export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";
+/** Optional read-only AgentKarma reputation adapter (agentkarma.io). */
+export { AgentKarmaService } from "./services/agentkarma.service.js";
+export type {
+  /** Config for the AgentKarma adapter (baseUrl, timeout, fetch, headers). */
+  AgentKarmaServiceConfig,
+  /** Which karma face(s) to read: provider, consumer, or both. */
+  AgentKarmaFace,
+  /** Options for an AgentKarma karma read. */
+  GetKarmaOptions,
+  /** Local counterparty trust evaluation result. */
+  CounterpartyDecision,
+  /** AgentKarma Provider/Consumer karma snapshot. */
+  KarmaSnapshot,
+  /** Per-face karma data (score, trust tier, confidence badge, tiers). */
+  KarmaFaceData,
+  /** ERC-8004 Celo agent identity + reputation snapshot. */
+  CeloAgentSnapshot,
+  /** Local trust policy config (minScore, requireReceiptBacked, …). */
+  TrustPolicy,
+  /** Explainable allow/deny trust decision. */
+  TrustDecision,
+} from "./services/agentkarma.service.js";

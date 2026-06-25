@@ -80,6 +80,11 @@ export const CATEGORY_TO_A2A_SKILL: Record<WebsiteToolCategory, CelinaA2ASkillMe
     name: "Contract reads",
     tags: ["celo", "contract", "abi"],
   },
+  AgentKarma: {
+    id: "agentkarma-reputation",
+    name: "AgentKarma reputation reads",
+    tags: ["celo", "agentkarma", "reputation", "trust", "erc-8004"],
+  },
 };
 
 export interface CelinaA2ASkill {
