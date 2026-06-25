@@ -24,6 +24,7 @@
 * [Aave](guides/aave.md)
 * [GoodDollar UBI](guides/gooddollar.md)
 * [Self Agent ID](guides/self-agent-id.md)
+* [AgentKarma reputation](guides/agentkarma.md)
 * [Telemetry](guides/telemetry.md)
 * [MCP session wallet](guides/mcp-session-wallet.md)
 
@@ -39,6 +40,7 @@
 
 * [AccountService](api-reference/services/account.service/classes/AccountService.md)
 * [AaveService](api-reference/services/aave.service/classes/AaveService.md)
+* [AgentKarmaService](api-reference/services/agentkarma.service/classes/AgentKarmaService.md)
 * [BlockchainService](api-reference/services/blockchain.service/classes/BlockchainService.md)
 * [ContractService](api-reference/services/contract.service/classes/ContractService.md)
 * [EnsService](api-reference/services/ens.service/classes/EnsService.md)
@@ -50,13 +52,6 @@
 * [StakingService](api-reference/services/staking.service/classes/StakingService.md)
 * [TokenService](api-reference/services/token.service/classes/TokenService.md)
 * [TransactionService](api-reference/services/transaction.service/classes/TransactionService.md)
-
-### Simulation
-
-* [Overview](api-reference/simulation/README.md)
-* [simulatePreparedStep](api-reference/simulation/functions/simulatePreparedStep.md)
-* [SimulatePreparedStepOptions](api-reference/simulation/type-aliases/SimulatePreparedStepOptions.md)
-* [SimulatePreparedStepParams](api-reference/simulation/type-aliases/SimulatePreparedStepParams.md)
 
 ### Types
 
@@ -70,6 +65,9 @@
 * [ResolvedToken](api-reference/services/token.service/interfaces/ResolvedToken.md)
 * [GovernanceProposalsOptions](api-reference/services/governance.service/interfaces/GovernanceProposalsOptions.md)
 * [ContractCallParams](api-reference/services/contract.service/interfaces/ContractCallParams.md)
+* [CounterpartyDecision](api-reference/services/agentkarma.service/interfaces/CounterpartyDecision.md)
+* [GetKarmaOptions](api-reference/services/agentkarma.service/interfaces/GetKarmaOptions.md)
+* [TrustPolicy](api-reference/index/interfaces/TrustPolicy.md)
 * [appendCelinaCalldataTag](api-reference/index/functions/appendCelinaCalldataTag.md)
 * [CELINA_DATA_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
 ## Publishing

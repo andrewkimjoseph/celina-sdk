@@ -26,7 +26,7 @@ flowchart TB
 |-------|----------------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared Zod schemas and handlers for MCP and browser surfaces |
 | **MCP** | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **30 tools** (reads + prepare; no server-key writes) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **34 tools** (reads + prepare; no server-key writes) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys |
 
 Third-party apps can consume the programmatic client only, or wire the full tool catalog into Vercel AI SDK / custom orchestrators — see [LLM tool catalog](guides/tool-catalog.md).
@@ -35,11 +35,12 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 | Category | Examples |
 |----------|----------|
-| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI |
+| **Reads** | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
 | **Estimates** | Gas for sends, FX swaps, Uniswap swaps, generic contract calls |
 | **Prepare** | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim |
 | **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` before each wallet send |
 | **Tool catalog** | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface` and `families` |
+| **Reputation** | AgentKarma karma, ERC-8004 agent lookup, counterparty trust policy (read-only, external API) |
 
 The SDK never holds or uses CELO wallet keys. Call `prepare*` with the user's address, then pass `steps` to wagmi.
 
@@ -92,6 +93,7 @@ See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/too
 | `nft` | NFT info, balance | — |
 | `contract` | `callFunction`, `estimateGas` | — |
 | `self` | verify, lookup, session lifecycle | agent signing (Node + `selfAgentPrivateKey`) |
+| `agentKarma` | karma, ERC-8004 agent, counterparty trust policy | — |
 
 Full method signatures: [API reference](api-reference/README.md).
 

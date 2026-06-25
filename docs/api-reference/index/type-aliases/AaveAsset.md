@@ -8,7 +8,7 @@
 
 > **AaveAsset** = `object`
 
-Defined in: [src/config/aave.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/config/aave.ts#L13)
+Defined in: [src/config/aave.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/config/aave.ts#L13)
 
 Underlying and aToken addresses for one Aave V3 market on Celo.
 
@@ -18,7 +18,7 @@ Underlying and aToken addresses for one Aave V3 market on Celo.
 
 > **aToken**: `` `0x${string}` ``
 
-Defined in: [src/config/aave.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/config/aave.ts#L16)
+Defined in: [src/config/aave.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/config/aave.ts#L16)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/config/aave.ts:16](https://github.com/andrewkimjoseph/celina-sd
 
 > **symbol**: `string`
 
-Defined in: [src/config/aave.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/config/aave.ts#L14)
+Defined in: [src/config/aave.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/config/aave.ts#L14)
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: [src/config/aave.ts:14](https://github.com/andrewkimjoseph/celina-sd
 
 > **underlying**: `` `0x${string}` ``
 
-Defined in: [src/config/aave.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/config/aave.ts#L15)
+Defined in: [src/config/aave.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/config/aave.ts#L15)

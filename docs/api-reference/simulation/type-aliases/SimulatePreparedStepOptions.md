@@ -8,7 +8,7 @@
 
 > **SimulatePreparedStepOptions** = `object`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/simulation/simulate-prepared-step.ts#L10)
+Defined in: [src/simulation/simulate-prepared-step.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/simulation/simulate-prepared-step.ts#L10)
 
 Optional host overrides for Celo fee abstraction or custom state.
 
@@ -18,7 +18,7 @@ Optional host overrides for Celo fee abstraction or custom state.
 
 > `optional` **feeCurrency?**: `` `0x${string}` ``
 
-Defined in: [src/simulation/simulate-prepared-step.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/simulation/simulate-prepared-step.ts#L12)
+Defined in: [src/simulation/simulate-prepared-step.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/simulation/simulate-prepared-step.ts#L12)
 
 Celo fee-abstraction currency — host-provided, never auto-resolved by the SDK.
 
@@ -28,4 +28,4 @@ Celo fee-abstraction currency — host-provided, never auto-resolved by the SDK.
 
 > `optional` **stateOverride?**: `StateOverride`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/simulation/simulate-prepared-step.ts#L13)
+Defined in: [src/simulation/simulate-prepared-step.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/simulation/simulate-prepared-step.ts#L13)

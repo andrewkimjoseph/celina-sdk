@@ -24,6 +24,7 @@ const API_LINKS = [
 const SERVICE_LINKS = [
   { title: "AccountService", path: "services/account.service/classes/AccountService.md" },
   { title: "AaveService", path: "services/aave.service/classes/AaveService.md" },
+  { title: "AgentKarmaService", path: "services/agentkarma.service/classes/AgentKarmaService.md" },
   { title: "BlockchainService", path: "services/blockchain.service/classes/BlockchainService.md" },
   { title: "ContractService", path: "services/contract.service/classes/ContractService.md" },
   { title: "EnsService", path: "services/ens.service/classes/EnsService.md" },
@@ -48,6 +49,9 @@ const TYPE_LINKS = [
   { title: "ResolvedToken", path: "services/token.service/interfaces/ResolvedToken.md" },
   { title: "GovernanceProposalsOptions", path: "services/governance.service/interfaces/GovernanceProposalsOptions.md" },
   { title: "ContractCallParams", path: "services/contract.service/interfaces/ContractCallParams.md" },
+  { title: "CounterpartyDecision", path: "services/agentkarma.service/interfaces/CounterpartyDecision.md" },
+  { title: "GetKarmaOptions", path: "services/agentkarma.service/interfaces/GetKarmaOptions.md" },
+  { title: "TrustPolicy", path: "index/interfaces/TrustPolicy.md" },
   { title: "appendCelinaCalldataTag", path: "index/functions/appendCelinaCalldataTag.md" },
   { title: "CELINA_DATA_SUFFIX", path: "index/variables/CELINA_DATA_SUFFIX.md" },
 ];

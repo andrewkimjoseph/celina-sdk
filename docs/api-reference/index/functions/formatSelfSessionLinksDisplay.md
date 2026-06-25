@@ -8,7 +8,7 @@
 
 > **formatSelfSessionLinksDisplay**(`links`): `string`
 
-Defined in: [src/utils/self-format.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/utils/self-format.ts#L33)
+Defined in: [src/utils/self-format.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/utils/self-format.ts#L33)
 
 ## Parameters
 

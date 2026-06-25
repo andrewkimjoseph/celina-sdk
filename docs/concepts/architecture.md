@@ -8,6 +8,7 @@
 - Builds **unsigned transaction payloads** for a caller-supplied `from` address
 - **Does not hold CELO wallet keys** — pass prepared `steps` to wagmi/viem for signing
 - **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
+- **AgentKarma** (`client.agentKarma`) is a read-only external reputation adapter — calls agentkarma.io, not on-chain Celina reads; no keys, no Celina analytics
 - **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `CELINA_ANALYTICS_DISABLED=1` or `analyticsEnabled: false`
 
 Consumers pass prepared `steps` to wagmi/viem for wallet signing.
@@ -47,7 +48,7 @@ flowchart TB
 |-------|------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **31 tools** (reads + prepare; no server-key writes) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **34 tools** (reads + prepare; no server-key writes) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
@@ -94,6 +95,7 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 | `nft` | NftService | ERC-721 / ERC-1155 reads |
 | `contract` | ContractService | Generic contract calls |
 | `self` | SelfService | Self Agent ID verify, register, proof refresh (ai.self.xyz + on-chain registry) |
+| `agentKarma` | AgentKarmaService | AgentKarma reputation reads and local trust policy (read-only, external API) |
 
 ## Source layout
 

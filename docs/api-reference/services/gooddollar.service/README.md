@@ -12,4 +12,9 @@
 
 ## Interfaces
 
+- [GoodDollarReserveQuoteOptions](interfaces/GoodDollarReserveQuoteOptions.md)
 - [GoodDollarReserveSwapParams](interfaces/GoodDollarReserveSwapParams.md)
+
+## Type Aliases
+
+- [GoodDollarReserveAmountSide](type-aliases/GoodDollarReserveAmountSide.md)

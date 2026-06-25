@@ -14,8 +14,13 @@
 ## Interfaces
 
 - [CelinaClient](interfaces/CelinaClient.md)
+- [CeloAgentSnapshot](interfaces/CeloAgentSnapshot.md)
+- [KarmaFaceData](interfaces/KarmaFaceData.md)
+- [KarmaSnapshot](interfaces/KarmaSnapshot.md)
 - [SdkConfig](interfaces/SdkConfig.md)
 - [SelfSessionLinks](interfaces/SelfSessionLinks.md)
+- [TrustDecision](interfaces/TrustDecision.md)
+- [TrustPolicy](interfaces/TrustPolicy.md)
 
 ## Type Aliases
 
@@ -55,9 +60,51 @@
 
 ## References
 
+### AgentKarmaFace
+
+Re-exports [AgentKarmaFace](../services/agentkarma.service/type-aliases/AgentKarmaFace.md)
+
+***
+
+### AgentKarmaService
+
+Re-exports [AgentKarmaService](../services/agentkarma.service/classes/AgentKarmaService.md)
+
+***
+
+### AgentKarmaServiceConfig
+
+Re-exports [AgentKarmaServiceConfig](../services/agentkarma.service/type-aliases/AgentKarmaServiceConfig.md)
+
+***
+
 ### ContractCallParams
 
 Re-exports [ContractCallParams](../services/contract.service/interfaces/ContractCallParams.md)
+
+***
+
+### CounterpartyDecision
+
+Re-exports [CounterpartyDecision](../services/agentkarma.service/interfaces/CounterpartyDecision.md)
+
+***
+
+### GetKarmaOptions
+
+Re-exports [GetKarmaOptions](../services/agentkarma.service/interfaces/GetKarmaOptions.md)
+
+***
+
+### GoodDollarReserveAmountSide
+
+Re-exports [GoodDollarReserveAmountSide](../services/gooddollar.service/type-aliases/GoodDollarReserveAmountSide.md)
+
+***
+
+### GoodDollarReserveQuoteOptions
+
+Re-exports [GoodDollarReserveQuoteOptions](../services/gooddollar.service/interfaces/GoodDollarReserveQuoteOptions.md)
 
 ***
 

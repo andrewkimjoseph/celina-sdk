@@ -16,7 +16,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, and `prepare*` flows |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (30 tools); no server-key writes |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (34 tools); no server-key writes |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -48,6 +48,7 @@ Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkim
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
+- [AgentKarma reputation](docs/guides/agentkarma.md) — karma reads and counterparty trust policy
 - [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (`device_id` per project, `user_id` per wallet; `CELINA_ANALYTICS_DISABLED=1`)
 - [API reference](https://andrewkimjoseph.gitbook.io/celina-sdk/api-reference)
 

@@ -9,6 +9,7 @@
 - [index](index/README.md)
 - [services/aave.service](services/aave.service/README.md)
 - [services/account.service](services/account.service/README.md)
+- [services/agentkarma.service](services/agentkarma.service/README.md)
 - [services/blockchain.service](services/blockchain.service/README.md)
 - [services/contract.service](services/contract.service/README.md)
 - [services/ens.service](services/ens.service/README.md)

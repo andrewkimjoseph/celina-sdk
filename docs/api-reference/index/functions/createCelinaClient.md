@@ -8,7 +8,7 @@
 
 > **createCelinaClient**(`opts?`): [`CelinaClient`](../interfaces/CelinaClient.md)
 
-Defined in: [src/index.ts:65](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/index.ts#L65)
+Defined in: [src/index.ts:81](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/index.ts#L81)
 
 Create a Celina client for Celo mainnet reads and unsigned tx preparation.
 No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
@@ -17,7 +17,7 @@ No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
 
 ### opts?
 
-`Partial`\<[`SdkConfig`](../interfaces/SdkConfig.md)\>
+[`CelinaClientOptions`](../type-aliases/CelinaClientOptions.md)
 
 ## Returns
 

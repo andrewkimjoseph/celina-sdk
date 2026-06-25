@@ -8,7 +8,7 @@
 
 > **serializePreparedFlow**(`flow`): [`SerializedPreparedFlow`](../interfaces/SerializedPreparedFlow.md)
 
-Defined in: [src/types/prepared.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/970ab720c805303ead8b20406c6579ecdcf2193a/src/types/prepared.ts#L32)
+Defined in: [src/types/prepared.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/types/prepared.ts#L32)
 
 Marks a prepared flow as JSON-safe for API and chat tool responses.
 
