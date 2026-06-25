@@ -16,7 +16,8 @@ export type WebsiteToolCategory =
   | "Governance"
   | "Staking"
   | "NFT"
-  | "Contract";
+  | "Contract"
+  | "AgentKarma";
 
 export type WebsiteToolKind = "read" | "write";
 
@@ -120,6 +121,9 @@ export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   deregister_self_agent: "Self",
   sign_self_request: "Self",
   authenticated_self_fetch: "Self",
+  get_agentkarma_reputation: "AgentKarma",
+  get_agentkarma_celo_agent: "AgentKarma",
+  check_agentkarma_counterparty: "AgentKarma",
 };
 
 function toolNameToSlug(name: string): string {

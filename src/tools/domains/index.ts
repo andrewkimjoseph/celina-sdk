@@ -1,4 +1,5 @@
 import { aaveToolDefinitions } from "./aave.js";
+import { agentKarmaToolDefinitions } from "./agentkarma.js";
 import { blockchainToolDefinitions } from "./blockchain.js";
 import { browserToolDefinitions } from "./browser.js";
 import { contractToolDefinitions } from "./contract.js";
@@ -27,5 +28,6 @@ export const allDomainToolDefinitions = [
   ...nftToolDefinitions,
   ...contractToolDefinitions,
   ...selfToolDefinitions,
+  ...agentKarmaToolDefinitions,
   ...browserToolDefinitions,
 ];
