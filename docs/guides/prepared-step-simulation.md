@@ -22,10 +22,13 @@ For approve → action flows (Aave supply, Mento FX, Uniswap):
 
 ```ts
 import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
-import { waitForTransactionReceipt } from "wagmi/actions";
+import { useSendTransaction, usePublicClient } from "wagmi";
+
+const { sendTransactionAsync } = useSendTransaction();
+const publicClient = usePublicClient(); // viem PublicClient — or createPublicClient in non-wagmi apps
 
 for (const step of flow.steps) {
-  await simulatePreparedStep(publicClient, {
+  await simulatePreparedStep(publicClient!, {
     account: address,
     step,
   });
@@ -36,7 +39,7 @@ for (const step of flow.steps) {
     value: step.value ? BigInt(step.value) : undefined,
   });
 
-  const receipt = await waitForTransactionReceipt(config, { hash });
+  const receipt = await publicClient!.waitForTransactionReceipt({ hash });
   if (receipt.status === "reverted") {
     throw new Error(`Transaction reverted: ${hash}`);
   }

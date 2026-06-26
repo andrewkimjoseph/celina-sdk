@@ -6,7 +6,7 @@ Celina SDK prepares unsigned transactions. wagmi signs and broadcasts them from 
 
 Use **`sendTransactionAsync`** from `useSendTransaction()`, not `sendTransaction`. Celina prepared flows are often multi-step (approve → action), and each step needs:
 
-- an **awaitable hash** to track progress and pass to `waitForTransactionReceipt`
+- an **awaitable hash** to track progress and pass to viem `publicClient.waitForTransactionReceipt`
 - **sequential signing** — wait for confirmation before the next step
 - **`try/catch`** when the user rejects in their wallet
 
@@ -32,8 +32,8 @@ async function executePreparedFlow(
       data: step.data,
       value: step.value ? BigInt(step.value) : undefined,
     });
-    // Wait for confirmation before next step in multi-step flows
-    console.log(`Confirmed: ${hash}`);
+    // Wait for confirmation before next step — see Multi-step flows below
+    console.log(`Submitted: ${hash}`);
   }
 }
 ```
@@ -69,6 +69,7 @@ export function SendButton({ to, token, amount }: { to: `0x${string}`; token: st
         data: step.data,
         value: step.value ? BigInt(step.value) : undefined,
       });
+      // For multi-step flows, wait for confirmation before the next step — see Multi-step flows below
     }
 
     setStatus("Done");
@@ -98,11 +99,13 @@ Simulate each step immediately before signing to avoid gas spent on reverts. See
 
 ```ts
 import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
-import { waitForTransactionReceipt } from "wagmi/actions";
-import { config } from "./wagmi-config";
+import { useSendTransaction, usePublicClient } from "wagmi";
+
+const { sendTransactionAsync } = useSendTransaction();
+const publicClient = usePublicClient();
 
 for (const step of flow.steps) {
-  await simulatePreparedStep(publicClient, {
+  await simulatePreparedStep(publicClient!, {
     account: address,
     step,
   });
@@ -112,7 +115,7 @@ for (const step of flow.steps) {
     data: step.data,
     value: step.value ? BigInt(step.value) : undefined,
   });
-  const receipt = await waitForTransactionReceipt(config, { hash });
+  const receipt = await publicClient!.waitForTransactionReceipt({ hash });
   if (receipt.status === "reverted") {
     throw new Error(`Transaction reverted: ${hash}`);
   }
@@ -156,8 +159,13 @@ try {
 If you use viem directly with a wallet client:
 
 ```ts
-import { createWalletClient, custom } from "viem";
+import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { celo } from "viem/chains";
+
+const publicClient = createPublicClient({
+  chain: celo,
+  transport: http(),
+});
 
 const walletClient = createWalletClient({
   chain: celo,
@@ -165,12 +173,17 @@ const walletClient = createWalletClient({
 });
 
 for (const step of flow.steps) {
-  await walletClient.sendTransaction({
+  const hash = await walletClient.sendTransaction({
     account: flow.from,
     to: step.to,
     data: step.data,
     value: step.value ? BigInt(step.value) : undefined,
   });
+
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  if (receipt.status === "reverted") {
+    throw new Error(`Transaction reverted: ${hash}`);
+  }
 }
 ```
 

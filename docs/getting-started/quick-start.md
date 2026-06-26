@@ -46,13 +46,11 @@ console.log(flow.steps.length);
 
 ## 4. Simulate and sign with wagmi
 
-Simulate each step immediately before signing to catch reverts before gas is spent:
+Simulate each step immediately before signing to catch reverts before gas is spent. `usePublicClient()` returns a viem `PublicClient` — the same type `simulatePreparedStep` expects.
 
 ```ts
 import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
 import { useSendTransaction, usePublicClient } from "wagmi";
-import { waitForTransactionReceipt } from "wagmi/actions";
-import { config } from "./wagmi-config";
 
 const { sendTransactionAsync } = useSendTransaction();
 const publicClient = usePublicClient();
@@ -69,7 +67,7 @@ for (const step of flow.steps) {
     value: step.value ? BigInt(step.value) : undefined,
   });
 
-  const receipt = await waitForTransactionReceipt(config, { hash });
+  const receipt = await publicClient!.waitForTransactionReceipt({ hash });
   if (receipt.status === "reverted") {
     throw new Error(`Transaction reverted: ${hash}`);
   }
