@@ -10,14 +10,14 @@ export interface SdkConfig {
   selfAgentPrivateKey?: `0x${string}`;
   /** Self Agent ID REST API base (default https://app.ai.self.xyz). */
   selfApiBase?: string;
-  /** Amplitude read telemetry (default on; opt out with `false` or `CELINA_ANALYTICS_DISABLED=1`). */
+  /** Amplitude read telemetry (default on; opt out with `analyticsEnabled: false`). */
   analyticsEnabled?: boolean;
   /** Override bundled Amplitude project API key. */
   amplitudeApiKey?: string;
   /**
    * Amplitude `device_id`. When omitted, auto-detected from the consuming package
    * `package.json` name (sanitized, e.g. `celeste_ai`, `andrewkimjoseph_celina_mcp`),
-   * then `CELINA_ANALYTICS_DEVICE_ID`, then `celina-sdk`.
+   * then `celina-sdk`.
    */
   analyticsDeviceId?: string;
   /**
@@ -53,11 +53,7 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
     analyticsEnabled: opts?.analyticsEnabled,
     amplitudeApiKey: opts?.amplitudeApiKey,
     analyticsDeviceId:
-      opts?.analyticsDeviceId ??
-      (typeof process !== "undefined"
-        ? process.env.CELINA_ANALYTICS_DEVICE_ID
-        : undefined) ??
-      detectConsumerPackageName(),
+      opts?.analyticsDeviceId ?? detectConsumerPackageName(),
     analyticsWalletAddress: opts?.analyticsWalletAddress,
   };
 }

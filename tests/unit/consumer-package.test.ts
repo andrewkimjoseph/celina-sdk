@@ -98,11 +98,4 @@ describe("resolveSdkConfig device id", () => {
     expect(config.analyticsDeviceId).toBe("custom_id");
     expect(resolveDeviceId(config)).toBe("custom_id");
   });
-
-  it("uses CELINA_ANALYTICS_DEVICE_ID when option omitted", () => {
-    vi.stubEnv("CELINA_ANALYTICS_DEVICE_ID", "from_env");
-    resetConsumerPackageDetectionForTests();
-    const config = resolveSdkConfig({});
-    expect(config.analyticsDeviceId).toBe("from_env");
-  });
 });

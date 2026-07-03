@@ -8,7 +8,7 @@
 
 > **CelinaClientOptions** = `Partial`\<[`SdkConfig`](../interfaces/SdkConfig.md)\> & `object`
 
-Defined in: [src/index.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/index.ts#L31)
+Defined in: [src/index.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L31)
 
 Optional RPC overrides when creating a Celina client.
 

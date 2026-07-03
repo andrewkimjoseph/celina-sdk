@@ -6,7 +6,7 @@
 
 # Class: GoodDollarService
 
-Defined in: [src/services/gooddollar.service.ts:119](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L119)
+Defined in: [src/services/gooddollar.service.ts:119](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L119)
 
 GoodDollar IdentityV4 whitelist, reverification, daily UBI claim, and reserve swap preparation.
 
@@ -16,7 +16,7 @@ GoodDollar IdentityV4 whitelist, reverification, daily UBI claim, and reserve sw
 
 > **new GoodDollarService**(`clientFactory`): `GoodDollarService`
 
-Defined in: [src/services/gooddollar.service.ts:122](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L122)
+Defined in: [src/services/gooddollar.service.ts:122](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L122)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/gooddollar.service.ts:122](https://github.com/andrewki
 
 > **estimateReserveSwap**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `amountSide`: [`GoodDollarReserveAmountSide`](../type-aliases/GoodDollarReserveAmountSide.md); `approvalGas`: `string` \| `undefined`; `approvalNeeded`: `boolean`; `broker`: `"0x88de45906D4F5a57315c133620cfa484cB297541"`; `exchangeId`: `"0xba77f5c7bb3317643c6d81d1ef3f9913561741d92095f88efa402faf2cbe9124"`; `exchangeProvider`: `"0x2fFBB49055d487DdBBb0C052Cd7c2a02A7971e41"`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `network`: `"mainnet"`; `protocol`: `"gooddollar_reserve"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGas`: `string`; `tokenIn`: `string`; `tokenOut`: `string`; `totalGas`: `string`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:791](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L791)
+Defined in: [src/services/gooddollar.service.ts:791](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L791)
 
 Simulate gas for a GoodDollar reserve swap from `from`, including approval if needed.
 
@@ -70,7 +70,7 @@ Simulate gas for a GoodDollar reserve swap from `from`, including approval if ne
 
 > **getIdentityLink**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `checkedAddress`: `` `0x${string}` ``; `connectedTo`: `` `0x${string}` `` \| `null`; `contract`: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`; `isConnectedWallet`: `boolean`; `isWhitelisted`: `boolean`; `isWhitelistedRoot`: `boolean`; `whitelistedRoot`: `` `0x${string}` `` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:246](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L246)
+Defined in: [src/services/gooddollar.service.ts:246](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L246)
 
 How a wallet links to GoodDollar IdentityV4 (root vs connected account).
 
@@ -92,7 +92,7 @@ Wallet to inspect
 
 > **getReserveQuote**(`tokenIn`, `tokenOut`, `amount`, `options?`): `Promise`\<\{ `amountIn`: `string`; `amountSide`: [`GoodDollarReserveAmountSide`](../type-aliases/GoodDollarReserveAmountSide.md); `broker`: `"0x88de45906D4F5a57315c133620cfa484cB297541"`; `exchangeId`: `"0xba77f5c7bb3317643c6d81d1ef3f9913561741d92095f88efa402faf2cbe9124"`; `exchangeProvider`: `"0x2fFBB49055d487DdBBb0C052Cd7c2a02A7971e41"`; `expectedOut`: `string`; `network`: `"mainnet"`; `protocol`: `"gooddollar_reserve"`; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:641](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L641)
+Defined in: [src/services/gooddollar.service.ts:641](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L641)
 
 Expected GoodDollar reserve output for G$ ↔ USDm — no wallet required.
 Balance checks run on prepare/estimate only.
@@ -125,7 +125,7 @@ Balance checks run on prepare/estimate only.
 
 > **getUbiClaimEligibility**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `alreadyClaimedToday`: `boolean`; `claimableAmount`: `string`; `claimableAmountFormatted`: `string`; `contract`: `"0x43d72Ff17701B2DA814620735C39C620Ce0ea4A1"`; `currentDailyUbi`: `string`; `currentDailyUbiFormatted`: `string`; `estimatedDailyUbi`: `string`; `estimatedDailyUbiFormatted`: `string`; `identity`: \{ `checkedAddress`: `` `0x${string}` ``; `isWhitelisted`: `boolean`; `reverification`: \{ `currentReverificationPeriodDays`: `number`; `daysSinceLastAuthentication`: `number`; `daysUntilReverificationRequired`: `number`; `isReverificationOverdue`: `boolean`; `maxReverificationPeriodDays`: `number`; `reverificationProgressPercent`: `number`; `reverificationRequiredOn`: `string`; \} \| `null`; `statusLabel`: `string`; \}; `inClaimCooldown`: `boolean`; `isConnectedWallet`: `boolean`; `isEligibleToClaim`: `boolean`; `lastClaimedAt`: `string` \| `null`; `nextClaimAvailableAt`: `string`; `nextClaimAvailableIn`: `string`; `reasons`: `string`[]; `schemePaused`: `boolean`; `schemeStarted`: `boolean`; `secondsUntilNextClaim`: `string`; `ubiPeriodDay`: `string`; `whitelistedRoot`: `` `0x${string}` `` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:306](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L306)
+Defined in: [src/services/gooddollar.service.ts:306](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L306)
 
 Daily UBI claim eligibility for a wallet against UBISchemeV2 on Celo.
 Resolves connected wallets via Identity `getWhitelistedRoot`.
@@ -146,7 +146,7 @@ Resolves connected wallets via Identity `getWhitelistedRoot`.
 
 > **getWhitelistingInfo**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `checkedAddress`: `` `0x${string}` ``; `contract`: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`; `fieldDescriptions`: \{ `lastAuthenticatedOn`: `string`; `whitelistedOn`: `string`; \}; `identity`: \{ `authCount`: `number`; `dateAdded`: `number`; `dateAuthenticated`: `number`; `did`: `string`; `status`: `number`; `whitelistedOnChainId`: `number`; \}; `isConnectedWallet`: `boolean`; `isWhitelisted`: `boolean`; `lastAuthenticatedOn`: `string` \| `null`; `reverification`: \{ `currentReverificationPeriodDays`: `number`; `daysSinceLastAuthentication`: `number`; `daysUntilReverificationRequired`: `number`; `isReverificationOverdue`: `boolean`; `maxReverificationPeriodDays`: `number`; `reverificationProgressPercent`: `number`; `reverificationRequiredOn`: `string`; \} \| `null`; `status`: `number`; `statusLabel`: `string`; `whitelistedOn`: `string` \| `null`; `whitelistedRoot`: `` `0x${string}` `` \| `null`; \}\>
 
-Defined in: [src/services/gooddollar.service.ts:289](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L289)
+Defined in: [src/services/gooddollar.service.ts:289](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L289)
 
 GoodDollar IdentityV4 whitelist status and reverification progress for a wallet.
 Resolves connected wallets via Identity `getWhitelistedRoot`.
@@ -171,7 +171,7 @@ On-chain status, whitelist dates, field descriptions, and reverification timelin
 
 > **prepareClaimUbi**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/gooddollar.service.ts:477](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L477)
+Defined in: [src/services/gooddollar.service.ts:477](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L477)
 
 Build an unsigned UBISchemeV2 `claim()` transaction for daily G$ UBI.
 Validates whitelist, entitlement, and simulates gas before returning steps.
@@ -192,7 +192,7 @@ Validates whitelist, entitlement, and simulates gas before returning steps.
 
 > **prepareReserveSwap**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/gooddollar.service.ts:863](https://github.com/andrewkimjoseph/celina-sdk/blob/2666667daf96a6fd5a7d6a6940f387cab3e7887d/src/services/gooddollar.service.ts#L863)
+Defined in: [src/services/gooddollar.service.ts:863](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/gooddollar.service.ts#L863)
 
 Build unsigned GoodDollar reserve swap steps (approve + swapIn when needed).
 

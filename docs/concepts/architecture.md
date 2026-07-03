@@ -9,7 +9,7 @@
 - **Does not hold CELO wallet keys** — pass prepared `steps` to wagmi/viem for signing
 - **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
 - **AgentKarma** (`client.agentKarma`) is a read-only external reputation adapter — calls agentkarma.io, not on-chain Celina reads; no keys, no Celina analytics
-- **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `CELINA_ANALYTICS_DISABLED=1` or `analyticsEnabled: false`
+- **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `analyticsEnabled: false`
 
 Consumers pass prepared `steps` to wagmi/viem for wallet signing.
 

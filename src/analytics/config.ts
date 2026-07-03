@@ -10,9 +10,6 @@ export function isAnalyticsEnabled(config: SdkConfig): boolean {
   if (typeof process === "undefined") {
     return false;
   }
-  if (process.env.CELINA_ANALYTICS_DISABLED === "1") {
-    return false;
-  }
   if (config.analyticsEnabled === false) {
     return false;
   }

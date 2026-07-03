@@ -17,8 +17,5 @@ export default defineConfig({
     hookTimeout: 60_000,
     include: ["tests/**/*.test.ts"],
     exclude: ["tests/unit/**"],
-    env: {
-      CELINA_ANALYTICS_DISABLED: "1",
-    },
   },
 });

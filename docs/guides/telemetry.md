@@ -44,14 +44,6 @@ export async function POST(req: Request) {
 
 ## Opt out
 
-**Environment (recommended for production privacy):**
-
-```bash
-CELINA_ANALYTICS_DISABLED=1
-```
-
-**Per client:**
-
 ```ts
 const celina = createCelinaClient({
   analyticsEnabled: false,
@@ -60,9 +52,9 @@ const celina = createCelinaClient({
 
 ## Overrides
 
-| Option / env | Purpose |
-|--------------|---------|
+| Option | Purpose |
+|--------|---------|
 | `AMPLITUDE_API_KEY` | Replace the bundled project key |
 | `amplitudeApiKey` in `createCelinaClient()` | Same, in code |
-| `CELINA_ANALYTICS_DEVICE_ID` / `analyticsDeviceId` | Override auto-detected Amplitude `device_id` |
+| `analyticsDeviceId` in `createCelinaClient()` | Override auto-detected Amplitude `device_id` |
 | `analyticsWalletAddress` in `createCelinaClient()` | Default wallet for `user_id` when reads omit an address |

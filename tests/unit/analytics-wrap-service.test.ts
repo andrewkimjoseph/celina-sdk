@@ -23,7 +23,6 @@ describe("wrapServiceForAnalytics", () => {
   });
 
   it("tracks mapped async reads with MCP tool event names", async () => {
-    vi.stubEnv("CELINA_ANALYTICS_DISABLED", "");
     const tracked: string[] = [];
     setTrackFnForTests((eventName) => {
       tracked.push(eventName);
@@ -49,7 +48,6 @@ describe("wrapServiceForAnalytics", () => {
   });
 
   it("passes wallet as user_id context from read args", async () => {
-    vi.stubEnv("CELINA_ANALYTICS_DISABLED", "");
     const seen: Array<string | undefined> = [];
     setTrackFnForTests((_eventName, _config, _context, userId) => {
       seen.push(userId);
@@ -70,7 +68,6 @@ describe("wrapServiceForAnalytics", () => {
   });
 
   it("uses runWithAnalyticsWallet when args omit address", async () => {
-    vi.stubEnv("CELINA_ANALYTICS_DISABLED", "");
     const seen: Array<string | undefined> = [];
     setTrackFnForTests((_eventName, _config, _context, userId) => {
       seen.push(userId);
@@ -91,7 +88,6 @@ describe("wrapServiceForAnalytics", () => {
   });
 
   it("uses analyticsWalletAddress from config as fallback", async () => {
-    vi.stubEnv("CELINA_ANALYTICS_DISABLED", "");
     const seen: Array<string | undefined> = [];
     setTrackFnForTests((_eventName, _config, _context, userId) => {
       seen.push(userId);
@@ -125,27 +121,6 @@ describe("wrapServiceForAnalytics", () => {
         },
       },
       disabledConfig,
-    );
-
-    await service.getNetworkStatus();
-    expect(tracked).toEqual([]);
-  });
-
-  it("does not track when CELINA_ANALYTICS_DISABLED=1", async () => {
-    vi.stubEnv("CELINA_ANALYTICS_DISABLED", "1");
-    const tracked: string[] = [];
-    setTrackFnForTests((eventName) => {
-      tracked.push(eventName);
-    });
-
-    const service = wrapServiceForAnalytics(
-      "blockchain",
-      {
-        async getNetworkStatus() {
-          return { ok: true };
-        },
-      },
-      enabledConfig,
     );
 
     await service.getNetworkStatus();

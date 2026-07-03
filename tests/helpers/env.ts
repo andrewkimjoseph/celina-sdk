@@ -3,6 +3,7 @@ import { privateKeyToAccount } from "viem/accounts";
 export interface TestConfig {
   rpcUrl: string;
   ethRpcUrl?: string;
+  analyticsEnabled?: boolean;
 }
 
 export function hasCeloWallet(): boolean {
@@ -34,5 +35,6 @@ export function loadTestConfig(): TestConfig {
   return {
     rpcUrl: process.env.CELO_RPC_URL_MAINNET ?? "https://forno.celo.org",
     ethRpcUrl: process.env.ETH_RPC_URL_MAINNET,
+    analyticsEnabled: false,
   };
 }
