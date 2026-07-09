@@ -1,20 +1,18 @@
-# TrustPolicy
-
-[**@andrewkimjoseph/celina-sdk**](../../)
+[**@andrewkimjoseph/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / TrustPolicy
+[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / TrustPolicy
 
-## Interface: TrustPolicy
+# Interface: TrustPolicy
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:13
 
-### Properties
+## Properties
 
-#### acceptedConfidenceBadges?
+### acceptedConfidenceBadges?
 
-> `optional` **acceptedConfidenceBadges?**: `ConfidenceBadge`\[]
+> `optional` **acceptedConfidenceBadges?**: `ConfidenceBadge`[]
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:19
 
@@ -22,7 +20,7 @@ Accept only these confidence badges on the chosen face. Empty/omitted = accept a
 
 ***
 
-#### face?
+### face?
 
 > `optional` **face?**: `KarmaFace`
 
@@ -32,7 +30,7 @@ Which face to evaluate. Defaults to 'provider'.
 
 ***
 
-#### minAutonomyScore?
+### minAutonomyScore?
 
 > `optional` **minAutonomyScore?**: `number`
 
@@ -42,17 +40,19 @@ Reject when the autonomy score is below this value. null autonomy is treated as 
 
 ***
 
-#### minBondedUSDC?
+### minBondedUSDC?
 
 > `optional` **minBondedUSDC?**: `number`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:61
 
-Require the total USDC currently bonded (open bonds) to be at least this. Demo bonds are EXCLUDED from this total — borrowed-on-paper capital must not satisfy a real-money gate.
+Require the total USDC currently bonded (open bonds) to be at least this.
+Demo bonds are EXCLUDED from this total — borrowed-on-paper capital must
+not satisfy a real-money gate.
 
 ***
 
-#### minScore?
+### minScore?
 
 > `optional` **minScore?**: `number`
 
@@ -62,7 +62,7 @@ Reject when the chosen face's score is below this value (0-100).
 
 ***
 
-#### minTxCount?
+### minTxCount?
 
 > `optional` **minTxCount?**: `number`
 
@@ -72,9 +72,9 @@ Require at least this many on-chain transactions observed.
 
 ***
 
-#### rejectAutonomyLabels?
+### rejectAutonomyLabels?
 
-> `optional` **rejectAutonomyLabels?**: `AutonomyLabel`\[]
+> `optional` **rejectAutonomyLabels?**: `AutonomyLabel`[]
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:27
 
@@ -82,47 +82,55 @@ Reject when the autonomy label matches one of these. (e.g. reject 'agent-like' f
 
 ***
 
-#### rejectLapsed?
+### rejectLapsed?
 
 > `optional` **rejectLapsed?**: `boolean`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:49
 
-Reject when the succession plan has lapsed or is lapsing — a strong signal the agent may be abandoned. A missing succession block does NOT trip this (no plan ≠ lapsed); use `requireLiveSuccession` to demand a plan.
+Reject when the succession plan has lapsed or is lapsing — a strong signal
+the agent may be abandoned. A missing succession block does NOT trip this
+(no plan ≠ lapsed); use `requireLiveSuccession` to demand a plan.
 
 ***
 
-#### rejectRecentBondFailure?
+### rejectRecentBondFailure?
 
 > `optional` **rejectRecentBondFailure?**: `boolean`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:66
 
-Reject when the agent has a recent bond failure (`resolved_failure`). A blown bond is a real negative delivery signal. Demo bonds are ignored.
+Reject when the agent has a recent bond failure (`resolved_failure`). A
+blown bond is a real negative delivery signal. Demo bonds are ignored.
 
 ***
 
-#### requireBonded?
+### requireBonded?
 
 > `optional` **requireBonded?**: `boolean`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:55
 
-Require at least one currently-active (open) bond on the agent. Borrowed capital lifts confidence, NOT the trust ceiling — this gate is about presence of skin-in-the-game, evaluated independently of score.
+Require at least one currently-active (open) bond on the agent. Borrowed
+capital lifts confidence, NOT the trust ceiling — this gate is about
+presence of skin-in-the-game, evaluated independently of score.
 
 ***
 
-#### requireLiveSuccession?
+### requireLiveSuccession?
 
 > `optional` **requireLiveSuccession?**: `boolean`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:43
 
-Require a live succession plan. Passes only when the snapshot carries a succession block whose derived status is `declared` or `live`. A missing succession block fails this gate (no plan = not live). OBSERVE-ONLY: this reads AK's recorded liveness; AK never receives a real heartbeat.
+Require a live succession plan. Passes only when the snapshot carries a
+succession block whose derived status is `declared` or `live`. A missing
+succession block fails this gate (no plan = not live). OBSERVE-ONLY: this
+reads AK's recorded liveness; AK never receives a real heartbeat.
 
 ***
 
-#### requireReceiptBacked?
+### requireReceiptBacked?
 
 > `optional` **requireReceiptBacked?**: `boolean`
 
@@ -132,19 +140,22 @@ Require at least one Tier-1 receipt-backed signal somewhere on the chosen face.
 
 ***
 
-#### requireSeen?
+### requireSeen?
 
 > `optional` **requireSeen?**: `boolean`
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:36
 
-Reject when the wallet has never been observed active. Defaults to false — a wallet with no recorded activity isn't automatically untrustworthy; the face's score and confidence badge already encode that. Flip on when you specifically want a "must have shown up before" gate.
+Reject when the wallet has never been observed active. Defaults to false —
+a wallet with no recorded activity isn't automatically untrustworthy; the
+face's score and confidence badge already encode that. Flip on when you
+specifically want a "must have shown up before" gate.
 
 ***
 
-#### requireTiers?
+### requireTiers?
 
-> `optional` **requireTiers?**: `SignalTier`\[]
+> `optional` **requireTiers?**: `SignalTier`[]
 
 Defined in: node\_modules/@agentkarma/sdk/dist/policy.d.ts:23
 

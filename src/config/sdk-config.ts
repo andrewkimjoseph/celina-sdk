@@ -27,7 +27,11 @@ export interface SdkConfig {
   analyticsWalletAddress?: string;
   /**
    * Optional custom calldata attribution tags appended after the base `CELINA`
-   * suffix on prepared transaction steps.
+   * suffix on prepared transaction steps (`CELINA|TAG1|TAG2`, deduped, stable order).
+   *
+   * App tags (e.g. `celeste_ai`) normalize to uppercase (`CELESTE_AI`).
+   * Celo Builders on-chain tags matching `celo_<12 hex>` canonicalize to lowercase
+   * (e.g. `celo_862c21dd97a7`). The literal tag `CELINA` is never duplicated.
    */
   attributionTags?: string[];
 }

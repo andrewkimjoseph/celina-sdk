@@ -1,25 +1,24 @@
-# createCelinaClient
-
-[**@andrewkimjoseph/celina-sdk**](../../)
+[**@andrewkimjoseph/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / createCelinaClient
+[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / createCelinaClient
 
-## Function: createCelinaClient()
+# Function: createCelinaClient()
 
 > **createCelinaClient**(`opts?`): [`CelinaClient`](../interfaces/CelinaClient.md)
 
-Defined in: [src/index.ts:81](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L81)
+Defined in: [src/index.ts:81](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L81)
 
-Create a Celina client for Celo mainnet reads and unsigned tx preparation. No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
+Create a Celina client for Celo mainnet reads and unsigned tx preparation.
+No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
 
-### Parameters
+## Parameters
 
-#### opts?
+### opts?
 
 [`CelinaClientOptions`](../type-aliases/CelinaClientOptions.md)
 
-### Returns
+## Returns
 
 [`CelinaClient`](../interfaces/CelinaClient.md)

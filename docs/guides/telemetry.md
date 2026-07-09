@@ -15,7 +15,7 @@ Wallet resolution order:
 2. `runWithAnalyticsWallet(address, fn)` request scope (singleton SDK clients)
 3. `analyticsWalletAddress` on `createCelinaClient()` (e.g. MCP session signer)
 
-Writes and `prepare*` flows are not tracked (on-chain `CELINA` attribution covers those).
+Writes and `prepare*` flows are not tracked (on-chain `CELINA` attribution covers those). Custom `attributionTags` from client config appear in the calldata suffix on-chain, not in Amplitude events.
 
 ## Default behavior
 

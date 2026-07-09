@@ -34,7 +34,11 @@ export function buildCelinaAttributionTag(tags?: string[]): string {
 
 /**
  * Append CELINA attribution suffix to calldata; no-op when empty or already tagged.
- * Custom tags are appended after CELINA as `CELINA|TAG1|TAG2`.
+ *
+ * @param data - Original transaction calldata.
+ * @param attributionTags - Optional tags from `createCelinaClient({ attributionTags })`.
+ *   Appended after `CELINA` as `CELINA|TAG1|TAG2`. App tags normalize uppercase;
+ *   `celo_<12 hex>` tags canonicalize lowercase. Omitted or empty → suffix is `CELINA` only.
  */
 export function appendCelinaCalldataTag(
   data: `0x${string}`,

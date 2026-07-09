@@ -60,7 +60,8 @@ Docs source lives in [`docs/`](docs/) in this repository.
 import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
 
 const celina = createCelinaClient({
-  attributionTags: ["CELESTE_AI", "SESSION_X"],
+  attributionTags: ["celo_862c21dd97a7", "my_app"],
+  // suffix → CELINA|celo_862c21dd97a7|MY_APP
 });
 
 await celina.token.getStablecoinBalances("0xYourAddress");

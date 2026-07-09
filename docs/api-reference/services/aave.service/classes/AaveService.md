@@ -1,139 +1,138 @@
-# AaveService
-
-[**@andrewkimjoseph/celina-sdk**](../../../)
+[**@andrewkimjoseph/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../) / [services/aave.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/aave.service/README.md) / AaveService
+[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/aave.service](../README.md) / AaveService
 
-## Class: AaveService
+# Class: AaveService
 
-Defined in: [src/services/aave.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/aave.service.ts#L25)
+Defined in: [src/services/aave.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/aave.service.ts#L21)
 
 Aave V3 supplied balance reads and supply/withdraw prepared flows on Celo mainnet.
 
-### Constructors
+## Constructors
 
-#### Constructor
+### Constructor
 
 > **new AaveService**(`clientFactory`): `AaveService`
 
-Defined in: [src/services/aave.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/aave.service.ts#L28)
+Defined in: [src/services/aave.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/aave.service.ts#L25)
 
-**Parameters**
+#### Parameters
 
-**clientFactory**
+##### clientFactory
 
 `CeloClientFactory`
 
-**Returns**
+#### Returns
 
 `AaveService`
 
-### Methods
+## Methods
 
-#### getBalances()
+### getBalances()
 
-> **getBalances**(`address`, `options?`): `Promise`<{ `address`: `` `0x${string}` ``; `balances`: ({ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError`: `true`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; } | { `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; })\[]; `market`: `"0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402"`; `network`: `"mainnet"`; `totalChecked`: `number`; }>
+> **getBalances**(`address`, `options?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError`: `true`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; \} \| \{ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; \})[]; `market`: `"0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402"`; `network`: `"mainnet"`; `totalChecked`: `number`; \}\>
 
-Defined in: [src/services/aave.service.ts:98](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/aave.service.ts#L98)
+Defined in: [src/services/aave.service.ts:96](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/aave.service.ts#L96)
 
-Supplied Aave V3 positions (aToken balances) for an address on Celo mainnet. Amounts are in underlying token units including accrued interest.
+Supplied Aave V3 positions (aToken balances) for an address on Celo mainnet.
+Amounts are in underlying token units including accrued interest.
 
-**Parameters**
+#### Parameters
 
-**address**
+##### address
 
 `` `0x${string}` ``
 
-**options?**
+##### options?
 
-**includeZero?**
+###### includeZero?
 
 `boolean`
 
-**tokens?**
+###### tokens?
 
-`string`\[]
+`string`[]
 
-**Returns**
+#### Returns
 
-`Promise`<{ `address`: `` `0x${string}` ``; `balances`: ({ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError`: `true`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; } | { `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; })\[]; `market`: `"0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402"`; `network`: `"mainnet"`; `totalChecked`: `number`; }>
+`Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError`: `true`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; \} \| \{ `aToken`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `underlying`: `` `0x${string}` ``; \})[]; `market`: `"0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402"`; `network`: `"mainnet"`; `totalChecked`: `number`; \}\>
 
 ***
 
-#### prepareSupply()
+### prepareSupply()
 
-> **prepareSupply**(`from`, `token`, `amount`): `Promise`<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)>
+> **prepareSupply**(`from`, `token`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:181](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/aave.service.ts#L181)
+Defined in: [src/services/aave.service.ts:179](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/aave.service.ts#L179)
 
 Build unsigned Aave V3 supply steps (approve + supply when needed).
 
-**Parameters**
+#### Parameters
 
-**from**
+##### from
 
 `` `0x${string}` ``
 
 Supplier wallet address
 
-**token**
+##### token
 
 `string`
 
 Aave asset symbol (e.g. `USDm`, `USDC`); `CELO` uses wrapped CELO (WCELO)
 
-**amount**
+##### amount
 
 `string`
 
 Human-readable supply amount
 
-**Returns**
+#### Returns
 
-`Promise`<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)>
+`Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
 1–2 step `SerializedPreparedFlow`; CELO must be wrapped ERC-20, not native
 
 ***
 
-#### prepareWithdraw()
+### prepareWithdraw()
 
-> **prepareWithdraw**(`from`, `token`, `amount`, `withdrawMax?`): `Promise`<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)>
+> **prepareWithdraw**(`from`, `token`, `amount`, `withdrawMax?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/aave.service.ts:246](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/aave.service.ts#L246)
+Defined in: [src/services/aave.service.ts:246](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/aave.service.ts#L246)
 
 Build unsigned Aave V3 withdraw step on Celo.
 
-**Parameters**
+#### Parameters
 
-**from**
+##### from
 
 `` `0x${string}` ``
 
 Withdrawer wallet address
 
-**token**
+##### token
 
 `string`
 
 Aave asset symbol
 
-**amount**
+##### amount
 
-`string` | `undefined`
+`string` \| `undefined`
 
 Human-readable withdraw amount (omit when using `withdrawMax`)
 
-**withdrawMax?**
+##### withdrawMax?
 
 `boolean`
 
 When true, withdraws full supplied aToken balance
 
-**Returns**
+#### Returns
 
-`Promise`<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)>
+`Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
 Single-step `SerializedPreparedFlow`

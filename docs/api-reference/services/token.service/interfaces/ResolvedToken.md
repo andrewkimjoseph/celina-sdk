@@ -1,43 +1,41 @@
-# ResolvedToken
-
-[**@andrewkimjoseph/celina-sdk**](../../../)
+[**@andrewkimjoseph/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../) / [services/token.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/token.service/README.md) / ResolvedToken
+[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/token.service](../README.md) / ResolvedToken
 
-## Interface: ResolvedToken
+# Interface: ResolvedToken
 
-Defined in: [src/services/token.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/token.service.ts#L15)
+Defined in: [src/services/token.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L15)
 
 Resolved Celo mainnet registry token (symbol, address, decimals).
 
-### Properties
+## Properties
 
-#### address
+### address
 
-> **address**: `` `0x${string}` `` | `"native"`
+> **address**: `` `0x${string}` `` \| `"native"`
 
-Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/token.service.ts#L17)
+Defined in: [src/services/token.service.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L17)
 
 Registry address, or `"native"` for CELO.
 
 ***
 
-#### decimals
+### decimals
 
 > **decimals**: `number`
 
-Defined in: [src/services/token.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/token.service.ts#L21)
+Defined in: [src/services/token.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L21)
 
 Token decimals for amount parsing.
 
 ***
 
-#### symbol
+### symbol
 
 > **symbol**: `string`
 
-Defined in: [src/services/token.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/token.service.ts#L19)
+Defined in: [src/services/token.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L19)
 
 Canonical registry symbol (e.g. `USDm`, `GoodDollar`).

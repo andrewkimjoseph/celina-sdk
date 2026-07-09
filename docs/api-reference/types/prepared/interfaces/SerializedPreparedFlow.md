@@ -1,69 +1,68 @@
-# SerializedPreparedFlow
-
-[**@andrewkimjoseph/celina-sdk**](../../../)
+[**@andrewkimjoseph/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../) / [types/prepared](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/types/prepared/README.md) / SerializedPreparedFlow
+[@andrewkimjoseph/celina-sdk](../../../README.md) / [types/prepared](../README.md) / SerializedPreparedFlow
 
-## Interface: SerializedPreparedFlow
+# Interface: SerializedPreparedFlow
 
-Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L26)
+Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L26)
 
-JSON-safe prepared flow returned by prepare\* tools and chat APIs. Consumers simulate each step (see @andrewkimjoseph/celina-sdk/simulation), then call sendTransactionAsync (wagmi) or walletClient.sendTransaction (viem).
+JSON-safe prepared flow returned by prepare* tools and chat APIs.
+Consumers simulate each step (see @andrewkimjoseph/celina-sdk/simulation), then call sendTransactionAsync (wagmi) or walletClient.sendTransaction (viem).
 
-### Extends
+## Extends
 
-* `Omit`<[`PreparedFlow`](PreparedFlow.md), `"steps"`>
+- `Omit`\<[`PreparedFlow`](PreparedFlow.md), `"steps"`\>
 
-### Properties
+## Properties
 
-#### from
+### from
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L19)
+Defined in: [src/types/prepared.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L19)
 
-**Inherited from**
+#### Inherited from
 
 [`PreparedFlow`](PreparedFlow.md).[`from`](PreparedFlow.md#from)
 
 ***
 
-#### network
+### network
 
 > **network**: `"mainnet"`
 
-Defined in: [src/types/prepared.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L18)
+Defined in: [src/types/prepared.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L18)
 
-**Inherited from**
+#### Inherited from
 
 [`PreparedFlow`](PreparedFlow.md).[`network`](PreparedFlow.md#network)
 
 ***
 
-#### preparedFlow
+### preparedFlow
 
 > **preparedFlow**: `true`
 
-Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L28)
+Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L28)
 
 ***
 
-#### steps
+### steps
 
-> **steps**: [`PreparedTx`](PreparedTx.md)\[]
+> **steps**: [`PreparedTx`](PreparedTx.md)[]
 
-Defined in: [src/types/prepared.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L27)
+Defined in: [src/types/prepared.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L27)
 
 ***
 
-#### summary
+### summary
 
 > **summary**: `string`
 
-Defined in: [src/types/prepared.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/types/prepared.ts#L17)
+Defined in: [src/types/prepared.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/types/prepared.ts#L17)
 
-**Inherited from**
+#### Inherited from
 
 [`PreparedFlow`](PreparedFlow.md).[`summary`](PreparedFlow.md#summary)

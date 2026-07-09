@@ -90,6 +90,23 @@ value: step.value ? BigInt(step.value) : undefined
 
 Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi.
 
+Every tagged step starts with the base suffix **`CELINA`**. Optional `attributionTags` on `createCelinaClient()` append custom tags:
+
+```ts
+createCelinaClient({
+  attributionTags: ["celo_862c21dd97a7", "celeste_ai"],
+});
+// suffix → CELINA|celo_862c21dd97a7|CELESTE_AI
+```
+
+Case normalization:
+
+- App tags (e.g. `celeste_ai`) → uppercase (`CELESTE_AI`)
+- Celo Builders tags matching `celo_<12 hex>` → lowercase (e.g. `celo_862c21dd97a7`)
+- Tags are deduped in first-seen order; `CELINA` itself is never duplicated as a custom tag
+
+See [Configuration](../getting-started/configuration.md) for the full options table.
+
 ## Related
 
 - [Prepared-step simulation](../guides/prepared-step-simulation.md)

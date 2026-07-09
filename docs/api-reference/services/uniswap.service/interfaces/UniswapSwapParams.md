@@ -1,43 +1,41 @@
-# UniswapSwapParams
-
-[**@andrewkimjoseph/celina-sdk**](../../../)
+[**@andrewkimjoseph/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../) / [services/uniswap.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/uniswap.service/README.md) / UniswapSwapParams
+[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/uniswap.service](../README.md) / UniswapSwapParams
 
-## Interface: UniswapSwapParams
+# Interface: UniswapSwapParams
 
-Defined in: [src/services/uniswap.service.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/uniswap.service.ts#L44)
+Defined in: [src/services/uniswap.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/uniswap.service.ts#L43)
 
 Optional parameters for Uniswap v4 swap estimates and prepares.
 
-### Properties
+## Properties
 
-#### deadlineMinutes?
+### deadlineMinutes?
 
 > `optional` **deadlineMinutes?**: `number`
 
-Defined in: [src/services/uniswap.service.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/uniswap.service.ts#L48)
+Defined in: [src/services/uniswap.service.ts:47](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/uniswap.service.ts#L47)
 
 Swap deadline in minutes from now (default `5`).
 
 ***
 
-#### recipient?
+### recipient?
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/uniswap.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/uniswap.service.ts#L50)
+Defined in: [src/services/uniswap.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/uniswap.service.ts#L49)
 
 Address receiving output tokens (default: `from`).
 
 ***
 
-#### slippageTolerance?
+### slippageTolerance?
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/uniswap.service.ts:46](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/uniswap.service.ts#L46)
+Defined in: [src/services/uniswap.service.ts:45](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/uniswap.service.ts#L45)
 
 Max slippage tolerance in percent (default `0.5`).

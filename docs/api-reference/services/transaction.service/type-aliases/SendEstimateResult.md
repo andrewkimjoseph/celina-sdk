@@ -8,7 +8,7 @@
 
 > **SendEstimateResult** = `object`
 
-Defined in: [src/services/transaction.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L28)
+Defined in: [src/services/transaction.service.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L27)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/transaction.service.ts:28](https://github.com/andrewki
 
 > **amount**: `string`
 
-Defined in: [src/services/transaction.service.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L33)
+Defined in: [src/services/transaction.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L32)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/transaction.service.ts:33](https://github.com/andrewki
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/services/transaction.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L30)
+Defined in: [src/services/transaction.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L29)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/services/transaction.service.ts:30](https://github.com/andrewki
 
 > **gas**: `string` \| `null`
 
-Defined in: [src/services/transaction.service.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L34)
+Defined in: [src/services/transaction.service.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L33)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/services/transaction.service.ts:34](https://github.com/andrewki
 
 > `optional` **insufficientBalance?**: `boolean`
 
-Defined in: [src/services/transaction.service.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L35)
+Defined in: [src/services/transaction.service.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L34)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/services/transaction.service.ts:35](https://github.com/andrewki
 
 > `optional` **message?**: `string`
 
-Defined in: [src/services/transaction.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L36)
+Defined in: [src/services/transaction.service.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L35)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [src/services/transaction.service.ts:36](https://github.com/andrewki
 
 > **network**: `"mainnet"`
 
-Defined in: [src/services/transaction.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L29)
+Defined in: [src/services/transaction.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L28)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [src/services/transaction.service.ts:29](https://github.com/andrewki
 
 > **to**: `` `0x${string}` ``
 
-Defined in: [src/services/transaction.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L31)
+Defined in: [src/services/transaction.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L30)
 
 ***
 
@@ -72,4 +72,4 @@ Defined in: [src/services/transaction.service.ts:31](https://github.com/andrewki
 
 > **token**: `string`
 
-Defined in: [src/services/transaction.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/transaction.service.ts#L32)
+Defined in: [src/services/transaction.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/transaction.service.ts#L31)

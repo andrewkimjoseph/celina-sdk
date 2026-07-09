@@ -1,163 +1,163 @@
-# CelinaClient
-
-[**@andrewkimjoseph/celina-sdk**](../../)
+[**@andrewkimjoseph/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / CelinaClient
+[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / CelinaClient
 
-## Interface: CelinaClient
+# Interface: CelinaClient
 
-Defined in: [src/index.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L40)
+Defined in: [src/index.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L40)
 
 Domain services for Celo mainnet reads and unsigned transaction preparation.
 
-### Properties
+## Properties
 
-#### aave
+### aave
 
 > **aave**: [`AaveService`](../../services/aave.service/classes/AaveService.md)
 
-Defined in: [src/index.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L54)
+Defined in: [src/index.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L54)
 
 Aave V3 `getBalances`, `prepareSupply`, and `prepareWithdraw` on Celo.
 
 ***
 
-#### account
+### account
 
 > **account**: [`AccountService`](../../services/account.service/classes/AccountService.md)
 
-Defined in: [src/index.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L44)
+Defined in: [src/index.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L44)
 
 CELO balance and nonce for an address.
 
 ***
 
-#### agentKarma
+### agentKarma
 
 > **agentKarma**: [`AgentKarmaService`](../../services/agentkarma.service/classes/AgentKarmaService.md)
 
-Defined in: [src/index.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L74)
+Defined in: [src/index.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L74)
 
-Optional AgentKarma reputation insight (read-only, agentkarma.io). Ecosystem adapter: Provider/Consumer karma, ERC-8004 Celo agents, and local trust-policy checks. Never routes, signs, or holds custody.
+Optional AgentKarma reputation insight (read-only, agentkarma.io).
+Ecosystem adapter: Provider/Consumer karma, ERC-8004 Celo agents, and
+local trust-policy checks. Never routes, signs, or holds custody.
 
 ***
 
-#### blockchain
+### blockchain
 
 > **blockchain**: [`BlockchainService`](../../services/blockchain.service/classes/BlockchainService.md)
 
-Defined in: [src/index.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L42)
+Defined in: [src/index.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L42)
 
 Blocks, transactions, and network status.
 
 ***
 
-#### contract
+### contract
 
 > **contract**: [`ContractService`](../../services/contract.service/classes/ContractService.md)
 
-Defined in: [src/index.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L66)
+Defined in: [src/index.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L66)
 
 Generic read-only contract calls and gas estimates.
 
 ***
 
-#### ens
+### ens
 
 > **ens**: [`EnsService`](../../services/ens.service/classes/EnsService.md)
 
-Defined in: [src/index.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L58)
+Defined in: [src/index.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L58)
 
 Celo and Ethereum ENS resolution.
 
 ***
 
-#### gooddollar
+### gooddollar
 
 > **gooddollar**: [`GoodDollarService`](../../services/gooddollar.service/classes/GoodDollarService.md)
 
-Defined in: [src/index.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L56)
+Defined in: [src/index.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L56)
 
 GoodDollar IdentityV4 whitelist, UBI claims, and G$ ↔ USDm reserve swaps.
 
 ***
 
-#### governance
+### governance
 
 > **governance**: [`GovernanceService`](../../services/governance.service/classes/GovernanceService.md)
 
-Defined in: [src/index.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L60)
+Defined in: [src/index.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L60)
 
 Celo governance proposals and details.
 
 ***
 
-#### mentoFx
+### mentoFx
 
 > **mentoFx**: [`MentoFxService`](../../services/mento-fx.service/classes/MentoFxService.md)
 
-Defined in: [src/index.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L50)
+Defined in: [src/index.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L50)
 
 Mento FX quotes, estimates, and `prepareFx` flows.
 
 ***
 
-#### nft
+### nft
 
 > **nft**: [`NftService`](../../services/nft.service/classes/NftService.md)
 
-Defined in: [src/index.ts:64](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L64)
+Defined in: [src/index.ts:64](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L64)
 
 ERC-721 / ERC-1155 NFT reads.
 
 ***
 
-#### self
+### self
 
-> **self**: [`SelfService`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/self.service/classes/SelfService.md)
+> **self**: [`SelfService`](../../services/self.service/classes/SelfService.md)
 
-Defined in: [src/index.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L68)
+Defined in: [src/index.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L68)
 
 Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry).
 
 ***
 
-#### staking
+### staking
 
 > **staking**: [`StakingService`](../../services/staking.service/classes/StakingService.md)
 
-Defined in: [src/index.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L62)
+Defined in: [src/index.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L62)
 
 Validator election staking reads.
 
 ***
 
-#### token
+### token
 
 > **token**: [`TokenService`](../../services/token.service/classes/TokenService.md)
 
-Defined in: [src/index.ts:46](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L46)
+Defined in: [src/index.ts:46](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L46)
 
 Token balances, metadata, and stablecoin scans.
 
 ***
 
-#### transaction
+### transaction
 
 > **transaction**: [`TransactionService`](../../services/transaction.service/classes/TransactionService.md)
 
-Defined in: [src/index.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L48)
+Defined in: [src/index.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L48)
 
 Send estimates, gas fees, and `prepareSend` flows.
 
 ***
 
-#### uniswap
+### uniswap
 
 > **uniswap**: [`UniswapService`](../../services/uniswap.service/classes/UniswapService.md)
 
-Defined in: [src/index.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L52)
+Defined in: [src/index.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/index.ts#L52)
 
 Uniswap v4 quotes, estimates, and `prepareSwap` flows.

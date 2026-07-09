@@ -73,7 +73,9 @@ See [MCP session wallet](../guides/mcp-session-wallet.md) for wallet param rules
 |--------|---------|
 | `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
 | `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run each `PreparedTx` before broadcast |
-| `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata |
+| `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata; optional `attributionTags` from `createCelinaClient()` |
+
+`createCelinaClient({ attributionTags })` flows into all `prepare*` services — each step's calldata is tagged via `appendCelinaCalldataTag` using the client config.
 
 These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported from the package entry.
 

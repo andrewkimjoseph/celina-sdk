@@ -1,73 +1,71 @@
-# GovernanceProposalsOptions
-
-[**@andrewkimjoseph/celina-sdk**](../../../)
+[**@andrewkimjoseph/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../) / [services/governance.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/governance.service/README.md) / GovernanceProposalsOptions
+[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/governance.service](../README.md) / GovernanceProposalsOptions
 
-## Interface: GovernanceProposalsOptions
+# Interface: GovernanceProposalsOptions
 
-Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L20)
+Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L20)
 
 Pagination and metadata options for governance proposal lists.
 
-### Properties
+## Properties
 
-#### includeInactive?
+### includeInactive?
 
 > `optional` **includeInactive?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L22)
+Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L22)
 
 Include expired, rejected, and withdrawn proposals (default `true`).
 
 ***
 
-#### includeMetadata?
+### includeMetadata?
 
 > `optional` **includeMetadata?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L24)
+Defined in: [src/services/governance.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L24)
 
 Fetch CGP frontmatter from GitHub (default `true`).
 
 ***
 
-#### limit?
+### limit?
 
 > `optional` **limit?**: `number`
 
-Defined in: [src/services/governance.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L32)
+Defined in: [src/services/governance.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L32)
 
 Max proposals when using `offset` (capped at 100).
 
 ***
 
-#### offset?
+### offset?
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/services/governance.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L30)
+Defined in: [src/services/governance.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L30)
 
 Zero-based offset into the proposal id list.
 
 ***
 
-#### page?
+### page?
 
 > `optional` **page?**: `number`
 
-Defined in: [src/services/governance.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L26)
+Defined in: [src/services/governance.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L26)
 
 Page number (1-based); used with `pageSize` when set.
 
 ***
 
-#### pageSize?
+### pageSize?
 
 > `optional` **pageSize?**: `number`
 
-Defined in: [src/services/governance.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/governance.service.ts#L28)
+Defined in: [src/services/governance.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/governance.service.ts#L28)
 
 Proposals per page when using `page` (1–20, default 10).

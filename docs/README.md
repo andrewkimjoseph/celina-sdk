@@ -44,7 +44,7 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 The SDK never holds or uses CELO wallet keys. Call `prepare*` with the user's address, then pass `steps` to wagmi.
 
-Prepared calldata includes a **CELINA attribution suffix** on every tagged step — see [Prepared flows](concepts/prepared-flows.md).
+Prepared calldata includes a **CELINA attribution suffix** on every tagged step. Optional `attributionTags` on `createCelinaClient()` append custom tags (`CELINA|TAG1|TAG2`) — see [Configuration](getting-started/configuration.md) and [Prepared flows](concepts/prepared-flows.md).
 
 ### Quick start
 
