@@ -3,10 +3,35 @@ import { concat, stringToHex } from "viem";
 /** Calldata suffix appended to prepared transactions for on-chain Celina attribution. */
 export const CELINA_DATA_SUFFIX = stringToHex("CELINA");
 
-/** Append CELINA suffix to calldata; no-op when empty or already tagged. */
-export function appendCelinaCalldataTag(data: `0x${string}`): `0x${string}` {
+/** Normalize custom attribution tags while preserving first-seen order. */
+export function normalizeAttributionTags(tags?: string[]): string[] {
+  if (!tags?.length) return [];
+  const deduped = new Set<string>();
+  for (const tag of tags) {
+    const normalized = tag.trim().toUpperCase();
+    if (!normalized || normalized === "CELINA" || deduped.has(normalized)) continue;
+    deduped.add(normalized);
+  }
+  return [...deduped];
+}
+
+/** Build deterministic attribution tag string that always starts with `CELINA`. */
+export function buildCelinaAttributionTag(tags?: string[]): string {
+  const normalized = normalizeAttributionTags(tags);
+  return normalized.length ? `CELINA|${normalized.join("|")}` : "CELINA";
+}
+
+/**
+ * Append CELINA attribution suffix to calldata; no-op when empty or already tagged.
+ * Custom tags are appended after CELINA as `CELINA|TAG1|TAG2`.
+ */
+export function appendCelinaCalldataTag(
+  data: `0x${string}`,
+  attributionTags?: string[],
+): `0x${string}` {
   if (!data || data === "0x") return data;
-  const suffix = CELINA_DATA_SUFFIX.slice(2);
+  const suffixHex = stringToHex(buildCelinaAttributionTag(attributionTags));
+  const suffix = suffixHex.slice(2);
   if (data.toLowerCase().endsWith(suffix.toLowerCase())) return data;
-  return concat([data, CELINA_DATA_SUFFIX]);
+  return concat([data, suffixHex]);
 }

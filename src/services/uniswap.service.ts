@@ -4,7 +4,6 @@
  * Pool discovery prefers the v4 subgraph; falls back to on-chain hub probing when unavailable.
  */
 import {
-  concat,
   encodeFunctionData,
   erc20Abi,
   formatUnits,
@@ -20,7 +19,7 @@ import {
   V4Planner,
 } from "../clients/uniswap-sdk.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
   UNISWAP_V4,
   uniswapInputTokenAddress,
@@ -53,10 +52,6 @@ export interface UniswapSwapParams {
 const DEFAULT_SLIPPAGE = 0.5;
 const DEFAULT_DEADLINE_MINUTES = 5;
 const PERMIT2_MAX_UINT160 = (1n << 160n) - 1n;
-
-function taggedCalldata(data: Hex): Hex {
-  return concat([data, CELINA_DATA_SUFFIX]);
-}
 
 function trimDisplayDecimals(value: string): string {
   const num = Number(value);
@@ -94,9 +89,11 @@ function formatUniswapError(
 /** Uniswap v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet. */
 export class UniswapService {
   private readonly tokenService: TokenService;
+  private readonly attributionTags?: string[];
 
   constructor(private readonly clientFactory: CeloClientFactory) {
     this.tokenService = new TokenService(clientFactory);
+    this.attributionTags = clientFactory.getConfig().attributionTags;
   }
 
   private resolvePair(tokenIn: string, tokenOut: string) {
@@ -286,12 +283,13 @@ export class UniswapService {
       steps.push({
         kind: "erc20",
         to: token,
-        data: taggedCalldata(
+        data: appendCelinaCalldataTag(
           encodeFunctionData({
             abi: erc20Abi,
             functionName: "approve",
             args: [UNISWAP_V4.permit2, maxUint256],
           }),
+          this.attributionTags,
         ),
         value: "0",
         description: `Approve ${tokenSymbol} for Uniswap Permit2`,
@@ -313,7 +311,7 @@ export class UniswapService {
       steps.push({
         kind: "contract",
         to: UNISWAP_V4.permit2,
-        data: taggedCalldata(
+        data: appendCelinaCalldataTag(
           encodeFunctionData({
             abi: permit2Abi,
             functionName: "approve",
@@ -324,6 +322,7 @@ export class UniswapService {
               Number(deadline),
             ],
           }),
+          this.attributionTags,
         ),
         value: "0",
         description: `Permit2 approve ${tokenSymbol} for Uniswap Universal Router`,
@@ -444,7 +443,10 @@ export class UniswapService {
         built.deadline,
       );
       const swapTx = this.buildUniversalRouterCalldata(built, recipient);
-      const taggedSwapData = taggedCalldata(swapTx.data);
+      const taggedSwapData = appendCelinaCalldataTag(
+        swapTx.data,
+        this.attributionTags,
+      );
 
       const approvalGasEntries = await Promise.all(
         approvalSteps.map(async (step) =>
@@ -548,7 +550,7 @@ export class UniswapService {
         {
           kind: "contract",
           to: swapTx.to,
-          data: taggedCalldata(swapTx.data),
+          data: appendCelinaCalldataTag(swapTx.data, this.attributionTags),
           value: swapTx.value.toString(),
           description: `Swap ${displayIn} ${built.resolvedIn.symbol} → ~${displayOut} ${built.resolvedOut.symbol} via Uniswap v4`,
         },

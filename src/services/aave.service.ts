@@ -1,5 +1,5 @@
 /** Aave V3 on Celo: prepareSupply and prepareWithdraw return multi-step flows (approve + pool call). */
-import { concat, encodeFunctionData, erc20Abi, formatUnits } from "viem";
+import { encodeFunctionData, erc20Abi, formatUnits } from "viem";
 import { aavePoolAbi } from "../abis/aave-pool.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
 import {
@@ -8,7 +8,7 @@ import {
   resolveAaveAsset,
   type AaveAsset,
 } from "../config/aave.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
   type PreparedFlow,
   type PreparedTx,
@@ -17,16 +17,14 @@ import {
 } from "../types/prepared.js";
 import { TokenService } from "./token.service.js";
 
-function taggedCalldata(data: `0x${string}`): `0x${string}` {
-  return concat([data, CELINA_DATA_SUFFIX]);
-}
-
 /** Aave V3 supplied balance reads and supply/withdraw prepared flows on Celo mainnet. */
 export class AaveService {
   private readonly tokenService: TokenService;
+  private readonly attributionTags?: string[];
 
   constructor(private readonly clientFactory: CeloClientFactory) {
     this.tokenService = new TokenService(clientFactory);
+    this.attributionTags = clientFactory.getConfig().attributionTags;
   }
 
   private getPublicClient() {
@@ -193,12 +191,13 @@ export class AaveService {
     const steps: PreparedTx[] = [];
 
     if (await this.needsApproval(asset.underlying, from, amountWei)) {
-      const approveData = taggedCalldata(
+      const approveData = appendCelinaCalldataTag(
         encodeFunctionData({
           abi: erc20Abi,
           functionName: "approve",
           args: [AAVE_POOL, amountWei],
         }),
+        this.attributionTags,
       );
       steps.push({
         kind: "erc20",
@@ -209,12 +208,13 @@ export class AaveService {
       });
     }
 
-    const supplyData = taggedCalldata(
+    const supplyData = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: aavePoolAbi,
         functionName: "supply",
         args: [asset.underlying, amountWei, from, 0],
       }),
+      this.attributionTags,
     );
 
     steps.push({
@@ -269,12 +269,13 @@ export class AaveService {
       throw new Error(`No supplied ${asset.symbol} balance to withdraw.`);
     }
 
-    const withdrawData = taggedCalldata(
+    const withdrawData = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: aavePoolAbi,
         functionName: "withdraw",
         args: [asset.underlying, amountWei, from],
       }),
+      this.attributionTags,
     );
 
     const amountLabel = withdrawMax ? "max" : amount!;

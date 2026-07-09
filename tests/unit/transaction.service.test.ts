@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { encodeFunctionData, erc20Abi, parseEther } from "viem";
 import { CeloClientFactory } from "../../src/clients/celo-client.js";
 import { MENTO_CELO_ADDRESS } from "../../src/config/chains.js";
-import { CELINA_DATA_SUFFIX } from "../../src/config/celina-tag.js";
+import { appendCelinaCalldataTag, CELINA_DATA_SUFFIX } from "../../src/config/celina-tag.js";
 import { resolveSdkConfig } from "../../src/config/sdk-config.js";
 import { TransactionService } from "../../src/services/transaction.service.js";
 
@@ -38,5 +38,24 @@ describe("TransactionService.prepareSend", () => {
     expect(step.kind).toBe("erc20");
     expect(step.to).toBe("0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e");
     expect(step.value).toBe("0");
+  });
+
+  it("appends custom attribution tags after CELINA", async () => {
+    const customService = new TransactionService(
+      new CeloClientFactory(
+        resolveSdkConfig({ attributionTags: ["celeste_ai", "session_x"] }),
+      ),
+    );
+    const flow = await customService.prepareSend(from, to, "USDT", "1");
+    const step = flow.steps[0]!;
+    const expectedTransfer = encodeFunctionData({
+      abi: erc20Abi,
+      functionName: "transfer",
+      args: [to, 1_000_000n],
+    });
+
+    expect(step.data).toBe(
+      appendCelinaCalldataTag(expectedTransfer, ["celeste_ai", "session_x"]),
+    );
   });
 });

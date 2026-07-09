@@ -3,7 +3,6 @@
  * Uses @mento-protocol/mento-sdk for routing and simulates allowance via state overrides.
  */
 import {
-  concat,
   decodeFunctionData,
   erc20Abi,
   formatUnits,
@@ -18,7 +17,7 @@ import {
   type CallParams,
 } from "../clients/mento-sdk.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import { toMentoTokenAddress } from "../config/chains.js";
 import {
   ALLOWANCE_MAPPING_SLOTS,
@@ -115,20 +114,17 @@ function parseErc20Approve(params: CallParams): Erc20ApproveCall | null {
   }
 }
 
-function taggedCalldata(data: Hex): Hex {
-  return concat([data, CELINA_DATA_SUFFIX]);
-}
-
 function callParamsToPreparedTx(
   params: CallParams,
   description: string,
+  attributionTags?: string[],
 ): PreparedTx {
   const approve = parseErc20Approve(params);
   if (approve) {
     return {
       kind: "erc20",
       to: approve.token,
-      data: taggedCalldata(params.data as Hex),
+      data: appendCelinaCalldataTag(params.data as Hex, attributionTags),
       value: "0",
       description,
     };
@@ -137,7 +133,7 @@ function callParamsToPreparedTx(
   return {
     kind: "contract",
     to: params.to as `0x${string}`,
-    data: taggedCalldata(params.data as Hex),
+    data: appendCelinaCalldataTag(params.data as Hex, attributionTags),
     value: BigInt(params.value).toString(),
     description,
   };
@@ -146,9 +142,11 @@ function callParamsToPreparedTx(
 /** Mento FX quotes, gas estimates, and `prepareFx` flows on Celo mainnet. */
 export class MentoFxService {
   private readonly tokenService: TokenService;
+  private readonly attributionTags?: string[];
 
   constructor(private readonly clientFactory: CeloClientFactory) {
     this.tokenService = new TokenService(clientFactory);
+    this.attributionTags = clientFactory.getConfig().attributionTags;
   }
 
   private async getMentoClient(publicClient: CeloClients["public"]) {
@@ -477,6 +475,7 @@ export class MentoFxService {
           callParamsToPreparedTx(
             approval,
             `Approve ${resolvedIn.symbol} for Mento FX`,
+            this.attributionTags,
           ),
         );
       }
@@ -485,6 +484,7 @@ export class MentoFxService {
         callParamsToPreparedTx(
           swap.params,
           `Swap ${displayIn} ${resolvedIn.symbol} → ~${displayOut} ${resolvedOut.symbol}`,
+          this.attributionTags,
         ),
       );
 

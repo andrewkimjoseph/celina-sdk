@@ -2,7 +2,6 @@
  * GoodDollar IdentityV4 whitelist, reverification reads, UBI claims, and reserve swaps on Celo mainnet.
  */
 import {
-  concat,
   encodeFunctionData,
   erc20Abi,
   formatUnits,
@@ -23,7 +22,7 @@ import {
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
   isGoodDollarUsdReservePair,
 } from "../config/gooddollar.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
   type PreparedFlow,
   type PreparedTx,
@@ -60,10 +59,6 @@ const LEGACY_AUTH_CUTOFF = 1772697574;
 
 function statusLabel(status: number): string {
   return STATUS_LABELS[status] ?? "unknown";
-}
-
-function taggedCalldata(data: Hex): Hex {
-  return concat([data, CELINA_DATA_SUFFIX]);
 }
 
 export type GoodDollarReserveAmountSide = "in" | "out";
@@ -118,9 +113,11 @@ function tokenAddress(token: ResolvedToken): `0x${string}` {
 /** GoodDollar IdentityV4 whitelist, reverification, daily UBI claim, and reserve swap preparation. */
 export class GoodDollarService {
   private readonly tokenService: TokenService;
+  private readonly attributionTags?: string[];
 
   constructor(private readonly clientFactory: CeloClientFactory) {
     this.tokenService = new TokenService(clientFactory);
+    this.attributionTags = clientFactory.getConfig().attributionTags;
   }
 
   private getPublicClient() {
@@ -485,11 +482,12 @@ export class GoodDollarService {
     }
 
     const publicClient = this.getPublicClient();
-    const claimData = taggedCalldata(
+    const claimData = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: ubiSchemeAbi,
         functionName: "claim",
       }),
+      this.attributionTags,
     );
 
     await publicClient.estimateContractGas({
@@ -697,7 +695,7 @@ export class GoodDollarService {
 
     const amountOutMin = applySlippage(expectedOutWei, slippageTolerance);
 
-    const swapData = taggedCalldata(
+    const swapData = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: goodDollarBrokerAbi,
         functionName: "swapIn",
@@ -710,6 +708,7 @@ export class GoodDollarService {
           amountOutMin,
         ],
       }),
+      this.attributionTags,
     );
 
     return {
@@ -731,12 +730,13 @@ export class GoodDollarService {
   }
 
   private buildReserveApprovalData(): Hex {
-    return taggedCalldata(
+    return appendCelinaCalldataTag(
       encodeFunctionData({
         abi: erc20Abi,
         functionName: "approve",
         args: [GOODDOLLAR_MENTO_BROKER, maxUint256],
       }),
+      this.attributionTags,
     );
   }
 

@@ -1,6 +1,5 @@
 import * as ed from "@noble/ed25519";
 import {
-  concat,
   getAddress,
   hexToBytes,
   isAddressEqual,
@@ -32,7 +31,7 @@ import {
   SELF_REGISTRY_ADDRESS,
   selfDemoUrl,
 } from "../config/self.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
   deleteSelfSession,
   getSelfSession,
@@ -121,7 +120,10 @@ function normalizeCredentials(raw: {
 export class SelfService {
   constructor(
     private readonly clientFactory: CeloClientFactory,
-    private readonly config: Pick<SdkConfig, "selfAgentPrivateKey" | "selfApiBase">,
+    private readonly config: Pick<
+      SdkConfig,
+      "selfAgentPrivateKey" | "selfApiBase" | "attributionTags"
+    >,
   ) {}
 
   private get apiBase(): string | undefined {
@@ -960,6 +962,6 @@ export class SelfService {
 
   /** Reserved for future on-chain Self writes (e.g. metadata updates). */
   protected taggedCalldata(data: Hex): Hex {
-    return concat([data, CELINA_DATA_SUFFIX]);
+    return appendCelinaCalldataTag(data, this.config.attributionTags);
   }
 }

@@ -6,6 +6,7 @@ describe("quote services skip balance checks", () => {
   it("getFxQuote does not call assertSpendableBalance when from is set", async () => {
     const service = new MentoFxService({
       getClients: () => ({ public: {} }),
+      getConfig: () => ({}),
     } as unknown as CeloClientFactory);
 
     const tokenService = (

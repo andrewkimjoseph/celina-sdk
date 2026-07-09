@@ -20,6 +20,11 @@ export class CeloClientFactory {
 
   constructor(private readonly config: SdkConfig) {}
 
+  /** Return resolved SDK config used by this factory. */
+  getConfig(): Readonly<SdkConfig> {
+    return this.config;
+  }
+
   /** Return a shared public client (created on first call). */
   getClients(): CeloClients {
     if (this.clients) {

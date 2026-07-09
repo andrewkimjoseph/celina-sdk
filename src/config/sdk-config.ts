@@ -25,6 +25,11 @@ export interface SdkConfig {
    * (e.g. MCP session signer with `CELO_PRIVATE_KEY`).
    */
   analyticsWalletAddress?: string;
+  /**
+   * Optional custom calldata attribution tags appended after the base `CELINA`
+   * suffix on prepared transaction steps.
+   */
+  attributionTags?: string[];
 }
 
 /** Default Celo RPC when `rpcUrl` is omitted. */
@@ -55,5 +60,6 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
     analyticsDeviceId:
       opts?.analyticsDeviceId ?? detectConsumerPackageName(),
     analyticsWalletAddress: opts?.analyticsWalletAddress,
+    attributionTags: opts?.attributionTags,
   };
 }

@@ -3,7 +3,6 @@
  * Calldata is tagged with CELINA_DATA_SUFFIX for on-chain attribution.
  */
 import {
-  concat,
   encodeFunctionData,
   erc20Abi,
   parseEther,
@@ -12,7 +11,7 @@ import {
 } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { MENTO_CELO_ADDRESS } from "../config/chains.js";
-import { CELINA_DATA_SUFFIX } from "../config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import { normalizeAddress } from "../utils/normalize-address.js";
 import {
   type PreparedFlow,
@@ -36,16 +35,14 @@ export type SendEstimateResult = {
   message?: string;
 };
 
-function taggedCalldata(data: Hex): Hex {
-  return concat([data, CELINA_DATA_SUFFIX]);
-}
-
 /** Token sends, gas fee reads, and `prepareSend` flows with CELINA calldata tags. */
 export class TransactionService {
   private readonly tokenService: TokenService;
+  private readonly attributionTags?: string[];
 
   constructor(private readonly clientFactory: CeloClientFactory) {
     this.tokenService = new TokenService(clientFactory);
+    this.attributionTags = clientFactory.getConfig().attributionTags;
   }
 
   /**
@@ -128,12 +125,13 @@ export class TransactionService {
 
     if (resolved.address === "native") {
       const tokenAmount = parseEther(amount);
-      const data = taggedCalldata(
+      const data = appendCelinaCalldataTag(
         encodeFunctionData({
           abi: erc20Abi,
           functionName: "transfer",
           args: [to, tokenAmount],
         }),
+        this.attributionTags,
       );
 
       const flow: PreparedFlow = {
@@ -154,12 +152,13 @@ export class TransactionService {
     }
 
     const tokenAmount = this.tokenService.parseAmount(amount, resolved.decimals);
-    const data = taggedCalldata(
+    const data = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: erc20Abi,
         functionName: "transfer",
         args: [to, tokenAmount],
       }),
+      this.attributionTags,
     );
 
     const flow: PreparedFlow = {
