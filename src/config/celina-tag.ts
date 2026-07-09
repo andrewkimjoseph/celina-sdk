@@ -3,12 +3,23 @@ import { concat, stringToHex } from "viem";
 /** Calldata suffix appended to prepared transactions for on-chain Celina attribution. */
 export const CELINA_DATA_SUFFIX = stringToHex("CELINA");
 
+/** Celo Builders on-chain attribution tag: `celo_` + 12 hex chars (lowercase). */
+const CELO_BUILDERS_TAG = /^celo_[0-9a-f]{12}$/i;
+
+function normalizeAttributionTag(tag: string): string {
+  const trimmed = tag.trim();
+  if (CELO_BUILDERS_TAG.test(trimmed)) {
+    return trimmed.toLowerCase();
+  }
+  return trimmed.toUpperCase();
+}
+
 /** Normalize custom attribution tags while preserving first-seen order. */
 export function normalizeAttributionTags(tags?: string[]): string[] {
   if (!tags?.length) return [];
   const deduped = new Set<string>();
   for (const tag of tags) {
-    const normalized = tag.trim().toUpperCase();
+    const normalized = normalizeAttributionTag(tag);
     if (!normalized || normalized === "CELINA" || deduped.has(normalized)) continue;
     deduped.add(normalized);
   }
