@@ -1,18 +1,20 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# MentoFxParams
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/mento-fx.service](../README.md) / MentoFxParams
+[@andrewkimjoseph/celina-sdk](../../../) / [services/mento-fx.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/mento-fx.service/README.md) / MentoFxParams
 
-# Interface: MentoFxParams
+## Interface: MentoFxParams
 
 Defined in: [src/services/mento-fx.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/mento-fx.service.ts#L37)
 
 Optional parameters for Mento FX swap estimates and prepares.
 
-## Properties
+### Properties
 
-### deadlineMinutes?
+#### deadlineMinutes?
 
 > `optional` **deadlineMinutes?**: `number`
 
@@ -22,7 +24,7 @@ Swap deadline in minutes from now (default `5`).
 
 ***
 
-### recipient?
+#### recipient?
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
@@ -32,7 +34,7 @@ Address receiving output tokens (default: `from`).
 
 ***
 
-### slippageTolerance?
+#### slippageTolerance?
 
 > `optional` **slippageTolerance?**: `number`
 

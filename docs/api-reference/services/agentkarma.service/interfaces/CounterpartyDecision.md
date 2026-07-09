@@ -1,18 +1,20 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# CounterpartyDecision
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/agentkarma.service](../README.md) / CounterpartyDecision
+[@andrewkimjoseph/celina-sdk](../../../) / [services/agentkarma.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/agentkarma.service/README.md) / CounterpartyDecision
 
-# Interface: CounterpartyDecision
+## Interface: CounterpartyDecision
 
 Defined in: [src/services/agentkarma.service.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L48)
 
 Result of a local counterparty trust evaluation.
 
-## Properties
+### Properties
 
-### chain
+#### chain
 
 > **chain**: `"celo"`
 
@@ -22,9 +24,9 @@ Always `"celo"` — this adapter is Celo-pinned.
 
 ***
 
-### decision
+#### decision
 
-> **decision**: [`TrustDecision`](../../../index/interfaces/TrustDecision.md)
+> **decision**: [`TrustDecision`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/TrustDecision.md)
 
 Defined in: [src/services/agentkarma.service.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L54)
 
@@ -32,9 +34,9 @@ Explainable allow/deny from the local policy (no network, pure function).
 
 ***
 
-### snapshot
+#### snapshot
 
-> **snapshot**: [`KarmaSnapshot`](../../../index/interfaces/KarmaSnapshot.md)
+> **snapshot**: [`KarmaSnapshot`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/KarmaSnapshot.md)
 
 Defined in: [src/services/agentkarma.service.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L56)
 
@@ -42,7 +44,7 @@ The karma snapshot the decision was computed from.
 
 ***
 
-### wallet
+#### wallet
 
 > **wallet**: `string`
 

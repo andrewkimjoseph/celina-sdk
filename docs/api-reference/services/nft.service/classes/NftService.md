@@ -1,103 +1,105 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# NftService
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/nft.service](../README.md) / NftService
+[@andrewkimjoseph/celina-sdk](../../../) / [services/nft.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/nft.service/README.md) / NftService
 
-# Class: NftService
+## Class: NftService
 
 Defined in: [src/services/nft.service.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/nft.service.ts#L37)
 
 ERC-721 / ERC-1155 collection and balance reads with optional metadata fetch.
 
-## Constructors
+### Constructors
 
-### Constructor
+#### Constructor
 
 > **new NftService**(`clientFactory`): `NftService`
 
 Defined in: [src/services/nft.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/nft.service.ts#L38)
 
-#### Parameters
+**Parameters**
 
-##### clientFactory
+**clientFactory**
 
 `CeloClientFactory`
 
-#### Returns
+**Returns**
 
 `NftService`
 
-## Methods
+### Methods
 
-### getNftBalance()
+#### getNftBalance()
 
-> **getNftBalance**(`contractAddress`, `ownerAddress`, `tokenId?`): `Promise`\<\{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC721"`; `tokenId`: `string` \| `null`; \} \| \{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC1155"`; `tokenId`: `string`; \}\>
+> **getNftBalance**(`contractAddress`, `ownerAddress`, `tokenId?`): `Promise`<{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC721"`; `tokenId`: `string` | `null`; } | { `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC1155"`; `tokenId`: `string`; }>
 
 Defined in: [src/services/nft.service.ts:202](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/nft.service.ts#L202)
 
 NFT balance for an owner (ERC-721 collection total or ERC-1155 id-specific balance).
 
-#### Parameters
+**Parameters**
 
-##### contractAddress
+**contractAddress**
 
 `` `0x${string}` ``
 
 NFT collection contract
 
-##### ownerAddress
+**ownerAddress**
 
 `` `0x${string}` ``
 
 Holder wallet address
 
-##### tokenId?
+**tokenId?**
 
 `string`
 
 Required for ERC-1155; ignored for ERC-721 collection balance
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC721"`; `tokenId`: `string` \| `null`; \} \| \{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC1155"`; `tokenId`: `string`; \}\>
+`Promise`<{ `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC721"`; `tokenId`: `string` | `null`; } | { `balance`: `string`; `contractAddress`: `` `0x${string}` ``; `network`: `"mainnet"`; `ownerAddress`: `` `0x${string}` ``; `standard`: `"ERC1155"`; `tokenId`: `string`; }>
 
 Balance as decimal string and detected standard
 
-#### Throws
+**Throws**
 
 When ERC-1155 is detected but `tokenId` is omitted
 
 ***
 
-### getNftInfo()
+#### getNftInfo()
 
-> **getNftInfo**(`contractAddress`, `tokenId`): `Promise`\<\{ `attributes`: \{ \}; `collection`: \{ `name`: `string`; `symbol`: `string`; `totalSupply`: `string` \| `undefined`; \}; `contractAddress`: `` `0x${string}` ``; `description`: `string` \| `undefined`; `image`: `string` \| `undefined`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `metadataUri`: `string` \| `null`; `name`: `string`; `network`: `"mainnet"`; `owner`: `` `0x${string}` `` \| `null`; `standard`: `NftStandard`; `tokenId`: `string`; \}\>
+> **getNftInfo**(`contractAddress`, `tokenId`): `Promise`<{ `attributes`: { }; `collection`: { `name`: `string`; `symbol`: `string`; `totalSupply`: `string` | `undefined`; }; `contractAddress`: `` `0x${string}` ``; `description`: `string` | `undefined`; `image`: `string` | `undefined`; `metadata`: `Record`<`string`, `unknown`> | `null`; `metadataUri`: `string` | `null`; `name`: `string`; `network`: `"mainnet"`; `owner`: `` `0x${string}` `` | `null`; `standard`: `NftStandard`; `tokenId`: `string`; }>
 
 Defined in: [src/services/nft.service.ts:92](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/nft.service.ts#L92)
 
 Collection and token metadata for an ERC-721 or ERC-1155 contract.
 
-#### Parameters
+**Parameters**
 
-##### contractAddress
+**contractAddress**
 
 `` `0x${string}` ``
 
 NFT collection contract
 
-##### tokenId
+**tokenId**
 
 `string`
 
 Token id as decimal string
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `attributes`: \{ \}; `collection`: \{ `name`: `string`; `symbol`: `string`; `totalSupply`: `string` \| `undefined`; \}; `contractAddress`: `` `0x${string}` ``; `description`: `string` \| `undefined`; `image`: `string` \| `undefined`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `metadataUri`: `string` \| `null`; `name`: `string`; `network`: `"mainnet"`; `owner`: `` `0x${string}` `` \| `null`; `standard`: `NftStandard`; `tokenId`: `string`; \}\>
+`Promise`<{ `attributes`: { }; `collection`: { `name`: `string`; `symbol`: `string`; `totalSupply`: `string` | `undefined`; }; `contractAddress`: `` `0x${string}` ``; `description`: `string` | `undefined`; `image`: `string` | `undefined`; `metadata`: `Record`<`string`, `unknown`> | `null`; `metadataUri`: `string` | `null`; `name`: `string`; `network`: `"mainnet"`; `owner`: `` `0x${string}` `` | `null`; `standard`: `NftStandard`; `tokenId`: `string`; }>
 
 Standard, owner, collection info, and fetched JSON metadata when available
 
-#### Throws
+**Throws**
 
 When the address is not a deployed NFT contract

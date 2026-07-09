@@ -1,139 +1,141 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# BlockchainService
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/blockchain.service](../README.md) / BlockchainService
+[@andrewkimjoseph/celina-sdk](../../../) / [services/blockchain.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/blockchain.service/README.md) / BlockchainService
 
-# Class: BlockchainService
+## Class: BlockchainService
 
 Defined in: [src/services/blockchain.service.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L61)
 
 Celo mainnet block and transaction queries.
 
-## Constructors
+### Constructors
 
-### Constructor
+#### Constructor
 
 > **new BlockchainService**(`clientFactory`): `BlockchainService`
 
 Defined in: [src/services/blockchain.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L62)
 
-#### Parameters
+**Parameters**
 
-##### clientFactory
+**clientFactory**
 
 `CeloClientFactory`
 
-#### Returns
+**Returns**
 
 `BlockchainService`
 
-## Methods
+### Methods
 
-### getBlock()
+#### getBlock()
 
-> **getBlock**(`blockId`, `options?`): `Promise`\<\{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` \| `null`; `miner`: `` `0x${string}` ``; `number`: `string` \| `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: (`` `0x${string}` `` \| \{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \})[] \| `undefined`; \}\>
+> **getBlock**(`blockId`, `options?`): `Promise`<{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` | `null`; `miner`: `` `0x${string}` ``; `number`: `string` | `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: (`` `0x${string}` `` | { `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; })\[] | `undefined`; }>
 
 Defined in: [src/services/blockchain.service.ts:91](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L91)
 
 Fetch a block by number, hash, or tag.
 
-#### Parameters
+**Parameters**
 
-##### blockId
+**blockId**
 
-`string` \| `number`
+`string` | `number`
 
 Block number, hash, `latest`, or `pending`
 
-##### options?
+**options?**
 
-###### includeTransactions?
+**includeTransactions?**
 
 `boolean`
 
 When true, include full transaction objects
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` \| `null`; `miner`: `` `0x${string}` ``; `number`: `string` \| `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: (`` `0x${string}` `` \| \{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \})[] \| `undefined`; \}\>
+`Promise`<{ `gasLimit`: `string`; `gasUsed`: `string`; `gasUtilization`: `number`; `hash`: `` `0x${string}` `` | `null`; `miner`: `` `0x${string}` ``; `number`: `string` | `undefined`; `parentHash`: `` `0x${string}` ``; `timestamp`: `string`; `transactionCount`: `number`; `transactions`: (`` `0x${string}` `` | { `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; })\[] | `undefined`; }>
 
 Block header fields and optional transaction list
 
-#### Throws
+**Throws**
 
 When the block is not found
 
 ***
 
-### getLatestBlocks()
+#### getLatestBlocks()
 
-> **getLatestBlocks**(`count?`, `offset?`): `Promise`\<`object`[]\>
+> **getLatestBlocks**(`count?`, `offset?`): `Promise`<`object`\[]>
 
 Defined in: [src/services/blockchain.service.ts:151](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L151)
 
 List recent blocks ending at the chain tip (newest last in the array).
 
-#### Parameters
+**Parameters**
 
-##### count?
+**count?**
 
 `number` = `5`
 
 Number of blocks to return (1–100, default 5)
 
-##### offset?
+**offset?**
 
 `number` = `0`
 
 Skip this many blocks from the tip before collecting
 
-#### Returns
+**Returns**
 
-`Promise`\<`object`[]\>
+`Promise`<`object`\[]>
 
 Summary fields per block (no full transaction payloads)
 
 ***
 
-### getNetworkStatus()
+#### getNetworkStatus()
 
-> **getNetworkStatus**(): `Promise`\<\{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; \}\>
+> **getNetworkStatus**(): `Promise`<{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; }>
 
 Defined in: [src/services/blockchain.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L68)
 
 Celo mainnet chain id, latest block number, and current gas price.
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; \}\>
+`Promise`<{ `blockNumber`: `string`; `chainId`: `number`; `gasPriceWei`: `string`; `network`: `string`; }>
 
 Network metadata including `chainId`, `blockNumber`, and `gasPriceWei`
 
 ***
 
-### getTransaction()
+#### getTransaction()
 
-> **getTransaction**(`hash`): `Promise`\<\{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \} \| \{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status?`: `string`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \}\>
+> **getTransaction**(`hash`): `Promise`<{ `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; } | { `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status?`: `string`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; }>
 
 Defined in: [src/services/blockchain.service.ts:187](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/blockchain.service.ts#L187)
 
 Fetch a transaction and its receipt by hash.
 
-#### Parameters
+**Parameters**
 
-##### hash
+**hash**
 
 `` `0x${string}` ``
 
 Transaction hash
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \} \| \{ `blockNumber`: `string` \| `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` \| `undefined`; `gasPriceGwei`: `number` \| `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status?`: `string`; `to`: `` `0x${string}` `` \| `null`; `transactionIndex`: `number` \| `null` \| `undefined`; `type`: `string` \| `undefined`; `value`: `string`; `valueCelo`: `number`; \}\>
+`Promise`<{ `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; } | { `blockNumber`: `string` | `undefined`; `from`: `` `0x${string}` ``; `gas`: `string`; `gasEfficiency`: `number`; `gasPrice`: `string` | `undefined`; `gasPriceGwei`: `number` | `undefined`; `gasUsed`: `string`; `hash`: `` `0x${string}` ``; `input`: `` `0x${string}` ``; `nonce`: `number`; `status?`: `string`; `to`: `` `0x${string}` `` | `null`; `transactionIndex`: `number` | `null` | `undefined`; `type`: `string` | `undefined`; `value`: `string`; `valueCelo`: `number`; }>
 
 Transaction fields, gas efficiency, and receipt status when mined
 
-#### Throws
+**Throws**
 
 When the transaction is not found

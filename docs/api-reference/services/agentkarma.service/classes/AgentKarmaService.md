@@ -1,10 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# AgentKarmaService
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/agentkarma.service](../README.md) / AgentKarmaService
+[@andrewkimjoseph/celina-sdk](../../../) / [services/agentkarma.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/agentkarma.service/README.md) / AgentKarmaService
 
-# Class: AgentKarmaService
+## Class: AgentKarmaService
 
 Defined in: [src/services/agentkarma.service.ts:77](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L77)
 
@@ -12,27 +14,27 @@ Read-only AgentKarma reputation insight for Celo agents.
 
 Exposed from `createCelinaClient()` as `client.agentKarma`.
 
-## Constructors
+### Constructors
 
-### Constructor
+#### Constructor
 
 > **new AgentKarmaService**(`config?`): `AgentKarmaService`
 
 Defined in: [src/services/agentkarma.service.ts:83](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L83)
 
-#### Parameters
+**Parameters**
 
-##### config?
+**config?**
 
 `ClientConfig` = `{}`
 
-#### Returns
+**Returns**
 
 `AgentKarmaService`
 
-## Properties
+### Properties
 
-### chain
+#### chain
 
 > `readonly` **chain**: `"celo"`
 
@@ -40,11 +42,11 @@ Defined in: [src/services/agentkarma.service.ts:81](https://github.com/andrewkim
 
 This adapter only ever talks to AgentKarma on the Celo chain.
 
-## Accessors
+### Accessors
 
-### baseUrl
+#### baseUrl
 
-#### Get Signature
+**Get Signature**
 
 > **get** **baseUrl**(): `string`
 
@@ -52,139 +54,130 @@ Defined in: [src/services/agentkarma.service.ts:91](https://github.com/andrewkim
 
 AgentKarma API base URL the adapter reads from.
 
-##### Returns
+**Returns**
 
 `string`
 
 ***
 
-### catalog
+#### catalog
 
-#### Get Signature
+**Get Signature**
 
-> **get** **catalog**(): readonly `AgentKarmaToolDescriptor`[]
+> **get** **catalog**(): readonly `AgentKarmaToolDescriptor`\[]
 
 Defined in: [src/services/agentkarma.service.ts:96](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L96)
 
 The canonical `@agentkarma/sdk/tools` descriptors this adapter draws from.
 
-##### Returns
+**Returns**
 
-readonly `AgentKarmaToolDescriptor`[]
+readonly `AgentKarmaToolDescriptor`\[]
 
-## Methods
+### Methods
 
-### evaluateCounterparty()
+#### evaluateCounterparty()
 
-> **evaluateCounterparty**(`wallet`, `policy?`): `Promise`\<[`CounterpartyDecision`](../interfaces/CounterpartyDecision.md)\>
+> **evaluateCounterparty**(`wallet`, `policy?`): `Promise`<[`CounterpartyDecision`](../interfaces/CounterpartyDecision.md)>
 
 Defined in: [src/services/agentkarma.service.ts:154](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L154)
 
-Fetch Celo karma and run a local, explainable trust policy against it.
-Pure evaluation — no routing, no signing, no side effects.
+Fetch Celo karma and run a local, explainable trust policy against it. Pure evaluation — no routing, no signing, no side effects.
 
-Always fetches BOTH faces so whichever face `policy.face` scores on
-(`provider` by default) is guaranteed present — there is intentionally no
-separate fetch-face knob to drift out of sync with the scored face.
+Always fetches BOTH faces so whichever face `policy.face` scores on (`provider` by default) is guaranteed present — there is intentionally no separate fetch-face knob to drift out of sync with the scored face.
 
-#### Parameters
+**Parameters**
 
-##### wallet
+**wallet**
 
 `string`
 
 Celo `0x` counterparty address.
 
-##### policy?
+**policy?**
 
 [`TrustPolicy`](../../../index/interfaces/TrustPolicy.md) = `{}`
 
 Local trust policy (face, minScore, requireReceiptBacked, …).
 
-#### Returns
+**Returns**
 
-`Promise`\<[`CounterpartyDecision`](../interfaces/CounterpartyDecision.md)\>
+`Promise`<[`CounterpartyDecision`](../interfaces/CounterpartyDecision.md)>
 
 ***
 
-### getCeloAgent()
+#### getCeloAgent()
 
-> **getCeloAgent**(`agentId`): `Promise`\<[`CeloAgentSnapshot`](../../../index/interfaces/CeloAgentSnapshot.md)\>
+> **getCeloAgent**(`agentId`): `Promise`<[`CeloAgentSnapshot`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/CeloAgentSnapshot.md)>
 
 Defined in: [src/services/agentkarma.service.ts:138](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L138)
 
-Resolve a Celo ERC-8004 agent (IdentityRegistry + ReputationRegistry)
-and its AgentKarma reputation by numeric agent ID. Routed through the
-shared catalog's `get_celo_agent` tool.
+Resolve a Celo ERC-8004 agent (IdentityRegistry + ReputationRegistry) and its AgentKarma reputation by numeric agent ID. Routed through the shared catalog's `get_celo_agent` tool.
 
-#### Parameters
+**Parameters**
 
-##### agentId
+**agentId**
 
 `number`
 
 Positive integer ERC-8004 agent ID on Celo.
 
-#### Returns
+**Returns**
 
-`Promise`\<[`CeloAgentSnapshot`](../../../index/interfaces/CeloAgentSnapshot.md)\>
+`Promise`<[`CeloAgentSnapshot`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/CeloAgentSnapshot.md)>
 
 ***
 
-### getKarma()
+#### getKarma()
 
-> **getKarma**(`wallet`, `options?`): `Promise`\<[`KarmaSnapshot`](../../../index/interfaces/KarmaSnapshot.md)\>
+> **getKarma**(`wallet`, `options?`): `Promise`<[`KarmaSnapshot`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/KarmaSnapshot.md)>
 
 Defined in: [src/services/agentkarma.service.ts:121](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L121)
 
-Provider + Consumer karma for a Celo agent wallet. Always queries Celo.
-Routed through the shared catalog's `get_karma` tool.
+Provider + Consumer karma for a Celo agent wallet. Always queries Celo. Routed through the shared catalog's `get_karma` tool.
 
-#### Parameters
+**Parameters**
 
-##### wallet
+**wallet**
 
 `string`
 
 Celo `0x` agent/wallet address to look up.
 
-##### options?
+**options?**
 
 [`GetKarmaOptions`](../interfaces/GetKarmaOptions.md) = `{}`
 
 Optional face selector (defaults to `"both"`).
 
-#### Returns
+**Returns**
 
-`Promise`\<[`KarmaSnapshot`](../../../index/interfaces/KarmaSnapshot.md)\>
+`Promise`<[`KarmaSnapshot`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/interfaces/KarmaSnapshot.md)>
 
 ***
 
-### runCatalogTool()
+#### runCatalogTool()
 
-> **runCatalogTool**(`name`, `input?`): `Promise`\<`unknown`\>
+> **runCatalogTool**(`name`, `input?`): `Promise`<`unknown`>
 
 Defined in: [src/services/agentkarma.service.ts:108](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/agentkarma.service.ts#L108)
 
-Execute a tool from the canonical `@agentkarma/sdk/tools` catalog,
-Celo-pinned. This is how Celina consumes the SHARED tool catalog instead of
-re-implementing each AgentKarma call: the names, schemas, arg-coercion, and
-handler logic all live in `@agentkarma/sdk`. `chain` is forced to `'celo'`.
+Execute a tool from the canonical `@agentkarma/sdk/tools` catalog, Celo-pinned. This is how Celina consumes the SHARED tool catalog instead of re-implementing each AgentKarma call: the names, schemas, arg-coercion, and handler logic all live in `@agentkarma/sdk`. `chain` is forced to `'celo'`.
 
-#### Parameters
+**Parameters**
 
-##### name
+**name**
 
 `string`
 
 A catalog tool name (e.g. `get_karma`, `get_celo_agent`).
 
-##### input?
+**input?**
 
-`Record`\<`string`, `unknown`\> = `{}`
+`Record`<`string`, `unknown`> = `{}`
 
 Tool arguments; `chain` is overridden to `'celo'`.
 
-#### Returns
+**Returns**
 
-`Promise`\<`unknown`\>
+`Promise`<`unknown`>

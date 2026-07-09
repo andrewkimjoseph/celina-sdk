@@ -1,10 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# serializePreparedFlow
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [types/prepared](../README.md) / serializePreparedFlow
+[@andrewkimjoseph/celina-sdk](../../../) / [types/prepared](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/types/prepared/README.md) / serializePreparedFlow
 
-# Function: serializePreparedFlow()
+## Function: serializePreparedFlow()
 
 > **serializePreparedFlow**(`flow`): [`SerializedPreparedFlow`](../interfaces/SerializedPreparedFlow.md)
 
@@ -12,12 +14,12 @@ Defined in: [src/types/prepared.ts:32](https://github.com/andrewkimjoseph/celina
 
 Marks a prepared flow as JSON-safe for API and chat tool responses.
 
-## Parameters
+### Parameters
 
-### flow
+#### flow
 
 [`PreparedFlow`](../interfaces/PreparedFlow.md)
 
-## Returns
+### Returns
 
 [`SerializedPreparedFlow`](../interfaces/SerializedPreparedFlow.md)

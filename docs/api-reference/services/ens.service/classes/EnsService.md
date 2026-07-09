@@ -1,83 +1,85 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# EnsService
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/ens.service](../README.md) / EnsService
+[@andrewkimjoseph/celina-sdk](../../../) / [services/ens.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/ens.service/README.md) / EnsService
 
-# Class: EnsService
+## Class: EnsService
 
 Defined in: [src/services/ens.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/ens.service.ts#L29)
 
 ENS name and address resolution for send/swap recipients.
 
-## Constructors
+### Constructors
 
-### Constructor
+#### Constructor
 
 > **new EnsService**(`ensClientFactory`): `EnsService`
 
 Defined in: [src/services/ens.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/ens.service.ts#L30)
 
-#### Parameters
+**Parameters**
 
-##### ensClientFactory
+**ensClientFactory**
 
 `EnsClientFactory`
 
-#### Returns
+**Returns**
 
 `EnsService`
 
-## Methods
+### Methods
 
-### resolveAddressOrEns()
+#### resolveAddressOrEns()
 
-> **resolveAddressOrEns**(`input`): `Promise`\<[`ResolvedRecipient`](../type-aliases/ResolvedRecipient.md)\>
+> **resolveAddressOrEns**(`input`): `Promise`<[`ResolvedRecipient`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/ens.service/type-aliases/ResolvedRecipient.md)>
 
 Defined in: [src/services/ens.service.ts:104](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/ens.service.ts#L104)
 
 Accept a raw `0x` address or ENS name; returns address plus optional ENS metadata.
 
-#### Parameters
+**Parameters**
 
-##### input
+**input**
 
 `string`
 
 Hex address or ENS name
 
-#### Returns
+**Returns**
 
-`Promise`\<[`ResolvedRecipient`](../type-aliases/ResolvedRecipient.md)\>
+`Promise`<[`ResolvedRecipient`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/ens.service/type-aliases/ResolvedRecipient.md)>
 
 ***
 
-### resolveEns()
+#### resolveEns()
 
-> **resolveEns**(`name`, `chain?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `chain`: `"ethereum"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia?`: `undefined`; \} \| \{ `address`: `` `0x${string}` ``; `chain`: `"celo"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia`: `"celo"` \| `"ethereum"`; \}\>
+> **resolveEns**(`name`, `chain?`): `Promise`<{ `address`: `` `0x${string}` ``; `chain`: `"ethereum"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia?`: `undefined`; } | { `address`: `` `0x${string}` ``; `chain`: `"celo"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia`: `"celo"` | `"ethereum"`; }>
 
 Defined in: [src/services/ens.service.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/ens.service.ts#L38)
 
 Resolve an ENS name on Celo or Ethereum to an address.
 
-#### Parameters
+**Parameters**
 
-##### name
+**name**
 
 `string`
 
 ENS name (e.g. `andrewkimjoseph.celo.eth`)
 
-##### chain?
+**chain?**
 
-[`EnsResolveChain`](../type-aliases/EnsResolveChain.md) = `"celo"`
+[`EnsResolveChain`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/ens.service/type-aliases/EnsResolveChain.md) = `"celo"`
 
 `"celo"` tries Celo coin type first, then Ethereum; `"ethereum"` uses ETH only
 
-#### Returns
+**Returns**
 
-`Promise`\<\{ `address`: `` `0x${string}` ``; `chain`: `"ethereum"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia?`: `undefined`; \} \| \{ `address`: `` `0x${string}` ``; `chain`: `"celo"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia`: `"celo"` \| `"ethereum"`; \}\>
+`Promise`<{ `address`: `` `0x${string}` ``; `chain`: `"ethereum"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia?`: `undefined`; } | { `address`: `` `0x${string}` ``; `chain`: `"celo"`; `coinType`: `string`; `name`: `string`; `normalizedName`: `string`; `resolvedVia`: `"celo"` | `"ethereum"`; }>
 
-#### Throws
+**Throws**
 
 When no address record exists for the name

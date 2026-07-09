@@ -1,10 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+# appendCelinaCalldataTag
+
+[**@andrewkimjoseph/celina-sdk**](../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / appendCelinaCalldataTag
+[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / appendCelinaCalldataTag
 
-# Function: appendCelinaCalldataTag()
+## Function: appendCelinaCalldataTag()
 
 > **appendCelinaCalldataTag**(`data`): `` `0x${string}` ``
 
@@ -12,12 +14,12 @@ Defined in: [src/config/celina-tag.ts:7](https://github.com/andrewkimjoseph/celi
 
 Append CELINA suffix to calldata; no-op when empty or already tagged.
 
-## Parameters
+### Parameters
 
-### data
+#### data
 
 `` `0x${string}` ``
 
-## Returns
+### Returns
 
 `` `0x${string}` ``

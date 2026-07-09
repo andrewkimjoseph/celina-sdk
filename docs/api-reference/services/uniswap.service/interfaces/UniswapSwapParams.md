@@ -1,18 +1,20 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+# UniswapSwapParams
+
+[**@andrewkimjoseph/celina-sdk**](../../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/uniswap.service](../README.md) / UniswapSwapParams
+[@andrewkimjoseph/celina-sdk](../../../) / [services/uniswap.service](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/uniswap.service/README.md) / UniswapSwapParams
 
-# Interface: UniswapSwapParams
+## Interface: UniswapSwapParams
 
 Defined in: [src/services/uniswap.service.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/services/uniswap.service.ts#L44)
 
 Optional parameters for Uniswap v4 swap estimates and prepares.
 
-## Properties
+### Properties
 
-### deadlineMinutes?
+#### deadlineMinutes?
 
 > `optional` **deadlineMinutes?**: `number`
 
@@ -22,7 +24,7 @@ Swap deadline in minutes from now (default `5`).
 
 ***
 
-### recipient?
+#### recipient?
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
@@ -32,7 +34,7 @@ Address receiving output tokens (default: `from`).
 
 ***
 
-### slippageTolerance?
+#### slippageTolerance?
 
 > `optional` **slippageTolerance?**: `number`
 

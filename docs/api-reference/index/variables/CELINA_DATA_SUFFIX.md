@@ -1,10 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+# CELINA\_DATA\_SUFFIX
+
+[**@andrewkimjoseph/celina-sdk**](../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / CELINA\_DATA\_SUFFIX
+[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / CELINA\_DATA\_SUFFIX
 
-# Variable: CELINA\_DATA\_SUFFIX
+## Variable: CELINA\_DATA\_SUFFIX
 
 > `const` **CELINA\_DATA\_SUFFIX**: `` `0x${string}` ``
 

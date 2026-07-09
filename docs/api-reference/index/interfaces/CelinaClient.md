@@ -1,18 +1,20 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+# CelinaClient
+
+[**@andrewkimjoseph/celina-sdk**](../../)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / CelinaClient
+[@andrewkimjoseph/celina-sdk](../../) / [index](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/index/README.md) / CelinaClient
 
-# Interface: CelinaClient
+## Interface: CelinaClient
 
 Defined in: [src/index.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L40)
 
 Domain services for Celo mainnet reads and unsigned transaction preparation.
 
-## Properties
+### Properties
 
-### aave
+#### aave
 
 > **aave**: [`AaveService`](../../services/aave.service/classes/AaveService.md)
 
@@ -22,7 +24,7 @@ Aave V3 `getBalances`, `prepareSupply`, and `prepareWithdraw` on Celo.
 
 ***
 
-### account
+#### account
 
 > **account**: [`AccountService`](../../services/account.service/classes/AccountService.md)
 
@@ -32,19 +34,17 @@ CELO balance and nonce for an address.
 
 ***
 
-### agentKarma
+#### agentKarma
 
 > **agentKarma**: [`AgentKarmaService`](../../services/agentkarma.service/classes/AgentKarmaService.md)
 
 Defined in: [src/index.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L74)
 
-Optional AgentKarma reputation insight (read-only, agentkarma.io).
-Ecosystem adapter: Provider/Consumer karma, ERC-8004 Celo agents, and
-local trust-policy checks. Never routes, signs, or holds custody.
+Optional AgentKarma reputation insight (read-only, agentkarma.io). Ecosystem adapter: Provider/Consumer karma, ERC-8004 Celo agents, and local trust-policy checks. Never routes, signs, or holds custody.
 
 ***
 
-### blockchain
+#### blockchain
 
 > **blockchain**: [`BlockchainService`](../../services/blockchain.service/classes/BlockchainService.md)
 
@@ -54,7 +54,7 @@ Blocks, transactions, and network status.
 
 ***
 
-### contract
+#### contract
 
 > **contract**: [`ContractService`](../../services/contract.service/classes/ContractService.md)
 
@@ -64,7 +64,7 @@ Generic read-only contract calls and gas estimates.
 
 ***
 
-### ens
+#### ens
 
 > **ens**: [`EnsService`](../../services/ens.service/classes/EnsService.md)
 
@@ -74,7 +74,7 @@ Celo and Ethereum ENS resolution.
 
 ***
 
-### gooddollar
+#### gooddollar
 
 > **gooddollar**: [`GoodDollarService`](../../services/gooddollar.service/classes/GoodDollarService.md)
 
@@ -84,7 +84,7 @@ GoodDollar IdentityV4 whitelist, UBI claims, and G$ ↔ USDm reserve swaps.
 
 ***
 
-### governance
+#### governance
 
 > **governance**: [`GovernanceService`](../../services/governance.service/classes/GovernanceService.md)
 
@@ -94,7 +94,7 @@ Celo governance proposals and details.
 
 ***
 
-### mentoFx
+#### mentoFx
 
 > **mentoFx**: [`MentoFxService`](../../services/mento-fx.service/classes/MentoFxService.md)
 
@@ -104,7 +104,7 @@ Mento FX quotes, estimates, and `prepareFx` flows.
 
 ***
 
-### nft
+#### nft
 
 > **nft**: [`NftService`](../../services/nft.service/classes/NftService.md)
 
@@ -114,9 +114,9 @@ ERC-721 / ERC-1155 NFT reads.
 
 ***
 
-### self
+#### self
 
-> **self**: [`SelfService`](../../services/self.service/classes/SelfService.md)
+> **self**: [`SelfService`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/docs/api-reference/services/self.service/classes/SelfService.md)
 
 Defined in: [src/index.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/2ff9e44d247fc85ce400a4b07de79a8872532d5d/src/index.ts#L68)
 
@@ -124,7 +124,7 @@ Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry).
 
 ***
 
-### staking
+#### staking
 
 > **staking**: [`StakingService`](../../services/staking.service/classes/StakingService.md)
 
@@ -134,7 +134,7 @@ Validator election staking reads.
 
 ***
 
-### token
+#### token
 
 > **token**: [`TokenService`](../../services/token.service/classes/TokenService.md)
 
@@ -144,7 +144,7 @@ Token balances, metadata, and stablecoin scans.
 
 ***
 
-### transaction
+#### transaction
 
 > **transaction**: [`TransactionService`](../../services/transaction.service/classes/TransactionService.md)
 
@@ -154,7 +154,7 @@ Send estimates, gas fees, and `prepareSend` flows.
 
 ***
 
-### uniswap
+#### uniswap
 
 > **uniswap**: [`UniswapService`](../../services/uniswap.service/classes/UniswapService.md)
 
