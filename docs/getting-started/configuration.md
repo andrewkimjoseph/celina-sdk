@@ -21,20 +21,23 @@ All options are optional. Omit them to use the public Celo Forno endpoint.
 
 ## Attribution tags
 
-Pass optional tags when creating the client so every `prepare*` step includes them in the calldata suffix:
+Pass optional tags when creating the client so every `prepare*` step includes them in **both** attribution suffix layers (legacy UTF-8 + ERC-8021):
 
 ```ts
 const celina = createCelinaClient({
   attributionTags: ["celo_862c21dd97a7", "my_app"],
-  // on-chain suffix → CELINA|celo_862c21dd97a7|MY_APP
+  // legacy → CELINA|celo_862c21dd97a7|MY_APP
+  // ERC-8021 → toDataSuffix(["celina", "celo_862c21dd97a7", "my_app"])
 });
 ```
 
 Case normalization:
 
-- **App tags** (e.g. `my_app`, `celeste_ai`) → uppercase (`MY_APP`, `CELESTE_AI`)
-- **Celo Builders tags** matching `celo_<12 hex>` → lowercase (e.g. `celo_862c21dd97a7`)
+- **Legacy layer:** app tags uppercase (`MY_APP`); `celo_<12 hex>` lowercase
+- **ERC-8021 layer:** all codes lowercase (`celina`, `celo_862c21dd97a7`, `my_app`)
 - Tags are deduped in first-seen order; the literal tag `CELINA` is never duplicated
+
+Verify with `verify_attribution_tag` (MCP/browser tool) or `verifyAttributionInCalldata` from the SDK.
 
 See [Prepared flows](../concepts/prepared-flows.md) for how the suffix is applied.
 

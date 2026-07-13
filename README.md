@@ -88,9 +88,12 @@ const reserveFlow = await celina.gooddollar.prepareReserveSwap(
 
 All `prepare*` methods return a **`SerializedPreparedFlow`**: ordered unsigned steps for the user's wallet.
 
-Every step with calldata gets a **CELINA attribution suffix** (`appendCelinaCalldataTag`) — sends, Mento FX, Uniswap, Aave, and GoodDollar. Pass `step.data` to wagmi unchanged.
+Every step with calldata gets **dual attribution suffixes** via `appendCelinaCalldataTag` — sends, Mento FX, Uniswap, Aave, and GoodDollar. Pass `step.data` to wagmi unchanged.
 
-Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` are appended after `CELINA` as `CELINA|TAG1|TAG2` (deduped, stable order). App tags (e.g. `CELESTE_AI`) are normalized uppercase; Celo Builders on-chain tags (`celo_<12 hex>`, e.g. `celo_862c21dd97a7`) are preserved lowercase.
+1. **Legacy UTF-8** — `CELINA|TAG1|TAG2` (app tags uppercase; `celo_<12 hex>` lowercase)
+2. **ERC-8021 Schema 0** — `toDataSuffix(["celina", ...])` via `@celo/attribution-tags` for Celo leaderboards and `verifyTx`
+
+Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` apply to both layers (deduped, stable order). Verify on-chain with `verify_attribution_tag` or `verifyAttributionInCalldata`.
 
 Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 

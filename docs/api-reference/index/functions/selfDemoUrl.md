@@ -8,7 +8,7 @@
 
 > **selfDemoUrl**(`path`, `network?`): `string`
 
-Defined in: [src/config/self.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/config/self.ts#L14)
+Defined in: [src/config/self.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/self.ts#L14)
 
 ## Parameters
 

@@ -139,8 +139,17 @@ export {
 export { CHAIN, DEFAULT_RPC_URL } from "./config/chains.js";
 export {
   appendCelinaCalldataTag,
+  buildCelinaAttributionTag,
+  buildErc8021AttributionSuffix,
   CELINA_DATA_SUFFIX,
+  ERC_8021_MARKER,
+  normalizeAttributionTags,
+  parseCelinaLegacyAttributionSuffix,
+  stripErc8021SuffixIfPresent,
+  toErc8021AttributionCodes,
+  verifyAttributionInCalldata,
 } from "./config/celina-tag.js";
+export type { AttributionVerificationResult } from "./config/celina-tag.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
   GOODDOLLAR_CUSD_EXCHANGE_ID,

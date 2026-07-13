@@ -6,7 +6,7 @@
 
 # Class: TokenService
 
-Defined in: [src/services/token.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L25)
+Defined in: [src/services/token.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L25)
 
 Celo mainnet token registry lookups and balance reads.
 
@@ -16,7 +16,7 @@ Celo mainnet token registry lookups and balance reads.
 
 > **new TokenService**(`clientFactory`): `TokenService`
 
-Defined in: [src/services/token.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L26)
+Defined in: [src/services/token.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L26)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/token.service.ts:26](https://github.com/andrewkimjosep
 
 > **assertSpendableBalance**(`owner`, `resolved`, `amount`, `options?`): `Promise`\<`void`\>
 
-Defined in: [src/services/token.service.ts:224](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L224)
+Defined in: [src/services/token.service.ts:224](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L224)
 
 Ensure `owner` holds at least `amount` of the input token before swap/route work.
 
@@ -72,7 +72,7 @@ Ensure `owner` holds at least `amount` of the input token before swap/route work
 
 > **getBalances**(`address`, `tokens?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balances`: (\{ `address`: `"native"`; `formatted`: `string`; `raw`: `string`; `token`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `raw`: `string`; `token`: `string`; \})[]; `network`: `"mainnet"`; \}\>
 
-Defined in: [src/services/token.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L68)
+Defined in: [src/services/token.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L68)
 
 CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm).
 
@@ -96,7 +96,7 @@ CELO and ERC-20 balances for registry tokens (defaults: CELO, USDm).
 
 > **getStablecoinBalances**(`address`, `options?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `network`: `string`; `stablecoins`: (\{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError`: `boolean`; `symbol`: `string`; `useCase`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `formatted`: `string`; `issuer`: `string`; `raw`: `string`; `readError?`: `undefined`; `symbol`: `string`; `useCase`: `string`; \})[]; `totalChecked`: `number`; \}\>
 
-Defined in: [src/services/token.service.ts:114](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L114)
+Defined in: [src/services/token.service.ts:114](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L114)
 
 Scan fiat-pegged registry stablecoins for an address; omits zero balances by default.
 GoodDollar and WETH are excluded — use `getTokenBalance` or GoodDollar tools.
@@ -133,7 +133,7 @@ Subset of registry symbols to check
 
 > **getTokenBalance**(`token`, `accountAddress`): `Promise`\<\{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `"native"`; \} \| \{ `accountAddress`: `` `0x${string}` ``; `decimals`: `number`; `formatted`: `string`; `name`: `string`; `network`: `"mainnet"`; `raw`: `string`; `symbol`: `string`; `tokenAddress`: `` `0x${string}` ``; \}\>
 
-Defined in: [src/services/token.service.ts:173](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L173)
+Defined in: [src/services/token.service.ts:173](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L173)
 
 Balance for a Celo mainnet registry token (symbol or registry address).
 
@@ -157,7 +157,7 @@ Balance for a Celo mainnet registry token (symbol or registry address).
 
 > **getTokenInfo**(`token`): `Promise`\<\{ `address`: `` `0x${string}` `` \| `"native"`; `decimals`: `number`; `name`: `string`; `network`: `"mainnet"`; `symbol`: `string`; \}\>
 
-Defined in: [src/services/token.service.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L55)
+Defined in: [src/services/token.service.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L55)
 
 Fetch registry token metadata on Celo mainnet.
 
@@ -177,7 +177,7 @@ Fetch registry token metadata on Celo mainnet.
 
 > **parseAmount**(`amount`, `decimals`): `bigint`
 
-Defined in: [src/services/token.service.ts:216](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L216)
+Defined in: [src/services/token.service.ts:216](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L216)
 
 Parse a human-readable amount string to base units for the given decimals.
 
@@ -205,7 +205,7 @@ Token decimals from `resolveToken`
 
 > **resolveToken**(`token`): [`ResolvedToken`](../interfaces/ResolvedToken.md)
 
-Defined in: [src/services/token.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/services/token.service.ts#L32)
+Defined in: [src/services/token.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/token.service.ts#L32)
 
 Resolve a Celo mainnet registry token by symbol, alias, or registry address.
 

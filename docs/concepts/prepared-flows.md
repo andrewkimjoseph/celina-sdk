@@ -88,18 +88,24 @@ value: step.value ? BigInt(step.value) : undefined
 
 ## Celina data suffix
 
-Prepared calldata is tagged with a Celina attribution suffix (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi.
+Prepared calldata is tagged with dual Celina attribution suffixes (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi.
 
-Every tagged step starts with the base suffix **`CELINA`**. Optional `attributionTags` on `createCelinaClient()` append custom tags:
+### Legacy layer
+
+Every tagged step includes a UTF-8 suffix starting with **`CELINA`**. Optional `attributionTags` on `createCelinaClient()` append custom tags:
 
 ```ts
 createCelinaClient({
   attributionTags: ["celo_862c21dd97a7", "celeste_ai"],
 });
-// suffix → CELINA|celo_862c21dd97a7|CELESTE_AI
+// legacy → CELINA|celo_862c21dd97a7|CELESTE_AI
 ```
 
-Case normalization:
+### ERC-8021 layer
+
+The same tags are also encoded as an ERC-8021 Schema 0 suffix at the end of calldata (`toDataSuffix`), with platform code `celina` plus lowercase codes (e.g. `celo_862c21dd97a7`, `celeste_ai`). Use `verify_attribution_tag` or `@celo/attribution-tags` `verifyTx` to confirm.
+
+Case normalization (legacy layer):
 
 - App tags (e.g. `celeste_ai`) → uppercase (`CELESTE_AI`)
 - Celo Builders tags matching `celo_<12 hex>` → lowercase (e.g. `celo_862c21dd97a7`)

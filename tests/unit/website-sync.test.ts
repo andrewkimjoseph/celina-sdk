@@ -12,7 +12,7 @@ describe("website-sync", () => {
   });
 
   it("hosted MCP tool count matches catalog filter profile", () => {
-    expect(getHostedMcpToolCount()).toBe(34);
+    expect(getHostedMcpToolCount()).toBe(35);
   });
 
   it("MCP tool name set includes identity link", () => {

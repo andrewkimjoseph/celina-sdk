@@ -8,9 +8,9 @@
 
 > **appendCelinaCalldataTag**(`data`, `attributionTags?`): `` `0x${string}` ``
 
-Defined in: [src/config/celina-tag.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/config/celina-tag.ts#L43)
+Defined in: [src/config/celina-tag.ts:166](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L166)
 
-Append CELINA attribution suffix to calldata; no-op when empty or already tagged.
+Append legacy UTF-8 and ERC-8021 attribution suffixes to calldata.
 
 ## Parameters
 
@@ -25,8 +25,8 @@ Original transaction calldata.
 `string`[]
 
 Optional tags from `createCelinaClient({ attributionTags })`.
-  Appended after `CELINA` as `CELINA|TAG1|TAG2`. App tags normalize uppercase;
-  `celo_<12 hex>` tags canonicalize lowercase. Omitted or empty → suffix is `CELINA` only.
+  Legacy layer: `CELINA|TAG1|TAG2` (app tags uppercase, `celo_<12 hex>` lowercase).
+  ERC-8021 layer: `toDataSuffix(["celina", ...])` with lowercase codes.
 
 ## Returns
 

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { fromDataSuffix } from "@celo/attribution-tags";
 import { encodeFunctionData, erc20Abi, parseEther } from "viem";
 import { CeloClientFactory } from "../../src/clients/celo-client.js";
 import { MENTO_CELO_ADDRESS } from "../../src/config/chains.js";
-import { appendCelinaCalldataTag, CELINA_DATA_SUFFIX } from "../../src/config/celina-tag.js";
+import { appendCelinaCalldataTag } from "../../src/config/celina-tag.js";
 import { resolveSdkConfig } from "../../src/config/sdk-config.js";
 import { TransactionService } from "../../src/services/transaction.service.js";
 
@@ -28,7 +29,7 @@ describe("TransactionService.prepareSend", () => {
       args: [to, parseEther(amount)],
     });
     expect(step.data?.startsWith(expectedTransfer)).toBe(true);
-    expect(step.data?.endsWith(CELINA_DATA_SUFFIX.slice(2))).toBe(true);
+    expect(fromDataSuffix(step.data!)?.codes).toContain("celina");
   });
 
   it("keeps ERC-20 sends on the token contract", async () => {

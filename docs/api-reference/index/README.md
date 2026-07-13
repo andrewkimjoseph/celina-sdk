@@ -25,6 +25,7 @@
 ## Type Aliases
 
 - [AaveAsset](type-aliases/AaveAsset.md)
+- [AttributionVerificationResult](type-aliases/AttributionVerificationResult.md)
 - [CelinaClientOptions](type-aliases/CelinaClientOptions.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
 
@@ -35,6 +36,7 @@
 - [CELINA\_DATA\_SUFFIX](variables/CELINA_DATA_SUFFIX.md)
 - [CHAIN](variables/CHAIN.md)
 - [DEFAULT\_RPC\_URL](variables/DEFAULT_RPC_URL.md)
+- [ERC\_8021\_MARKER](variables/ERC_8021_MARKER.md)
 - [GOODDOLLAR\_CUSD\_EXCHANGE\_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
 - [GOODDOLLAR\_IDENTITY\_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
 - [GOODDOLLAR\_MENTO\_BROKER](variables/GOODDOLLAR_MENTO_BROKER.md)
@@ -48,15 +50,22 @@
 ## Functions
 
 - [appendCelinaCalldataTag](functions/appendCelinaCalldataTag.md)
+- [buildCelinaAttributionTag](functions/buildCelinaAttributionTag.md)
+- [buildErc8021AttributionSuffix](functions/buildErc8021AttributionSuffix.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [createCelinaClient](functions/createCelinaClient.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
 - [isGoodDollarUsdReservePair](functions/isGoodDollarUsdReservePair.md)
+- [normalizeAttributionTags](functions/normalizeAttributionTags.md)
+- [parseCelinaLegacyAttributionSuffix](functions/parseCelinaLegacyAttributionSuffix.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
 - [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)
 - [selfDemoUrl](functions/selfDemoUrl.md)
+- [stripErc8021SuffixIfPresent](functions/stripErc8021SuffixIfPresent.md)
+- [toErc8021AttributionCodes](functions/toErc8021AttributionCodes.md)
+- [verifyAttributionInCalldata](functions/verifyAttributionInCalldata.md)
 
 ## References
 

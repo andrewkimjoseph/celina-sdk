@@ -2,6 +2,10 @@
  * Chain reads: network status, blocks, and transaction lookups on Celo mainnet.
  */
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import {
+  verifyAttributionInCalldata,
+  type AttributionVerificationResult,
+} from "../config/celina-tag.js";
 
 type TransactionSummaryInput = {
   hash: `0x${string}`;
@@ -199,5 +203,28 @@ export class BlockchainService {
       gasUsed: receipt?.gasUsed ?? 0n,
       status: receipt?.status,
     });
+  }
+
+  /**
+   * Decode legacy and ERC-8021 attribution tags from a mined transaction's calldata.
+   * @param hash - Transaction hash
+   * @param tag - Optional tag to check (e.g. `celo_862c21dd97a7`)
+   */
+  async verifyAttributionInTransaction(
+    hash: `0x${string}`,
+    tag?: string,
+  ): Promise<AttributionVerificationResult & { hash: `0x${string}`; input: `0x${string}` }> {
+    const { public: client } = this.clientFactory.getClients();
+    const tx = await client.getTransaction({ hash });
+    if (!tx) {
+      throw new Error(`Transaction not found: ${hash}`);
+    }
+
+    const input = tx.input as `0x${string}`;
+    return {
+      hash,
+      input,
+      ...verifyAttributionInCalldata(input, tag),
+    };
   }
 }

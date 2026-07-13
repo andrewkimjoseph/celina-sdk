@@ -6,7 +6,7 @@
 
 # Class: SelfExpiredSessionError
 
-Defined in: [src/clients/self-api.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/clients/self-api.ts#L18)
+Defined in: [src/clients/self-api.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/clients/self-api.ts#L18)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [src/clients/self-api.ts:18](https://github.com/andrewkimjoseph/celi
 
 > **new SelfExpiredSessionError**(`message?`): `SelfExpiredSessionError`
 
-Defined in: [src/clients/self-api.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/852f4654b3367c2e99db65ab17e2cfcd145a3d0e/src/clients/self-api.ts#L19)
+Defined in: [src/clients/self-api.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/clients/self-api.ts#L19)
 
 #### Parameters
 

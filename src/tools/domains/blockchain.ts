@@ -63,6 +63,22 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
       runtime.celina.blockchain.getTransaction(input.hash as `0x${string}`),
   },
   {
+    name: "verify_attribution_tag",
+    description:
+      "Decode legacy Celina and ERC-8021 attribution tags from a transaction's calldata on Celo mainnet.",
+    inputSchema: z.object({
+      hash: z.string().regex(/^0x[a-fA-F0-9]{64}$/),
+      tag: z.string().min(1).optional(),
+    }),
+    families: ["read"],
+    mcp: { title: "Verify Attribution Tag", annotations: readOnly },
+    handler: async (runtime, input) =>
+      runtime.celina.blockchain.verifyAttributionInTransaction(
+        input.hash as `0x${string}`,
+        input.tag as string | undefined,
+      ),
+  },
+  {
     name: "get_wallet_address",
     description:
       "Returns the wallet address derived from CELO_PRIVATE_KEY in the MCP server env.",

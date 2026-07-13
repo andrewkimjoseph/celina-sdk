@@ -69,6 +69,7 @@ export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   get_block: "Blockchain",
   get_latest_blocks: "Blockchain",
   get_transaction: "Blockchain",
+  verify_attribution_tag: "Blockchain",
   get_account: "Account",
   get_wallet_address: "Wallet",
   get_celo_balances: "Token",

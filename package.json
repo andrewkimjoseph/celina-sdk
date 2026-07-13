@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -92,6 +92,7 @@
   "dependencies": {
     "@agentkarma/sdk": "^0.2.0",
     "@amplitude/analytics-node": "^1.5.21",
+    "@celo/attribution-tags": "^0.3.0",
     "@mento-protocol/mento-sdk": "^3.2.8",
     "@noble/ed25519": "^3.1.0",
     "@uniswap/sdk-core": "^7.16.1",
