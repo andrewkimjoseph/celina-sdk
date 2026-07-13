@@ -65,10 +65,19 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
   {
     name: "verify_attribution_tag",
     description:
-      "Decode legacy Celina and ERC-8021 attribution tags from a transaction's calldata on Celo mainnet.",
+      "Decode legacy Celina (CELINA|…) and ERC-8021 (celina, app codes) attribution tags from a transaction's calldata on Celo mainnet. Optionally pass tag to check for a specific code on either layer.",
     inputSchema: z.object({
-      hash: z.string().regex(/^0x[a-fA-F0-9]{64}$/),
-      tag: z.string().min(1).optional(),
+      hash: z
+        .string()
+        .regex(/^0x[a-fA-F0-9]{64}$/)
+        .describe("Transaction hash (0x + 64 hex characters)."),
+      tag: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Optional attribution code to match (e.g. celo_862c21dd97a7, MY_APP). Omit to decode all tags.",
+        ),
     }),
     families: ["read"],
     mcp: { title: "Verify Attribution Tag", annotations: readOnly },

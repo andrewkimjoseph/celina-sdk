@@ -140,19 +140,58 @@ function firstSentence(text: string): string {
   return match ? match[0].trim() : text.slice(0, 120);
 }
 
-function zodFieldType(key: string, schema: unknown): string {
+type ZodSchemaNode = {
+  _def?: {
+    typeName?: string;
+    innerType?: unknown;
+    description?: string;
+  };
+};
+
+function unwrapZodSchema(schema: unknown): ZodSchemaNode | null {
   if (!schema || typeof schema !== "object") {
+    return null;
+  }
+  return schema as ZodSchemaNode;
+}
+
+function isZodOptional(schema: unknown): boolean {
+  const zod = unwrapZodSchema(schema);
+  const typeName = zod?._def?.typeName;
+  return typeName === "ZodOptional" || typeName === "ZodDefault";
+}
+
+function zodInnerSchema(schema: unknown): unknown {
+  const zod = unwrapZodSchema(schema);
+  if (!zod?._def) return schema;
+  if (isZodOptional(schema)) {
+    return zod._def.innerType;
+  }
+  return schema;
+}
+
+function zodFieldType(schema: unknown): string {
+  const inner = zodInnerSchema(schema);
+  const zod = unwrapZodSchema(inner);
+  if (!zod?._def?.typeName) {
     return "string";
   }
-  const zod = schema as { _def?: { typeName?: string; innerType?: unknown } };
-  const typeName = zod._def?.typeName;
-  if (typeName === "ZodOptional" || typeName === "ZodDefault") {
-    return zodFieldType(key, zod._def?.innerType);
-  }
+  const typeName = zod._def.typeName;
   if (typeName === "ZodBoolean") return "boolean";
   if (typeName === "ZodNumber") return "number";
   if (typeName === "ZodArray") return "array";
   return "string";
+}
+
+function zodFieldDescription(schema: unknown, fallback: string): string {
+  const zod = unwrapZodSchema(schema);
+  if (zod?._def?.description) {
+    return zod._def.description;
+  }
+  if (isZodOptional(schema)) {
+    return zodFieldDescription(zod?._def?.innerType, fallback);
+  }
+  return fallback;
 }
 
 function inputsFromSchema(definition: ToolDefinition): WebsiteToolBaseline["inputs"] {
@@ -161,9 +200,9 @@ function inputsFromSchema(definition: ToolDefinition): WebsiteToolBaseline["inpu
 
   return Object.entries(shape).map(([name, schema]) => ({
     name,
-    type: zodFieldType(name, schema),
-    required: !String(schema).includes("optional"),
-    description: name.replace(/_/g, " "),
+    type: zodFieldType(schema),
+    required: !isZodOptional(schema),
+    description: zodFieldDescription(schema, name.replace(/_/g, " ")),
   }));
 }
 
