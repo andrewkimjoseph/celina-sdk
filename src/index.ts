@@ -142,6 +142,8 @@ export {
   buildCelinaAttributionTag,
   buildErc8021AttributionSuffix,
   CELINA_DATA_SUFFIX,
+  checkAttributionInCalldata,
+  collectAttributionTags,
   ERC_8021_MARKER,
   normalizeAttributionTags,
   parseCelinaLegacyAttributionSuffix,
@@ -149,7 +151,10 @@ export {
   toErc8021AttributionCodes,
   verifyAttributionInCalldata,
 } from "./config/celina-tag.js";
-export type { AttributionVerificationResult } from "./config/celina-tag.js";
+export type {
+  AttributionCheckResult,
+  AttributionVerificationResult,
+} from "./config/celina-tag.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
   GOODDOLLAR_CUSD_EXCHANGE_ID,

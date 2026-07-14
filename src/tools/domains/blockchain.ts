@@ -88,6 +88,31 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
       ),
   },
   {
+    name: "check_attribution_tag",
+    description:
+      "List custom attribution tags on a Celo mainnet transaction (unified tags array, excluding platform CELINA/celina), or check whether a specific tag is present. Prefer this for “what tags are on this tx?”; use verify_attribution_tag for raw legacy/ERC-8021 layers only.",
+    inputSchema: z.object({
+      hash: z
+        .string()
+        .regex(/^0x[a-fA-F0-9]{64}$/)
+        .describe("Transaction hash (0x + 64 hex characters)."),
+      tag: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Optional attribution code to match (e.g. celo_862c21dd97a7, MY_APP). Omit to list all custom tags.",
+        ),
+    }),
+    families: ["read"],
+    mcp: { title: "Check Attribution Tag", annotations: readOnly },
+    handler: async (runtime, input) =>
+      runtime.celina.blockchain.checkAttributionInTransaction(
+        input.hash as `0x${string}`,
+        input.tag as string | undefined,
+      ),
+  },
+  {
     name: "get_wallet_address",
     description:
       "Returns the wallet address derived from CELO_PRIVATE_KEY in the MCP server env.",

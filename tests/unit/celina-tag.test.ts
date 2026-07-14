@@ -4,6 +4,8 @@ import { stringToHex } from "viem";
 import {
   appendCelinaCalldataTag,
   buildCelinaAttributionTag,
+  checkAttributionInCalldata,
+  collectAttributionTags,
   normalizeAttributionTags,
   parseCelinaLegacyAttributionSuffix,
   toErc8021AttributionCodes,
@@ -92,5 +94,46 @@ describe("celina tag helpers", () => {
       true,
     );
     expect(verifyAttributionInCalldata(tagged, "missing_tag").matched).toBe(false);
+  });
+
+  it("collects custom tags excluding platform CELINA/celina", () => {
+    expect(
+      collectAttributionTags(
+        ["CELINA", "celo_862c21dd97a7", "CELESTE_AI"],
+        ["celina", "celo_862c21dd97a7", "celeste_ai"],
+      ),
+    ).toEqual(["celo_862c21dd97a7", "CELESTE_AI"]);
+    expect(collectAttributionTags(["CELINA"], ["celina"])).toEqual([]);
+    expect(collectAttributionTags(null, null)).toEqual([]);
+  });
+
+  it("checks attribution with unified custom tags list", () => {
+    const tagged = appendCelinaCalldataTag("0xabcdef", [
+      "celo_862c21dd97a7",
+      "celeste_ai",
+    ]);
+    const all = checkAttributionInCalldata(tagged);
+    expect(all.tags).toEqual(["celo_862c21dd97a7", "CELESTE_AI"]);
+    expect(all.matched).toBe(true);
+    expect(all.legacyTags).toEqual([
+      "CELINA",
+      "celo_862c21dd97a7",
+      "CELESTE_AI",
+    ]);
+    expect(all.erc8021?.codes).toEqual([
+      "celina",
+      "celo_862c21dd97a7",
+      "celeste_ai",
+    ]);
+
+    expect(checkAttributionInCalldata(tagged, "celo_862c21dd97a7").matched).toBe(
+      true,
+    );
+    expect(checkAttributionInCalldata(tagged, "missing_tag").matched).toBe(false);
+
+    const platformOnly = appendCelinaCalldataTag("0xabcdef");
+    const platform = checkAttributionInCalldata(platformOnly);
+    expect(platform.tags).toEqual([]);
+    expect(platform.matched).toBe(true);
   });
 });

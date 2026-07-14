@@ -103,7 +103,7 @@ createCelinaClient({
 
 ### ERC-8021 layer
 
-The same tags are also encoded as an ERC-8021 Schema 0 suffix at the end of calldata (`toDataSuffix`), with platform code `celina` plus lowercase codes (e.g. `celo_862c21dd97a7`, `celeste_ai`). Use `verify_attribution_tag` or `@celo/attribution-tags` `verifyTx` to confirm.
+The same tags are also encoded as an ERC-8021 Schema 0 suffix at the end of calldata (`toDataSuffix`), with platform code `celina` plus lowercase codes (e.g. `celo_862c21dd97a7`, `celeste_ai`). Prefer `check_attribution_tag` (or SDK `checkAttributionInCalldata`) to list custom tags or confirm one; use `verify_attribution_tag` or `@celo/attribution-tags` `verifyTx` for raw-layer decode.
 
 Case normalization (legacy layer):
 

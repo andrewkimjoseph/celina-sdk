@@ -120,6 +120,11 @@ export type AttributionVerificationResult = {
   matched: boolean;
 };
 
+/** Verification result plus a unified custom/app `tags` list (excludes platform CELINA/celina). */
+export type AttributionCheckResult = AttributionVerificationResult & {
+  tags: string[];
+};
+
 function tagMatchesVerification(
   tag: string,
   legacyTags: string[] | null,
@@ -133,6 +138,17 @@ function tagMatchesVerification(
     erc8021Codes?.some((code) => code.toLowerCase() === normalized.toLowerCase()) ??
     false;
   return legacyHit || ercHit;
+}
+
+/** Merge legacy + ERC-8021 codes into custom tags (skips CELINA/celina, dedupes). */
+export function collectAttributionTags(
+  legacyTags: string[] | null,
+  erc8021Codes: string[] | null,
+): string[] {
+  return normalizeAttributionTags([
+    ...(legacyTags ?? []),
+    ...(erc8021Codes ?? []),
+  ]);
 }
 
 /** Decode legacy and ERC-8021 attribution from calldata; optionally check for a tag. */
@@ -152,6 +168,21 @@ export function verifyAttributionInCalldata(
       ? { codes: [...erc8021.codes], schemaId: erc8021.schemaId }
       : null,
     matched,
+  };
+}
+
+/**
+ * Decode attribution from calldata with a unified custom `tags` list.
+ * Prefer this for “what tags are on this tx?”; use {@link verifyAttributionInCalldata} for the raw layers only.
+ */
+export function checkAttributionInCalldata(
+  data: `0x${string}`,
+  tag?: string,
+): AttributionCheckResult {
+  const verified = verifyAttributionInCalldata(data, tag);
+  return {
+    ...verified,
+    tags: collectAttributionTags(verified.legacyTags, verified.erc8021?.codes ?? null),
   };
 }
 

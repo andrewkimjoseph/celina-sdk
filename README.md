@@ -93,7 +93,7 @@ Every step with calldata gets **dual attribution suffixes** via `appendCelinaCal
 1. **Legacy UTF-8** — `CELINA|TAG1|TAG2` (app tags uppercase; `celo_<12 hex>` lowercase)
 2. **ERC-8021 Schema 0** — `toDataSuffix(["celina", ...])` via `@celo/attribution-tags` for Celo leaderboards and `verifyTx`
 
-Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` apply to both layers (deduped, stable order). Verify on-chain with `verify_attribution_tag` or `verifyAttributionInCalldata`.
+Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` apply to both layers (deduped, stable order). List or check on-chain tags with `check_attribution_tag` (preferred) or `checkAttributionInCalldata`; use `verify_attribution_tag` / `verifyAttributionInCalldata` for raw legacy + ERC-8021 layers.
 
 Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 

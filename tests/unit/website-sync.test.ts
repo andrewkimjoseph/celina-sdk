@@ -29,6 +29,18 @@ describe("website-sync", () => {
     expect(tag?.description).toContain("Optional attribution code");
   });
 
+  it("includes check_attribution_tag in the tool catalog", () => {
+    const check = toWebsiteToolBaseline(
+      getToolDefinition("check_attribution_tag")!,
+    );
+    expect(check.name).toBe("check_attribution_tag");
+    expect(check.category).toBe("Blockchain");
+    expect(check.kind).toBe("read");
+    const tag = check.inputs.find((field) => field.name === "tag");
+    expect(tag?.required).toBe(false);
+    expect(tag?.description).toContain("Omit to list all custom tags");
+  });
+
   it("falls back to snake_case field names when no describe is set", () => {
     const baseline = toWebsiteToolBaseline({
       name: "test_tool",

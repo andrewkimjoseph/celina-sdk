@@ -3,7 +3,9 @@
  */
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import {
+  checkAttributionInCalldata,
   verifyAttributionInCalldata,
+  type AttributionCheckResult,
   type AttributionVerificationResult,
 } from "../config/celina-tag.js";
 
@@ -225,6 +227,29 @@ export class BlockchainService {
       hash,
       input,
       ...verifyAttributionInCalldata(input, tag),
+    };
+  }
+
+  /**
+   * Decode attribution from a mined transaction with a unified custom `tags` list.
+   * @param hash - Transaction hash
+   * @param tag - Optional tag to check (e.g. `celo_862c21dd97a7`)
+   */
+  async checkAttributionInTransaction(
+    hash: `0x${string}`,
+    tag?: string,
+  ): Promise<AttributionCheckResult & { hash: `0x${string}`; input: `0x${string}` }> {
+    const { public: client } = this.clientFactory.getClients();
+    const tx = await client.getTransaction({ hash });
+    if (!tx) {
+      throw new Error(`Transaction not found: ${hash}`);
+    }
+
+    const input = tx.input as `0x${string}`;
+    return {
+      hash,
+      input,
+      ...checkAttributionInCalldata(input, tag),
     };
   }
 }

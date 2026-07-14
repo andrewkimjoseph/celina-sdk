@@ -37,7 +37,7 @@ Case normalization:
 - **ERC-8021 layer:** all codes lowercase (`celina`, `celo_862c21dd97a7`, `my_app`)
 - Tags are deduped in first-seen order; the literal tag `CELINA` is never duplicated
 
-Verify with `verify_attribution_tag` (MCP/browser tool) or `verifyAttributionInCalldata` from the SDK.
+Prefer `check_attribution_tag` (MCP/browser tool) or `checkAttributionInCalldata` from the SDK to list custom tags or confirm one. Use `verify_attribution_tag` / `verifyAttributionInCalldata` when you need the raw legacy and ERC-8021 layers.
 
 See [Prepared flows](../concepts/prepared-flows.md) for how the suffix is applied.
 
