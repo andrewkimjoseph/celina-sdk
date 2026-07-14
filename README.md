@@ -4,9 +4,9 @@
 
 # Celina SDK
 
-Celo mainnet library for frontend apps and agents: **reads** and **unsigned transaction preparation** (no private keys).
+Celo mainnet library for frontend apps and agents: **reads**, **unsigned transaction preparation**, and optional **ERC-4337 AA** via `createAAClient` (app-owned gas sponsorship credentials).
 
-Pair with [wagmi](https://wagmi.sh) / viem — users sign prepared transactions in their wallet.
+Pair with [wagmi](https://wagmi.sh) / viem for EOA signing, or `createAAClient` for sponsored/batched UserOps.
 
 ## Stack
 
@@ -97,7 +97,9 @@ Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` a
 
 Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 
-See [Prepared flows](docs/concepts/prepared-flows.md) and [Prepared-step simulation](docs/guides/prepared-step-simulation.md).
+For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
+
+See [Prepared flows](docs/concepts/prepared-flows.md), [Prepared-step simulation](docs/guides/prepared-step-simulation.md), and [Account Abstraction](docs/guides/account-abstraction.md).
 
 ### MCP session wallet (not in the SDK)
 

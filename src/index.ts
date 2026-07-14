@@ -155,6 +155,23 @@ export type {
   AttributionCheckResult,
   AttributionVerificationResult,
 } from "./config/celina-tag.js";
+export {
+  createAAClient,
+  deriveSmartAccountAddress,
+  GasSponsorshipService,
+  preparedStepsToUserOpCalls,
+} from "./aa/index.js";
+export type {
+  AAClient,
+  CreateAAClientOptions,
+  GasSponsorshipConfig,
+  GasSponsorshipProviderId,
+  PimlicoGasSponsorshipConfig,
+  SendPreparedFlowMode,
+  SendPreparedFlowOptions,
+  SendPreparedFlowResult,
+  UserOpCall,
+} from "./aa/index.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
   GOODDOLLAR_CUSD_EXCHANGE_ID,

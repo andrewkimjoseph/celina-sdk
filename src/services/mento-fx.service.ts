@@ -18,7 +18,7 @@ import {
 } from "../clients/mento-sdk.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
 import { appendCelinaCalldataTag } from "../config/celina-tag.js";
-import { toMentoTokenAddress } from "../config/chains.js";
+import { CHAIN, toMentoTokenAddress } from "../config/chains.js";
 import {
   ALLOWANCE_MAPPING_SLOTS,
   erc20AllowanceStateOverride,
@@ -489,7 +489,7 @@ export class MentoFxService {
       );
 
       const flow: PreparedFlow = {
-        network: "mainnet",
+        chainId: CHAIN.id,
         from,
         summary: `Mento FX: ${displayIn} ${resolvedIn.symbol} → ${displayOut} ${resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
         steps,

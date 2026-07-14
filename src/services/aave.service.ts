@@ -15,6 +15,7 @@ import {
   serializePreparedFlow,
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
+import { CHAIN } from "../config/chains.js";
 import { TokenService } from "./token.service.js";
 
 /** Aave V3 supplied balance reads and supply/withdraw prepared flows on Celo mainnet. */
@@ -226,7 +227,7 @@ export class AaveService {
     });
 
     const flow: PreparedFlow = {
-      network: "mainnet",
+      chainId: CHAIN.id,
       from,
       summary: `Supply ${amount} ${asset.symbol} to Aave V3 on Celo`,
       steps,
@@ -280,7 +281,7 @@ export class AaveService {
 
     const amountLabel = withdrawMax ? "max" : amount!;
     const flow: PreparedFlow = {
-      network: "mainnet",
+      chainId: CHAIN.id,
       from,
       summary: `Withdraw ${amountLabel} ${asset.symbol} from Aave V3 on Celo`,
       steps: [

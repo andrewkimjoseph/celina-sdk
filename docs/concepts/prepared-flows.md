@@ -2,6 +2,13 @@
 
 Methods named `prepare*` return a **serialized prepared flow** — an ordered list of unsigned transactions for the user's wallet to sign.
 
+### Terminology
+
+In Celina, a **prepared flow** is not a workflow engine. It is the object returned by `prepare*`: primarily **`steps`**, an ordered list of unsigned transactions (`PreparedTx`). The same object is what you:
+
+- pass to wagmi / viem one step at a time, or
+- submit via [`createAAClient`](../guides/account-abstraction.md) / `sendPreparedFlow` as sponsored UserOp(s)
+
 ## Supported prepare methods
 
 | Method | Service | Typical steps |
@@ -22,7 +29,7 @@ Methods named `prepare*` return a **serialized prepared flow** — an ordered li
   steps: PreparedTx[],
   summary: string,       // human-readable label for UI
   from: `0x${string}`,
-  network: "mainnet",
+  chainId: 42220,        // celo.id / CHAIN.id
 }
 ```
 
@@ -88,7 +95,9 @@ value: step.value ? BigInt(step.value) : undefined
 
 ## Celina data suffix
 
-Prepared calldata is tagged with dual Celina attribution suffixes (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi.
+Prepared calldata is tagged with dual Celina attribution suffixes (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi **or** to `createAAClient().sendPreparedFlow` — the same tagged `steps` work for EOA signing and sponsored UserOps.
+
+`createAAClient` does **not** take `attributionTags`. Set them on `createCelinaClient({ attributionTags })` before `prepare*`.
 
 ### Legacy layer
 
@@ -116,6 +125,7 @@ See [Configuration](../getting-started/configuration.md) for the full options ta
 ## Related
 
 - [Prepared-step simulation](../guides/prepared-step-simulation.md)
+- [Account Abstraction](../guides/account-abstraction.md) — sponsored UserOps via `createAAClient`
 - [wagmi integration](../guides/wagmi-integration.md)
 - [Send tokens](../guides/send-tokens.md)
 - [Mento FX](../guides/mento-fx.md)

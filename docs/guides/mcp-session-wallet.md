@@ -49,4 +49,5 @@ Pass an explicit value to query a **different** wallet.
 ## Related
 
 - [Architecture](../concepts/architecture.md) — Celina stack
+- [Account Abstraction](account-abstraction.md) — `createAAClient` (SDK-first; no Celina-owned sponsorship key)
 - [celina-mcp README](https://github.com/andrewkimjoseph/celina-mcp#session-wallet-local-stdio) — MCP setup and tool table

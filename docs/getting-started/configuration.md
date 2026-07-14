@@ -57,4 +57,10 @@ import type { SdkConfig, CelinaClientOptions } from "@andrewkimjoseph/celina-sdk
 
 ## Network scope
 
-The SDK targets **Celo mainnet** only. All prepared flows return `network: "mainnet"`.
+The SDK targets **Celo mainnet** only. All prepared flows return `chainId: 42220` (`celo.id` / `CHAIN.id`).
+
+## Account Abstraction
+
+Sponsored UserOps use a separate factory — **`createAAClient`** — with an explicit `gasSponsorship` provider object (v1: `provider: "pimlico"` + `pimlico.apiKey`). Credentials stay in your app; Celina MCP does not host them.
+
+See [Account Abstraction](../guides/account-abstraction.md).

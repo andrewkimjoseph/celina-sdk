@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "Celina SDK — Celo mainnet reads and unsigned transaction preparation for frontend apps.",
   "type": "module",
   "sideEffects": false,
@@ -99,6 +99,7 @@
     "@uniswap/universal-router-sdk": "^5.5.1",
     "@uniswap/v4-sdk": "^2.2.1",
     "ethers": "^6.15.0",
+    "permissionless": "^0.2.57",
     "viem": "^2.39.3",
     "zod": "^3.24.3"
   },

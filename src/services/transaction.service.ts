@@ -10,7 +10,7 @@ import {
   type Hex,
 } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
-import { MENTO_CELO_ADDRESS } from "../config/chains.js";
+import { CHAIN, MENTO_CELO_ADDRESS } from "../config/chains.js";
 import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import { normalizeAddress } from "../utils/normalize-address.js";
 import {
@@ -135,7 +135,7 @@ export class TransactionService {
       );
 
       const flow: PreparedFlow = {
-        network: "mainnet",
+        chainId: CHAIN.id,
         from,
         summary: `Send ${amount} CELO to ${to}`,
         steps: [
@@ -162,7 +162,7 @@ export class TransactionService {
     );
 
     const flow: PreparedFlow = {
-      network: "mainnet",
+      chainId: CHAIN.id,
       from,
       summary: `Send ${amount} ${resolved.symbol} to ${to}`,
       steps: [

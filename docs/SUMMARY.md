@@ -18,6 +18,7 @@
 * [LLM tool catalog](guides/tool-catalog.md)
 * [wagmi integration](guides/wagmi-integration.md)
 * [Prepared-step simulation](guides/prepared-step-simulation.md)
+* [Account Abstraction](guides/account-abstraction.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)
 * [Uniswap v4](guides/uniswap.md)

@@ -29,6 +29,7 @@ import {
   serializePreparedFlow,
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
+import { CHAIN } from "../config/chains.js";
 import {
   ALLOWANCE_MAPPING_SLOTS,
   erc20AllowanceStateOverride,
@@ -502,7 +503,7 @@ export class GoodDollarService {
       : `Claim daily GoodDollar UBI (${eligibility.claimableAmountFormatted})`;
 
     const flow: PreparedFlow = {
-      network: "mainnet",
+      chainId: CHAIN.id,
       from,
       summary,
       steps: [
@@ -920,7 +921,7 @@ export class GoodDollarService {
     );
 
     const flow: PreparedFlow = {
-      network: "mainnet",
+      chainId: CHAIN.id,
       from,
       summary: `GoodDollar reserve: ${displayIn} ${resolvedIn.symbol} → ${displayOut} ${resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
       steps,

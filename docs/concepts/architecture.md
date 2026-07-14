@@ -6,7 +6,8 @@
 
 - Performs **public RPC reads** (balances, quotes, governance data)
 - Builds **unsigned transaction payloads** for a caller-supplied `from` address
-- **Does not hold CELO wallet keys** — pass prepared `steps` to wagmi/viem for signing
+- **Does not hold CELO wallet keys** for `createCelinaClient` — pass prepared `steps` to wagmi/viem for EOA signing
+- **`createAAClient`** (separate entry) submits prepared flows as sponsored ERC-4337 UserOps; gas sponsorship API keys are **app-owned** (see [Account Abstraction](../guides/account-abstraction.md))
 - **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
 - **AgentKarma** (`client.agentKarma`) is a read-only external reputation adapter — calls agentkarma.io, not on-chain Celina reads; no keys, no Celina analytics
 - **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `analyticsEnabled: false`

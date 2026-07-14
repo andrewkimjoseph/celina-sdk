@@ -36,6 +36,7 @@ import {
   serializePreparedFlow,
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
+import { CHAIN } from "../config/chains.js";
 import { findBestUniswapRoute, applySlippage } from "./uniswap-path-router.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
@@ -557,7 +558,7 @@ export class UniswapService {
       ];
 
       const flow: PreparedFlow = {
-        network: "mainnet",
+        chainId: CHAIN.id,
         from,
         summary: `Uniswap v4: ${displayIn} ${built.resolvedIn.symbol} → ${displayOut} ${built.resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
         steps,
