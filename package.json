@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "Celina SDK — Celo mainnet reads, unsigned transaction preparation, and ERC-4337 createAAClient for sponsored UserOps.",
   "type": "module",
   "sideEffects": false,
@@ -99,6 +99,7 @@
     "@uniswap/universal-router-sdk": "^5.5.1",
     "@uniswap/v4-sdk": "^2.2.1",
     "ethers": "^6.15.0",
+    "ox": "^0.10.0",
     "permissionless": "^0.2.57",
     "viem": "^2.39.3",
     "zod": "^3.24.3"
