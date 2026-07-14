@@ -8,4 +8,4 @@
 
 > **PreparedTxKind** = `"native"` \| `"erc20"` \| `"contract"`
 
-Defined in: [src/types/prepared.ts:1](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/types/prepared.ts#L1)
+Defined in: [src/types/prepared.ts:3](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/types/prepared.ts#L3)

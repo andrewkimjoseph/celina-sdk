@@ -8,7 +8,7 @@
 
 > **AttributionVerificationResult** = `object`
 
-Defined in: [src/config/celina-tag.ts:117](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L117)
+Defined in: [src/config/celina-tag.ts:117](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L117)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/config/celina-tag.ts:117](https://github.com/andrewkimjoseph/ce
 
 > **erc8021**: \{ `codes`: `string`[]; `schemaId`: `number`; \} \| `null`
 
-Defined in: [src/config/celina-tag.ts:119](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L119)
+Defined in: [src/config/celina-tag.ts:119](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L119)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/config/celina-tag.ts:119](https://github.com/andrewkimjoseph/ce
 
 > **legacyTags**: `string`[] \| `null`
 
-Defined in: [src/config/celina-tag.ts:118](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L118)
+Defined in: [src/config/celina-tag.ts:118](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L118)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [src/config/celina-tag.ts:118](https://github.com/andrewkimjoseph/ce
 
 > **matched**: `boolean`
 
-Defined in: [src/config/celina-tag.ts:120](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L120)
+Defined in: [src/config/celina-tag.ts:120](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L120)

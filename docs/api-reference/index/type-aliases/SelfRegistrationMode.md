@@ -8,4 +8,4 @@
 
 > **SelfRegistrationMode** = `"linked"` \| `"wallet-free"` \| `"smartwallet"` \| `"self-custody"` \| `"ed25519"` \| `"ed25519-linked"`
 
-Defined in: [src/config/self.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/self.ts#L40)
+Defined in: [src/config/self.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/self.ts#L40)

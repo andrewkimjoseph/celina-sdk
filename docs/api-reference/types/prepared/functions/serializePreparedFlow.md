@@ -8,15 +8,17 @@
 
 > **serializePreparedFlow**(`flow`): [`SerializedPreparedFlow`](../interfaces/SerializedPreparedFlow.md)
 
-Defined in: [src/types/prepared.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/types/prepared.ts#L32)
+Defined in: [src/types/prepared.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/types/prepared.ts#L48)
 
-Marks a prepared flow as JSON-safe for API and chat tool responses.
+Marks an ordered prepared-transaction list as JSON-safe for API and chat tool responses.
 
 ## Parameters
 
 ### flow
 
 [`PreparedFlow`](../interfaces/PreparedFlow.md)
+
+In-memory prepared transactions (`PreparedFlow`) to serialize
 
 ## Returns
 

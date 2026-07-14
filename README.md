@@ -14,9 +14,9 @@ Celina is layered from chain logic through agent tooling:
 
 | Layer | Package | Role |
 |-------|---------|------|
-| **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, and `prepare*` flows |
+| **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), dual attribution, `createAAClient` |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (34 tools); no server-key writes |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (36 tools); no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -43,7 +43,9 @@ Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkim
 - [Quick start](https://andrewkimjoseph.gitbook.io/celina-sdk/getting-started/quick-start)
 - [LLM tool catalog](docs/guides/tool-catalog.md) — `@andrewkimjoseph/celina-sdk/tools` for MCP and AI SDK hosts
 - [Architecture](docs/concepts/architecture.md) — client composition and stack
-- [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow`, CELINA calldata tag
+- [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow` (`chainId: 42220`), dual CELINA attribution
+- [On-chain attribution](docs/guides/on-chain-attribution.md) — wire format, check vs verify, Celina vs AA tags
+- [Account Abstraction](docs/guides/account-abstraction.md) — `createAAClient`, app-owned sponsorship, AA `attributionTags`
 - [Prepared-step simulation](docs/guides/prepared-step-simulation.md) — `simulatePreparedStep` before wallet send
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
@@ -93,13 +95,13 @@ Every step with calldata gets **dual attribution suffixes** via `appendCelinaCal
 1. **Legacy UTF-8** — `CELINA|TAG1|TAG2` (app tags uppercase; `celo_<12 hex>` lowercase)
 2. **ERC-8021 Schema 0** — `toDataSuffix(["celina", ...])` via `@celo/attribution-tags` for Celo leaderboards and `verifyTx`
 
-Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` apply to both layers (deduped, stable order). List or check on-chain tags with `check_attribution_tag` (preferred) or `checkAttributionInCalldata`; use `verify_attribution_tag` / `verifyAttributionInCalldata` for raw legacy + ERC-8021 layers.
+Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` apply to both layers (deduped, stable order). The same option on **`createAAClient`** tags at `sendPreparedFlow` time (omit for pass-through). Prepared flows expose **`chainId: 42220`**. List or check on-chain tags with `check_attribution_tag` (preferred) or `checkAttributionInCalldata`; use `verify_attribution_tag` / `verifyAttributionInCalldata` for raw legacy + ERC-8021 layers.
 
 Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 
 For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
 
-See [Prepared flows](docs/concepts/prepared-flows.md), [Prepared-step simulation](docs/guides/prepared-step-simulation.md), and [Account Abstraction](docs/guides/account-abstraction.md).
+See [Prepared flows](docs/concepts/prepared-flows.md), [On-chain attribution](docs/guides/on-chain-attribution.md), [Prepared-step simulation](docs/guides/prepared-step-simulation.md), and [Account Abstraction](docs/guides/account-abstraction.md).
 
 ### MCP session wallet (not in the SDK)
 

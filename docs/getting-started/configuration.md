@@ -39,7 +39,7 @@ Case normalization:
 
 Prefer `check_attribution_tag` (MCP/browser tool) or `checkAttributionInCalldata` from the SDK to list custom tags or confirm one. Use `verify_attribution_tag` / `verifyAttributionInCalldata` when you need the raw legacy and ERC-8021 layers.
 
-See [Prepared flows](../concepts/prepared-flows.md) for how the suffix is applied.
+See [On-chain attribution](../guides/on-chain-attribution.md) and [Prepared flows](../concepts/prepared-flows.md) for how the suffix is applied.
 
 ## SdkConfig type
 
@@ -65,4 +65,4 @@ Sponsored UserOps use a separate factory — **`createAAClient`** — with an ex
 
 Optional **`attributionTags`** on `createAAClient` apply Celina dual tags in `sendPreparedFlow` (same as `createCelinaClient` / `prepare*`). Omit them to pass step calldata through unchanged.
 
-See [Account Abstraction](../guides/account-abstraction.md).
+See [Account Abstraction](../guides/account-abstraction.md) and [On-chain attribution](../guides/on-chain-attribution.md).

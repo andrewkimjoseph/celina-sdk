@@ -8,6 +8,6 @@
 
 > **AgentKarmaServiceConfig** = `ClientConfig`
 
-Defined in: [src/services/agentkarma.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/agentkarma.service.ts#L36)
+Defined in: [src/services/agentkarma.service.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/agentkarma.service.ts#L36)
 
 Config for the AgentKarma adapter. Defaults to https://agentkarma.io.

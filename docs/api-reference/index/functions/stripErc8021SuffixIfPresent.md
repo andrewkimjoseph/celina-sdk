@@ -8,7 +8,7 @@
 
 > **stripErc8021SuffixIfPresent**(`data`): `` `0x${string}` ``
 
-Defined in: [src/config/celina-tag.ts:77](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/celina-tag.ts#L77)
+Defined in: [src/config/celina-tag.ts:77](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L77)
 
 Strip a trailing ERC-8021 Schema 0/2 suffix when present.
 

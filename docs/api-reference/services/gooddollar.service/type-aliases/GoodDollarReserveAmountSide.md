@@ -8,4 +8,4 @@
 
 > **GoodDollarReserveAmountSide** = `"in"` \| `"out"`
 
-Defined in: [src/services/gooddollar.service.ts:64](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/gooddollar.service.ts#L64)
+Defined in: [src/services/gooddollar.service.ts:65](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/gooddollar.service.ts#L65)

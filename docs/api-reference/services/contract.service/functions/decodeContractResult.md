@@ -8,7 +8,7 @@
 
 > **decodeContractResult**(`abi`, `functionName`, `data`): readonly `unknown`[]
 
-Defined in: [src/services/contract.service.ts:152](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/contract.service.ts#L152)
+Defined in: [src/services/contract.service.ts:152](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/contract.service.ts#L152)
 
 Decode raw calldata result bytes using a single ABI function entry.
 

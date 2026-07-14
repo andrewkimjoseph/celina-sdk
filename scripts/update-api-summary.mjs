@@ -19,6 +19,11 @@ const API_LINKS = [
   { title: "CelinaClient", path: "index/interfaces/CelinaClient.md" },
   { title: "SdkConfig", path: "index/interfaces/SdkConfig.md" },
   { title: "CelinaClientOptions", path: "index/type-aliases/CelinaClientOptions.md" },
+  { title: "createAAClient", path: "index/functions/createAAClient.md" },
+  { title: "deriveSmartAccountAddress", path: "index/functions/deriveSmartAccountAddress.md" },
+  { title: "AAClient", path: "index/type-aliases/AAClient.md" },
+  { title: "CreateAAClientOptions", path: "index/type-aliases/CreateAAClientOptions.md" },
+  { title: "GasSponsorshipService", path: "index/classes/GasSponsorshipService.md" },
 ];
 
 const SERVICE_LINKS = [
@@ -53,6 +58,10 @@ const TYPE_LINKS = [
   { title: "GetKarmaOptions", path: "services/agentkarma.service/interfaces/GetKarmaOptions.md" },
   { title: "TrustPolicy", path: "index/interfaces/TrustPolicy.md" },
   { title: "appendCelinaCalldataTag", path: "index/functions/appendCelinaCalldataTag.md" },
+  { title: "checkAttributionInCalldata", path: "index/functions/checkAttributionInCalldata.md" },
+  { title: "verifyAttributionInCalldata", path: "index/functions/verifyAttributionInCalldata.md" },
+  { title: "AttributionCheckResult", path: "index/type-aliases/AttributionCheckResult.md" },
+  { title: "AttributionVerificationResult", path: "index/type-aliases/AttributionVerificationResult.md" },
   { title: "CELINA_DATA_SUFFIX", path: "index/variables/CELINA_DATA_SUFFIX.md" },
 ];
 

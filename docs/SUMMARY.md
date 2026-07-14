@@ -19,6 +19,7 @@
 * [wagmi integration](guides/wagmi-integration.md)
 * [Prepared-step simulation](guides/prepared-step-simulation.md)
 * [Account Abstraction](guides/account-abstraction.md)
+* [On-chain attribution](guides/on-chain-attribution.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)
 * [Uniswap v4](guides/uniswap.md)
@@ -36,8 +37,13 @@
 * [CelinaClient](api-reference/index/interfaces/CelinaClient.md)
 * [SdkConfig](api-reference/index/interfaces/SdkConfig.md)
 * [CelinaClientOptions](api-reference/index/type-aliases/CelinaClientOptions.md)
+* [createAAClient](api-reference/index/functions/createAAClient.md)
+* [deriveSmartAccountAddress](api-reference/index/functions/deriveSmartAccountAddress.md)
+* [AAClient](api-reference/index/type-aliases/AAClient.md)
+* [CreateAAClientOptions](api-reference/index/type-aliases/CreateAAClientOptions.md)
+* [GasSponsorshipService](api-reference/index/classes/GasSponsorshipService.md)
 
-## Services
+### Services
 
 * [AccountService](api-reference/services/account.service/classes/AccountService.md)
 * [AaveService](api-reference/services/aave.service/classes/AaveService.md)
@@ -54,7 +60,7 @@
 * [TokenService](api-reference/services/token.service/classes/TokenService.md)
 * [TransactionService](api-reference/services/transaction.service/classes/TransactionService.md)
 
-## Types
+### Types
 
 * [PreparedTx](api-reference/types/prepared/interfaces/PreparedTx.md)
 * [PreparedFlow](api-reference/types/prepared/interfaces/PreparedFlow.md)
@@ -70,8 +76,11 @@
 * [GetKarmaOptions](api-reference/services/agentkarma.service/interfaces/GetKarmaOptions.md)
 * [TrustPolicy](api-reference/index/interfaces/TrustPolicy.md)
 * [appendCelinaCalldataTag](api-reference/index/functions/appendCelinaCalldataTag.md)
-* [CELINA\_DATA\_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
-
+* [checkAttributionInCalldata](api-reference/index/functions/checkAttributionInCalldata.md)
+* [verifyAttributionInCalldata](api-reference/index/functions/verifyAttributionInCalldata.md)
+* [AttributionCheckResult](api-reference/index/type-aliases/AttributionCheckResult.md)
+* [AttributionVerificationResult](api-reference/index/type-aliases/AttributionVerificationResult.md)
+* [CELINA_DATA_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)

@@ -6,7 +6,7 @@
 
 # Interface: GoodDollarReserveQuoteOptions
 
-Defined in: [src/services/gooddollar.service.ts:79](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/gooddollar.service.ts#L79)
+Defined in: [src/services/gooddollar.service.ts:80](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/gooddollar.service.ts#L80)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/gooddollar.service.ts:79](https://github.com/andrewkim
 
 > `optional` **amountSide?**: [`GoodDollarReserveAmountSide`](../type-aliases/GoodDollarReserveAmountSide.md)
 
-Defined in: [src/services/gooddollar.service.ts:82](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/gooddollar.service.ts#L82)
+Defined in: [src/services/gooddollar.service.ts:83](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/gooddollar.service.ts#L83)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/gooddollar.service.ts:82](https://github.com/andrewkim
 
 > `optional` **from?**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar.service.ts:81](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/gooddollar.service.ts#L81)
+Defined in: [src/services/gooddollar.service.ts:82](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/gooddollar.service.ts#L82)
 
 #### Deprecated
 

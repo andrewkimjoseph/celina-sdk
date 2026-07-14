@@ -8,6 +8,7 @@
 
 ## Classes
 
+- [GasSponsorshipService](classes/GasSponsorshipService.md)
 - [SelfApiError](classes/SelfApiError.md)
 - [SelfExpiredSessionError](classes/SelfExpiredSessionError.md)
 
@@ -24,10 +25,20 @@
 
 ## Type Aliases
 
+- [AAClient](type-aliases/AAClient.md)
 - [AaveAsset](type-aliases/AaveAsset.md)
+- [AttributionCheckResult](type-aliases/AttributionCheckResult.md)
 - [AttributionVerificationResult](type-aliases/AttributionVerificationResult.md)
 - [CelinaClientOptions](type-aliases/CelinaClientOptions.md)
+- [CreateAAClientOptions](type-aliases/CreateAAClientOptions.md)
+- [GasSponsorshipConfig](type-aliases/GasSponsorshipConfig.md)
+- [GasSponsorshipProviderId](type-aliases/GasSponsorshipProviderId.md)
+- [PimlicoGasSponsorshipConfig](type-aliases/PimlicoGasSponsorshipConfig.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
+- [SendPreparedFlowMode](type-aliases/SendPreparedFlowMode.md)
+- [SendPreparedFlowOptions](type-aliases/SendPreparedFlowOptions.md)
+- [SendPreparedFlowResult](type-aliases/SendPreparedFlowResult.md)
+- [UserOpCall](type-aliases/UserOpCall.md)
 
 ## Variables
 
@@ -52,13 +63,18 @@
 - [appendCelinaCalldataTag](functions/appendCelinaCalldataTag.md)
 - [buildCelinaAttributionTag](functions/buildCelinaAttributionTag.md)
 - [buildErc8021AttributionSuffix](functions/buildErc8021AttributionSuffix.md)
+- [checkAttributionInCalldata](functions/checkAttributionInCalldata.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
+- [collectAttributionTags](functions/collectAttributionTags.md)
+- [createAAClient](functions/createAAClient.md)
 - [createCelinaClient](functions/createCelinaClient.md)
+- [deriveSmartAccountAddress](functions/deriveSmartAccountAddress.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
 - [isGoodDollarUsdReservePair](functions/isGoodDollarUsdReservePair.md)
 - [normalizeAttributionTags](functions/normalizeAttributionTags.md)
 - [parseCelinaLegacyAttributionSuffix](functions/parseCelinaLegacyAttributionSuffix.md)
+- [preparedStepsToUserOpCalls](functions/preparedStepsToUserOpCalls.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
 - [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)

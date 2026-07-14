@@ -6,7 +6,7 @@
 
 # Interface: GetKarmaOptions
 
-Defined in: [src/services/agentkarma.service.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/agentkarma.service.ts#L42)
+Defined in: [src/services/agentkarma.service.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/agentkarma.service.ts#L42)
 
 Options for a karma read.
 
@@ -16,6 +16,6 @@ Options for a karma read.
 
 > `optional` **face?**: [`AgentKarmaFace`](../type-aliases/AgentKarmaFace.md)
 
-Defined in: [src/services/agentkarma.service.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/services/agentkarma.service.ts#L44)
+Defined in: [src/services/agentkarma.service.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/agentkarma.service.ts#L44)
 
 Face to read. Defaults to `"both"`.

@@ -8,6 +8,6 @@
 
 > `const` **SELF\_DEMO\_NETWORK**: `"celo-mainnet"` = `"celo-mainnet"`
 
-Defined in: [src/config/self.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/15eb03644ed64e7dabf36462c8a85f34a3beaae2/src/config/self.ts#L10)
+Defined in: [src/config/self.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/self.ts#L10)
 
 Query param for Self demo/gated HTTP endpoints on Celo mainnet.

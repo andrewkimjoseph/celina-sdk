@@ -5,7 +5,7 @@ import {
 } from "@celo/attribution-tags";
 import { concat, hexToString, stringToHex } from "viem";
 
-/** Calldata suffix appended to prepared transactions for on-chain Celina attribution. */
+/** Legacy UTF-8 marker hex(`"CELINA"`) used inside the dual attribution suffix — not the full on-chain tag by itself. Full wire format is legacy `CELINA|…` plus an ERC-8021 Schema 0 suffix; see {@link appendCelinaCalldataTag}. */
 export const CELINA_DATA_SUFFIX = stringToHex("CELINA");
 
 export { ERC_8021_MARKER };
@@ -187,12 +187,16 @@ export function checkAttributionInCalldata(
 }
 
 /**
- * Append legacy UTF-8 and ERC-8021 attribution suffixes to calldata.
+ * Append dual Celina attribution suffixes to calldata (legacy UTF-8 + ERC-8021).
+ *
+ * Used by `prepare*` when `createCelinaClient({ attributionTags })` is set, and by
+ * `createAAClient({ attributionTags }).sendPreparedFlow` when AA tags are set.
  *
  * @param data - Original transaction calldata.
- * @param attributionTags - Optional tags from `createCelinaClient({ attributionTags })`.
+ * @param attributionTags - Optional custom tags (same list semantics on Celina or AA client).
  *   Legacy layer: `CELINA|TAG1|TAG2` (app tags uppercase, `celo_<12 hex>` lowercase).
  *   ERC-8021 layer: `toDataSuffix(["celina", ...])` with lowercase codes.
+ *   Example: `["goclaim"]` → legacy `CELINA|GOCLAIM` + codes `celina`, `goclaim` (not bare UTF-8 `GOCLAIM`).
  */
 export function appendCelinaCalldataTag(
   data: `0x${string}`,

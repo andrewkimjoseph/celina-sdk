@@ -12,14 +12,16 @@
 - **AgentKarma** (`client.agentKarma`) is a read-only external reputation adapter — calls agentkarma.io, not on-chain Celina reads; no keys, no Celina analytics
 - **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `analyticsEnabled: false`
 
-Consumers pass prepared `steps` to wagmi/viem for wallet signing.
+Consumers pass prepared `steps` to wagmi/viem for wallet signing, or to `createAAClient().sendPreparedFlow` for sponsored UserOps.
 
 ```mermaid
 flowchart LR
   app[Your app]
   sdk[Celina SDK]
+  aa[createAAClient]
   rpc[Celo RPC]
   wallet[User wallet via wagmi]
+  bundler[Bundler / paymaster]
 
   app -->|createCelinaClient| sdk
   sdk -->|reads| rpc
@@ -27,6 +29,10 @@ flowchart LR
   sdk -->|SerializedPreparedFlow| app
   app -->|sendTransactionAsync| wallet
   wallet -->|signed tx| rpc
+  app -->|createAAClient| aa
+  app -->|sendPreparedFlow| aa
+  aa -->|UserOp| bundler
+  bundler --> rpc
 ```
 
 ## Celina stack
@@ -47,9 +53,9 @@ flowchart TB
 
 | Layer | Role |
 |-------|------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow`, CELINA calldata tag, and `@andrewkimjoseph/celina-sdk/tools` — shared catalog for MCP and browser surfaces |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), dual CELINA attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
-| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — **34 tools** (reads + prepare; no server-key writes) |
+| **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).
@@ -74,11 +80,13 @@ See [MCP session wallet](../guides/mcp-session-wallet.md) for wallet param rules
 |--------|---------|
 | `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
 | `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run each `PreparedTx` before broadcast |
-| `appendCelinaCalldataTag` | Append CELINA attribution suffix to prepared calldata; optional `attributionTags` from `createCelinaClient()` |
+| `appendCelinaCalldataTag` | Dual CELINA attribution (legacy + ERC-8021); tags from `createCelinaClient` or `createAAClient` |
+| `createAAClient` / `deriveSmartAccountAddress` | Sponsored UserOps — see [Account Abstraction](../guides/account-abstraction.md) |
+| `checkAttributionInCalldata` | Unified custom `tags` from calldata — see [On-chain attribution](../guides/on-chain-attribution.md) |
 
-`createCelinaClient({ attributionTags })` flows into all `prepare*` services — each step's calldata is tagged via `appendCelinaCalldataTag` using the client config.
+`createCelinaClient({ attributionTags })` flows into all `prepare*` services. `createAAClient({ attributionTags })` tags at `sendPreparedFlow` time. Prefer one consistent list per path.
 
-These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported from the package entry.
+These live in `src/utils/`, `src/aa/`, and `src/config/celina-tag.ts` and are re-exported from the package entry.
 
 ## Client composition
 
@@ -104,12 +112,13 @@ These live in `src/utils/` and `src/config/celina-tag.ts` and are re-exported fr
 
 | Path | Purpose |
 |------|---------|
-| `src/index.ts` | Public entry — `createCelinaClient()` and type exports |
+| `src/index.ts` | Public entry — `createCelinaClient()`, `createAAClient()`, and type exports |
+| `src/aa/` | ERC-4337 AA client, gas sponsorship, prepared → UserOp mapping |
 | `src/tools/` | LLM tool catalog — exported as `@andrewkimjoseph/celina-sdk/tools` |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
 | `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
-| `src/types/prepared.ts` | `SerializedPreparedFlow` contract |
+| `src/types/prepared.ts` | `SerializedPreparedFlow` contract (`chainId`) |
 | `src/simulation/` | `simulatePreparedStep` for sign-time revert checks |
 | `src/utils/` | Shared helpers — allowance simulation, token normalization |
 

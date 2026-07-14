@@ -68,7 +68,14 @@ const mcpTools = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
 
 Helpers: `getToolNames()`, `getMcpToolNames()`, `getBrowserToolNames()`, `getToolDefinition(name)`.
 
-Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Browser-only swap routing (`get_swap_quote`, `prepare_swap`) lives in `domains/browser.ts`. GoodDollar reserve quotes (`get_gooddollar_reserve_quote`, `prepare_gooddollar_reserve_swap`) live in `domains/gooddollar.ts` and are included in aggregated swap routing for G$ ↔ USDm. AgentKarma reputation tools (`get_agentkarma_reputation`, `get_agentkarma_celo_agent`, `check_agentkarma_counterparty`) live in `domains/agentkarma.ts`.
+Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Browser-only swap routing (`get_swap_quote`, `prepare_swap`) lives in `domains/browser.ts`. GoodDollar reserve quotes (`get_gooddollar_reserve_quote`, `prepare_gooddollar_reserve_swap`) live in `domains/gooddollar.ts` and are included in aggregated swap routing for G$ ↔ USDm. AgentKarma reputation tools (`get_agentkarma_reputation`, `get_agentkarma_celo_agent`, `check_agentkarma_counterparty`) live in `domains/agentkarma.ts`. On-chain attribution tools live in `domains/blockchain.ts`:
+
+| Tool | Prefer when |
+|------|-------------|
+| **`check_attribution_tag`** | Unified custom `tags` list (excludes platform `CELINA`/`celina`) or confirm one tag |
+| **`verify_attribution_tag`** | Raw legacy + ERC-8021 layer decode |
+
+See [On-chain attribution](on-chain-attribution.md).
 
 ## MCP host (reference)
 
@@ -170,4 +177,6 @@ Helpers exported from `@andrewkimjoseph/celina-sdk/tools`: `getWebsiteToolBaseli
 
 - [Architecture](../concepts/architecture.md) — stack and wallet-address rules
 - [Prepared flows](../concepts/prepared-flows.md) — `SerializedPreparedFlow` for `prepare_*` tools
+- [On-chain attribution](on-chain-attribution.md) — dual tags, check vs verify
+- [Account Abstraction](account-abstraction.md) — `createAAClient` (SDK-first)
 - [MCP session wallet](mcp-session-wallet.md) — omitting address on MCP stdio
