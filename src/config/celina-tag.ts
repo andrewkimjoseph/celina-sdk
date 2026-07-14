@@ -73,6 +73,80 @@ function sameCodeSets(a: readonly string[], b: readonly string[]): boolean {
   return sortedA.every((code, i) => code === sortedB[i]);
 }
 
+type Erc8021Schema0Match = {
+  /** Hex char index into `data.slice(2)` where the ERC-8021 suffix starts. */
+  suffixStart: number;
+  /** Hex char index into `data.slice(2)` where the suffix ends (exclusive). */
+  markerEnd: number;
+  decoded: { codes: string[]; schemaId: number };
+};
+
+/**
+ * Locate a valid ERC-8021 Schema 0 suffix even when trailing bytes follow the marker
+ * (AA/UserOp packing). Prefers the last valid occurrence.
+ */
+function findErc8021Schema0Suffix(
+  data: `0x${string}`,
+): Erc8021Schema0Match | null {
+  const hex = data.slice(2).toLowerCase();
+  const markerHex = ERC_8021_MARKER.slice(2).toLowerCase();
+  if (hex.length < markerHex.length + 4) return null;
+
+  let searchEnd = hex.length;
+  while (searchEnd >= markerHex.length) {
+    const idx = hex.lastIndexOf(markerHex, searchEnd - 1);
+    if (idx === -1) return null;
+
+    const markerEnd = idx + markerHex.length;
+    const schemaPos = idx - 2;
+    const lengthPos = schemaPos - 2;
+    if (lengthPos < 0) {
+      searchEnd = idx;
+      continue;
+    }
+
+    const schemaId = Number.parseInt(hex.slice(schemaPos, idx), 16);
+    const lengthByte = Number.parseInt(hex.slice(lengthPos, schemaPos), 16);
+    const suffixStart = lengthPos - lengthByte * 2;
+    if (
+      schemaId !== 0 ||
+      !Number.isFinite(lengthByte) ||
+      lengthByte < 0 ||
+      suffixStart < 0
+    ) {
+      searchEnd = idx;
+      continue;
+    }
+
+    const window = `0x${hex.slice(0, markerEnd)}` as `0x${string}`;
+    const decoded = fromDataSuffix(window);
+    if (decoded && decoded.schemaId === 0) {
+      return {
+        suffixStart,
+        markerEnd,
+        decoded: { codes: [...decoded.codes], schemaId: decoded.schemaId },
+      };
+    }
+
+    searchEnd = idx;
+  }
+
+  return null;
+}
+
+/**
+ * Truncate calldata to end at an embedded ERC-8021 Schema 0 suffix when tip parse fails.
+ * Tip-of-calldata tags are returned unchanged.
+ */
+export function attributionDecodeWindow(data: `0x${string}`): `0x${string}` {
+  if (!data || data === "0x") return data;
+  if (fromDataSuffix(data)) return data;
+
+  const found = findErc8021Schema0Suffix(data);
+  if (!found) return data;
+  return `0x${data.slice(2).slice(0, found.markerEnd)}` as `0x${string}`;
+}
+
 /** Strip a trailing ERC-8021 Schema 0/2 suffix when present. */
 export function stripErc8021SuffixIfPresent(
   data: `0x${string}`,
@@ -94,6 +168,9 @@ export function stripErc8021SuffixIfPresent(
   return `0x${hex.slice(0, suffixStart)}` as `0x${string}`;
 }
 
+/** Printable legacy segments: `CELINA` or `CELINA|TAG1|…` (stops before binary / ERC-8021 ASCII). */
+const LEGACY_ATTRIBUTION_TEXT = /^CELINA(?:\|[A-Za-z0-9_]+)*/;
+
 /** Parse legacy UTF-8 `CELINA|TAG1|…` suffix from calldata (ignores trailing ERC-8021). */
 export function parseCelinaLegacyAttributionSuffix(
   data: `0x${string}`,
@@ -108,7 +185,9 @@ export function parseCelinaLegacyAttributionSuffix(
     const suffixHex = `0x${body.slice(2).slice(idx)}` as `0x${string}`;
     const text = hexToString(suffixHex);
     if (!text.startsWith("CELINA")) return null;
-    return text.split("|");
+    const printable = text.match(LEGACY_ATTRIBUTION_TEXT)?.[0];
+    if (!printable) return null;
+    return printable.split("|");
   } catch {
     return null;
   }
@@ -156,8 +235,9 @@ export function verifyAttributionInCalldata(
   data: `0x${string}`,
   tag?: string,
 ): AttributionVerificationResult {
-  const legacyTags = parseCelinaLegacyAttributionSuffix(data);
-  const erc8021 = fromDataSuffix(data);
+  const window = attributionDecodeWindow(data);
+  const legacyTags = parseCelinaLegacyAttributionSuffix(window);
+  const erc8021 = fromDataSuffix(window);
   const matched = tag
     ? tagMatchesVerification(tag, legacyTags, erc8021?.codes ?? null)
     : Boolean(legacyTags?.length || erc8021?.codes.length);

@@ -139,6 +139,7 @@ export {
 export { CHAIN, DEFAULT_RPC_URL } from "./config/chains.js";
 export {
   appendCelinaCalldataTag,
+  attributionDecodeWindow,
   buildCelinaAttributionTag,
   buildErc8021AttributionSuffix,
   CELINA_DATA_SUFFIX,

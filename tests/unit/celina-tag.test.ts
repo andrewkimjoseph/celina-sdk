@@ -136,4 +136,34 @@ describe("celina tag helpers", () => {
     expect(platform.tags).toEqual([]);
     expect(platform.matched).toBe(true);
   });
+
+  it("decodes dual attribution when ERC-8021 is followed by trailing bytes", () => {
+    const tagged = appendCelinaCalldataTag("0xabcdef", ["goclaim"]);
+    const embedded = `${tagged}${"00".repeat(40)}` as `0x${string}`;
+
+    const tip = checkAttributionInCalldata(tagged);
+    const mid = checkAttributionInCalldata(embedded);
+
+    expect(tip).toEqual({
+      legacyTags: ["CELINA", "GOCLAIM"],
+      erc8021: { codes: ["celina", "goclaim"], schemaId: 0 },
+      matched: true,
+      tags: ["GOCLAIM"],
+    });
+    expect(mid).toEqual(tip);
+  });
+
+  it("legacy fallback stops before binary when ERC-8021 cannot be parsed", () => {
+    const legacyAndBinary =
+      `0xabcdef${stringToHex("CELINA|GOCLAIM").slice(2)}deadbeef` as `0x${string}`;
+    expect(parseCelinaLegacyAttributionSuffix(legacyAndBinary)).toEqual([
+      "CELINA",
+      "GOCLAIM",
+    ]);
+    const checked = checkAttributionInCalldata(legacyAndBinary);
+    expect(checked.legacyTags).toEqual(["CELINA", "GOCLAIM"]);
+    expect(checked.erc8021).toBeNull();
+    expect(checked.tags).toEqual(["GOCLAIM"]);
+    expect(checked.matched).toBe(true);
+  });
 });
