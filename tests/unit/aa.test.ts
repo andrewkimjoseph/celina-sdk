@@ -28,7 +28,7 @@ describe("GasSponsorshipService", () => {
 });
 
 describe("preparedStepsToUserOpCalls", () => {
-  it("maps prepared steps and preserves tagged calldata", () => {
+  it("maps prepared steps and preserves tagged calldata when tags omitted", () => {
     const tagged = appendCelinaCalldataTag("0xabcdef", ["celo_862c21dd97a7"]);
     const steps: PreparedTx[] = [
       {
@@ -52,6 +52,34 @@ describe("preparedStepsToUserOpCalls", () => {
     expect(calls[0]?.to).toBe("0x765de816845861e75a25fca122bb6898b8b1282a");
     expect(calls[1]?.data).toBe("0x1234");
     expect(calls[1]?.value).toBeUndefined();
+  });
+
+  it("tags untagged step data when attributionTags are provided", () => {
+    const steps: PreparedTx[] = [
+      {
+        kind: "contract",
+        to: "0x16b321ed7634e6eac14424b43fe145a041175703",
+        data: "0xabcdef",
+        description: "claim",
+      },
+    ];
+    const calls = preparedStepsToUserOpCalls(steps, ["goclaim"]);
+    const expected = appendCelinaCalldataTag("0xabcdef", ["goclaim"]);
+    expect(calls[0]?.data).toBe(expected);
+  });
+
+  it("leaves data unchanged when already dual-tagged with the same tags", () => {
+    const tagged = appendCelinaCalldataTag("0xabcdef", ["goclaim"]);
+    const steps: PreparedTx[] = [
+      {
+        kind: "contract",
+        to: "0x16b321ed7634e6eac14424b43fe145a041175703",
+        data: tagged,
+        description: "claim",
+      },
+    ];
+    const calls = preparedStepsToUserOpCalls(steps, ["goclaim"]);
+    expect(calls[0]?.data).toBe(tagged);
   });
 
   it("includes non-zero value as bigint", () => {

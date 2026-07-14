@@ -63,4 +63,6 @@ The SDK targets **Celo mainnet** only. All prepared flows return `chainId: 42220
 
 Sponsored UserOps use a separate factory — **`createAAClient`** — with an explicit `gasSponsorship` provider object (v1: `provider: "pimlico"` + `pimlico.apiKey`). Credentials stay in your app; Celina MCP does not host them.
 
+Optional **`attributionTags`** on `createAAClient` apply Celina dual tags in `sendPreparedFlow` (same as `createCelinaClient` / `prepare*`). Omit them to pass step calldata through unchanged.
+
 See [Account Abstraction](../guides/account-abstraction.md).

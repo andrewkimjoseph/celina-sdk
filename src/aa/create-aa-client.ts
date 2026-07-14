@@ -74,8 +74,14 @@ export type AAClient = {
   /** Underlying sponsorship service (URLs, paymaster, fees). */
   gasSponsorship: GasSponsorshipService;
   /**
+   * Tags applied in `sendPreparedFlow` via `appendCelinaCalldataTag`.
+   * `undefined` means step `data` is passed through unchanged.
+   */
+  attributionTags: string[] | undefined;
+  /**
    * Submit `prepare*` output (ordered `steps` / prepared transactions) as sponsored UserOp(s).
-   * Does not append attribution; uses each step’s `data` as-is (including Celina dual tags from `prepare*`).
+   * When `attributionTags` were set on this client, each step’s `data` is dual-tagged
+   * before submit; otherwise `data` is used as-is (including tags from `prepare*`).
    */
   sendPreparedFlow: (
     flow: PreparedFlow | SerializedPreparedFlow,
@@ -89,14 +95,16 @@ export type AAClient = {
  * Pass an explicit `gasSponsorship` provider object — credentials are app-owned
  * and never stored by Celina. v1 supports `provider: "pimlico"`.
  *
- * Does not accept `attributionTags`. Set them on `createCelinaClient({ attributionTags })`
- * before `prepare*`; `sendPreparedFlow` preserves already-tagged step calldata.
+ * Optional `attributionTags` are applied in `sendPreparedFlow` via
+ * `appendCelinaCalldataTag` (same dual format as `prepare*`). Omit them to
+ * pass step calldata through unchanged.
  */
 export async function createAAClient(
   options: CreateAAClientOptions,
 ): Promise<AAClient> {
   const eoaAccount = resolveOwner(options.owner);
   const publicClient = options.publicClient ?? defaultPublicClient();
+  const attributionTags = options.attributionTags;
   const gasSponsorship = new GasSponsorshipService(
     options.gasSponsorship,
     CHAIN.id,
@@ -127,7 +135,7 @@ export async function createAAClient(
     sendOptions?: SendPreparedFlowOptions,
   ): Promise<SendPreparedFlowResult> {
     const mode = sendOptions?.mode ?? "batch";
-    const calls = preparedStepsToUserOpCalls(flow.steps);
+    const calls = preparedStepsToUserOpCalls(flow.steps, attributionTags);
     const userOpHashes: `0x${string}`[] = [];
     const transactionHashes: `0x${string}`[] = [];
 
@@ -165,6 +173,7 @@ export async function createAAClient(
     eoaAddress: eoaAccount.address,
     smartAccountAddress: smartAccount.address,
     gasSponsorship,
+    attributionTags,
     sendPreparedFlow,
   };
 }

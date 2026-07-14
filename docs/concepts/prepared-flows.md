@@ -97,8 +97,7 @@ value: step.value ? BigInt(step.value) : undefined
 
 Prepared calldata is tagged with dual Celina attribution suffixes (`appendCelinaCalldataTag`) for on-chain identification — sends, Mento FX, Uniswap, Aave, and GoodDollar. You do not need to modify `data` before passing it to wagmi **or** to `createAAClient().sendPreparedFlow` — the same tagged `steps` work for EOA signing and sponsored UserOps.
 
-`createAAClient` does **not** take `attributionTags`. Set them on `createCelinaClient({ attributionTags })` before `prepare*`.
-
+`createAAClient` also accepts optional `attributionTags`. When set, `sendPreparedFlow` applies the same dual tagger to each step’s `data` (useful for hand-built steps). When omitted, step `data` is passed through unchanged. Prefer one consistent tag list per send path — on `createCelinaClient` for `prepare*`, or on `createAAClient` for hand-built flows.
 ### Legacy layer
 
 Every tagged step includes a UTF-8 suffix starting with **`CELINA`**. Optional `attributionTags` on `createCelinaClient()` append custom tags:

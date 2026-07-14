@@ -20,8 +20,10 @@ export type GasSponsorshipConfig = {
 
 /**
  * Options for {@link createAAClient}.
- * Does not accept `attributionTags` — set those on `createCelinaClient({ attributionTags })`
- * before calling `prepare*`.
+ *
+ * Set `attributionTags` here for hand-built prepared steps (tagged at `sendPreparedFlow`).
+ * For `prepare*` flows, you can set the same tags on `createCelinaClient` instead —
+ * use one consistent list per send path so suffixes do not stack with mismatched tags.
  */
 export type CreateAAClientOptions = {
   /** EOA owner of the Simple Smart Account (account or private key hex). */
@@ -30,6 +32,12 @@ export type CreateAAClientOptions = {
   gasSponsorship: GasSponsorshipConfig;
   /** Optional Celo public client; defaults to Forno mainnet. */
   publicClient?: PublicClient;
+  /**
+   * Optional custom tags applied via `appendCelinaCalldataTag` on each step's `data`
+   * in `sendPreparedFlow` (legacy `CELINA|…` + ERC-8021). When omitted, step data
+   * is passed through unchanged.
+   */
+  attributionTags?: string[];
 };
 
 /** How to map prepared transactions (`prepare*` output / ordered `steps`) into UserOperations. */

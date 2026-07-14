@@ -35,10 +35,13 @@ const aa = await createAAClient({
       apiKey: process.env.PIMLICO_API_KEY!,
     },
   },
+  // Optional: tag hand-built or prepare* steps at send time
+  attributionTags: ["goclaim"],
 });
 
 console.log(aa.provider); // "pimlico"
 console.log(aa.smartAccountAddress);
+console.log(aa.attributionTags); // ["goclaim"]
 ```
 
 `GasSponsorshipService` builds the Celo endpoint:
@@ -78,23 +81,40 @@ await aa.sendPreparedFlow(prepared, { mode: "sequential" });
 
 ## Attribution
 
-**`createAAClient` has no `attributionTags` parameter.** Set tags when creating the Celina client used for `prepare*`:
+`createAAClient` accepts optional **`attributionTags`**. When set, `sendPreparedFlow` runs `appendCelinaCalldataTag` on each step’s `data` before submit (same dual legacy + ERC-8021 format as `prepare*`). When omitted, step `data` is passed through unchanged.
 
 ```ts
+// Hand-built steps (e.g. app-specific contract calls)
+const aa = await createAAClient({
+  owner,
+  gasSponsorship: { provider: "pimlico", pimlico: { apiKey: process.env.PIMLICO_API_KEY! } },
+  attributionTags: ["goclaim"],
+});
+await aa.sendPreparedFlow(handBuiltPreparedFlow);
+```
+
+```ts
+// Or tag at prepare* time and omit AA tags (pass-through)
 const celina = createCelinaClient({
   attributionTags: ["celo_862c21dd97a7", "my_app"],
 });
 const prepared = await celina.transaction.prepareSend({ ... });
-await aa.sendPreparedFlow(prepared); // inner call data keeps Celina dual suffixes
+const aa = await createAAClient({
+  owner,
+  gasSponsorship: { provider: "pimlico", pimlico: { apiKey: process.env.PIMLICO_API_KEY! } },
+});
+await aa.sendPreparedFlow(prepared);
 ```
+
+Use **one consistent tag list** per send path (`createCelinaClient` *or* `createAAClient`). Mismatched lists on both sides can produce stacked / incomplete suffixes.
 
 How tags reach the chain:
 
-1. `prepare*` runs `appendCelinaCalldataTag` on each step — **legacy** UTF-8 (`CELINA|…`) plus **ERC-8021** Schema 0 codes.
-2. `sendPreparedFlow` **passes that calldata through** as UserOp inner calls — it does not strip or re-tag.
+1. `prepare*` and/or `sendPreparedFlow` (when AA `attributionTags` set) run `appendCelinaCalldataTag` — **legacy** UTF-8 (`CELINA|…`) plus **ERC-8021** Schema 0 codes.
+2. UserOp inner calls carry that tagged calldata.
 3. Verify with `check_attribution_tag` / `verify_attribution_tag` on the resulting transaction hash.
 
-Apps (e.g. GoClaim) may also keep their own calldata suffix in parallel with Celina’s dual tags.
+`attributionTags: ["goclaim"]` yields `CELINA|GOCLAIM` + ERC-8021 codes `celina`, `goclaim` — **not** a bare UTF-8 `GOCLAIM` suffix.
 
 See [Prepared flows](../concepts/prepared-flows.md) and [Configuration](../getting-started/configuration.md).
 
@@ -118,7 +138,7 @@ Future MCP AA tools would take caller-supplied `gasSponsorship` config — not C
 
 ## Migrating an app (e.g. GoClaim)
 
-1. Replace a local `createSmartAccountClient` / Pimlico URL helper with `createAAClient({ gasSponsorship: { provider: "pimlico", pimlico: { apiKey } } })`.
-2. Prefer Celina `prepare*` for transfers / claims where available; keep app-specific calls as extra prepared steps or custom `calls`.
-3. Set Celina dual tags via `createCelinaClient({ attributionTags })` when preparing; keep app-specific suffixes if needed.
+1. Replace a local `createSmartAccountClient` / Pimlico URL helper with `createAAClient({ gasSponsorship: { provider: "pimlico", pimlico: { apiKey } }, attributionTags: ["goclaim"] })`.
+2. Prefer Celina `prepare*` for transfers / claims where available; keep app-specific calls as extra prepared steps.
+3. Set tags on `createAAClient` (hand-built steps) or `createCelinaClient` (`prepare*`), not mismatched lists on both.
 4. Drop duplicate `permissionless` wiring once you consume Celina’s AA client.
