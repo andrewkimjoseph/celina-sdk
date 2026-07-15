@@ -34,7 +34,7 @@ export type CreateAAClientOptions = {
   publicClient?: PublicClient;
   /**
    * Optional custom tags applied via `appendCelinaCalldataTag` on each step's `data`
-   * in `sendPreparedFlow` (legacy `CELINA|…` + ERC-8021). When omitted, step data
+   * in `sendPreparedFlow` (ERC-8021 Schema 0). When omitted, step data
    * is passed through unchanged.
    */
   attributionTags?: string[];

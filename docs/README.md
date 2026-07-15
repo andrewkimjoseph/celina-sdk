@@ -24,7 +24,7 @@ flowchart TB
 
 | Layer                  | What it adds                                                                                                                                                               |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), dual CELINA attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP**                | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
 | **MCP host**           | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts**      | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys                                                                   |
@@ -46,7 +46,7 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 The SDK never holds CELO wallet keys on `createCelinaClient`. Call `prepare*` with the user's address, then pass `steps` to wagmi — or submit via `createAAClient` with your own gas sponsorship credentials.
 
-Prepared / AA calldata uses **dual** attribution (legacy `CELINA|…` + ERC-8021). Optional `attributionTags` on `createCelinaClient` or `createAAClient` — see [On-chain attribution](guides/on-chain-attribution.md), [Configuration](getting-started/configuration.md), and [Account Abstraction](guides/account-abstraction.md).
+Prepared / AA calldata uses **ERC-8021** Schema 0 attribution (`celina` + optional app codes). Optional `attributionTags` on `createCelinaClient` or `createAAClient` — see [On-chain attribution](guides/on-chain-attribution.md), [Configuration](getting-started/configuration.md), and [Account Abstraction](guides/account-abstraction.md). Historical txs may also carry legacy `CELINA|…` UTF-8; verify/check still decode it.
 
 ### Quick start
 

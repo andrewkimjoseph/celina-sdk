@@ -26,12 +26,10 @@ export interface SdkConfig {
    */
   analyticsWalletAddress?: string;
   /**
-   * Optional custom calldata attribution tags appended after the base `CELINA`
-   * suffix on prepared transaction steps (`CELINA|TAG1|TAG2`, deduped, stable order).
-   * An ERC-8021 Schema 0 suffix (`toDataSuffix`) is also appended for Celo ecosystem
-   * leaderboards and `verifyTx` compatibility.
+   * Optional custom calldata attribution tags for ERC-8021 Schema 0 codes
+   * after platform `celina` on prepared transaction steps (deduped, stable order).
    *
-   * App tags (e.g. `celeste_ai`) normalize to uppercase (`CELESTE_AI`).
+   * App tags (e.g. `celeste_ai`) normalize to uppercase (`CELESTE_AI`) then lowercase codes.
    * Celo Builders on-chain tags matching `celo_<12 hex>` canonicalize to lowercase
    * (e.g. `celo_862c21dd97a7`). The literal tag `CELINA` is never duplicated.
    */

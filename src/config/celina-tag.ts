@@ -5,7 +5,10 @@ import {
 } from "@celo/attribution-tags";
 import { concat, hexToString, stringToHex } from "viem";
 
-/** Legacy UTF-8 marker hex(`"CELINA"`) used inside the dual attribution suffix — not the full on-chain tag by itself. Full wire format is legacy `CELINA|…` plus an ERC-8021 Schema 0 suffix; see {@link appendCelinaCalldataTag}. */
+/**
+ * Legacy UTF-8 marker hex(`"CELINA"`) for reading historical dual / legacy-only txs.
+ * New writes use ERC-8021 only — see {@link appendCelinaCalldataTag}.
+ */
 export const CELINA_DATA_SUFFIX = stringToHex("CELINA");
 
 export { ERC_8021_MARKER };
@@ -35,7 +38,10 @@ export function normalizeAttributionTags(tags?: string[]): string[] {
   return [...deduped];
 }
 
-/** Build deterministic attribution tag string that always starts with `CELINA`. */
+/**
+ * Build deterministic legacy UTF-8 tag string (`CELINA` / `CELINA|TAG…`).
+ * @deprecated Prefer ERC-8021 via {@link appendCelinaCalldataTag} / {@link toErc8021AttributionCodes}. Kept for historical decode helpers and tests.
+ */
 export function buildCelinaAttributionTag(tags?: string[]): string {
   const normalized = normalizeAttributionTags(tags);
   return normalized.length ? `CELINA|${normalized.join("|")}` : "CELINA";
@@ -58,12 +64,6 @@ export function buildErc8021AttributionSuffix(
   return codes.length === 1
     ? toDataSuffix(codes[0]!)
     : toDataSuffix(codes);
-}
-
-function buildLegacyAttributionSuffixHex(
-  attributionTags?: string[],
-): `0x${string}` {
-  return stringToHex(buildCelinaAttributionTag(attributionTags));
 }
 
 function sameCodeSets(a: readonly string[], b: readonly string[]): boolean {
@@ -267,16 +267,16 @@ export function checkAttributionInCalldata(
 }
 
 /**
- * Append dual Celina attribution suffixes to calldata (legacy UTF-8 + ERC-8021).
+ * Append Celina ERC-8021 Schema 0 attribution to calldata (no legacy UTF-8 `CELINA|…`).
  *
  * Used by `prepare*` when `createCelinaClient({ attributionTags })` is set, and by
  * `createAAClient({ attributionTags }).sendPreparedFlow` when AA tags are set.
  *
  * @param data - Original transaction calldata.
  * @param attributionTags - Optional custom tags (same list semantics on Celina or AA client).
- *   Legacy layer: `CELINA|TAG1|TAG2` (app tags uppercase, `celo_<12 hex>` lowercase).
- *   ERC-8021 layer: `toDataSuffix(["celina", ...])` with lowercase codes.
- *   Example: `["goclaim"]` → legacy `CELINA|GOCLAIM` + codes `celina`, `goclaim` (not bare UTF-8 `GOCLAIM`).
+ *   ERC-8021: `toDataSuffix(["celina", ...])` with lowercase codes.
+ *   Example: `["goclaim"]` → codes `celina`, `goclaim`.
+ *   Existing legacy UTF-8 on `data` is left in place; a matching ERC-8021 suffix is ensured.
  */
 export function appendCelinaCalldataTag(
   data: `0x${string}`,
@@ -284,23 +284,14 @@ export function appendCelinaCalldataTag(
 ): `0x${string}` {
   if (!data || data === "0x") return data;
 
-  const legacyHex = buildLegacyAttributionSuffixHex(attributionTags);
-  const legacySuffix = legacyHex.slice(2);
   const erc8021Hex = buildErc8021AttributionSuffix(attributionTags);
   const expectedCodes = toErc8021AttributionCodes(attributionTags);
-  const fullDualSuffix = `${legacySuffix}${erc8021Hex.slice(2)}`.toLowerCase();
 
-  if (data.toLowerCase().endsWith(fullDualSuffix)) return data;
-
-  let result = stripErc8021SuffixIfPresent(data);
-  if (!result.toLowerCase().endsWith(legacySuffix.toLowerCase())) {
-    result = concat([result, legacyHex]);
+  const tip = fromDataSuffix(data);
+  if (tip && sameCodeSets(tip.codes, expectedCodes)) {
+    return data;
   }
 
-  const decoded = fromDataSuffix(result);
-  if (!decoded || !sameCodeSets(decoded.codes, expectedCodes)) {
-    result = concat([result, erc8021Hex]);
-  }
-
-  return result;
+  const without8021 = stripErc8021SuffixIfPresent(data);
+  return concat([without8021, erc8021Hex]);
 }

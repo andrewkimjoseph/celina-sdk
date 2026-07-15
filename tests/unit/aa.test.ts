@@ -68,7 +68,7 @@ describe("preparedStepsToUserOpCalls", () => {
     expect(calls[0]?.data).toBe(expected);
   });
 
-  it("leaves data unchanged when already dual-tagged with the same tags", () => {
+  it("leaves data unchanged when already tagged with the same tags", () => {
     const tagged = appendCelinaCalldataTag("0xabcdef", ["goclaim"]);
     const steps: PreparedTx[] = [
       {

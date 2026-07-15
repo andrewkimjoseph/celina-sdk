@@ -8,6 +8,6 @@
 
 > `const` **GOODDOLLAR\_IDENTITY\_ADDRESS**: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`
 
-Defined in: [src/config/gooddollar.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/config/gooddollar.ts#L2)
+Defined in: [src/config/gooddollar.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/config/gooddollar.ts#L2)
 
 GoodDollar IdentityV4 contract on Celo mainnet.

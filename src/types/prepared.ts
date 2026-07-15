@@ -4,7 +4,7 @@ export type PreparedTxKind = "native" | "erc20" | "contract";
 
 /**
  * One unsigned transaction in a prepared list (`steps`).
- * Calldata may already include Celina dual attribution suffixes from `prepare*`.
+ * Calldata may already include Celina ERC-8021 attribution from `prepare*`.
  */
 export interface PreparedTx {
   /** Step category for UI and wallet routing. */

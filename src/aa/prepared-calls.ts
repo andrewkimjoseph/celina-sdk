@@ -4,7 +4,7 @@ import type { UserOpCall } from "./types.js";
 
 /**
  * Map Celina prepared steps to smart-account `calls`.
- * When `attributionTags` is provided, each step's `data` is dual-tagged
+ * When `attributionTags` is provided, each step's `data` is ERC-8021-tagged
  * via {@link appendCelinaCalldataTag}; otherwise `data` is preserved as-is.
  */
 export function preparedStepsToUserOpCalls(

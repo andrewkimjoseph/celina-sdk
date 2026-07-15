@@ -80,7 +80,7 @@ export type AAClient = {
   attributionTags: string[] | undefined;
   /**
    * Submit `prepare*` output (ordered `steps` / prepared transactions) as sponsored UserOp(s).
-   * When `attributionTags` were set on this client, each step’s `data` is dual-tagged
+   * When `attributionTags` were set on this client, each step’s `data` is ERC-8021-tagged
    * before submit; otherwise `data` is used as-is (including tags from `prepare*`).
    */
   sendPreparedFlow: (
@@ -96,7 +96,7 @@ export type AAClient = {
  * and never stored by Celina. v1 supports `provider: "pimlico"`.
  *
  * Optional `attributionTags` are applied in `sendPreparedFlow` via
- * `appendCelinaCalldataTag` (same dual format as `prepare*`). Omit them to
+ * `appendCelinaCalldataTag` (same ERC-8021 format as `prepare*`). Omit them to
  * pass step calldata through unchanged.
  */
 export async function createAAClient(

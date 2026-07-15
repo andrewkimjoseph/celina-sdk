@@ -6,7 +6,7 @@
 
 # Class: TransactionService
 
-Defined in: [src/services/transaction.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L39)
+Defined in: [src/services/transaction.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L39)
 
 Token sends, gas fee reads, and `prepareSend` flows with CELINA calldata tags.
 
@@ -16,7 +16,7 @@ Token sends, gas fee reads, and `prepareSend` flows with CELINA calldata tags.
 
 > **new TransactionService**(`clientFactory`): `TransactionService`
 
-Defined in: [src/services/transaction.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L43)
+Defined in: [src/services/transaction.service.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L43)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/transaction.service.ts:43](https://github.com/andrewki
 
 > **estimateSend**(`from`, `to`, `token`, `amount`): `Promise`\<[`SendEstimateResult`](../type-aliases/SendEstimateResult.md)\>
 
-Defined in: [src/services/transaction.service.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L56)
+Defined in: [src/services/transaction.service.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L56)
 
 Simulate gas for a CELO or ERC-20 transfer from `from`.
 
@@ -76,7 +76,7 @@ Gas estimate in units as a decimal string, or a structured insufficient-balance 
 
 > **estimateTransaction**(`params`): `Promise`\<\{ `estimatedCost`: `string`; `estimatedCostFormatted`: `string`; `from`: `` `0x${string}` ``; `gasLimit`: `string`; `gasPrice`: `string`; `isEip1559`: `boolean`; `maxFeePerGas`: `string`; `maxPriorityFeePerGas`: `string`; `network`: `"mainnet"`; `to`: `` `0x${string}` ``; \}\>
 
-Defined in: [src/services/transaction.service.ts:216](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L216)
+Defined in: [src/services/transaction.service.ts:216](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L216)
 
 Generic transaction gas estimate (not token-transfer specific).
 
@@ -110,7 +110,7 @@ Generic transaction gas estimate (not token-transfer specific).
 
 > **getGasFeeData**(): `Promise`\<\{ `baseFeePerGas`: `string`; `eip1559`: `boolean`; `gasPrice`: `string`; `maxFeePerGas`: `string`; `maxPriorityFeePerGas`: `string`; `network`: `"mainnet"`; \}\>
 
-Defined in: [src/services/transaction.service.ts:182](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L182)
+Defined in: [src/services/transaction.service.ts:182](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L182)
 
 Current gas fee data including EIP-1559 fees when supported.
 
@@ -124,7 +124,7 @@ Current gas fee data including EIP-1559 fees when supported.
 
 > **prepareSend**(`from`, `to`, `token`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/transaction.service.ts:118](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/transaction.service.ts#L118)
+Defined in: [src/services/transaction.service.ts:118](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/transaction.service.ts#L118)
 
 Build an unsigned send flow (native CELO or ERC-20 transfer).
 

@@ -8,7 +8,7 @@
 
 > **CreateAAClientOptions** = `object`
 
-Defined in: [src/aa/types.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/types.ts#L28)
+Defined in: [src/aa/types.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L28)
 
 Options for [createAAClient](../functions/createAAClient.md).
 
@@ -22,10 +22,10 @@ use one consistent list per send path so suffixes do not stack with mismatched t
 
 > `optional` **attributionTags?**: `string`[]
 
-Defined in: [src/aa/types.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/types.ts#L40)
+Defined in: [src/aa/types.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L40)
 
 Optional custom tags applied via `appendCelinaCalldataTag` on each step's `data`
-in `sendPreparedFlow` (legacy `CELINA|…` + ERC-8021). When omitted, step data
+in `sendPreparedFlow` (ERC-8021 Schema 0). When omitted, step data
 is passed through unchanged.
 
 ***
@@ -34,7 +34,7 @@ is passed through unchanged.
 
 > **gasSponsorship**: [`GasSponsorshipConfig`](GasSponsorshipConfig.md)
 
-Defined in: [src/aa/types.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/types.ts#L32)
+Defined in: [src/aa/types.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L32)
 
 Explicit sponsorship provider + credentials.
 
@@ -44,7 +44,7 @@ Explicit sponsorship provider + credentials.
 
 > **owner**: `PrivateKeyAccount` \| `Hex`
 
-Defined in: [src/aa/types.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/types.ts#L30)
+Defined in: [src/aa/types.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L30)
 
 EOA owner of the Simple Smart Account (account or private key hex).
 
@@ -54,6 +54,6 @@ EOA owner of the Simple Smart Account (account or private key hex).
 
 > `optional` **publicClient?**: `PublicClient`
 
-Defined in: [src/aa/types.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/types.ts#L34)
+Defined in: [src/aa/types.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L34)
 
 Optional Celo public client; defaults to Forno mainnet.

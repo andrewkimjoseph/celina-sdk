@@ -81,7 +81,7 @@ await aa.sendPreparedFlow(prepared, { mode: "sequential" });
 
 ## Attribution
 
-`createAAClient` accepts optional **`attributionTags`**. When set (including `[]`), `sendPreparedFlow` runs `appendCelinaCalldataTag` on each step’s `data` before submit (same dual legacy + ERC-8021 format as `prepare*`). When **omitted** (`undefined`), step `data` is passed through unchanged.
+`createAAClient` accepts optional **`attributionTags`**. When set (including `[]`), `sendPreparedFlow` runs `appendCelinaCalldataTag` on each step’s `data` before submit (same ERC-8021 format as `prepare*`). When **omitted** (`undefined`), step `data` is passed through unchanged.
 
 ```ts
 // Hand-built steps (e.g. app-specific contract calls)
@@ -115,11 +115,11 @@ Use **one consistent tag list** per send path (`createCelinaClient` *or* `create
 
 How tags reach the chain:
 
-1. `prepare*` and/or `sendPreparedFlow` (when AA `attributionTags` is set) run `appendCelinaCalldataTag` — **legacy** UTF-8 (`CELINA|…`) plus **ERC-8021** Schema 0 codes.
+1. `prepare*` and/or `sendPreparedFlow` (when AA `attributionTags` is set) run `appendCelinaCalldataTag` — **ERC-8021** Schema 0 codes (`celina` + custom).
 2. UserOp inner calls carry that tagged calldata.
 3. Prefer `check_attribution_tag` / `checkAttributionInCalldata` on the resulting transaction hash.
 
-`attributionTags: ["goclaim"]` yields `CELINA|GOCLAIM` + ERC-8021 codes `celina`, `goclaim` — **not** a bare UTF-8 `GOCLAIM` suffix.
+`attributionTags: ["goclaim"]` yields ERC-8021 codes `celina`, `goclaim` — **not** a bare UTF-8 `GOCLAIM` suffix.
 
 See [On-chain attribution](on-chain-attribution.md), [Prepared flows](../concepts/prepared-flows.md), and [Configuration](../getting-started/configuration.md).
 

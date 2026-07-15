@@ -15,29 +15,28 @@ const celina = createCelinaClient({
 |--------|------|---------|---------|
 | `rpcUrl` | `string` | `https://forno.celo.org` | Celo mainnet JSON-RPC endpoint |
 | `ethRpcUrl` | `string` | — | Ethereum mainnet RPC for ENS resolution |
-| `attributionTags` | `string[]` | — | Custom on-chain calldata tags after `CELINA` (see below) |
+| `attributionTags` | `string[]` | — | Custom ERC-8021 Schema 0 codes after platform `celina` (see below) |
 
 All options are optional. Omit them to use the public Celo Forno endpoint.
 
 ## Attribution tags
 
-Pass optional tags when creating the client so every `prepare*` step includes them in **both** attribution suffix layers (legacy UTF-8 + ERC-8021):
+Pass optional tags when creating the client so every `prepare*` step includes them in the **ERC-8021** attribution suffix:
 
 ```ts
 const celina = createCelinaClient({
   attributionTags: ["celo_862c21dd97a7", "my_app"],
-  // legacy → CELINA|celo_862c21dd97a7|MY_APP
   // ERC-8021 → toDataSuffix(["celina", "celo_862c21dd97a7", "my_app"])
 });
 ```
 
 Case normalization:
 
-- **Legacy layer:** app tags uppercase (`MY_APP`); `celo_<12 hex>` lowercase
-- **ERC-8021 layer:** all codes lowercase (`celina`, `celo_862c21dd97a7`, `my_app`)
-- Tags are deduped in first-seen order; the literal tag `CELINA` is never duplicated
+- App tags uppercase in normalize helpers (`MY_APP`); ERC-8021 codes are lowercase (`my_app`)
+- `celo_<12 hex>` stays lowercase
+- Tags are deduped in first-seen order; platform `celina` / `CELINA` is never duplicated as a custom tag
 
-Prefer `check_attribution_tag` (MCP/browser tool) or `checkAttributionInCalldata` from the SDK to list custom tags or confirm one. Use `verify_attribution_tag` / `verifyAttributionInCalldata` when you need the raw legacy and ERC-8021 layers.
+Prefer `check_attribution_tag` (MCP/browser tool) or `checkAttributionInCalldata` from the SDK to list custom tags or confirm one. Use `verify_attribution_tag` / `verifyAttributionInCalldata` when you need raw layers (including historical legacy `CELINA|…` when present).
 
 See [On-chain attribution](../guides/on-chain-attribution.md) and [Prepared flows](../concepts/prepared-flows.md) for how the suffix is applied.
 

@@ -4,6 +4,7 @@ import { stringToHex } from "viem";
 import {
   appendCelinaCalldataTag,
   buildCelinaAttributionTag,
+  buildErc8021AttributionSuffix,
   checkAttributionInCalldata,
   collectAttributionTags,
   normalizeAttributionTags,
@@ -11,6 +12,8 @@ import {
   toErc8021AttributionCodes,
   verifyAttributionInCalldata,
 } from "../../src/config/celina-tag.js";
+
+const CELINA_UTF8_HEX = stringToHex("CELINA").slice(2).toLowerCase();
 
 describe("celina tag helpers", () => {
   it("normalizes tags by trimming, uppercasing, and deduping", () => {
@@ -53,15 +56,15 @@ describe("celina tag helpers", () => {
     );
   });
 
-  it("appends dual legacy and ERC-8021 suffixes", () => {
+  it("appends ERC-8021 only without legacy UTF-8 CELINA", () => {
     const baseData = "0xabcdef" as const;
     const tagged = appendCelinaCalldataTag(baseData, [
       "celo_862c21dd97a7",
       "celeste_ai",
     ]);
 
-    const legacySuffix = stringToHex("CELINA|celo_862c21dd97a7|CELESTE_AI").slice(2);
-    expect(tagged.toLowerCase().includes(legacySuffix.toLowerCase())).toBe(true);
+    expect(tagged.toLowerCase().includes(CELINA_UTF8_HEX)).toBe(false);
+    expect(parseCelinaLegacyAttributionSuffix(tagged)).toBeNull();
 
     const erc8021 = fromDataSuffix(tagged);
     expect(erc8021).toEqual({
@@ -76,9 +79,10 @@ describe("celina tag helpers", () => {
     expect(appendCelinaCalldataTag(once, ["celeste_ai"])).toBe(once);
   });
 
-  it("upgrades legacy-only calldata with ERC-8021 suffix", () => {
+  it("upgrades legacy-only calldata with ERC-8021 without adding more legacy", () => {
     const baseData = "0xabcdef" as const;
-    const legacyOnly = `${baseData}${stringToHex("CELINA|celo_862c21dd97a7").slice(2)}` as const;
+    const legacyOnly =
+      `${baseData}${stringToHex("CELINA|celo_862c21dd97a7").slice(2)}` as const;
     const upgraded = appendCelinaCalldataTag(legacyOnly, ["celo_862c21dd97a7"]);
 
     expect(parseCelinaLegacyAttributionSuffix(upgraded)).toEqual([
@@ -86,6 +90,12 @@ describe("celina tag helpers", () => {
       "celo_862c21dd97a7",
     ]);
     expect(fromDataSuffix(upgraded)?.codes).toContain("celo_862c21dd97a7");
+    // Only one CELINA marker (original legacy), not a second append.
+    const body = upgraded.slice(2).toLowerCase();
+    const first = body.indexOf(CELINA_UTF8_HEX);
+    const second = body.indexOf(CELINA_UTF8_HEX, first + CELINA_UTF8_HEX.length);
+    expect(first).toBeGreaterThanOrEqual(0);
+    expect(second).toBe(-1);
   });
 
   it("verifies attribution tags in calldata", () => {
@@ -107,7 +117,7 @@ describe("celina tag helpers", () => {
     expect(collectAttributionTags(null, null)).toEqual([]);
   });
 
-  it("checks attribution with unified custom tags list", () => {
+  it("checks attribution with unified custom tags list (ERC-8021 write)", () => {
     const tagged = appendCelinaCalldataTag("0xabcdef", [
       "celo_862c21dd97a7",
       "celeste_ai",
@@ -115,11 +125,7 @@ describe("celina tag helpers", () => {
     const all = checkAttributionInCalldata(tagged);
     expect(all.tags).toEqual(["celo_862c21dd97a7", "CELESTE_AI"]);
     expect(all.matched).toBe(true);
-    expect(all.legacyTags).toEqual([
-      "CELINA",
-      "celo_862c21dd97a7",
-      "CELESTE_AI",
-    ]);
+    expect(all.legacyTags).toBeNull();
     expect(all.erc8021?.codes).toEqual([
       "celina",
       "celo_862c21dd97a7",
@@ -137,7 +143,21 @@ describe("celina tag helpers", () => {
     expect(platform.matched).toBe(true);
   });
 
-  it("decodes dual attribution when ERC-8021 is followed by trailing bytes", () => {
+  it("still decodes historical dual attribution when present", () => {
+    const historical =
+      `0xabcdef${stringToHex("CELINA|GOCLAIM").slice(2)}${buildErc8021AttributionSuffix(["goclaim"]).slice(2)}` as `0x${string}`;
+
+    const tip = checkAttributionInCalldata(historical);
+    expect(tip.legacyTags).toEqual(["CELINA", "GOCLAIM"]);
+    expect(tip.erc8021?.codes).toEqual(["celina", "goclaim"]);
+    expect(tip.tags).toEqual(["GOCLAIM"]);
+    expect(tip.matched).toBe(true);
+
+    const embedded = `${historical}${"00".repeat(40)}` as `0x${string}`;
+    expect(checkAttributionInCalldata(embedded)).toEqual(tip);
+  });
+
+  it("decodes ERC-8021-only when followed by trailing bytes", () => {
     const tagged = appendCelinaCalldataTag("0xabcdef", ["goclaim"]);
     const embedded = `${tagged}${"00".repeat(40)}` as `0x${string}`;
 
@@ -145,7 +165,7 @@ describe("celina tag helpers", () => {
     const mid = checkAttributionInCalldata(embedded);
 
     expect(tip).toEqual({
-      legacyTags: ["CELINA", "GOCLAIM"],
+      legacyTags: null,
       erc8021: { codes: ["celina", "goclaim"], schemaId: 0 },
       matched: true,
       tags: ["GOCLAIM"],

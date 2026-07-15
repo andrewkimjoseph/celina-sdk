@@ -62,7 +62,7 @@
 
 - [appendCelinaCalldataTag](functions/appendCelinaCalldataTag.md)
 - [attributionDecodeWindow](functions/attributionDecodeWindow.md)
-- [buildCelinaAttributionTag](functions/buildCelinaAttributionTag.md)
+- [~~buildCelinaAttributionTag~~](functions/buildCelinaAttributionTag.md)
 - [buildErc8021AttributionSuffix](functions/buildErc8021AttributionSuffix.md)
 - [checkAttributionInCalldata](functions/checkAttributionInCalldata.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)

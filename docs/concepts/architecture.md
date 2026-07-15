@@ -53,7 +53,7 @@ flowchart TB
 
 | Layer | Role |
 |-------|------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), dual CELINA attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
 | **MCP host** | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |

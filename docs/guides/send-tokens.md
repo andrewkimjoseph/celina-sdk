@@ -57,7 +57,7 @@ for (const step of flow.steps) {
 
 ## Celina attribution
 
-Transfer calldata includes **dual** Celina attribution suffixes (legacy `CELINA|…` + ERC-8021). No changes needed before signing. For optional custom tags, check vs verify tools, and AA tagging, see [On-chain attribution](on-chain-attribution.md), [Configuration](../getting-started/configuration.md), and [Prepared flows](../concepts/prepared-flows.md).
+Transfer calldata includes Celina **ERC-8021** Schema 0 attribution. No changes needed before signing. For optional custom tags, check vs verify tools, and AA tagging, see [On-chain attribution](on-chain-attribution.md), [Configuration](../getting-started/configuration.md), and [Prepared flows](../concepts/prepared-flows.md).
 
 Before signing, call `simulatePreparedStep` for each step — see [Prepared-step simulation](prepared-step-simulation.md).
 
