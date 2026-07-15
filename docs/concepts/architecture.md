@@ -1,5 +1,7 @@
 # Architecture
 
+> **Server-side only.** This package includes server-native dependencies (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for the browser. Import it only from Node.js environments — API routes, background workers (BullMQ / Vercel Cron), or CLI scripts.
+
 ## Design principles
 
 `createCelinaClient()` wires `CeloClientFactory` and `EnsClientFactory` into domain services. The SDK:

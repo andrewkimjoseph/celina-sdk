@@ -4,6 +4,8 @@
 
 ## Celina SDK
 
+> **Server-side only.** This package includes server-native dependencies (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for the browser. Import it only from Node.js environments — API routes, background workers (BullMQ / Vercel Cron), or CLI scripts.
+
 **`@andrewkimjoseph/celina-sdk`** — Celo mainnet library for agent builders: **reads**, **unsigned transaction preparation**, optional **ERC-4337 AA** via `createAAClient`, and a shared **LLM tool catalog** (`/tools` export) that powers celina-mcp and browser wallet apps from one source of truth.
 
 Pair with [wagmi](https://wagmi.sh) / viem when users sign in their wallet, `createAAClient` for sponsored UserOps, or register the catalog in MCP / AI SDK hosts when building agents.

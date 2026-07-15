@@ -77,6 +77,12 @@ export interface CelinaClient {
 /**
  * Create a Celina client for Celo mainnet reads and unsigned tx preparation.
  * No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
+ *
+ * @remarks
+ * **Server-side only.** Celina SDK includes server-native dependencies
+ * (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for
+ * the browser. Import only from Node.js environments — API routes, background
+ * workers, or CLI scripts.
  */
 export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
   const config = resolveSdkConfig(opts);

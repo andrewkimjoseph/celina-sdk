@@ -1,5 +1,7 @@
 # Quick start
 
+> **Server-side only.** This package includes server-native dependencies (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for the browser. Import it only from Node.js environments — API routes, background workers (BullMQ / Vercel Cron), or CLI scripts.
+
 ## 1. Create a client
 
 ```ts
