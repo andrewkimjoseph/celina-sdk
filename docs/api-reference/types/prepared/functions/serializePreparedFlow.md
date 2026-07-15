@@ -8,7 +8,7 @@
 
 > **serializePreparedFlow**(`flow`): [`SerializedPreparedFlow`](../interfaces/SerializedPreparedFlow.md)
 
-Defined in: [src/types/prepared.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/types/prepared.ts#L48)
+Defined in: [src/types/prepared.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/types/prepared.ts#L48)
 
 Marks an ordered prepared-transaction list as JSON-safe for API and chat tool responses.
 

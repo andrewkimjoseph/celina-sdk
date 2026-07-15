@@ -216,4 +216,35 @@ export const contractOperations: OperationSpec[] = [
       assertHasKeys(result, ["gasEstimate"]);
     },
   },
+  {
+    id: "contract.prepareFunction",
+    domain: "contract",
+    layer: "prepare",
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    sdk: {
+      invoke: (client, fx) => {
+        const from = fx.signerAddress ?? fx.wallet;
+        return client.contract.prepareFunction(from, {
+          contractAddress: fx.usdm,
+          abi: [
+            {
+              type: "function",
+              name: "approve",
+              stateMutability: "nonpayable",
+              inputs: [
+                { name: "spender", type: "address" },
+                { name: "amount", type: "uint256" },
+              ],
+              outputs: [{ type: "bool" }],
+            },
+          ],
+          functionName: "approve",
+          functionArgs: [from, 0n],
+        });
+      },
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["from", "steps"]);
+    },
+  },
 ];

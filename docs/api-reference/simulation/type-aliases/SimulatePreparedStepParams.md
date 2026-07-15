@@ -8,7 +8,7 @@
 
 > **SimulatePreparedStepParams** = `object`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/simulation/simulate-prepared-step.ts#L16)
+Defined in: [src/simulation/simulate-prepared-step.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/simulation/simulate-prepared-step.ts#L16)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/simulation/simulate-prepared-step.ts:16](https://github.com/and
 
 > **account**: `` `0x${string}` ``
 
-Defined in: [src/simulation/simulate-prepared-step.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/simulation/simulate-prepared-step.ts#L17)
+Defined in: [src/simulation/simulate-prepared-step.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/simulation/simulate-prepared-step.ts#L17)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [src/simulation/simulate-prepared-step.ts:17](https://github.com/and
 
 > **step**: [`PreparedTx`](../../types/prepared/interfaces/PreparedTx.md)
 
-Defined in: [src/simulation/simulate-prepared-step.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/simulation/simulate-prepared-step.ts#L18)
+Defined in: [src/simulation/simulate-prepared-step.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/simulation/simulate-prepared-step.ts#L18)

@@ -1,5 +1,5 @@
 /**
- * Generic contract reads and gas estimates — caller supplies the ABI.
+ * Generic contract reads, gas estimates, and write prepares — caller supplies the ABI.
  */
 import {
   type Abi,
@@ -8,9 +8,16 @@ import {
   encodeFunctionData,
 } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { CHAIN } from "../config/chains.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import { normalizeAddress } from "../utils/normalize-address.js";
+import {
+  type PreparedFlow,
+  serializePreparedFlow,
+  type SerializedPreparedFlow,
+} from "../types/prepared.js";
 
-/** Parameters for a read-only or gas-estimated contract call on Celo mainnet. */
+/** Parameters for a contract call on Celo mainnet (read, estimate, or prepare write). */
 export interface ContractCallParams {
   /** Target contract address. */
   contractAddress: `0x${string}`;
@@ -37,9 +44,22 @@ function findAbiFunction(abi: Abi, functionName: string): AbiFunction {
   return fn;
 }
 
-/** Read-only and gas-estimation helpers for arbitrary contracts. */
+function assertWritableFunction(fn: AbiFunction, functionName: string): void {
+  const mutability = fn.stateMutability;
+  if (mutability === "view" || mutability === "pure") {
+    throw new Error(
+      `Function "${functionName}" is ${mutability}; use call_contract_function for reads`,
+    );
+  }
+}
+
+/** Read, gas-estimate, and prepare helpers for arbitrary contracts. */
 export class ContractService {
-  constructor(private readonly clientFactory: CeloClientFactory) {}
+  private readonly attributionTags?: string[];
+
+  constructor(private readonly clientFactory: CeloClientFactory) {
+    this.attributionTags = clientFactory.getConfig().attributionTags;
+  }
 
   /**
    * Simulate a read-only contract call (`eth_call`).
@@ -140,6 +160,54 @@ export class ContractService {
         error: error instanceof Error ? error.message : String(error),
       };
     }
+  }
+
+  /**
+   * Build an unsigned single-step flow for a contract write (caller ABI).
+   * Calldata includes the CELINA attribution suffix. Rejects `view`/`pure` ABI entries.
+   * @param from - Sender wallet address (must match connected wallet when signing)
+   * @param params - Contract address, ABI, function name, optional args and wei `value`
+   * @returns Single-step `SerializedPreparedFlow` for wagmi or MCP `executePreparedFlow`
+   */
+  async prepareFunction(
+    from: `0x${string}`,
+    params: ContractCallParams,
+  ): Promise<SerializedPreparedFlow> {
+    const contractAddress = normalizeAddress(
+      params.contractAddress,
+      "contract address",
+    );
+    const sender = normalizeAddress(from, "from address");
+    const fn = findAbiFunction(params.abi, params.functionName);
+    assertWritableFunction(fn, params.functionName);
+
+    const args = params.functionArgs ?? [];
+    const value = params.value ?? "0";
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: params.abi,
+        functionName: params.functionName,
+        args: args as readonly unknown[],
+      }),
+      this.attributionTags,
+    );
+
+    const flow: PreparedFlow = {
+      chainId: CHAIN.id,
+      from: sender,
+      summary: `Call ${params.functionName} on ${contractAddress}`,
+      steps: [
+        {
+          kind: "contract",
+          to: contractAddress,
+          data,
+          value,
+          description: `Call ${params.functionName}`,
+        },
+      ],
+    };
+
+    return serializePreparedFlow(flow);
   }
 }
 

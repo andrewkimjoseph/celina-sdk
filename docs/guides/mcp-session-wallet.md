@@ -35,10 +35,12 @@ When `CELO_PRIVATE_KEY` is configured, these parameters are **optional** and def
 | Parameter | Example tools |
 |-----------|----------------|
 | `address` | `get_account`, `get_celo_balances`, `get_stablecoin_balances`, `get_token_balance`, staking reads, GoodDollar reads, `get_nft_balance` |
-| `from` | `estimate_transaction` |
+| `from` | `estimate_transaction`, `prepare_contract_function` (browser) |
 | `fromAddress` | `call_contract_function`, `estimate_contract_gas` |
 
 Pass an explicit value to query a **different** wallet.
+
+`execute_contract_function` always uses the MCP session signer (`CELO_PRIVATE_KEY`); it does not take an address parameter. Prefer `estimate_contract_gas` first.
 
 ## Agent rules
 

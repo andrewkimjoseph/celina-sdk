@@ -8,7 +8,7 @@
 
 > **parseCelinaLegacyAttributionSuffix**(`data`): `string`[] \| `null`
 
-Defined in: [src/config/celina-tag.ts:98](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L98)
+Defined in: [src/config/celina-tag.ts:175](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/config/celina-tag.ts#L175)
 
 Parse legacy UTF-8 `CELINA|TAG1|…` suffix from calldata (ignores trailing ERC-8021).
 

@@ -113,6 +113,8 @@ export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   get_nft_balance: "NFT",
   call_contract_function: "Contract",
   estimate_contract_gas: "Contract",
+  execute_contract_function: "Contract",
+  prepare_contract_function: "Contract",
   verify_self_agent: "Self",
   lookup_self_agent: "Self",
   verify_self_request: "Self",

@@ -104,7 +104,7 @@ These live in `src/utils/`, `src/aa/`, and `src/config/celina-tag.ts` and are re
 | `governance` | GovernanceService | Celo governance proposals |
 | `staking` | StakingService | Validator election staking |
 | `nft` | NftService | ERC-721 / ERC-1155 reads |
-| `contract` | ContractService | Generic contract calls |
+| `contract` | ContractService | Generic contract reads, gas estimates, and write prepares |
 | `self` | SelfService | Self Agent ID verify, register, proof refresh (ai.self.xyz + on-chain registry) |
 | `agentKarma` | AgentKarmaService | AgentKarma reputation reads and local trust policy (read-only, external API) |
 

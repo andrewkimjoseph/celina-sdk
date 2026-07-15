@@ -37,7 +37,7 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
 | **Reads**                | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
 | **Estimates**            | Gas for sends, FX swaps, Uniswap swaps, generic contract calls                                                       |
-| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim (`chainId: 42220`)                        |
+| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, generic contract writes (`chainId: 42220`) |
 | **Sponsored UserOps**    | `createAAClient` + `sendPreparedFlow` (app-owned Pimlico key; optional `attributionTags`)                             |
 | **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` before each wallet send                            |
 | **Attribution**          | Dual CELINA suffixes; prefer `check_attribution_tag` / `checkAttributionInCalldata` for unified custom tags          |
@@ -93,7 +93,7 @@ See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/too
 | `governance`  | proposals list, details                          | —                                            |
 | `staking`     | balances, validator groups                       | —                                            |
 | `nft`         | NFT info, balance                                | —                                            |
-| `contract`    | `callFunction`, `estimateGas`                    | —                                            |
+| `contract`    | `callFunction`, `estimateGas`                    | `prepareFunction`                            |
 | `self`        | verify, lookup, session lifecycle                | agent signing (Node + `selfAgentPrivateKey`) |
 | `agentKarma`  | karma, ERC-8004 agent, counterparty trust policy | —                                            |
 

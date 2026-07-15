@@ -8,7 +8,7 @@
 
 > **isGoodDollarUsdReservePair**(`tokenIn`, `tokenOut`): `boolean`
 
-Defined in: [src/config/gooddollar.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/gooddollar.ts#L33)
+Defined in: [src/config/gooddollar.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/config/gooddollar.ts#L33)
 
 Whether both tokens form a supported GoodDollar reserve pair (G$ ↔ USDm).
 

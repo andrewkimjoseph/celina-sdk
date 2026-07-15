@@ -6,9 +6,9 @@
 
 # Class: ContractService
 
-Defined in: [src/services/contract.service.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/contract.service.ts#L41)
+Defined in: [src/services/contract.service.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/contract.service.ts#L57)
 
-Read-only and gas-estimation helpers for arbitrary contracts.
+Read, gas-estimate, and prepare helpers for arbitrary contracts.
 
 ## Constructors
 
@@ -16,7 +16,7 @@ Read-only and gas-estimation helpers for arbitrary contracts.
 
 > **new ContractService**(`clientFactory`): `ContractService`
 
-Defined in: [src/services/contract.service.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/contract.service.ts#L42)
+Defined in: [src/services/contract.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/contract.service.ts#L60)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/contract.service.ts:42](https://github.com/andrewkimjo
 
 > **callFunction**(`params`): `Promise`\<\{ `contractAddress`: `` `0x${string}` ``; `error?`: `undefined`; `functionName`: `string`; `network`: `"mainnet"`; `result`: `unknown`; `success`: `boolean`; \} \| \{ `contractAddress`: `` `0x${string}` ``; `error`: `string`; `functionName`: `string`; `network`: `"mainnet"`; `result`: `null`; `success`: `boolean`; \}\>
 
-Defined in: [src/services/contract.service.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/contract.service.ts#L49)
+Defined in: [src/services/contract.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/contract.service.ts#L69)
 
 Simulate a read-only contract call (`eth_call`).
 
@@ -58,7 +58,7 @@ Decoded result on success; `{ success: false, error }` on revert
 
 > **estimateGas**(`params`): `Promise`\<\{ `contractAddress`: `` `0x${string}` ``; `error?`: `undefined`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \} \| \{ `contractAddress`: `` `0x${string}` ``; `error`: `string`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \}\>
 
-Defined in: [src/services/contract.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/contract.service.ts#L94)
+Defined in: [src/services/contract.service.ts:114](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/contract.service.ts#L114)
 
 Estimate gas for a contract call from `fromAddress`.
 
@@ -75,3 +75,34 @@ Same as `callFunction` plus required `fromAddress`
 `Promise`\<\{ `contractAddress`: `` `0x${string}` ``; `error?`: `undefined`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \} \| \{ `contractAddress`: `` `0x${string}` ``; `error`: `string`; `functionName`: `string`; `gasEstimate`: `string`; `gasPrice`: `string`; `network`: `"mainnet"`; `success`: `boolean`; `totalCost`: `string`; \}\>
 
 Gas estimate, current gas price, and total cost in wei
+
+***
+
+### prepareFunction()
+
+> **prepareFunction**(`from`, `params`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
+
+Defined in: [src/services/contract.service.ts:172](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/contract.service.ts#L172)
+
+Build an unsigned single-step flow for a contract write (caller ABI).
+Calldata includes the CELINA attribution suffix. Rejects `view`/`pure` ABI entries.
+
+#### Parameters
+
+##### from
+
+`` `0x${string}` ``
+
+Sender wallet address (must match connected wallet when signing)
+
+##### params
+
+[`ContractCallParams`](../interfaces/ContractCallParams.md)
+
+Contract address, ABI, function name, optional args and wei `value`
+
+#### Returns
+
+`Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
+
+Single-step `SerializedPreparedFlow` for wagmi or MCP `executePreparedFlow`

@@ -8,7 +8,7 @@
 
 > **collectAttributionTags**(`legacyTags`, `erc8021Codes`): `string`[]
 
-Defined in: [src/config/celina-tag.ts:144](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L144)
+Defined in: [src/config/celina-tag.ts:223](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/config/celina-tag.ts#L223)
 
 Merge legacy + ERC-8021 codes into custom tags (skips CELINA/celina, dedupes).
 

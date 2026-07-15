@@ -6,7 +6,7 @@
 
 # Class: GasSponsorshipService
 
-Defined in: [src/aa/gas-sponsorship.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L13)
+Defined in: [src/aa/gas-sponsorship.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L13)
 
 Provider-agnostic gas sponsorship wiring (bundler URL, paymaster, fees).
 v1 supports `provider: "pimlico"`; add branches for future providers without renaming this type.
@@ -17,7 +17,7 @@ v1 supports `provider: "pimlico"`; add branches for future providers without ren
 
 > **new GasSponsorshipService**(`config`, `chainId?`): `GasSponsorshipService`
 
-Defined in: [src/aa/gas-sponsorship.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L19)
+Defined in: [src/aa/gas-sponsorship.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L19)
 
 #### Parameters
 
@@ -39,7 +39,7 @@ Defined in: [src/aa/gas-sponsorship.ts:19](https://github.com/andrewkimjoseph/ce
 
 > `readonly` **provider**: `"pimlico"`
 
-Defined in: [src/aa/gas-sponsorship.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L14)
+Defined in: [src/aa/gas-sponsorship.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L14)
 
 ## Methods
 
@@ -47,7 +47,7 @@ Defined in: [src/aa/gas-sponsorship.ts:14](https://github.com/andrewkimjoseph/ce
 
 > **createBundlerTransport**(): `Transport`
 
-Defined in: [src/aa/gas-sponsorship.ts:45](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L45)
+Defined in: [src/aa/gas-sponsorship.ts:45](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L45)
 
 viem transport pointed at the sponsorship backend RPC.
 
@@ -61,7 +61,7 @@ viem transport pointed at the sponsorship backend RPC.
 
 > **estimateFeesPerGas**(): `Promise`\<\{ `maxFeePerGas`: `bigint`; `maxPriorityFeePerGas`: `bigint`; \}\>
 
-Defined in: [src/aa/gas-sponsorship.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L68)
+Defined in: [src/aa/gas-sponsorship.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L68)
 
 Fee fields for UserOp construction.
 
@@ -75,7 +75,7 @@ Fee fields for UserOp construction.
 
 > **getPaymasterClient**(): `object`
 
-Defined in: [src/aa/gas-sponsorship.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L50)
+Defined in: [src/aa/gas-sponsorship.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L50)
 
 Provider client used as paymaster (and fee oracle in v1).
 
@@ -872,7 +872,7 @@ const receipt = await client.waitForUserOperationReceipt({
 
 > **getRpcUrl**(`chainId?`): `string`
 
-Defined in: [src/aa/gas-sponsorship.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/gas-sponsorship.ts#L35)
+Defined in: [src/aa/gas-sponsorship.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/gas-sponsorship.ts#L35)
 
 Bundler / paymaster JSON-RPC URL for the configured provider and chain.
 

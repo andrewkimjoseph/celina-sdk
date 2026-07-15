@@ -6,7 +6,7 @@
 
 # Interface: GovernanceProposalsOptions
 
-Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L20)
+Defined in: [src/services/governance.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L20)
 
 Pagination and metadata options for governance proposal lists.
 
@@ -16,7 +16,7 @@ Pagination and metadata options for governance proposal lists.
 
 > `optional` **includeInactive?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L22)
+Defined in: [src/services/governance.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L22)
 
 Include expired, rejected, and withdrawn proposals (default `true`).
 
@@ -26,7 +26,7 @@ Include expired, rejected, and withdrawn proposals (default `true`).
 
 > `optional` **includeMetadata?**: `boolean`
 
-Defined in: [src/services/governance.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L24)
+Defined in: [src/services/governance.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L24)
 
 Fetch CGP frontmatter from GitHub (default `true`).
 
@@ -36,7 +36,7 @@ Fetch CGP frontmatter from GitHub (default `true`).
 
 > `optional` **limit?**: `number`
 
-Defined in: [src/services/governance.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L32)
+Defined in: [src/services/governance.service.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L32)
 
 Max proposals when using `offset` (capped at 100).
 
@@ -46,7 +46,7 @@ Max proposals when using `offset` (capped at 100).
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/services/governance.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L30)
+Defined in: [src/services/governance.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L30)
 
 Zero-based offset into the proposal id list.
 
@@ -56,7 +56,7 @@ Zero-based offset into the proposal id list.
 
 > `optional` **page?**: `number`
 
-Defined in: [src/services/governance.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L26)
+Defined in: [src/services/governance.service.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L26)
 
 Page number (1-based); used with `pageSize` when set.
 
@@ -66,6 +66,6 @@ Page number (1-based); used with `pageSize` when set.
 
 > `optional` **pageSize?**: `number`
 
-Defined in: [src/services/governance.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/services/governance.service.ts#L28)
+Defined in: [src/services/governance.service.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/services/governance.service.ts#L28)
 
 Proposals per page when using `page` (1–20, default 10).

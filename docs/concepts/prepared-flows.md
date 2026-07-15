@@ -20,6 +20,7 @@ In Celina, a **prepared flow** is not a workflow engine. It is the object return
 | `prepareWithdraw` | `aave` | 1 (withdraw) |
 | `prepareClaimUbi` | `gooddollar` | 1 (UBI claim) |
 | `prepareReserveSwap` | `gooddollar` | 1–2 (optional ERC-20 approve + MentoBroker `swapIn`) |
+| `prepareFunction` | `contract` | 1 (caller-supplied ABI write) |
 
 ## SerializedPreparedFlow shape
 

@@ -62,7 +62,7 @@ export interface CelinaClient {
   staking: StakingService;
   /** ERC-721 / ERC-1155 NFT reads. */
   nft: NftService;
-  /** Generic read-only contract calls and gas estimates. */
+  /** Generic contract reads, gas estimates, and write prepares. */
   contract: ContractService;
   /** Self Agent ID on Celo mainnet (ai.self.xyz + on-chain registry). */
   self: SelfService;
@@ -128,7 +128,7 @@ export type { MentoFxParams } from "./services/mento-fx.service.js";
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
 /** Pagination and metadata options for governance proposal lists. */
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
-/** Parameters for generic read-only contract calls. */
+/** Parameters for generic contract reads, estimates, and write prepares. */
 export type { ContractCallParams } from "./services/contract.service.js";
 /** Aave V3 Celo pool address and supported asset symbols. */
 export {

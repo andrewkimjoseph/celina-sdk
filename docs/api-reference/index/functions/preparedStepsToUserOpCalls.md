@@ -8,7 +8,7 @@
 
 > **preparedStepsToUserOpCalls**(`steps`, `attributionTags?`): [`UserOpCall`](../type-aliases/UserOpCall.md)[]
 
-Defined in: [src/aa/prepared-calls.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/aa/prepared-calls.ts#L10)
+Defined in: [src/aa/prepared-calls.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/aa/prepared-calls.ts#L10)
 
 Map Celina prepared steps to smart-account `calls`.
 When `attributionTags` is provided, each step's `data` is dual-tagged

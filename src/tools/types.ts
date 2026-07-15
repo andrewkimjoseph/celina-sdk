@@ -104,6 +104,16 @@ export type AaveExecutors = {
   ) => Promise<unknown>;
 };
 
+export type ContractExecutors = {
+  executeFunction: (params: {
+    contractAddress: `0x${string}`;
+    functionName: string;
+    abi: unknown;
+    functionArgs?: unknown[];
+    value?: string;
+  }) => Promise<unknown>;
+};
+
 export type GoodDollarWriteExecutors = {
   claimDailyUbi: () => Promise<unknown>;
   estimateReserveSwap: (
@@ -144,6 +154,7 @@ export type ToolRuntimeExecutors = {
   mentoFx?: MentoFxExecutors;
   uniswap?: UniswapExecutors;
   aave?: AaveExecutors;
+  contract?: ContractExecutors;
   gooddollarWrite?: GoodDollarWriteExecutors;
   self?: SelfExecutors;
 };

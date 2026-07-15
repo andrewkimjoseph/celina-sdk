@@ -8,7 +8,7 @@
 
 > **AttributionCheckResult** = [`AttributionVerificationResult`](AttributionVerificationResult.md) & `object`
 
-Defined in: [src/config/celina-tag.ts:124](https://github.com/andrewkimjoseph/celina-sdk/blob/451f622f8dec060faa5c74891931f2871cc54219/src/config/celina-tag.ts#L124)
+Defined in: [src/config/celina-tag.ts:203](https://github.com/andrewkimjoseph/celina-sdk/blob/803e5c819a719bbad9f14a8e908c65269e1b7f36/src/config/celina-tag.ts#L203)
 
 Verification result plus a unified custom/app `tags` list (excludes platform CELINA/celina).
 
