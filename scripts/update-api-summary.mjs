@@ -62,7 +62,6 @@ const TYPE_LINKS = [
   { title: "verifyAttributionInCalldata", path: "index/functions/verifyAttributionInCalldata.md" },
   { title: "AttributionCheckResult", path: "index/type-aliases/AttributionCheckResult.md" },
   { title: "AttributionVerificationResult", path: "index/type-aliases/AttributionVerificationResult.md" },
-  { title: "CELINA_DATA_SUFFIX", path: "index/variables/CELINA_DATA_SUFFIX.md" },
 ];
 
 function link({ title, path }) {

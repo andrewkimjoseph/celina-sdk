@@ -1,6 +1,6 @@
 import { encodeFunctionData, erc20Abi, maxUint256 } from "viem";
 import { describe, expect, it, vi } from "vitest";
-import { CELINA_DATA_SUFFIX } from "../../src/config/celina-tag.js";
+import { buildErc8021AttributionSuffix } from "../../src/config/celina-tag.js";
 import { simulatePreparedStep } from "../../src/simulation/simulate-prepared-step.js";
 
 const account = "0xA3872860EE9FEaB369c1a5E911CeCc2F4c40f702" as const;
@@ -73,7 +73,7 @@ describe("simulatePreparedStep", () => {
       functionName: "approve",
       args: [spender, maxUint256],
     });
-    const tagged = `${data}${CELINA_DATA_SUFFIX.slice(2)}` as `0x${string}`;
+    const tagged = `${data}${buildErc8021AttributionSuffix().slice(2)}` as `0x${string}`;
 
     const call = vi.fn().mockResolvedValue("0x");
     const publicClient = { call, estimateGas: vi.fn() };

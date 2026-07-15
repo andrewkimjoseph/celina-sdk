@@ -10,9 +10,7 @@ Every tagged step appends ERC-8021 only via `appendCelinaCalldataTag` / `toDataS
 |-------|----------|
 | **ERC-8021** | Schema 0 codes — always includes platform code `celina`, then lowercase custom codes |
 
-Example: `attributionTags: ["goclaim"]` → codes `celina`, `goclaim`.
-
-Historical txs may also include a legacy UTF-8 `CELINA|…` layer. Readers (`verify` / `check`) still decode that layer when present; **new writes do not append it**.
+Example: `attributionTags: ["goclaim"]` -> codes `celina`, `goclaim`.
 
 Case rules for **custom tags** (before ERC-8021 lowercasing):
 
@@ -43,7 +41,7 @@ const data = appendCelinaCalldataTag(encodeFunctionData(...), ["goclaim"]);
 
 | Tool / API | Prefer when |
 |------------|-------------|
-| **`check_attribution_tag`** / `checkAttributionInCalldata` | You want a unified custom `tags` list (excludes platform `CELINA` / `celina`) or to confirm one tag |
-| **`verify_attribution_tag`** / `verifyAttributionInCalldata` | You need raw layers: optional historical `legacyTags` plus `erc8021` |
+| **`check_attribution_tag`** / `checkAttributionInCalldata` | You want a unified custom `tags` list (excludes platform `celina`) or to confirm one tag |
+| **`verify_attribution_tag`** / `verifyAttributionInCalldata` | You need the raw ERC-8021 layer |
 
 See [Configuration](../getting-started/configuration.md), [Prepared flows](../concepts/prepared-flows.md), and [Account Abstraction](account-abstraction.md).

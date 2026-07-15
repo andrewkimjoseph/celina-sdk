@@ -208,7 +208,7 @@ export class BlockchainService {
   }
 
   /**
-   * Decode legacy and ERC-8021 attribution tags from a mined transaction's calldata.
+   * Decode ERC-8021 attribution tags from a mined transaction's calldata.
    * @param hash - Transaction hash
    * @param tag - Optional tag to check (e.g. `celo_862c21dd97a7`)
    */

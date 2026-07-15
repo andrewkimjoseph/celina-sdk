@@ -3,13 +3,7 @@ import {
   fromDataSuffix,
   toDataSuffix,
 } from "@celo/attribution-tags";
-import { concat, hexToString, stringToHex } from "viem";
-
-/**
- * Legacy UTF-8 marker hex(`"CELINA"`) for reading historical dual / legacy-only txs.
- * New writes use ERC-8021 only — see {@link appendCelinaCalldataTag}.
- */
-export const CELINA_DATA_SUFFIX = stringToHex("CELINA");
+import { concat } from "viem";
 
 export { ERC_8021_MARKER };
 
@@ -36,15 +30,6 @@ export function normalizeAttributionTags(tags?: string[]): string[] {
     deduped.add(normalized);
   }
   return [...deduped];
-}
-
-/**
- * Build deterministic legacy UTF-8 tag string (`CELINA` / `CELINA|TAG…`).
- * @deprecated Prefer ERC-8021 via {@link appendCelinaCalldataTag} / {@link toErc8021AttributionCodes}. Kept for historical decode helpers and tests.
- */
-export function buildCelinaAttributionTag(tags?: string[]): string {
-  const normalized = normalizeAttributionTags(tags);
-  return normalized.length ? `CELINA|${normalized.join("|")}` : "CELINA";
 }
 
 /** Map client attribution tags to ERC-8021 Schema 0 codes (lowercase `[a-z0-9_]` only). */
@@ -168,33 +153,7 @@ export function stripErc8021SuffixIfPresent(
   return `0x${hex.slice(0, suffixStart)}` as `0x${string}`;
 }
 
-/** Printable legacy segments: `CELINA` or `CELINA|TAG1|…` (stops before binary / ERC-8021 ASCII). */
-const LEGACY_ATTRIBUTION_TEXT = /^CELINA(?:\|[A-Za-z0-9_]+)*/;
-
-/** Parse legacy UTF-8 `CELINA|TAG1|…` suffix from calldata (ignores trailing ERC-8021). */
-export function parseCelinaLegacyAttributionSuffix(
-  data: `0x${string}`,
-): string[] | null {
-  const body = stripErc8021SuffixIfPresent(data);
-  const celinaMarker = stringToHex("CELINA").slice(2).toLowerCase();
-  const lower = body.slice(2).toLowerCase();
-  const idx = lower.lastIndexOf(celinaMarker);
-  if (idx === -1) return null;
-
-  try {
-    const suffixHex = `0x${body.slice(2).slice(idx)}` as `0x${string}`;
-    const text = hexToString(suffixHex);
-    if (!text.startsWith("CELINA")) return null;
-    const printable = text.match(LEGACY_ATTRIBUTION_TEXT)?.[0];
-    if (!printable) return null;
-    return printable.split("|");
-  } catch {
-    return null;
-  }
-}
-
 export type AttributionVerificationResult = {
-  legacyTags: string[] | null;
   erc8021: { codes: string[]; schemaId: number } | null;
   matched: boolean;
 };
@@ -206,44 +165,34 @@ export type AttributionCheckResult = AttributionVerificationResult & {
 
 function tagMatchesVerification(
   tag: string,
-  legacyTags: string[] | null,
   erc8021Codes: string[] | null,
 ): boolean {
   const normalized = normalizeAttributionTag(tag);
-  const legacyHit =
-    legacyTags?.some((legacyTag) => normalizeAttributionTag(legacyTag) === normalized) ??
-    false;
-  const ercHit =
+  return (
     erc8021Codes?.some((code) => code.toLowerCase() === normalized.toLowerCase()) ??
-    false;
-  return legacyHit || ercHit;
+    false
+  );
 }
 
-/** Merge legacy + ERC-8021 codes into custom tags (skips CELINA/celina, dedupes). */
+/** Merge ERC-8021 codes into custom tags (skips platform `celina`, dedupes). */
 export function collectAttributionTags(
-  legacyTags: string[] | null,
   erc8021Codes: string[] | null,
 ): string[] {
-  return normalizeAttributionTags([
-    ...(legacyTags ?? []),
-    ...(erc8021Codes ?? []),
-  ]);
+  return normalizeAttributionTags(erc8021Codes ?? []);
 }
 
-/** Decode legacy and ERC-8021 attribution from calldata; optionally check for a tag. */
+/** Decode ERC-8021 attribution from calldata; optionally check for a tag. */
 export function verifyAttributionInCalldata(
   data: `0x${string}`,
   tag?: string,
 ): AttributionVerificationResult {
   const window = attributionDecodeWindow(data);
-  const legacyTags = parseCelinaLegacyAttributionSuffix(window);
   const erc8021 = fromDataSuffix(window);
   const matched = tag
-    ? tagMatchesVerification(tag, legacyTags, erc8021?.codes ?? null)
-    : Boolean(legacyTags?.length || erc8021?.codes.length);
+    ? tagMatchesVerification(tag, erc8021?.codes ?? null)
+    : Boolean(erc8021?.codes.length);
 
   return {
-    legacyTags,
     erc8021: erc8021
       ? { codes: [...erc8021.codes], schemaId: erc8021.schemaId }
       : null,
@@ -252,8 +201,8 @@ export function verifyAttributionInCalldata(
 }
 
 /**
- * Decode attribution from calldata with a unified custom `tags` list.
- * Prefer this for “what tags are on this tx?”; use {@link verifyAttributionInCalldata} for the raw layers only.
+ * Decode ERC-8021 attribution from calldata with a unified custom `tags` list.
+ * Prefer this for "what tags are on this tx?"; use {@link verifyAttributionInCalldata} for the raw layer only.
  */
 export function checkAttributionInCalldata(
   data: `0x${string}`,
@@ -262,12 +211,12 @@ export function checkAttributionInCalldata(
   const verified = verifyAttributionInCalldata(data, tag);
   return {
     ...verified,
-    tags: collectAttributionTags(verified.legacyTags, verified.erc8021?.codes ?? null),
+    tags: collectAttributionTags(verified.erc8021?.codes ?? null),
   };
 }
 
 /**
- * Append Celina ERC-8021 Schema 0 attribution to calldata (no legacy UTF-8 `CELINA|…`).
+ * Append Celina ERC-8021 Schema 0 attribution to calldata (no legacy UTF-8 `CELINA|...`).
  *
  * Used by `prepare*` when `createCelinaClient({ attributionTags })` is set, and by
  * `createAAClient({ attributionTags }).sendPreparedFlow` when AA tags are set.
@@ -275,7 +224,7 @@ export function checkAttributionInCalldata(
  * @param data - Original transaction calldata.
  * @param attributionTags - Optional custom tags (same list semantics on Celina or AA client).
  *   ERC-8021: `toDataSuffix(["celina", ...])` with lowercase codes.
- *   Example: `["goclaim"]` → codes `celina`, `goclaim`.
+ *   Example: `["goclaim"]` -> codes `celina`, `goclaim`.
  *   Existing legacy UTF-8 on `data` is left in place; a matching ERC-8021 suffix is ensured.
  */
 export function appendCelinaCalldataTag(

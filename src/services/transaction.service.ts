@@ -1,6 +1,6 @@
 /**
  * Token sends: estimateSend simulates gas; prepareSend builds unsigned tx steps.
- * Calldata is tagged with CELINA_DATA_SUFFIX for on-chain attribution.
+ * Calldata is tagged with the ERC-8021 attribution suffix (see appendCelinaCalldataTag).
  */
 import {
   encodeFunctionData,

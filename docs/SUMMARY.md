@@ -80,7 +80,6 @@
 * [verifyAttributionInCalldata](api-reference/index/functions/verifyAttributionInCalldata.md)
 * [AttributionCheckResult](api-reference/index/type-aliases/AttributionCheckResult.md)
 * [AttributionVerificationResult](api-reference/index/type-aliases/AttributionVerificationResult.md)
-* [CELINA_DATA_SUFFIX](api-reference/index/variables/CELINA_DATA_SUFFIX.md)
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)
