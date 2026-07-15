@@ -8,10 +8,9 @@ import { CeloClientFactory } from "./clients/celo-client.js";
 import { EnsClientFactory } from "./clients/ens-client.js";
 import { resolveSdkConfig, type SdkConfig } from "./config/sdk-config.js";
 import { AccountService } from "./services/account.service.js";
-import { createAgentKarmaService } from "./services/agentkarma-lazy.js";
-import type {
+import {
   AgentKarmaService,
-  AgentKarmaServiceConfig,
+  type AgentKarmaServiceConfig,
 } from "./services/agentkarma.service.js";
 import { AaveService } from "./services/aave.service.js";
 import { BlockchainService } from "./services/blockchain.service.js";
@@ -110,7 +109,7 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     self: wrap("self", new SelfService(clientFactory, config)),
     // Optional ecosystem adapter. Not analytics-wrapped: AgentKarma is an
     // external reputation service, not a Celo on-chain read Celina tracks.
-    agentKarma: createAgentKarmaService(opts?.agentKarma),
+    agentKarma: new AgentKarmaService(opts?.agentKarma),
   };
 }
 
@@ -214,7 +213,7 @@ export { clearSelfSessionsForTests } from "./services/self-session-store.js";
 export { flushCelinaAnalytics } from "./analytics/amplitude.js";
 export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";
 /** Optional read-only AgentKarma reputation adapter (agentkarma.io). */
-export type { AgentKarmaService } from "./services/agentkarma.service.js";
+export { AgentKarmaService } from "./services/agentkarma.service.js";
 export type {
   /** Config for the AgentKarma adapter (baseUrl, timeout, fetch, headers). */
   AgentKarmaServiceConfig,
