@@ -77,12 +77,19 @@ describe("celina tag helpers", () => {
     expect(verifyAttributionInCalldata(tagged, "missing_tag").matched).toBe(false);
   });
 
-  it("collects custom tags excluding platform celina", () => {
+  it("collects all ERC-8021 tags in lowercase", () => {
     expect(
       collectAttributionTags(["celina", "celo_862c21dd97a7", "celeste_ai"]),
-    ).toEqual(["celo_862c21dd97a7", "CELESTE_AI"]);
-    expect(collectAttributionTags(["celina"])).toEqual([]);
+    ).toEqual(["celina", "celo_862c21dd97a7", "celeste_ai"]);
+    expect(collectAttributionTags(["celina"])).toEqual(["celina"]);
     expect(collectAttributionTags(null)).toEqual([]);
+  });
+
+  it("collects lowercase tags for celina and canvassing", () => {
+    expect(collectAttributionTags(["celina", "canvassing"])).toEqual([
+      "celina",
+      "canvassing",
+    ]);
   });
 
   it("checks attribution with unified custom tags list (ERC-8021 write)", () => {
@@ -91,7 +98,7 @@ describe("celina tag helpers", () => {
       "celeste_ai",
     ]);
     const all = checkAttributionInCalldata(tagged);
-    expect(all.tags).toEqual(["celo_862c21dd97a7", "CELESTE_AI"]);
+    expect(all.tags).toEqual(["celina", "celo_862c21dd97a7", "celeste_ai"]);
     expect(all.matched).toBe(true);
     expect(all.erc8021?.codes).toEqual([
       "celina",
@@ -106,7 +113,7 @@ describe("celina tag helpers", () => {
 
     const platformOnly = appendCelinaCalldataTag("0xabcdef");
     const platform = checkAttributionInCalldata(platformOnly);
-    expect(platform.tags).toEqual([]);
+    expect(platform.tags).toEqual(["celina"]);
     expect(platform.matched).toBe(true);
   });
 
@@ -120,7 +127,7 @@ describe("celina tag helpers", () => {
     expect(tip).toEqual({
       erc8021: { codes: ["celina", "goclaim"], schemaId: 0 },
       matched: true,
-      tags: ["GOCLAIM"],
+      tags: ["celina", "goclaim"],
     });
     expect(mid).toEqual(tip);
   });

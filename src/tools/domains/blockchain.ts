@@ -90,7 +90,7 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
   {
     name: "check_attribution_tag",
     description:
-      "List custom attribution tags on a Celo mainnet transaction (unified ERC-8021 tags, excluding platform celina), or check whether a specific tag is present. Prefer this for \"what tags are on this tx?\"; use verify_attribution_tag for the raw layer.",
+      "List all ERC-8021 attribution tags on a Celo mainnet transaction in lowercase (same as erc8021.codes), or check whether a specific tag is present. Prefer this for \"what tags are on this tx?\"; use verify_attribution_tag for the raw layer.",
     inputSchema: z.object({
       hash: z
         .string()
@@ -101,7 +101,7 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
         .min(1)
         .optional()
         .describe(
-          "Optional attribution code to match (e.g. celo_862c21dd97a7, MY_APP). Omit to list all custom tags.",
+          "Optional attribution code to match (e.g. celo_862c21dd97a7, MY_APP). Omit to list all tags.",
         ),
     }),
     families: ["read"],

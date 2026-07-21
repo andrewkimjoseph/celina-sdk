@@ -41,7 +41,7 @@ const data = appendCelinaCalldataTag(encodeFunctionData(...), ["goclaim"]);
 
 | Tool / API | Prefer when |
 |------------|-------------|
-| **`check_attribution_tag`** / `checkAttributionInCalldata` | You want a unified custom `tags` list (excludes platform `celina`) or to confirm one tag |
+| **`check_attribution_tag`** / `checkAttributionInCalldata` | You want all ERC-8021 `tags` in lowercase (mirrors `erc8021.codes`) or to confirm one tag |
 | **`verify_attribution_tag`** / `verifyAttributionInCalldata` | You need the raw ERC-8021 layer |
 
 See [Configuration](../getting-started/configuration.md), [Prepared flows](../concepts/prepared-flows.md), and [Account Abstraction](account-abstraction.md).

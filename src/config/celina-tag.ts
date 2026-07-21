@@ -158,7 +158,7 @@ export type AttributionVerificationResult = {
   matched: boolean;
 };
 
-/** Verification result plus a unified custom/app `tags` list (excludes platform CELINA/celina). */
+/** Verification result plus all ERC-8021 `tags` in lowercase (mirrors `erc8021.codes`). */
 export type AttributionCheckResult = AttributionVerificationResult & {
   tags: string[];
 };
@@ -174,11 +174,19 @@ function tagMatchesVerification(
   );
 }
 
-/** Merge ERC-8021 codes into custom tags (skips platform `celina`, dedupes). */
+/** Collect all ERC-8021 codes as lowercase tags, deduped in first-seen order. */
 export function collectAttributionTags(
   erc8021Codes: string[] | null,
 ): string[] {
-  return normalizeAttributionTags(erc8021Codes ?? []);
+  if (!erc8021Codes?.length) return [];
+
+  const deduped = new Set<string>();
+  for (const code of erc8021Codes) {
+    const normalized = code.trim().toLowerCase();
+    if (!normalized || deduped.has(normalized)) continue;
+    deduped.add(normalized);
+  }
+  return [...deduped];
 }
 
 /** Decode ERC-8021 attribution from calldata; optionally check for a tag. */
@@ -201,7 +209,7 @@ export function verifyAttributionInCalldata(
 }
 
 /**
- * Decode ERC-8021 attribution from calldata with a unified custom `tags` list.
+ * Decode ERC-8021 attribution from calldata with a lowercase `tags` list that mirrors `erc8021.codes`.
  * Prefer this for "what tags are on this tx?"; use {@link verifyAttributionInCalldata} for the raw layer only.
  */
 export function checkAttributionInCalldata(
