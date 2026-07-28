@@ -33,53 +33,68 @@
 - [CreateAAClientOptions](type-aliases/CreateAAClientOptions.md)
 - [GasSponsorshipConfig](type-aliases/GasSponsorshipConfig.md)
 - [GasSponsorshipProviderId](type-aliases/GasSponsorshipProviderId.md)
+- [GoodDollarIdentityGuidance](type-aliases/GoodDollarIdentityGuidance.md)
+- [GoodDollarIdentityGuidanceInput](type-aliases/GoodDollarIdentityGuidanceInput.md)
+- [GoodDollarIdentityRecommendedAction](type-aliases/GoodDollarIdentityRecommendedAction.md)
 - [PimlicoGasSponsorshipConfig](type-aliases/PimlicoGasSponsorshipConfig.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
 - [SendPreparedFlowMode](type-aliases/SendPreparedFlowMode.md)
 - [SendPreparedFlowOptions](type-aliases/SendPreparedFlowOptions.md)
 - [SendPreparedFlowResult](type-aliases/SendPreparedFlowResult.md)
 - [UserOpCall](type-aliases/UserOpCall.md)
+- [VoteValueName](type-aliases/VoteValueName.md)
 
 ## Variables
 
-- [AAVE_POOL](variables/AAVE_POOL.md)
-- [AAVE_SUPPORTED_SYMBOLS](variables/AAVE_SUPPORTED_SYMBOLS.md)
+- [AAVE\_POOL](variables/AAVE_POOL.md)
+- [AAVE\_SUPPORTED\_SYMBOLS](variables/AAVE_SUPPORTED_SYMBOLS.md)
 - [CHAIN](variables/CHAIN.md)
-- [DEFAULT_RPC_URL](variables/DEFAULT_RPC_URL.md)
-- [ERC_8021_MARKER](variables/ERC_8021_MARKER.md)
-- [GOODDOLLAR_CUSD_EXCHANGE_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
-- [GOODDOLLAR_IDENTITY_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
-- [GOODDOLLAR_MENTO_BROKER](variables/GOODDOLLAR_MENTO_BROKER.md)
-- [GOODDOLLAR_MENTO_EXCHANGE_PROVIDER](variables/GOODDOLLAR_MENTO_EXCHANGE_PROVIDER.md)
-- [GOODDOLLAR_RESERVE_COLLATERAL](variables/GOODDOLLAR_RESERVE_COLLATERAL.md)
-- [GOODDOLLAR_TOKEN_ADDRESS](variables/GOODDOLLAR_TOKEN_ADDRESS.md)
-- [GOODDOLLAR_UBI_SCHEME_ADDRESS](variables/GOODDOLLAR_UBI_SCHEME_ADDRESS.md)
-- [SELF_DEMO_NETWORK](variables/SELF_DEMO_NETWORK.md)
-- [SELF_HEADERS](variables/SELF_HEADERS.md)
+- [DEFAULT\_RPC\_URL](variables/DEFAULT_RPC_URL.md)
+- [ERC\_8021\_MARKER](variables/ERC_8021_MARKER.md)
+- [FIXIDITY\_ONE](variables/FIXIDITY_ONE.md)
+- [GOODDOLLAR\_CUSD\_EXCHANGE\_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
+- [GOODDOLLAR\_HUMANNESS\_REMEDIATION](variables/GOODDOLLAR_HUMANNESS_REMEDIATION.md)
+- [GOODDOLLAR\_IDENTITY\_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
+- [GOODDOLLAR\_MENTO\_BROKER](variables/GOODDOLLAR_MENTO_BROKER.md)
+- [GOODDOLLAR\_MENTO\_EXCHANGE\_PROVIDER](variables/GOODDOLLAR_MENTO_EXCHANGE_PROVIDER.md)
+- [GOODDOLLAR\_RESERVE\_COLLATERAL](variables/GOODDOLLAR_RESERVE_COLLATERAL.md)
+- [GOODDOLLAR\_TOKEN\_ADDRESS](variables/GOODDOLLAR_TOKEN_ADDRESS.md)
+- [GOODDOLLAR\_UBI\_SCHEME\_ADDRESS](variables/GOODDOLLAR_UBI_SCHEME_ADDRESS.md)
+- [SELF\_DEMO\_NETWORK](variables/SELF_DEMO_NETWORK.md)
+- [SELF\_HEADERS](variables/SELF_HEADERS.md)
+- [VOTE\_VALUES](variables/VOTE_VALUES.md)
 
 ## Functions
 
 - [appendCelinaCalldataTag](functions/appendCelinaCalldataTag.md)
 - [attributionDecodeWindow](functions/attributionDecodeWindow.md)
+- [buildConnectIdentityError](functions/buildConnectIdentityError.md)
 - [buildErc8021AttributionSuffix](functions/buildErc8021AttributionSuffix.md)
 - [checkAttributionInCalldata](functions/checkAttributionInCalldata.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [collectAttributionTags](functions/collectAttributionTags.md)
 - [createAAClient](functions/createAAClient.md)
 - [createCelinaClient](functions/createCelinaClient.md)
+- [deriveGoodDollarIdentityGuidance](functions/deriveGoodDollarIdentityGuidance.md)
 - [deriveSmartAccountAddress](functions/deriveSmartAccountAddress.md)
+- [findLesserAndGreaterAfterVote](functions/findLesserAndGreaterAfterVote.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
+- [fromFixidity](functions/fromFixidity.md)
 - [isGoodDollarUsdReservePair](functions/isGoodDollarUsdReservePair.md)
 - [normalizeAttributionTags](functions/normalizeAttributionTags.md)
+- [percentToFixidity](functions/percentToFixidity.md)
 - [preparedStepsToUserOpCalls](functions/preparedStepsToUserOpCalls.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
 - [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)
 - [selfDemoUrl](functions/selfDemoUrl.md)
+- [shouldSkipFaceVerification](functions/shouldSkipFaceVerification.md)
 - [stripErc8021SuffixIfPresent](functions/stripErc8021SuffixIfPresent.md)
 - [toErc8021AttributionCodes](functions/toErc8021AttributionCodes.md)
+- [toFixidity](functions/toFixidity.md)
 - [verifyAttributionInCalldata](functions/verifyAttributionInCalldata.md)
+- [voteValueToInt](functions/voteValueToInt.md)
 
 ## References
 
@@ -98,6 +113,12 @@ Re-exports [AgentKarmaService](../services/agentkarma.service/classes/AgentKarma
 ### AgentKarmaServiceConfig
 
 Re-exports [AgentKarmaServiceConfig](../services/agentkarma.service/type-aliases/AgentKarmaServiceConfig.md)
+
+***
+
+### assertHumanness
+
+Re-exports [assertHumanness](../services/humanness.service/functions/assertHumanness.md)
 
 ***
 
@@ -140,6 +161,18 @@ Re-exports [GoodDollarReserveSwapParams](../services/gooddollar.service/interfac
 ### GovernanceProposalsOptions
 
 Re-exports [GovernanceProposalsOptions](../services/governance.service/interfaces/GovernanceProposalsOptions.md)
+
+***
+
+### HumannessCheckResult
+
+Re-exports [HumannessCheckResult](../services/humanness.service/interfaces/HumannessCheckResult.md)
+
+***
+
+### HumannessRailResult
+
+Re-exports [HumannessRailResult](../services/humanness.service/interfaces/HumannessRailResult.md)
 
 ***
 

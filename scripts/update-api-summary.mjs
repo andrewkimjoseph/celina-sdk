@@ -24,6 +24,10 @@ const API_LINKS = [
   { title: "AAClient", path: "index/type-aliases/AAClient.md" },
   { title: "CreateAAClientOptions", path: "index/type-aliases/CreateAAClientOptions.md" },
   { title: "GasSponsorshipService", path: "index/classes/GasSponsorshipService.md" },
+  { title: "assertHumanness", path: "services/humanness.service/functions/assertHumanness.md" },
+  { title: "deriveGoodDollarIdentityGuidance", path: "index/functions/deriveGoodDollarIdentityGuidance.md" },
+  { title: "VOTE_VALUES", path: "index/variables/VOTE_VALUES.md" },
+  { title: "voteValueToInt", path: "index/functions/voteValueToInt.md" },
 ];
 
 const SERVICE_LINKS = [
@@ -35,6 +39,7 @@ const SERVICE_LINKS = [
   { title: "EnsService", path: "services/ens.service/classes/EnsService.md" },
   { title: "GoodDollarService", path: "services/gooddollar.service/classes/GoodDollarService.md" },
   { title: "GovernanceService", path: "services/governance.service/classes/GovernanceService.md" },
+  { title: "HumannessService", path: "services/humanness.service/classes/HumannessService.md" },
   { title: "MentoFxService", path: "services/mento-fx.service/classes/MentoFxService.md" },
   { title: "UniswapService", path: "services/uniswap.service/classes/UniswapService.md" },
   { title: "NftService", path: "services/nft.service/classes/NftService.md" },
@@ -62,6 +67,12 @@ const TYPE_LINKS = [
   { title: "verifyAttributionInCalldata", path: "index/functions/verifyAttributionInCalldata.md" },
   { title: "AttributionCheckResult", path: "index/type-aliases/AttributionCheckResult.md" },
   { title: "AttributionVerificationResult", path: "index/type-aliases/AttributionVerificationResult.md" },
+  { title: "HumannessCheckResult", path: "services/humanness.service/interfaces/HumannessCheckResult.md" },
+  { title: "HumannessRailResult", path: "services/humanness.service/interfaces/HumannessRailResult.md" },
+  { title: "GOODDOLLAR_HUMANNESS_REMEDIATION", path: "index/variables/GOODDOLLAR_HUMANNESS_REMEDIATION.md" },
+  { title: "GoodDollarIdentityGuidance", path: "index/type-aliases/GoodDollarIdentityGuidance.md" },
+  { title: "GoodDollarIdentityRecommendedAction", path: "index/type-aliases/GoodDollarIdentityRecommendedAction.md" },
+  { title: "VoteValueName", path: "index/type-aliases/VoteValueName.md" },
 ];
 
 function link({ title, path }) {

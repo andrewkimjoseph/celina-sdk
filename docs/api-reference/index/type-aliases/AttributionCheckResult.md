@@ -8,9 +8,9 @@
 
 > **AttributionCheckResult** = [`AttributionVerificationResult`](AttributionVerificationResult.md) & `object`
 
-Defined in: [src/config/celina-tag.ts:203](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/config/celina-tag.ts#L203)
+Defined in: [src/config/celina-tag.ts:162](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/config/celina-tag.ts#L162)
 
-Verification result plus a unified custom/app `tags` list (excludes platform CELINA/celina).
+Verification result plus all ERC-8021 `tags` in lowercase (mirrors `erc8021.codes`).
 
 ## Type Declaration
 

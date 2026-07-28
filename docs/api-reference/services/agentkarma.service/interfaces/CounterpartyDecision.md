@@ -6,7 +6,7 @@
 
 # Interface: CounterpartyDecision
 
-Defined in: [src/services/agentkarma.service.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/agentkarma.service.ts#L48)
+Defined in: [src/services/agentkarma.service.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/agentkarma.service.ts#L48)
 
 Result of a local counterparty trust evaluation.
 
@@ -16,7 +16,7 @@ Result of a local counterparty trust evaluation.
 
 > **chain**: `"celo"`
 
-Defined in: [src/services/agentkarma.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/agentkarma.service.ts#L50)
+Defined in: [src/services/agentkarma.service.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/agentkarma.service.ts#L50)
 
 Always `"celo"` — this adapter is Celo-pinned.
 
@@ -26,7 +26,7 @@ Always `"celo"` — this adapter is Celo-pinned.
 
 > **decision**: [`TrustDecision`](../../../index/interfaces/TrustDecision.md)
 
-Defined in: [src/services/agentkarma.service.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/agentkarma.service.ts#L54)
+Defined in: [src/services/agentkarma.service.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/agentkarma.service.ts#L54)
 
 Explainable allow/deny from the local policy (no network, pure function).
 
@@ -36,7 +36,7 @@ Explainable allow/deny from the local policy (no network, pure function).
 
 > **snapshot**: [`KarmaSnapshot`](../../../index/interfaces/KarmaSnapshot.md)
 
-Defined in: [src/services/agentkarma.service.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/agentkarma.service.ts#L56)
+Defined in: [src/services/agentkarma.service.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/agentkarma.service.ts#L56)
 
 The karma snapshot the decision was computed from.
 
@@ -46,6 +46,6 @@ The karma snapshot the decision was computed from.
 
 > **wallet**: `string`
 
-Defined in: [src/services/agentkarma.service.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/services/agentkarma.service.ts#L52)
+Defined in: [src/services/agentkarma.service.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/agentkarma.service.ts#L52)
 
 The wallet that was evaluated.

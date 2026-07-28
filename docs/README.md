@@ -37,9 +37,10 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 | Category                 | Examples                                                                                                             |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| **Reads**                | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
+| **Reads**                | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, staking, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
 | **Estimates**            | Gas for sends, FX swaps, Uniswap swaps, generic contract calls                                                       |
-| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, generic contract writes (`chainId: 42220`) |
+| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, governance locks/votes, validator staking/delegation, generic contract writes (`chainId: 42220`) |
+| **Humanness**            | `client.humanness.checkHumanness` — dual-rail Self Agent ID **or** GoodDollar whitelist check gating governance/staking prepares |
 | **Sponsored UserOps**    | `createAAClient` + `sendPreparedFlow` (app-owned Pimlico key; optional `attributionTags`)                             |
 | **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` before each wallet send                            |
 | **Attribution**          | Dual CELINA suffixes; prefer `check_attribution_tag` / `checkAttributionInCalldata` for unified custom tags          |
@@ -87,17 +88,20 @@ See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/too
 | `account`     | CELO balance, nonce                              | —                                            |
 | `token`       | balances, token info, stablecoins                | —                                            |
 | `ens`         | resolve ENS names                                | —                                            |
-| `gooddollar`  | whitelist status, UBI entitlement                | `prepareClaimUbi`                            |
+| `gooddollar`  | whitelist status, UBI entitlement, identity guidance | `prepareClaimUbi`                       |
 | `transaction` | gas fees, estimates                              | `prepareSend`                                |
 | `mentoFx`     | `getFxQuote`, `estimateFx`                       | `prepareFx`                                  |
 | `uniswap`     | `getSwapQuote`, `estimateSwap`                   | `prepareSwap`                                |
 | `aave`        | —                                                | `prepareSupply`, `prepareWithdraw`           |
-| `governance`  | proposals list, details                          | —                                            |
-| `staking`     | balances, validator groups                       | —                                            |
+| `governance`  | proposals, votable proposals, locked balance, pending withdrawals | `prepareLockCelo`, `prepareUnlockCelo`, `prepareRelockCelo`, `prepareWithdrawCelo`, `prepareVote` (humanness-gated) |
+| `staking`     | balances, activatable stakes, validator groups, delegation info | `prepareStake`, `prepareActivateStake`, `prepareUnstake`, `prepareDelegatePower`, `prepareUndelegatePower` (humanness-gated) |
+| `humanness`   | `checkHumanness` — dual-rail Self **or** GoodDollar        | —                                            |
 | `nft`         | NFT info, balance                                | —                                            |
 | `contract`    | `callFunction`, `estimateGas`                    | `prepareFunction`                            |
 | `self`        | verify, lookup, session lifecycle                | agent signing (Node + `selfAgentPrivateKey`) |
 | `agentKarma`  | karma, ERC-8004 agent, counterparty trust policy | —                                            |
+
+Governance and staking `prepare*` writes require `checkHumanness` to pass first — see [Humanness](guides/humanness.md). GoodDollar identity has two distinct paths (first-time face verify vs connecting a secondary wallet to an existing verified root) — see [GoodDollar UBI](guides/gooddollar.md#face-verify-vs-connect).
 
 Full method signatures: [API reference](api-reference/).
 

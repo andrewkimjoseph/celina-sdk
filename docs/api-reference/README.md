@@ -15,6 +15,7 @@
 - [services/ens.service](services/ens.service/README.md)
 - [services/gooddollar.service](services/gooddollar.service/README.md)
 - [services/governance.service](services/governance.service/README.md)
+- [services/humanness.service](services/humanness.service/README.md)
 - [services/mento-fx.service](services/mento-fx.service/README.md)
 - [services/nft.service](services/nft.service/README.md)
 - [services/self.service](services/self.service/README.md)

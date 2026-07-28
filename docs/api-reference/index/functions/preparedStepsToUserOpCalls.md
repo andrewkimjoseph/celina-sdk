@@ -8,7 +8,7 @@
 
 > **preparedStepsToUserOpCalls**(`steps`, `attributionTags?`): [`UserOpCall`](../type-aliases/UserOpCall.md)[]
 
-Defined in: [src/aa/prepared-calls.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/prepared-calls.ts#L10)
+Defined in: [src/aa/prepared-calls.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/prepared-calls.ts#L10)
 
 Map Celina prepared steps to smart-account `calls`.
 When `attributionTags` is provided, each step's `data` is ERC-8021-tagged

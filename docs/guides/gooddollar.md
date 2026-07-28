@@ -112,6 +112,44 @@ for (const step of flow.steps) {
 
 G$ is sent to `msg.sender` (the signing wallet). Gas is paid in native CELO.
 
+## Face verify vs connect
+
+There are two distinct ways a wallet becomes GoodDollar-verified — do not confuse them:
+
+| Path | What it does | Tool |
+|------|--------------|------|
+| **Face verify** | Makes the signer wallet a **new** whitelisted IdentityV4 root (first-time human verification) | `get_gooddollar_face_verification_link` |
+| **Connect** | Links a **secondary** wallet to an **existing** verified root | `execute_connect_gooddollar_identity` |
+
+Connect requires the signer (`CELO_PRIVATE_KEY`) to **be** the whitelisted root — the wallet you want to link is passed as `connected_account`, not the signer.
+
+```ts
+const guidance = await celina.gooddollar.getIdentityGuidance("0xYourAddress");
+// guidance.recommendedAction: "face_verify" | "connect_secondary" | "already_verified" | "use_verified_root_to_connect"
+// guidance.message — human-readable next step
+```
+
+| `recommendedAction` | Meaning |
+|----------------------|---------|
+| `face_verify` | Wallet is unverified and not connected to a root — use `get_gooddollar_face_verification_link` |
+| `connect_secondary` | Wallet **is** the whitelisted root — face verification not needed; can call `execute_connect_gooddollar_identity` to link other wallets |
+| `already_verified` | Wallet is connected to an existing root — humanness is inherited; no FV link needed |
+| `use_verified_root_to_connect` | Reserved for future use; not currently returned by `deriveGoodDollarIdentityGuidance` |
+
+If you already verified on wallet A and the current signer is wallet B: do not face-verify B. Set `CELO_PRIVATE_KEY` to wallet A and call `execute_connect_gooddollar_identity` with `connected_account` set to wallet B.
+
+**MCP face-verification pre-check:** `get_gooddollar_face_verification_link` calls `getIdentityGuidance` first. When `shouldSkipFaceVerification(guidance)` is `true` (`connect_secondary` or `already_verified`), it returns `{ skipped: true, reason, guidance }` **without** generating a link — no wasted round trip to the citizen-sdk.
+
+```ts
+import { shouldSkipFaceVerification } from "@andrewkimjoseph/celina-sdk";
+
+if (shouldSkipFaceVerification(guidance)) {
+  // guidance.message already explains what to do instead
+}
+```
+
+`prepareConnectIdentity` (→ `execute_connect_gooddollar_identity`) throws a guidance-aware error when the signer is not the whitelisted root — including the specific remediation for a *connected* wallet trying to connect another wallet (not allowed; only the root can).
+
 ## Reserve swaps (G$ ↔ USDm)
 
 For **GoodDollar ↔ USDm**, use the on-chain **MentoBroker reserve** (bonding curve), not Uniswap. `get_swap_quote` auto-selects this route for G$ ↔ USDm pairs.
@@ -167,6 +205,7 @@ A connected wallet's G$ balance is that wallet's on-chain balance, not the root'
 |------------|------------------|------------|
 | `getIdentityLink` | `get_gooddollar_identity_link` | read |
 | `getWhitelistingInfo` | `get_gooddollar_whitelisting_info` | read |
+| `getIdentityGuidance` | — (used internally by face-verification pre-check) | — |
 | `getUbiClaimEligibility` | `get_gooddollar_ubi_entitlement` | read |
 | `getReserveQuote` | `get_gooddollar_reserve_quote` | read |
 | `estimateReserveSwap` | `estimate_gooddollar_reserve_swap` | read* (*needs `CELO_PRIVATE_KEY` for gas sim) |
@@ -174,6 +213,8 @@ A connected wallet's G$ balance is that wallet's on-chain balance, not the root'
 | — | `execute_gooddollar_reserve_swap` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
 | `prepareClaimUbi` | — (unsigned; use SDK + wagmi in your app) | — |
 | — | `claim_daily_gooddollar_ubi` | write (requires `CELO_PRIVATE_KEY`, stdio only) |
+| — | `get_gooddollar_face_verification_link` | write* (stdio only; may return `skipped: true` — see [Face verify vs connect](#face-verify-vs-connect)) |
+| `prepareConnectIdentity` | `execute_connect_gooddollar_identity` | write (requires `CELO_PRIVATE_KEY` to be the whitelisted root, stdio only) |
 
 **Stdio MCP flow (G$ ↔ USDm):** `get_gooddollar_reserve_quote` → `estimate_gooddollar_reserve_swap` → `execute_gooddollar_reserve_swap`.
 
@@ -188,6 +229,7 @@ For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagm
 
 ## Related
 
+- [Humanness](humanness.md) — GoodDollar whitelist is one of the two rails gating governance/staking writes
 - [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)

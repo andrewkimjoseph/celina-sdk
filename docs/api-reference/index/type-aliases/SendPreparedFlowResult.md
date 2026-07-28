@@ -8,7 +8,7 @@
 
 > **SendPreparedFlowResult** = `object`
 
-Defined in: [src/aa/types.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L62)
+Defined in: [src/aa/types.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L62)
 
 Result of submitting prepared transactions as sponsored UserOp(s).
 
@@ -18,7 +18,7 @@ Result of submitting prepared transactions as sponsored UserOp(s).
 
 > **mode**: [`SendPreparedFlowMode`](SendPreparedFlowMode.md)
 
-Defined in: [src/aa/types.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L63)
+Defined in: [src/aa/types.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L63)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/aa/types.ts:63](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > **success**: `boolean`
 
-Defined in: [src/aa/types.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L68)
+Defined in: [src/aa/types.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L68)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [src/aa/types.ts:68](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > **transactionHashes**: `` `0x${string}` ``[]
 
-Defined in: [src/aa/types.ts:67](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L67)
+Defined in: [src/aa/types.ts:67](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L67)
 
 Transaction hash(es) from UserOp receipt(s).
 
@@ -44,6 +44,6 @@ Transaction hash(es) from UserOp receipt(s).
 
 > **userOpHashes**: `` `0x${string}` ``[]
 
-Defined in: [src/aa/types.ts:65](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/aa/types.ts#L65)
+Defined in: [src/aa/types.ts:65](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L65)
 
 UserOperation hash(es) submitted to the bundler.

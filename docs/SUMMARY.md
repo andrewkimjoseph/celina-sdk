@@ -25,6 +25,9 @@
 * [Uniswap v4](guides/uniswap.md)
 * [Aave](guides/aave.md)
 * [GoodDollar UBI](guides/gooddollar.md)
+* [Humanness](guides/humanness.md)
+* [Governance](guides/governance.md)
+* [Staking](guides/staking.md)
 * [Self Agent ID](guides/self-agent-id.md)
 * [AgentKarma reputation](guides/agentkarma.md)
 * [Telemetry](guides/telemetry.md)
@@ -42,6 +45,10 @@
 * [AAClient](api-reference/index/type-aliases/AAClient.md)
 * [CreateAAClientOptions](api-reference/index/type-aliases/CreateAAClientOptions.md)
 * [GasSponsorshipService](api-reference/index/classes/GasSponsorshipService.md)
+* [assertHumanness](api-reference/services/humanness.service/functions/assertHumanness.md)
+* [deriveGoodDollarIdentityGuidance](api-reference/index/functions/deriveGoodDollarIdentityGuidance.md)
+* [VOTE_VALUES](api-reference/index/variables/VOTE_VALUES.md)
+* [voteValueToInt](api-reference/index/functions/voteValueToInt.md)
 
 ### Services
 
@@ -53,6 +60,7 @@
 * [EnsService](api-reference/services/ens.service/classes/EnsService.md)
 * [GoodDollarService](api-reference/services/gooddollar.service/classes/GoodDollarService.md)
 * [GovernanceService](api-reference/services/governance.service/classes/GovernanceService.md)
+* [HumannessService](api-reference/services/humanness.service/classes/HumannessService.md)
 * [MentoFxService](api-reference/services/mento-fx.service/classes/MentoFxService.md)
 * [UniswapService](api-reference/services/uniswap.service/classes/UniswapService.md)
 * [NftService](api-reference/services/nft.service/classes/NftService.md)
@@ -80,6 +88,12 @@
 * [verifyAttributionInCalldata](api-reference/index/functions/verifyAttributionInCalldata.md)
 * [AttributionCheckResult](api-reference/index/type-aliases/AttributionCheckResult.md)
 * [AttributionVerificationResult](api-reference/index/type-aliases/AttributionVerificationResult.md)
+* [HumannessCheckResult](api-reference/services/humanness.service/interfaces/HumannessCheckResult.md)
+* [HumannessRailResult](api-reference/services/humanness.service/interfaces/HumannessRailResult.md)
+* [GOODDOLLAR_HUMANNESS_REMEDIATION](api-reference/index/variables/GOODDOLLAR_HUMANNESS_REMEDIATION.md)
+* [GoodDollarIdentityGuidance](api-reference/index/type-aliases/GoodDollarIdentityGuidance.md)
+* [GoodDollarIdentityRecommendedAction](api-reference/index/type-aliases/GoodDollarIdentityRecommendedAction.md)
+* [VoteValueName](api-reference/index/type-aliases/VoteValueName.md)
 ## Publishing
 
 * [GitBook setup](GITBOOK_SETUP.md)

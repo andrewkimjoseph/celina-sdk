@@ -8,7 +8,7 @@
 
 > **toErc8021AttributionCodes**(`attributionTags?`): `string`[]
 
-Defined in: [src/config/celina-tag.ts:51](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/config/celina-tag.ts#L51)
+Defined in: [src/config/celina-tag.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/config/celina-tag.ts#L36)
 
 Map client attribution tags to ERC-8021 Schema 0 codes (lowercase `[a-z0-9_]` only).
 

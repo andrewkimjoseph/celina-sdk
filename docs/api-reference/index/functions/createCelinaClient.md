@@ -8,7 +8,7 @@
 
 > **createCelinaClient**(`opts?`): [`CelinaClient`](../interfaces/CelinaClient.md)
 
-Defined in: [src/index.ts:81](https://github.com/andrewkimjoseph/celina-sdk/blob/05b12850b58b19da260eb6f15b5b4dc39f45d761/src/index.ts#L81)
+Defined in: [src/index.ts:90](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/index.ts#L90)
 
 Create a Celina client for Celo mainnet reads and unsigned tx preparation.
 No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
@@ -22,3 +22,10 @@ No private keys — pass prepared `steps` to wagmi/viem for wallet signing.
 ## Returns
 
 [`CelinaClient`](../interfaces/CelinaClient.md)
+
+## Remarks
+
+**Server-side only.** Celina SDK includes server-native dependencies
+(`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for
+the browser. Import only from Node.js environments — API routes, background
+workers, or CLI scripts.

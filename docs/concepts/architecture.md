@@ -11,6 +11,7 @@
 - **Does not hold CELO wallet keys** for `createCelinaClient` — pass prepared `steps` to wagmi/viem for EOA signing
 - **`createAAClient`** (separate entry) submits prepared flows as sponsored ERC-4337 UserOps; gas sponsorship API keys are **app-owned** (see [Account Abstraction](../guides/account-abstraction.md))
 - **Self Agent ID** (`client.self`) optionally uses `selfAgentPrivateKey` for agent signing tools (Node only); registration sessions are in-memory (~10 min TTL)
+- **Humanness** (`client.humanness.checkHumanness`) gates governance and staking `prepare*` writes — passes if Self Agent ID **or** GoodDollar whitelist succeeds for the address (see [Humanness](../guides/humanness.md))
 - **AgentKarma** (`client.agentKarma`) is a read-only external reputation adapter — calls agentkarma.io, not on-chain Celina reads; no keys, no Celina analytics
 - **Telemetry** (Node only): catalog-mapped reads emit Amplitude events named after MCP tools; wallet-scoped reads also set Amplitude `user_id` to the public wallet address — see [Telemetry](../guides/telemetry.md); opt out with `analyticsEnabled: false`
 
@@ -103,8 +104,9 @@ These live in `src/utils/`, `src/aa/`, and `src/config/celina-tag.ts` and are re
 | `aave` | AaveService | Aave V3 supplied balance reads, supply/withdraw |
 | `gooddollar` | GoodDollarService | Identity link, whitelist (connected-wallet root resolution), UBI entitlement, reserve quote/prepare (G$ ↔ USDm), `prepareClaimUbi` |
 | `ens` | EnsService | ENS resolution (Celo + Ethereum) |
-| `governance` | GovernanceService | Celo governance proposals |
-| `staking` | StakingService | Validator election staking |
+| `governance` | GovernanceService | Celo governance proposals; lock/unlock/relock/withdraw CELO and vote (humanness-gated) |
+| `staking` | StakingService | Validator election staking reads; stake/activate/unstake and delegate/undelegate power (humanness-gated) |
+| `humanness` | HumannessService | Dual-rail check — passes if Self Agent ID **or** GoodDollar whitelist succeeds; gates governance/staking writes |
 | `nft` | NftService | ERC-721 / ERC-1155 reads |
 | `contract` | ContractService | Generic contract reads, gas estimates, and write prepares |
 | `self` | SelfService | Self Agent ID verify, register, proof refresh (ai.self.xyz + on-chain registry) |
