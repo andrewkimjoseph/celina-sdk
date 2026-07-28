@@ -41,11 +41,13 @@ export type TransactionExecutors = {
     to: `0x${string}`,
     token: string,
     amount: string,
+    signer?: "celo" | "self_agent",
   ) => Promise<unknown>;
   sendToken: (
     to: `0x${string}`,
     token: string,
     amount: string,
+    signer?: "celo" | "self_agent",
   ) => Promise<unknown>;
 };
 
@@ -235,6 +237,13 @@ export interface ToolRuntime {
   mcpWallet?: {
     address: `0x${string}`;
     hasWallet: boolean;
+    /** Which configured key resolves to `address` when no explicit signer is requested. */
+    signer?: "celo" | "self_agent";
+    /** Every configured signer's address — lets a single call see both wallets at once. */
+    wallets?: {
+      celo?: { address: `0x${string}` };
+      self_agent?: { address: `0x${string}` };
+    };
   };
 }
 

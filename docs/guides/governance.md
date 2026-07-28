@@ -93,10 +93,13 @@ for (const step of flow.steps) {
 
 `execute_*` tools accept an optional `signer: "celo" | "self_agent"` (defaults to CELO when both keys are configured) and apply the humanness gate before signing. Browser `prepare_*` tools return unsigned flows only — no humanness gate is applied at that layer; apply your own gate if your host needs one.
 
+If you intend to sign with `self_agent`, fund and register that address **before** locking — see [Two wallets: CELO + Self agent](mcp-session-wallet.md#two-wallets-celo--self-agent).
+
 ## Related
 
 - [Humanness](humanness.md) — gating model for the `execute_*` writes above
 - [Staking](staking.md) — validator election staking, the other humanness-gated write surface
+- [MCP session wallet](mcp-session-wallet.md) — funding a Self agent from the main wallet
 - [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)

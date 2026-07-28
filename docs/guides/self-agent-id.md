@@ -50,6 +50,8 @@ const status = await celina.self.checkRegistration(session.session_id);
 
 Sessions are stored **in-process** for ~10 minutes. They are lost on server restart and do not work across stateless serverless instances (same as hosted MCP).
 
+A newly registered agent address holds no CELO. On `celina-mcp`, fund it from your main wallet and switch humanness-gated writes to it once `SELF_AGENT_PRIVATE_KEY` is set — see [Two wallets: CELO + Self agent](mcp-session-wallet.md#two-wallets-celo--self-agent) in the MCP session wallet guide.
+
 ## Signed HTTP (agent key required)
 
 ```ts

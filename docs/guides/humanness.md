@@ -89,4 +89,5 @@ Either rail is sufficient — you do not need both.
 - [Self Agent ID](self-agent-id.md) — the other humanness rail
 - [Governance](governance.md) — humanness-gated locking and voting
 - [Staking](staking.md) — humanness-gated staking and delegation
+- [MCP session wallet](mcp-session-wallet.md) — funding and switching to a Self agent signer
 - [HumannessService API](../api-reference/services/humanness.service/classes/HumannessService.md)

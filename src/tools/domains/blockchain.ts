@@ -117,22 +117,45 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
   {
     name: "get_wallet_address",
     description:
-      "Returns the wallet address derived from CELO_PRIVATE_KEY in the MCP server env.",
-    inputSchema: z.object({}),
+      "Returns the MCP server wallet address(es). Omit signer to get the default signer's address plus every configured wallet (celo, self_agent) — use this to find the Self agent's address before funding it. Pass signer to look up one wallet specifically.",
+    inputSchema: z.object({ signer: optionalSignerSchema }),
     families: ["read"],
     surfaces: ["mcp"],
-    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresEnv: [...executeEnvRequirements],
     mcp: { title: "Get Wallet Address", annotations: readOnly },
-    handler: async (runtime) => {
+    handler: async (runtime, input) => {
+      const signer = input.signer as "celo" | "self_agent" | undefined;
+      const wallets = runtime.mcpWallet?.wallets;
+
+      if (signer) {
+        const wallet = wallets?.[signer];
+        if (!wallet) {
+          throw new Error(
+            signer === "celo"
+              ? "CELO_PRIVATE_KEY is not configured."
+              : "SELF_AGENT_PRIVATE_KEY is not configured.",
+          );
+        }
+        return {
+          wallet_address: wallet.address,
+          has_wallet: true,
+          source: signer === "celo" ? "CELO_PRIVATE_KEY" : "SELF_AGENT_PRIVATE_KEY",
+        };
+      }
+
       if (!runtime.mcpWallet?.hasWallet) {
         throw new Error(
-          "No wallet configured. Set CELO_PRIVATE_KEY in the server env.",
+          "No wallet configured. Set CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY in the server env.",
         );
       }
       return {
         wallet_address: runtime.mcpWallet.address,
         has_wallet: true,
-        source: "CELO_PRIVATE_KEY",
+        source:
+          runtime.mcpWallet.signer === "self_agent"
+            ? "SELF_AGENT_PRIVATE_KEY"
+            : "CELO_PRIVATE_KEY",
+        wallets,
       };
     },
   },
@@ -168,7 +191,8 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "execute_register_celo_account",
-    description: "Register the MCP server wallet as a Celo account (Accounts.createAccount).",
+    description:
+      "Register a configured MCP server wallet as a Celo account (Accounts.createAccount). Pass signer to choose which wallet (celo = main, self_agent = Self identity) gets registered — required before that same wallet can lock CELO or stake.",
     inputSchema: z.object({ signer: optionalSignerSchema }),
     families: ["execute"],
     surfaces: ["mcp"],

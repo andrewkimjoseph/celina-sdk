@@ -2,7 +2,9 @@ import { z } from "zod";
 import {
   addressOrEnsSchema,
   addressSchema,
+  executeEnvRequirements,
   hexDataSchema,
+  optionalSignerSchema,
   optionalWalletAddressSchema,
   tokenSymbolSchema,
 } from "../schemas/common.js";
@@ -14,12 +16,13 @@ export const transactionToolDefinitions: ToolDefinition[] = [
   {
     name: "estimate_send",
     description:
-      "Estimates gas for sending CELO or an ERC-20. Recipient can be ENS.",
+      "Estimates gas for sending CELO or an ERC-20. Recipient can be ENS. On MCP, pass signer to estimate from a specific configured wallet (celo or self_agent) — e.g. before funding a Self agent from the main wallet.",
     inputSchema: z.object({
       to: addressOrEnsSchema,
       token: tokenSymbolSchema.optional(),
       amount: z.string(),
       from: optionalWalletAddressSchema,
+      signer: optionalSignerSchema,
     }),
     families: ["read"],
     mcp: { title: "Estimate Send", annotations: { readOnlyHint: true } },
@@ -32,14 +35,16 @@ export const transactionToolDefinitions: ToolDefinition[] = [
       );
       const amount = input.amount as string;
       const from = input.from as string | undefined;
+      const signer = input.signer as "celo" | "self_agent" | undefined;
       if (
         runtime.executors?.transaction &&
-        useMcpServerExecutor(runtime, from)
+        (signer || useMcpServerExecutor(runtime, from))
       ) {
         const estimate = await runtime.executors.transaction.estimateSend(
           address,
           token,
           amount,
+          signer,
         );
         if (ens) {
           return Object.assign({}, estimate, { ens });
@@ -62,15 +67,16 @@ export const transactionToolDefinitions: ToolDefinition[] = [
   {
     name: "send_token",
     description:
-      "Send CELO or an ERC-20 on mainnet. Requires CELO_PRIVATE_KEY in MCP server env.",
+      "Send CELO or an ERC-20 on mainnet. Requires CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY in MCP server env. Pass signer to choose which configured wallet sends — e.g. signer: \"celo\" to fund a freshly registered Self agent with CELO before any Self-signed write (lock, stake, vote, register_celo_account).",
     inputSchema: z.object({
       to: addressOrEnsSchema,
       token: tokenSymbolSchema.optional(),
       amount: z.string(),
+      signer: optionalSignerSchema,
     }),
     families: ["execute"],
     surfaces: ["mcp"],
-    requiresEnv: ["CELO_PRIVATE_KEY"],
+    requiresEnv: [...executeEnvRequirements],
     mcp: {
       title: "Send Token",
       annotations: { destructiveHint: true, openWorldHint: true },
@@ -81,10 +87,12 @@ export const transactionToolDefinitions: ToolDefinition[] = [
       const { address, ens } = await runtime.celina.ens.resolveAddressOrEns(
         input.to as string,
       );
+      const signer = input.signer as "celo" | "self_agent" | undefined;
       const result = await tx.sendToken(
         address,
         normalizeRegistryTokenInput((input.token as string | undefined) ?? "CELO"),
         input.amount as string,
+        signer,
       );
       return ens ? Object.assign({}, result, { ens }) : result;
     },
