@@ -9,7 +9,7 @@ export {
   assertSnakeCaseRecordKeys,
   getToolInputSchemaShape,
 } from "./catalog.js";
-export { filterToolDefinitions, toolRequiresWalletInput } from "./filter.js";
+export { filterToolDefinitions } from "./filter.js";
 export {
   getSwapQuoteWithFallback,
   prepareSwapWithFallback,

@@ -1,31 +1,7 @@
-import { z } from "zod";
-import { WALLET_PARAM_KEYS } from "./schemas/common.js";
 import { requireWalletParamsInInputSchema } from "./schemas/wallet-params.js";
 import type { FilterToolsOptions, ToolDefinition } from "./types.js";
 
 const ESTIMATE_PREFIX = "estimate_";
-
-/** True when the tool accepts address / from / wallet_address (defaults to MCP signer on stdio). */
-export function toolRequiresWalletInput(definition: ToolDefinition): boolean {
-  const schema = definition.inputSchema;
-  if (!(schema instanceof z.ZodObject)) {
-    return false;
-  }
-
-  const skipFrom = definition.name.endsWith("_quote");
-  const shape = schema.shape;
-
-  for (const key of WALLET_PARAM_KEYS) {
-    if (skipFrom && key === "from") {
-      continue;
-    }
-    if (key in shape) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 function requireExplicitWalletAddresses(
   definitions: ToolDefinition[],
@@ -80,10 +56,6 @@ export function filterToolDefinitions(
       options.selfSessionToolsEnabled === false &&
       def.requiresEnv?.includes("SELF_SESSION")
     ) {
-      return false;
-    }
-
-    if (options.walletInputToolsEnabled === false && toolRequiresWalletInput(def)) {
       return false;
     }
 
