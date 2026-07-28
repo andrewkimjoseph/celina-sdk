@@ -25,6 +25,7 @@ export class SelfExpiredSessionError extends Error {
 export interface SelfRegistrationDisclosures {
   minimumAge?: number;
   ofac?: boolean;
+  nationality?: boolean;
 }
 
 export interface SelfRegistrationResult {

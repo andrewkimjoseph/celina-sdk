@@ -78,8 +78,8 @@ celina-mcp calls `check_humanness` before humanness-gated `execute_*` governance
 
 ## Two ways to pass
 
-1. **Self Agent ID** — register once via `register_self_agent` (human scans a QR code); see [Self Agent ID](self-agent-id.md).
-2. **GoodDollar** — either face-verify this wallet directly, or connect it to an already-verified root; see [Face verify vs connect](gooddollar.md#face-verify-vs-connect).
+1. **Self Agent ID** — register once via `register_self_agent` (human scans a QR code); see [Self Agent ID](self-agent-id.md). Registration and Self-rail verification default to age 18+ and OFAC-clear; nationality is disclosed into credentials when requested (default on).
+2. **GoodDollar** — either face-verify this wallet directly, or connect it to an already-verified root; see [Face verify vs connect](gooddollar.md#face-verify-vs-connect). Whitelist-only — no OFAC/age/nationality fields on this rail.
 
 Either rail is sufficient — you do not need both.
 

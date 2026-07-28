@@ -36,7 +36,7 @@ export const selfToolDefinitions: ToolDefinition[] = [
   {
     name: "verify_self_agent",
     description:
-      "Verify whether an agent address is backed by a real human on Self Agent ID (Celo mainnet).",
+      "Verify whether an agent address is backed by a real human on Self Agent ID (Celo mainnet). Defaults to requiring age 18+ and OFAC-clear credentials; pass require_age: 0 or require_ofac: false to relax.",
     inputSchema: z.object({
       agent_address: addressSchema,
       require_age: optionalAgeLiteralSchema,
@@ -92,11 +92,12 @@ export const selfToolDefinitions: ToolDefinition[] = [
   {
     name: "register_self_agent",
     description:
-      "Start Self Agent ID registration. Returns qr_code_url and deep_link — present BOTH to the user.",
+      "Start Self Agent ID registration. Returns qr_code_url and deep_link — present BOTH to the user. Defaults to minimum_age 18, nationality disclosure, and OFAC screening (Self agents must not be tied to OFAC-listed humans). Pass minimum_age: 0, nationality: false, or ofac: false to opt out.",
     inputSchema: z.object({
       mode: selfRegistrationModeSchema,
       minimum_age: optionalAgeLiteralSchema,
       ofac: optionalBooleanSchema,
+      nationality: optionalBooleanSchema,
       human_address: addressSchema.optional(),
       agent_name: optionalStringSchema,
       agent_description: optionalStringSchema,

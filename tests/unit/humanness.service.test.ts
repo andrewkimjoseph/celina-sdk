@@ -26,6 +26,31 @@ describe("HumannessService", () => {
 
     expect(result.isHumanOverall).toBe(true);
     expect(result.selfAgent.isHuman).toBe(true);
+    expect(self.verifyAgent).toHaveBeenCalledWith({
+      agentAddress: address,
+      requireOfac: true,
+      requireAge: 18,
+    });
+  });
+
+  it("fails Self rail when verifyAgent reports OFAC failure", async () => {
+    const self = {
+      verifyAgent: vi.fn().mockResolvedValue({
+        verified: false,
+        reason: "Agent has not passed OFAC screening.",
+      }),
+    } as unknown as SelfService;
+
+    const service = new HumannessService(mockFactory(async () => false), self);
+    const result = await service.checkHumanness(address);
+
+    expect(result.selfAgent.isHuman).toBe(false);
+    expect(result.selfAgent.reason).toMatch(/OFAC/i);
+    expect(self.verifyAgent).toHaveBeenCalledWith({
+      agentAddress: address,
+      requireOfac: true,
+      requireAge: 18,
+    });
   });
 
   it("passes when GoodDollar whitelists address", async () => {

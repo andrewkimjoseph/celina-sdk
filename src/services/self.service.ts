@@ -67,6 +67,8 @@ export interface RegisterSelfAgentParams {
   mode?: SelfRegistrationMode;
   minimumAge?: 0 | 18 | 21;
   ofac?: boolean;
+  /** Request nationality disclosure into the proof (ISO alpha-3 on-chain). Default true. */
+  nationality?: boolean;
   humanAddress?: `0x${string}`;
   agentName?: string;
   agentDescription?: string;
@@ -197,8 +199,8 @@ export class SelfService {
   async verifyAgent(params: VerifySelfAgentParams) {
     const {
       agentAddress,
-      requireAge = 0,
-      requireOfac = false,
+      requireAge = 18,
+      requireOfac = true,
       requireSelfProvider = true,
     } = params;
     const agentKey = agentKeyFromAddress(agentAddress);
@@ -703,8 +705,9 @@ export class SelfService {
 
   async registerAgent(params: RegisterSelfAgentParams = {}) {
     const disclosures: SelfRegistrationDisclosures = {
-      ...(params.minimumAge != null ? { minimumAge: params.minimumAge } : {}),
-      ...(params.ofac != null ? { ofac: params.ofac } : {}),
+      minimumAge: params.minimumAge ?? 18,
+      nationality: params.nationality ?? true,
+      ofac: params.ofac ?? true,
     };
 
     const session = await requestRegistration({

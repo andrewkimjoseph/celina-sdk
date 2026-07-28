@@ -25,19 +25,28 @@ Read-only verification (`verifyAgent`, `lookupAgent`, `verifyRequest`) does not 
 ## Read examples
 
 ```ts
-// On-chain verification by agent address
+// On-chain verification by agent address (defaults: age 18+, OFAC required)
 await celina.self.verifyAgent({
   agentAddress: "0xC1C860804EFdA544fe79194d1a37e60b846CEdeb",
-  requireAge: 18,
+});
+
+// Relax gates explicitly if needed
+await celina.self.verifyAgent({
+  agentAddress: "0xC1C860804EFdA544fe79194d1a37e60b846CEdeb",
+  requireAge: 0,
+  requireOfac: false,
 });
 
 // Lookup by numeric agent ID (REST + on-chain expiry)
 await celina.self.lookupAgent(1);
 ```
 
+Verified agents expose credentials including `nationality` (ISO 3166-1 alpha-3, when disclosed at registration), `older_than`, and `ofac_clear`.
+
 ## Registration flow
 
 ```ts
+// Defaults: minimumAge 18, nationality disclosure, OFAC screening
 const session = await celina.self.registerAgent({
   mode: "wallet-free",
   agentName: "my-agent",
@@ -47,6 +56,8 @@ const session = await celina.self.registerAgent({
 const status = await celina.self.checkRegistration(session.session_id);
 // When complete: status.private_key_hex — set SELF_AGENT_PRIVATE_KEY locally
 ```
+
+Registration disclosures default to `{ minimumAge: 18, nationality: true, ofac: true }` so Self agents are not tied to under-18 or OFAC-listed humans, and nationality is available on later verify/identity reads. Opt out with `minimumAge: 0`, `nationality: false`, or `ofac: false`.
 
 Sessions are stored **in-process** for ~10 minutes. They are lost on server restart and do not work across stateless serverless instances (same as hosted MCP).
 

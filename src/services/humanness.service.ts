@@ -58,6 +58,8 @@ export class HumannessService {
     try {
       const result = await this.selfService.verifyAgent({
         agentAddress: signerAddress,
+        requireOfac: true,
+        requireAge: 18,
       });
       if (result.verified) {
         return {
