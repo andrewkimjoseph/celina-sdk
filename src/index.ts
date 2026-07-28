@@ -203,7 +203,13 @@ export {
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
   isGoodDollarUsdReservePair,
 } from "./config/gooddollar.js";
-export type { GoodDollarReserveSwapParams, GoodDollarReserveQuoteOptions, GoodDollarReserveAmountSide } from "./services/gooddollar.service.js";
+export type { GoodDollarReserveSwapParams, GoodDollarReserveQuoteOptions, GoodDollarReserveAmountSide, GoodDollarIdentityGuidance, GoodDollarIdentityGuidanceInput, GoodDollarIdentityRecommendedAction } from "./services/gooddollar.service.js";
+export {
+  deriveGoodDollarIdentityGuidance,
+  shouldSkipFaceVerification,
+  buildConnectIdentityError,
+  GOODDOLLAR_HUMANNESS_REMEDIATION,
+} from "./services/gooddollar-identity-guidance.js";
 export {
   SelfService,
   type VerifySelfAgentParams,

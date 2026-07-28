@@ -223,7 +223,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_face_verification_link",
     description:
-      "Generate a GoodDollar face verification link for the MCP server wallet. Requires a signing key.",
+      "Generate a GoodDollar face verification link for the MCP server wallet (first-time verify this wallet as an identity root). Skipped when the signer is already whitelisted or linked to a verified root. Requires a signing key.",
     inputSchema: z.object({
       callback_url: z.string().url().describe("URL to redirect after verification"),
     }),
@@ -239,7 +239,8 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "execute_connect_gooddollar_identity",
-    description: "Connect a secondary wallet to the whitelisted GoodDollar identity root.",
+    description:
+      "Connect a secondary wallet to the whitelisted GoodDollar identity root. The MCP signer (CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY) must be the verified whitelisted root; pass the wallet to link as connected_account. If already verified on a different wallet, switch the signing key to that verified root first.",
     inputSchema: z.object({
       connected_account: addressSchema,
       signer: optionalSignerSchema,

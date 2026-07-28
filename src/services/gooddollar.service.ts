@@ -42,6 +42,23 @@ import {
   formatUnixIso,
 } from "../utils/format-unix-datetime.js";
 import { resolveUbiPeriodEligibility } from "../utils/gooddollar-ubi-period.js";
+import {
+  buildConnectIdentityError,
+  deriveGoodDollarIdentityGuidance,
+  type GoodDollarIdentityGuidance,
+} from "./gooddollar-identity-guidance.js";
+
+export type {
+  GoodDollarIdentityGuidance,
+  GoodDollarIdentityGuidanceInput,
+  GoodDollarIdentityRecommendedAction,
+} from "./gooddollar-identity-guidance.js";
+export {
+  deriveGoodDollarIdentityGuidance,
+  shouldSkipFaceVerification,
+  buildConnectIdentityError,
+  GOODDOLLAR_HUMANNESS_REMEDIATION,
+} from "./gooddollar-identity-guidance.js";
 
 const SECONDS_PER_DAY = 86400n;
 
@@ -235,6 +252,25 @@ export class GoodDollarService {
         authCount: authCountNum,
       },
     };
+  }
+
+  /**
+   * Recommended next step for GoodDollar identity / humanness on a wallet.
+   */
+  async getIdentityGuidance(address: `0x${string}`): Promise<GoodDollarIdentityGuidance> {
+    const [link, whitelisting] = await Promise.all([
+      this.getIdentityLink(address),
+      this.getWhitelistingInfo(address),
+    ]);
+
+    return deriveGoodDollarIdentityGuidance({
+      signerAddress: address,
+      isWhitelisted: whitelisting.isWhitelisted,
+      isWhitelistedRoot: link.isWhitelistedRoot,
+      isConnectedWallet: link.isConnectedWallet,
+      whitelistedRoot: link.whitelistedRoot,
+      connectedTo: link.connectedTo,
+    });
   }
 
   /**
@@ -1009,11 +1045,21 @@ export class GoodDollarService {
     from: `0x${string}`,
     connectedAccount: `0x${string}`,
   ): Promise<SerializedPreparedFlow> {
-    const whitelisting = await this.getWhitelistingInfo(from);
-    if (!whitelisting.isWhitelisted) {
+    const [link, whitelisting] = await Promise.all([
+      this.getIdentityLink(from),
+      this.getWhitelistingInfo(from),
+    ]);
+
+    if (!whitelisting.isWhitelisted || !link.isWhitelistedRoot) {
       throw new Error(
-        `Signer ${from} is not a whitelisted GoodDollar identity root. ` +
-          "Use get_gooddollar_face_verification_link to verify first.",
+        buildConnectIdentityError({
+          signerAddress: from,
+          isWhitelisted: whitelisting.isWhitelisted,
+          isWhitelistedRoot: link.isWhitelistedRoot,
+          isConnectedWallet: link.isConnectedWallet,
+          whitelistedRoot: link.whitelistedRoot,
+          connectedTo: link.connectedTo,
+        }),
       );
     }
 

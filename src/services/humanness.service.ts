@@ -3,6 +3,7 @@
  */
 import { isAddress } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { GOODDOLLAR_HUMANNESS_REMEDIATION } from "./gooddollar-identity-guidance.js";
 import { GOODDOLLAR_IDENTITY_ADDRESS } from "../config/gooddollar.js";
 import { goodDollarIdentityAbi } from "../abis/gooddollar-identity.js";
 import { SelfService } from "./self.service.js";
@@ -151,7 +152,7 @@ export function assertHumanness(result: HumannessCheckResult): void {
     `Humanness verification failed for ${result.signerAddress}. ` +
       `Self: ${result.selfAgent.reason ?? "not verified"}. ` +
       `GoodDollar: ${result.goodDollar.reason ?? "not whitelisted"}. ` +
-      "Register a Self agent (register_self_agent) or verify with GoodDollar " +
-      "(get_gooddollar_face_verification_link).",
+      "Register a Self agent (register_self_agent) or verify with GoodDollar. " +
+      GOODDOLLAR_HUMANNESS_REMEDIATION,
   );
 }
