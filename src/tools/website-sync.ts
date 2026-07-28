@@ -1,5 +1,5 @@
 import { ALL_TOOL_DEFINITIONS, getToolInputSchemaShape } from "./catalog.js";
-import { filterToolDefinitions } from "./filter.js";
+import { filterToolDefinitions, toolRequiresWalletInput } from "./filter.js";
 import type { FilterToolsOptions, ToolDefinition, ToolFamily } from "./types.js";
 
 export type WebsiteToolCategory =
@@ -45,6 +45,7 @@ export const HOSTED_MCP_FILTER: FilterToolsOptions = {
   serverKeyToolsEnabled: false,
   selfSessionToolsEnabled: false,
   estimateToolsEnabled: false,
+  walletInputToolsEnabled: false,
 };
 
 const STDIO_ONLY_TOOLS = new Set([
@@ -267,6 +268,9 @@ export function deriveToolAvailability(
     return "stdio";
   }
   if (STDIO_ONLY_TOOLS.has(definition.name)) {
+    return "stdio";
+  }
+  if (toolRequiresWalletInput(definition)) {
     return "stdio";
   }
   const surfaces = definition.surfaces ?? ["mcp", "browser"];

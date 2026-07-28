@@ -259,4 +259,6 @@ export type FilterToolsOptions = {
   selfSessionToolsEnabled?: boolean;
   /** When false, omit estimate_* gas simulation tools. Default true. */
   estimateToolsEnabled?: boolean;
+  /** When false, omit tools whose inputs include a wallet address param. Default true. */
+  walletInputToolsEnabled?: boolean;
 };
