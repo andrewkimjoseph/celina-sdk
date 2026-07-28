@@ -58,4 +58,20 @@ describe("website-sync", () => {
       description: "my field",
     });
   });
+
+  it("maps VADVVADA tools to Governance, Staking, GoodDollar, Account, and Humanness", () => {
+    expect(toWebsiteToolBaseline(getToolDefinition("execute_lock_celo")!).category).toBe(
+      "Governance",
+    );
+    expect(toWebsiteToolBaseline(getToolDefinition("execute_stake")!).category).toBe("Staking");
+    expect(
+      toWebsiteToolBaseline(getToolDefinition("execute_connect_gooddollar_identity")!).category,
+    ).toBe("GoodDollar");
+    expect(
+      toWebsiteToolBaseline(getToolDefinition("execute_register_celo_account")!).category,
+    ).toBe("Account");
+    expect(toWebsiteToolBaseline(getToolDefinition("check_humanness")!).category).toBe(
+      "Humanness",
+    );
+  });
 });

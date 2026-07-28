@@ -70,6 +70,11 @@ export const CATEGORY_TO_A2A_SKILL: Record<WebsiteToolCategory, CelinaA2ASkillMe
     name: "Celo staking",
     tags: ["celo", "staking", "validators"],
   },
+  Humanness: {
+    id: "humanness",
+    name: "Humanness verification",
+    tags: ["celo", "humanness", "self", "gooddollar", "identity"],
+  },
   NFT: {
     id: "nft",
     name: "NFT reads",
