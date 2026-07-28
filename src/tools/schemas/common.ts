@@ -11,6 +11,19 @@ export const optionalWalletAddressSchema = addressSchema
     "Wallet on Celo mainnet. Omit to use the connected wallet or MCP CELO_PRIVATE_KEY signer.",
   );
 
+/** Optional MCP server signer selection for humanness-gated execute tools. */
+export const optionalSignerSchema = z
+  .enum(["celo", "self_agent"])
+  .optional()
+  .describe(
+    "MCP server signer: celo (CELO_PRIVATE_KEY) or self_agent (SELF_AGENT_PRIVATE_KEY). Defaults to CELO when both are set.",
+  );
+
+export const executeEnvRequirements = [
+  "CELO_PRIVATE_KEY",
+  "SELF_AGENT_PRIVATE_KEY",
+] as const;
+
 export const requiredWalletAddressSchema = addressSchema.describe(
   "Wallet on Celo mainnet (0x address).",
 );

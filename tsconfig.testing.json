@@ -11,5 +11,5 @@
     "tests/fixtures/**/*.ts",
     "tests/helpers/**/*.ts"
   ],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "tests/fork/**"]
 }

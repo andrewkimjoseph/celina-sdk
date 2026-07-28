@@ -36,6 +36,124 @@ export const governanceOperations: OperationSpec[] = [
       assertHasKeys(result, ["proposal"]);
     },
   },
+  {
+    id: "governance.getLockedCeloBalance",
+    domain: "governance",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.governance.getLockedCeloBalance(fx.wallet),
+    },
+    mcp: { tool: "get_locked_celo_balance", arguments: (fx) => ({ address: fx.wallet }) },
+    assert: (result) => assertHasKeys(result, ["totalLocked"]),
+  },
+  {
+    id: "governance.getPendingWithdrawals",
+    domain: "governance",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.governance.getPendingWithdrawals(fx.wallet),
+    },
+    mcp: { tool: "get_pending_withdrawals", arguments: (fx) => ({ address: fx.wallet }) },
+    assert: (result) => assertHasKeys(result, ["withdrawals"]),
+  },
+  {
+    id: "governance.getVotableProposals",
+    domain: "governance",
+    layer: "read",
+    sdk: { invoke: (client) => client.governance.getVotableProposals() },
+    mcp: { tool: "get_votable_proposals", arguments: () => ({}) },
+    assert: (result) => assertHasKeys(result, ["proposals"]),
+  },
+  {
+    id: "governance.prepareLockCelo",
+    domain: "governance",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareLockCelo(fx.wallet, "0.01"),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeLockCelo",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => undefined,
+    sdk: {
+      invoke: async (client, fx) => {
+        const humanness = await client.humanness.checkHumanness(fx.wallet);
+        if (!humanness.isHumanOverall) {
+          return { skipped: true, reason: "signer not humanness-verified" };
+        }
+        return client.governance.prepareLockCelo(fx.wallet, "0.1");
+      },
+    },
+    mcp: {
+      tool: "execute_lock_celo",
+      arguments: () => ({ amount: "0.1" }),
+    },
+    assert: (result) => {
+      if (typeof result === "object" && result && "skipped" in result) return;
+      assertHasKeys(result, ["steps"]);
+    },
+  },
+  {
+    id: "governance.executeVote",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => {
+      return "No deterministic Referendum proposal — check get_votable_proposals manually";
+    },
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareVote(fx.wallet, 1, "Abstain"),
+    },
+    mcp: {
+      tool: "execute_vote",
+      arguments: () => ({ proposal_id: 1, vote: "Abstain" }),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeWithdrawCelo",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Re-run after a pending withdrawal matures (3-day timelock)",
+    sdk: {
+      invoke: (client, fx) => client.governance.prepareWithdrawCelo(fx.wallet),
+    },
+    mcp: { tool: "execute_withdraw_celo", arguments: () => ({}) },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "humanness.checkHumanness",
+    domain: "humanness",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.humanness.checkHumanness(fx.wallet),
+    },
+    mcp: { tool: "check_humanness", arguments: (fx) => ({ address: fx.wallet }) },
+    assert: (result) => assertHasKeys(result, ["isHumanOverall"]),
+  },
+  {
+    id: "account.getAccountRegistration",
+    domain: "account",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.account.getAccountRegistration(fx.wallet),
+    },
+    mcp: {
+      tool: "get_celo_account_registration",
+      arguments: (fx) => ({ address: fx.wallet }),
+    },
+    assert: (result) => assertHasKeys(result, ["isRegistered"]),
+  },
 ];
 
 export const stakingOperations: OperationSpec[] = [
@@ -116,6 +234,43 @@ export const stakingOperations: OperationSpec[] = [
     assert: (result) => {
       assertHasKeys(result, ["totalVotes"]);
     },
+  },
+  {
+    id: "staking.getDelegationInfo",
+    domain: "staking",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.staking.getDelegationInfo(fx.wallet),
+    },
+    mcp: { tool: "get_delegation_info", arguments: (fx) => ({ address: fx.wallet }) },
+    assert: (result) => assertHasKeys(result, ["delegatees"]),
+  },
+  {
+    id: "staking.prepareStake",
+    domain: "staking",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.staking.prepareStake(fx.wallet, fx.validatorGroup, "0.01"),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "staking.executeActivateStake",
+    domain: "staking",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Skip until an epoch boundary passes and pending stake is activatable",
+    sdk: {
+      invoke: (client, fx) =>
+        client.staking.prepareActivateStake(fx.wallet, fx.validatorGroup),
+    },
+    mcp: {
+      tool: "execute_activate_stake",
+      arguments: (fx) => ({ group_address: fx.validatorGroup }),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
   },
 ];
 

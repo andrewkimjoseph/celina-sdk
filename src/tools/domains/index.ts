@@ -6,6 +6,7 @@ import { contractToolDefinitions } from "./contract.js";
 import { ensToolDefinitions } from "./ens.js";
 import { gooddollarToolDefinitions } from "./gooddollar.js";
 import { governanceToolDefinitions } from "./governance.js";
+import { humannessToolDefinitions } from "./humanness.js";
 import { mentoFxToolDefinitions } from "./mento-fx.js";
 import { nftToolDefinitions } from "./nft.js";
 import { selfToolDefinitions } from "./self.js";
@@ -24,6 +25,7 @@ export const allDomainToolDefinitions = [
   ...ensToolDefinitions,
   ...gooddollarToolDefinitions,
   ...governanceToolDefinitions,
+  ...humannessToolDefinitions,
   ...stakingToolDefinitions,
   ...nftToolDefinitions,
   ...contractToolDefinitions,

@@ -38,7 +38,7 @@ describe("website-sync", () => {
     expect(check.kind).toBe("read");
     const tag = check.inputs.find((field) => field.name === "tag");
     expect(tag?.required).toBe(false);
-    expect(tag?.description).toContain("Omit to list all custom tags");
+    expect(tag?.description).toContain("Omit to list all tags");
   });
 
   it("falls back to snake_case field names when no describe is set", () => {

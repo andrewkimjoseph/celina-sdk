@@ -1,20 +1,33 @@
 /**
- * Celo validator election staking: votes, groups, and network totals.
+ * Celo validator election staking: votes, groups, network totals,
+ * and Election/LockedGold delegation writes.
  */
-import { isAddress } from "viem";
+import { encodeFunctionData, isAddress, parseEther } from "viem";
 import { accountsAbi } from "../abis/accounts.js";
 import { electionAbi } from "../abis/election.js";
 import { lockedGoldAbi } from "../abis/locked-gold.js";
 import { validatorsMinimalAbi } from "../abis/validators-minimal.js";
 import type { CeloClientFactory } from "../clients/celo-client.js";
 import { CELO_CORE_CONTRACTS } from "../config/celo-core-contracts.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
+import { CHAIN } from "../config/chains.js";
+import {
+  type PreparedFlow,
+  type PreparedTx,
+  serializePreparedFlow,
+  type SerializedPreparedFlow,
+} from "../types/prepared.js";
+import { assertCeloAccountRegistered } from "../utils/celo-account.js";
 import {
   formatAddress,
   formatCeloAmount,
   formatScorePercentage,
 } from "../utils/celo-format.js";
+import { findLesserAndGreaterAfterVote } from "../utils/election-vote-neighbors.js";
+import { fromFixidity, percentToFixidity } from "../utils/fixidity.js";
 
 const MAX_ELECTABLE_VALIDATORS = 110;
+const MIN_INCREMENTAL_VOTE_AMOUNT = parseEther("0.000001");
 
 function calculateGroupCapacity(
   groupMembers: number,
@@ -26,9 +39,13 @@ function calculateGroupCapacity(
   return (totalLockedGold * BigInt(groupMembers + 1)) / divisor;
 }
 
-/** Validator election staking reads via Celo core contracts. */
+/** Validator election staking reads and writes via Celo core contracts. */
 export class StakingService {
-  constructor(private readonly clientFactory: CeloClientFactory) {}
+  private readonly attributionTags?: string[];
+
+  constructor(private readonly clientFactory: CeloClientFactory) {
+    this.attributionTags = clientFactory.getConfig().attributionTags;
+  }
 
   private getClient() {
     return this.clientFactory.getClients().public;
@@ -559,5 +576,340 @@ export class StakingService {
         message: `Total network staking participation: ${formatCeloAmount(totalVotes)}`,
       },
     };
+  }
+
+  /** Governance vote delegation info from LockedGold for an address. */
+  async getDelegationInfo(address: `0x${string}`) {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+
+    const client = this.getClient();
+    const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+    const [totalDelegatedFraction, delegatees, votingPower] = await Promise.all([
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "getAccountTotalDelegatedFraction",
+        args: [address],
+      }),
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "getDelegateesOfDelegator",
+        args: [address],
+      }),
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "getAccountTotalGovernanceVotingPower",
+        args: [address],
+      }),
+    ]);
+
+    const delegateeDetails = await Promise.all(
+      (delegatees as readonly `0x${string}`[]).map(async (delegatee) => {
+        const info = await client.readContract({
+          address: lockedGold,
+          abi: lockedGoldAbi,
+          functionName: "getDelegatorDelegateeInfo",
+          args: [address, delegatee],
+        });
+        const [fraction, currentAmount] = info as readonly [bigint, bigint];
+        return {
+          delegatee,
+          fraction: fraction.toString(),
+          fractionPercent: (fromFixidity(fraction) * 100).toFixed(2),
+          currentAmount: currentAmount.toString(),
+          currentAmountFormatted: formatCeloAmount(currentAmount),
+        };
+      }),
+    );
+
+    return {
+      network: "mainnet" as const,
+      address,
+      totalDelegatedFraction: totalDelegatedFraction.toString(),
+      totalDelegatedPercent: (fromFixidity(totalDelegatedFraction) * 100).toFixed(2),
+      governanceVotingPower: votingPower.toString(),
+      governanceVotingPowerFormatted: formatCeloAmount(votingPower),
+      delegatees: delegateeDetails,
+    };
+  }
+
+  private buildStep(
+    to: `0x${string}`,
+    data: `0x${string}`,
+    description: string,
+  ): PreparedTx {
+    return { kind: "contract", to, data, description };
+  }
+
+  private toPreparedFlow(
+    from: `0x${string}`,
+    steps: PreparedTx[],
+    summary: string,
+  ): SerializedPreparedFlow {
+    const flow: PreparedFlow = {
+      steps,
+      summary,
+      chainId: CHAIN.id,
+      from,
+    };
+    return serializePreparedFlow(flow);
+  }
+
+  private async fetchEligibleGroupsWithVotes() {
+    const client = this.getClient();
+    const election = CELO_CORE_CONTRACTS.election;
+
+    const eligible = (await client.readContract({
+      address: election,
+      abi: electionAbi,
+      functionName: "getTotalVotesForEligibleValidatorGroups",
+    })) as readonly [readonly `0x${string}`[], readonly bigint[]];
+
+    return eligible[0].map((address, index) => ({
+      address,
+      votes: eligible[1][index] ?? 0n,
+    }));
+  }
+
+  async prepareStake(
+    from: `0x${string}`,
+    groupAddress: `0x${string}`,
+    amount: string,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    if (!isAddress(groupAddress)) {
+      throw new Error(`Invalid group address: ${groupAddress}`);
+    }
+
+    const amountWei = parseEther(amount);
+    const groups = await this.fetchEligibleGroupsWithVotes();
+    const { lesser, greater } = findLesserAndGreaterAfterVote(
+      groups,
+      groupAddress,
+      amountWei,
+    );
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: electionAbi,
+        functionName: "vote",
+        args: [groupAddress, amountWei, lesser, greater],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.election,
+          data,
+          `Stake ${amount} CELO with validator group ${formatAddress(groupAddress)}`,
+        ),
+      ],
+      `Stake ${amount} CELO with ${groupAddress}`,
+    );
+  }
+
+  async prepareActivateStake(
+    from: `0x${string}`,
+    groupAddress: `0x${string}`,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    if (!isAddress(groupAddress)) {
+      throw new Error(`Invalid group address: ${groupAddress}`);
+    }
+
+    const activatable = await this.getActivatableStakes(from);
+    if (!activatable.activatableGroups.includes(groupAddress)) {
+      throw new Error(
+        `No activatable pending stake for group ${groupAddress}. Wait for the next epoch boundary.`,
+      );
+    }
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: electionAbi,
+        functionName: "activate",
+        args: [groupAddress],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.election,
+          data,
+          `Activate pending stake for ${formatAddress(groupAddress)}`,
+        ),
+      ],
+      `Activate stake for ${groupAddress}`,
+    );
+  }
+
+  async prepareUnstake(
+    from: `0x${string}`,
+    groupAddress: `0x${string}`,
+    amount: string,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    if (!isAddress(groupAddress)) {
+      throw new Error(`Invalid group address: ${groupAddress}`);
+    }
+
+    const amountWei = parseEther(amount);
+    const balances = await this.getStakingBalances(from);
+    const group = balances.groups.find(
+      (g) => g.groupAddress.toLowerCase() === groupAddress.toLowerCase(),
+    );
+    if (!group) {
+      throw new Error(`No stake found for group ${groupAddress}`);
+    }
+
+    const groupIndex = balances.groups.findIndex(
+      (g) => g.groupAddress.toLowerCase() === groupAddress.toLowerCase(),
+    );
+    const pending = BigInt(group.pending);
+    const groups = await this.fetchEligibleGroupsWithVotes();
+    const steps: PreparedTx[] = [];
+    let amountRemaining = amountWei;
+
+    const pendingToRevoke =
+      pending < amountRemaining ? pending : amountRemaining;
+    if (pendingToRevoke > 0n) {
+      const { lesser, greater } = findLesserAndGreaterAfterVote(
+        groups,
+        groupAddress,
+        -pendingToRevoke,
+      );
+      const data = appendCelinaCalldataTag(
+        encodeFunctionData({
+          abi: electionAbi,
+          functionName: "revokePending",
+          args: [groupAddress, pendingToRevoke, lesser, greater, BigInt(groupIndex)],
+        }),
+        this.attributionTags,
+      );
+      steps.push(
+        this.buildStep(
+          CELO_CORE_CONTRACTS.election,
+          data,
+          `Revoke ${formatCeloAmount(pendingToRevoke)} pending stake from ${formatAddress(groupAddress)}`,
+        ),
+      );
+      amountRemaining -= pendingToRevoke;
+    }
+
+    if (amountRemaining >= MIN_INCREMENTAL_VOTE_AMOUNT) {
+      const { lesser, greater } = findLesserAndGreaterAfterVote(
+        groups,
+        groupAddress,
+        -amountRemaining,
+      );
+      const data = appendCelinaCalldataTag(
+        encodeFunctionData({
+          abi: electionAbi,
+          functionName: "revokeActive",
+          args: [groupAddress, amountRemaining, lesser, greater, BigInt(groupIndex)],
+        }),
+        this.attributionTags,
+      );
+      steps.push(
+        this.buildStep(
+          CELO_CORE_CONTRACTS.election,
+          data,
+          `Revoke ${formatCeloAmount(amountRemaining)} active stake from ${formatAddress(groupAddress)}`,
+        ),
+      );
+    }
+
+    if (steps.length === 0) {
+      throw new Error("Unstake amount too small or no stake available.");
+    }
+
+    return this.toPreparedFlow(
+      from,
+      steps,
+      `Unstake ${amount} CELO from ${groupAddress}`,
+    );
+  }
+
+  async prepareDelegatePower(
+    from: `0x${string}`,
+    delegatee: `0x${string}`,
+    percent: number,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    if (!isAddress(delegatee)) {
+      throw new Error(`Invalid delegatee address: ${delegatee}`);
+    }
+    if (percent <= 0 || percent > 100) {
+      throw new Error("Delegation percent must be between 0 and 100.");
+    }
+
+    const fraction = percentToFixidity(percent);
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: lockedGoldAbi,
+        functionName: "delegateGovernanceVotes",
+        args: [delegatee, fraction],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Delegate ${percent}% governance voting power to ${formatAddress(delegatee)}`,
+        ),
+      ],
+      `Delegate ${percent}% power to ${delegatee}`,
+    );
+  }
+
+  async prepareUndelegatePower(
+    from: `0x${string}`,
+    delegatee: `0x${string}`,
+    percent: number,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    if (!isAddress(delegatee)) {
+      throw new Error(`Invalid delegatee address: ${delegatee}`);
+    }
+    if (percent <= 0 || percent > 100) {
+      throw new Error("Undelegation percent must be between 0 and 100.");
+    }
+
+    const fraction = percentToFixidity(percent);
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: lockedGoldAbi,
+        functionName: "revokeDelegatedGovernanceVotes",
+        args: [delegatee, fraction],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Revoke ${percent}% delegated power from ${formatAddress(delegatee)}`,
+        ),
+      ],
+      `Undelegate ${percent}% from ${delegatee}`,
+    );
   }
 }

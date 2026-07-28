@@ -18,6 +18,7 @@ import { ContractService } from "./services/contract.service.js";
 import { EnsService } from "./services/ens.service.js";
 import { GoodDollarService } from "./services/gooddollar.service.js";
 import { GovernanceService } from "./services/governance.service.js";
+import { HumannessService } from "./services/humanness.service.js";
 import { MentoFxService } from "./services/mento-fx.service.js";
 import { UniswapService } from "./services/uniswap.service.js";
 import { NftService } from "./services/nft.service.js";
@@ -56,10 +57,12 @@ export interface CelinaClient {
   gooddollar: GoodDollarService;
   /** Celo and Ethereum ENS resolution. */
   ens: EnsService;
-  /** Celo governance proposals and details. */
+  /** Celo governance proposals, LockedGold locking, and voting. */
   governance: GovernanceService;
-  /** Validator election staking reads. */
+  /** Validator election staking reads and writes. */
   staking: StakingService;
+  /** Dual-rail humanness verification (Self + GoodDollar). */
+  humanness: HumannessService;
   /** ERC-721 / ERC-1155 NFT reads. */
   nft: NftService;
   /** Generic contract reads, gas estimates, and write prepares. */
@@ -91,6 +94,7 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
   const tokenService = new TokenService(clientFactory);
   const wrap = <T extends object>(key: string, service: T) =>
     wrapServiceForAnalytics(key, service, config);
+  const selfService = new SelfService(clientFactory, config);
 
   return {
     blockchain: wrap("blockchain", new BlockchainService(clientFactory)),
@@ -104,9 +108,10 @@ export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
     ens: wrap("ens", new EnsService(ensClientFactory)),
     governance: wrap("governance", new GovernanceService(clientFactory)),
     staking: wrap("staking", new StakingService(clientFactory)),
+    humanness: wrap("humanness", new HumannessService(clientFactory, selfService)),
     nft: wrap("nft", new NftService(clientFactory)),
     contract: wrap("contract", new ContractService(clientFactory)),
-    self: wrap("self", new SelfService(clientFactory, config)),
+    self: wrap("self", selfService),
     // Optional ecosystem adapter. Not analytics-wrapped: AgentKarma is an
     // external reputation service, not a Celo on-chain read Celina tracks.
     agentKarma: new AgentKarmaService(opts?.agentKarma),
@@ -134,6 +139,17 @@ export type { MentoFxParams } from "./services/mento-fx.service.js";
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
 /** Pagination and metadata options for governance proposal lists. */
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
+/** On-chain VoteValue enum names for governance voting. */
+export type { VoteValueName } from "./abis/governance.js";
+export { VOTE_VALUES, voteValueToInt } from "./abis/governance.js";
+/** Humanness check result across Self and GoodDollar rails. */
+export type {
+  HumannessCheckResult,
+  HumannessRailResult,
+} from "./services/humanness.service.js";
+export { assertHumanness } from "./services/humanness.service.js";
+export { toFixidity, percentToFixidity, fromFixidity, FIXIDITY_ONE } from "./utils/fixidity.js";
+export { findLesserAndGreaterAfterVote } from "./utils/election-vote-neighbors.js";
 /** Parameters for generic contract reads, estimates, and write prepares. */
 export type { ContractCallParams } from "./services/contract.service.js";
 /** Aave V3 Celo pool address and supported asset symbols. */

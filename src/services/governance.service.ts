@@ -1,13 +1,28 @@
 /**
- * Celo governance: on-chain proposals with optional CGP markdown metadata from GitHub.
+ * Celo governance: on-chain proposals with optional CGP markdown metadata from GitHub,
+ * LockedGold locking/unlocking, and governance voting.
  */
+import { encodeFunctionData, isAddress, parseEther } from "viem";
 import { CELO_CORE_CONTRACTS } from "../config/celo-core-contracts.js";
+import { lockedGoldAbi } from "../abis/locked-gold.js";
 import {
   governanceAbi,
   proposalStageName,
+  voteValueToInt,
   type ProposalStageName,
+  type VoteValueName,
 } from "../abis/governance.js";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { appendCelinaCalldataTag } from "../config/celina-tag.js";
+import { CHAIN } from "../config/chains.js";
+import {
+  type PreparedFlow,
+  type PreparedTx,
+  serializePreparedFlow,
+  type SerializedPreparedFlow,
+} from "../types/prepared.js";
+import { assertCeloAccountRegistered } from "../utils/celo-account.js";
+import { formatCeloAmount } from "../utils/celo-format.js";
 
 const STAGE_EXPIRY_MS: Partial<Record<ProposalStageName, number>> = {
   Queued: 4 * 24 * 60 * 60 * 1000,
@@ -90,9 +105,13 @@ interface RawProposal {
   votes: { yes: string; no: string; abstain: string };
 }
 
-/** Celo on-chain governance proposal reads and CGP enrichment. */
+/** Celo on-chain governance proposal reads, CGP enrichment, and LockedGold writes. */
 export class GovernanceService {
-  constructor(private readonly clientFactory: CeloClientFactory) {}
+  private readonly attributionTags?: string[];
+
+  constructor(private readonly clientFactory: CeloClientFactory) {
+    this.attributionTags = clientFactory.getConfig().attributionTags;
+  }
 
   private getClient() {
     return this.clientFactory.getClients().public;
@@ -333,5 +352,364 @@ export class GovernanceService {
       content,
       error: null,
     };
+  }
+
+  /** Raw getDequeue with positional indices preserved for Governance.vote(). */
+  async getDequeueWithIndices() {
+    const client = this.getClient();
+    const dequeued = (await client.readContract({
+      address: CELO_CORE_CONTRACTS.governance,
+      abi: governanceAbi,
+      functionName: "getDequeue",
+    })) as readonly bigint[];
+
+    return dequeued.map((id, index) => ({
+      index,
+      proposalId: Number(id),
+    }));
+  }
+
+  /** Proposals currently in Referendum stage with their dequeue index. */
+  async getVotableProposals() {
+    const entries = await this.getDequeueWithIndices();
+    const votable = [];
+
+    for (const entry of entries) {
+      if (entry.proposalId === 0) continue;
+      const proposal = await this.fetchProposal(entry.proposalId, 0, false);
+      if (!proposal) continue;
+      const stageName = proposalStageName(proposal.stage);
+      if (stageName === "Referendum") {
+        votable.push({
+          proposalId: entry.proposalId,
+          index: entry.index,
+          stage: stageName,
+          url: proposal.url,
+        });
+      }
+    }
+
+    return {
+      network: "mainnet" as const,
+      proposals: votable,
+      message:
+        votable.length > 0
+          ? `${votable.length} proposal(s) in Referendum`
+          : "No proposals currently in Referendum",
+    };
+  }
+
+  /** Locked CELO balances and governance voting power for an address. */
+  async getLockedCeloBalance(address: `0x${string}`) {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+
+    const client = this.getClient();
+    const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+    const [totalLocked, nonvotingLocked, votingPower, delegatedFraction] =
+      await Promise.all([
+        client.readContract({
+          address: lockedGold,
+          abi: lockedGoldAbi,
+          functionName: "getAccountTotalLockedGold",
+          args: [address],
+        }),
+        client.readContract({
+          address: lockedGold,
+          abi: lockedGoldAbi,
+          functionName: "getAccountNonvotingLockedGold",
+          args: [address],
+        }),
+        client.readContract({
+          address: lockedGold,
+          abi: lockedGoldAbi,
+          functionName: "getAccountTotalGovernanceVotingPower",
+          args: [address],
+        }),
+        client.readContract({
+          address: lockedGold,
+          abi: lockedGoldAbi,
+          functionName: "getAccountTotalDelegatedFraction",
+          args: [address],
+        }),
+      ]);
+
+    return {
+      network: "mainnet" as const,
+      address,
+      totalLocked: totalLocked.toString(),
+      totalLockedFormatted: formatCeloAmount(totalLocked),
+      nonvotingLocked: nonvotingLocked.toString(),
+      nonvotingLockedFormatted: formatCeloAmount(nonvotingLocked),
+      governanceVotingPower: votingPower.toString(),
+      governanceVotingPowerFormatted: formatCeloAmount(votingPower),
+      delegatedFraction: delegatedFraction.toString(),
+    };
+  }
+
+  /** Pending LockedGold withdrawals with maturity timestamps. */
+  async getPendingWithdrawals(address: `0x${string}`) {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+
+    const client = this.getClient();
+    const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+    const [pending, unlockingPeriod] = await Promise.all([
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "getPendingWithdrawals",
+        args: [address],
+      }),
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "unlockingPeriod",
+      }),
+    ]);
+
+    const [values, timestamps] = pending;
+    const nowSec = Math.floor(Date.now() / 1000);
+
+    const withdrawals = values.map((value, index) => {
+      const timestampSec = Number(timestamps[index] ?? 0n);
+      return {
+        index,
+        value: value.toString(),
+        valueFormatted: formatCeloAmount(value),
+        availableAt: timestampSec,
+        availableAtIso: new Date(timestampSec * 1000).toISOString(),
+        isMature: nowSec >= timestampSec,
+      };
+    });
+
+    return {
+      network: "mainnet" as const,
+      address,
+      unlockingPeriodSeconds: Number(unlockingPeriod),
+      withdrawals,
+      matureCount: withdrawals.filter((w) => w.isMature).length,
+    };
+  }
+
+  private buildStep(
+    to: `0x${string}`,
+    data: `0x${string}`,
+    description: string,
+    value?: bigint,
+  ): PreparedTx {
+    return {
+      kind: value && value > 0n ? "native" : "contract",
+      to,
+      data,
+      value: value && value > 0n ? value.toString() : undefined,
+      description,
+    };
+  }
+
+  private toPreparedFlow(
+    from: `0x${string}`,
+    steps: PreparedTx[],
+    summary: string,
+  ): SerializedPreparedFlow {
+    const flow: PreparedFlow = {
+      steps,
+      summary,
+      chainId: CHAIN.id,
+      from,
+    };
+    return serializePreparedFlow(flow);
+  }
+
+  /** Lock CELO, relocking matured pending withdrawals first (reverse index order). */
+  async prepareLockCelo(from: `0x${string}`, amount: string): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    const amountWei = parseEther(amount);
+    const pending = await this.getPendingWithdrawals(from);
+    const steps: PreparedTx[] = [];
+    let amountRemaining = amountWei;
+
+    const sorted = [...pending.withdrawals]
+      .filter((w) => w.isMature)
+      .sort((a, b) => b.index - a.index);
+
+    for (const withdrawal of sorted) {
+      if (amountRemaining <= 0n) break;
+      const txAmount =
+        BigInt(withdrawal.value) <= amountRemaining
+          ? BigInt(withdrawal.value)
+          : amountRemaining;
+
+      const data = appendCelinaCalldataTag(
+        encodeFunctionData({
+          abi: lockedGoldAbi,
+          functionName: "relock",
+          args: [BigInt(withdrawal.index), txAmount],
+        }),
+        this.attributionTags,
+      );
+      steps.push(
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Relock ${formatCeloAmount(txAmount)} from pending withdrawal #${withdrawal.index}`,
+        ),
+      );
+      amountRemaining -= txAmount;
+    }
+
+    if (amountRemaining > 0n) {
+      const data = appendCelinaCalldataTag(
+        encodeFunctionData({
+          abi: lockedGoldAbi,
+          functionName: "lock",
+        }),
+        this.attributionTags,
+      );
+      steps.push(
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Lock ${formatCeloAmount(amountRemaining)} CELO`,
+          amountRemaining,
+        ),
+      );
+    }
+
+    return this.toPreparedFlow(from, steps, `Lock ${amount} CELO for ${from}`);
+  }
+
+  async prepareUnlockCelo(from: `0x${string}`, amount: string): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    const amountWei = parseEther(amount);
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: lockedGoldAbi,
+        functionName: "unlock",
+        args: [amountWei],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Unlock ${amount} CELO (starts ${formatCeloAmount(amountWei)} timelock)`,
+        ),
+      ],
+      `Unlock ${amount} CELO from ${from}`,
+    );
+  }
+
+  async prepareRelockCelo(
+    from: `0x${string}`,
+    index: number,
+    amount: string,
+  ): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    const amountWei = parseEther(amount);
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: lockedGoldAbi,
+        functionName: "relock",
+        args: [BigInt(index), amountWei],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.lockedGold,
+          data,
+          `Relock ${amount} CELO from pending withdrawal #${index}`,
+        ),
+      ],
+      `Relock ${amount} CELO for ${from}`,
+    );
+  }
+
+  /** Withdraw all matured pending withdrawals. */
+  async prepareWithdrawCelo(from: `0x${string}`): Promise<SerializedPreparedFlow> {
+    await assertCeloAccountRegistered(this.clientFactory, from);
+    const pending = await this.getPendingWithdrawals(from);
+    const mature = pending.withdrawals.filter((w) => w.isMature);
+
+    if (mature.length === 0) {
+      throw new Error(
+        "No matured pending withdrawals available. Unlock CELO and wait for the timelock.",
+      );
+    }
+
+    const steps = mature.map((withdrawal) => {
+      const data = appendCelinaCalldataTag(
+        encodeFunctionData({
+          abi: lockedGoldAbi,
+          functionName: "withdraw",
+          args: [BigInt(withdrawal.index)],
+        }),
+        this.attributionTags,
+      );
+      return this.buildStep(
+        CELO_CORE_CONTRACTS.lockedGold,
+        data,
+        `Withdraw ${withdrawal.valueFormatted} from pending #${withdrawal.index}`,
+      );
+    });
+
+    return this.toPreparedFlow(
+      from,
+      steps,
+      `Withdraw ${mature.length} matured pending withdrawal(s) for ${from}`,
+    );
+  }
+
+  async prepareVote(
+    from: `0x${string}`,
+    proposalId: number,
+    vote: VoteValueName,
+  ): Promise<SerializedPreparedFlow> {
+    const entries = await this.getDequeueWithIndices();
+    const match = entries.find((e) => e.proposalId === proposalId);
+    if (!match) {
+      throw new Error(
+        `Proposal ${proposalId} is not in the dequeue. Use get_votable_proposals to find Referendum proposals.`,
+      );
+    }
+
+    const details = await this.fetchProposal(proposalId, 0, false);
+    if (!details || proposalStageName(details.stage) !== "Referendum") {
+      throw new Error(`Proposal ${proposalId} is not in Referendum stage.`);
+    }
+
+    const voteInt = voteValueToInt(vote);
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: governanceAbi,
+        functionName: "vote",
+        args: [BigInt(proposalId), BigInt(match.index), voteInt],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.governance,
+          data,
+          `Vote ${vote} on proposal #${proposalId} (index ${match.index})`,
+        ),
+      ],
+      `Vote ${vote} on governance proposal #${proposalId}`,
+    );
   }
 }

@@ -1000,4 +1000,80 @@ export class GoodDollarService {
       isReverificationOverdue,
     };
   }
+
+  /**
+   * Link a secondary wallet to the caller's whitelisted GoodDollar identity.
+   * The whitelisted root must be the signer (`from`).
+   */
+  async prepareConnectIdentity(
+    from: `0x${string}`,
+    connectedAccount: `0x${string}`,
+  ): Promise<SerializedPreparedFlow> {
+    const whitelisting = await this.getWhitelistingInfo(from);
+    if (!whitelisting.isWhitelisted) {
+      throw new Error(
+        `Signer ${from} is not a whitelisted GoodDollar identity root. ` +
+          "Use get_gooddollar_face_verification_link to verify first.",
+      );
+    }
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: goodDollarIdentityAbi,
+        functionName: "connectAccount",
+        args: [connectedAccount],
+      }),
+      this.attributionTags,
+    );
+
+    const flow: PreparedFlow = {
+      steps: [
+        {
+          kind: "contract",
+          to: GOODDOLLAR_IDENTITY_ADDRESS,
+          data,
+          description: `Connect ${connectedAccount} to GoodDollar identity ${from}`,
+        },
+      ],
+      summary: `Connect ${connectedAccount} to GoodDollar identity`,
+      chainId: CHAIN.id,
+      from,
+    };
+
+    return serializePreparedFlow(flow);
+  }
+
+  /**
+   * Disconnect a secondary wallet from a GoodDollar identity.
+   * Callable by the root or the connected account.
+   */
+  async prepareDisconnectIdentity(
+    from: `0x${string}`,
+    connectedAccount: `0x${string}`,
+  ): Promise<SerializedPreparedFlow> {
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: goodDollarIdentityAbi,
+        functionName: "disconnectAccount",
+        args: [connectedAccount],
+      }),
+      this.attributionTags,
+    );
+
+    const flow: PreparedFlow = {
+      steps: [
+        {
+          kind: "contract",
+          to: GOODDOLLAR_IDENTITY_ADDRESS,
+          data,
+          description: `Disconnect ${connectedAccount} from GoodDollar identity`,
+        },
+      ],
+      summary: `Disconnect ${connectedAccount} from GoodDollar identity`,
+      chainId: CHAIN.id,
+      from,
+    };
+
+    return serializePreparedFlow(flow);
+  }
 }

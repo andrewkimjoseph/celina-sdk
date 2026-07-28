@@ -49,7 +49,37 @@ export const governanceAbi = [
     ],
     stateMutability: "view",
   },
+  {
+    type: "function",
+    name: "getAmountOfGoldUsedForVoting",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "vote",
+    inputs: [
+      { name: "proposalId", type: "uint256" },
+      { name: "index", type: "uint256" },
+      { name: "value", type: "uint8" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
 ] as const;
+
+/** On-chain VoteValue enum order: None=0, Abstain=1, No=2, Yes=3. */
+export const VOTE_VALUES = ["None", "Abstain", "No", "Yes"] as const;
+export type VoteValueName = (typeof VOTE_VALUES)[number];
+
+export function voteValueToInt(vote: VoteValueName): number {
+  const index = VOTE_VALUES.indexOf(vote);
+  if (index === -1) {
+    throw new Error(`Invalid vote value: ${vote}. Expected None, Abstain, No, or Yes.`);
+  }
+  return index;
+}
 
 /** On-chain proposal stage enum (Celo Governance). */
 export const PROPOSAL_STAGES = [

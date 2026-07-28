@@ -1,7 +1,10 @@
 import { z } from "zod";
 import {
+  addressSchema,
+  executeEnvRequirements,
   goodDollarReserveQuoteSchema,
   goodDollarReserveWalletSchema,
+  optionalSignerSchema,
   optionalWalletAddressSchema,
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
@@ -214,6 +217,107 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
         normalizeRegistryTokenInput(input.token_out as string),
         input.amount as string,
         mapReserveWalletOptions(input),
+      );
+    },
+  },
+  {
+    name: "get_gooddollar_face_verification_link",
+    description:
+      "Generate a GoodDollar face verification link for the MCP server wallet. Requires a signing key.",
+    inputSchema: z.object({
+      callback_url: z.string().url().describe("URL to redirect after verification"),
+    }),
+    families: ["read"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: { title: "Get GoodDollar Face Verification Link", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const svc = runtime.executors?.gooddollarIdentity;
+      if (!svc) throw new Error("GoodDollar identity executor not configured.");
+      return svc.getFaceVerificationLink(input.callback_url as string);
+    },
+  },
+  {
+    name: "execute_connect_gooddollar_identity",
+    description: "Connect a secondary wallet to the whitelisted GoodDollar identity root.",
+    inputSchema: z.object({
+      connected_account: addressSchema,
+      signer: optionalSignerSchema,
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: {
+      title: "Connect GoodDollar Identity",
+      annotations: { destructiveHint: true, openWorldHint: true },
+    },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.gooddollarIdentityWrite;
+      if (!write) throw new Error("GoodDollar identity write executor not configured.");
+      return write.connectIdentity(
+        input.connected_account as `0x${string}`,
+        input.signer as "celo" | "self_agent" | undefined,
+      );
+    },
+  },
+  {
+    name: "execute_disconnect_gooddollar_identity",
+    description: "Disconnect a secondary wallet from a GoodDollar identity.",
+    inputSchema: z.object({
+      connected_account: addressSchema,
+      signer: optionalSignerSchema,
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: {
+      title: "Disconnect GoodDollar Identity",
+      annotations: { destructiveHint: true, openWorldHint: true },
+    },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.gooddollarIdentityWrite;
+      if (!write) throw new Error("GoodDollar identity write executor not configured.");
+      return write.disconnectIdentity(
+        input.connected_account as `0x${string}`,
+        input.signer as "celo" | "self_agent" | undefined,
+      );
+    },
+  },
+  {
+    name: "prepare_connect_gooddollar_identity",
+    description: "Prepare unsigned GoodDollar identity connect for wallet signing.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+      connected_account: addressSchema,
+    }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.gooddollar.prepareConnectIdentity(
+        from,
+        input.connected_account as `0x${string}`,
+      );
+    },
+  },
+  {
+    name: "prepare_disconnect_gooddollar_identity",
+    description: "Prepare unsigned GoodDollar identity disconnect for wallet signing.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+      connected_account: addressSchema,
+    }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.gooddollar.prepareDisconnectIdentity(
+        from,
+        input.connected_account as `0x${string}`,
       );
     },
   },

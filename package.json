@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.15.8",
+  "version": "0.16.0",
   "description": "Celina SDK — Celo mainnet reads, unsigned transaction preparation, and ERC-4337 createAAClient for sponsored UserOps.",
   "type": "module",
   "sideEffects": false,
@@ -49,6 +49,7 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:fork": "vitest run --config vitest.fork.config.ts",
     "docs:api": "typedoc",
     "docs:summary": "node scripts/update-api-summary.mjs",
     "docs:build": "npm run docs:api && npm run docs:summary",
@@ -105,7 +106,9 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@celo/devchain-anvil": "^17.0.7",
     "@types/node": "^22.0.0",
+    "@viem/anvil": "^0.0.10",
     "typedoc": "^0.28.19",
     "typedoc-plugin-markdown": "^4.11.0",
     "typescript": "^5.8.2",

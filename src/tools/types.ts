@@ -136,6 +136,68 @@ export type GoodDollarWriteExecutors = {
   ) => Promise<unknown>;
 };
 
+export type GoodDollarIdentityExecutors = {
+  getFaceVerificationLink: (callbackUrl: string) => Promise<unknown>;
+};
+
+export type GoodDollarIdentityWriteExecutors = {
+  connectIdentity: (
+    connectedAccount: `0x${string}`,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  disconnectIdentity: (
+    connectedAccount: `0x${string}`,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+};
+
+export type GovernanceWriteExecutors = {
+  lockCelo: (amount: string, signer?: "celo" | "self_agent") => Promise<unknown>;
+  unlockCelo: (amount: string, signer?: "celo" | "self_agent") => Promise<unknown>;
+  relockCelo: (
+    index: number,
+    amount: string,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  withdrawCelo: (signer?: "celo" | "self_agent") => Promise<unknown>;
+  vote: (
+    proposalId: number,
+    vote: "Abstain" | "No" | "Yes",
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+};
+
+export type StakingWriteExecutors = {
+  stake: (
+    groupAddress: `0x${string}`,
+    amount: string,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  activateStake: (
+    groupAddress: `0x${string}`,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  unstake: (
+    groupAddress: `0x${string}`,
+    amount: string,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  delegatePower: (
+    delegatee: `0x${string}`,
+    percent: number,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+  undelegatePower: (
+    delegatee: `0x${string}`,
+    percent: number,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
+};
+
+export type AccountWriteExecutors = {
+  registerAccount: (signer?: "celo" | "self_agent") => Promise<unknown>;
+};
+
 export type SelfExecutors = {
   verifyAgent: (args: Record<string, unknown>) => Promise<unknown>;
   lookupAgent: (agentId: number) => Promise<unknown>;
@@ -156,6 +218,11 @@ export type ToolRuntimeExecutors = {
   aave?: AaveExecutors;
   contract?: ContractExecutors;
   gooddollarWrite?: GoodDollarWriteExecutors;
+  gooddollarIdentity?: GoodDollarIdentityExecutors;
+  gooddollarIdentityWrite?: GoodDollarIdentityWriteExecutors;
+  governanceWrite?: GovernanceWriteExecutors;
+  stakingWrite?: StakingWriteExecutors;
+  accountWrite?: AccountWriteExecutors;
   self?: SelfExecutors;
 };
 

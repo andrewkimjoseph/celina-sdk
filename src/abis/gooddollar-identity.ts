@@ -50,4 +50,18 @@ export const goodDollarIdentityAbi = [
     inputs: [{ name: "", type: "uint256" }],
     outputs: [{ name: "", type: "uint8" }],
   },
+  {
+    name: "connectAccount",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [],
+  },
+  {
+    name: "disconnectAccount",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "connected", type: "address" }],
+    outputs: [],
+  },
 ] as const satisfies Abi;

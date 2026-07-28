@@ -1,8 +1,10 @@
 import { z } from "zod";
 import {
   blockIdSchema,
+  executeEnvRequirements,
   nonNegativeIntSchema,
   optionalBoundedPositiveIntRange,
+  optionalSignerSchema,
   optionalWalletAddressSchema,
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
@@ -148,6 +150,50 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
         address: input.address as string | undefined,
       });
       return runtime.celina.account.getAccount(target);
+    },
+  },
+  {
+    name: "get_celo_account_registration",
+    description:
+      "Whether an address is registered in the Celo Accounts contract (required before locking CELO).",
+    inputSchema: z.object({ address: optionalWalletAddressSchema }),
+    families: ["read"],
+    mcp: { title: "Get Celo Account Registration", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const target = resolveWalletFromRuntime(runtime, {
+        address: input.address as string | undefined,
+      });
+      return runtime.celina.account.getAccountRegistration(target);
+    },
+  },
+  {
+    name: "execute_register_celo_account",
+    description: "Register the MCP server wallet as a Celo account (Accounts.createAccount).",
+    inputSchema: z.object({ signer: optionalSignerSchema }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: {
+      title: "Register Celo Account",
+      annotations: { destructiveHint: true, openWorldHint: true },
+    },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.accountWrite;
+      if (!write) throw new Error("Account write executor not configured.");
+      return write.registerAccount(input.signer as "celo" | "self_agent" | undefined);
+    },
+  },
+  {
+    name: "prepare_register_celo_account",
+    description: "Prepare unsigned Celo account registration for wallet signing.",
+    inputSchema: z.object({ from: optionalWalletAddressSchema }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.account.prepareRegisterAccount(from);
     },
   },
 ];
