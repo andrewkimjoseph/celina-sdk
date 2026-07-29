@@ -95,6 +95,34 @@ export const governanceAbi = [
   },
   {
     type: "function",
+    name: "upvote",
+    inputs: [
+      { name: "proposalId", type: "uint256" },
+      { name: "lesser", type: "uint256" },
+      { name: "greater", type: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "revokeVotes",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "revokeUpvote",
+    inputs: [
+      { name: "lesser", type: "uint256" },
+      { name: "greater", type: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "vote",
     inputs: [
       { name: "proposalId", type: "uint256" },

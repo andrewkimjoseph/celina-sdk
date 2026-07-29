@@ -214,6 +214,60 @@ export const governanceToolDefinitions: ToolDefinition[] = [
     },
   },
   {
+    name: "execute_upvote",
+    description:
+      "Upvote a Queued governance proposal. Requires locked CELO; only one active queue upvote per account.",
+    inputSchema: z.object({
+      proposal_id: nonNegativeIntSchema,
+      signer: optionalSignerSchema,
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: { title: "Upvote Proposal", annotations: destructive },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.governanceWrite;
+      if (!write) throw new Error("Governance write executor not configured.");
+      return write.upvote(input.proposal_id as number, resolveSigner(input));
+    },
+  },
+  {
+    name: "execute_revoke_governance_votes",
+    description:
+      "Revoke all active referendum governance votes for the signer in one transaction (bulk on-chain).",
+    inputSchema: z.object({ signer: optionalSignerSchema }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: { title: "Revoke Governance Votes", annotations: destructive },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.governanceWrite;
+      if (!write) throw new Error("Governance write executor not configured.");
+      return write.revokeGovernanceVotes(resolveSigner(input));
+    },
+  },
+  {
+    name: "execute_revoke_governance_upvote",
+    description:
+      "Revoke the signer's active queue upvote on a Queued governance proposal.",
+    inputSchema: z.object({
+      proposal_id: nonNegativeIntSchema.optional(),
+      signer: optionalSignerSchema,
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: { title: "Revoke Governance Upvote", annotations: destructive },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.governanceWrite;
+      if (!write) throw new Error("Governance write executor not configured.");
+      return write.revokeGovernanceUpvote(
+        input.proposal_id as number | undefined,
+        resolveSigner(input),
+      );
+    },
+  },
+  {
     name: "prepare_lock_celo",
     description: "Prepare unsigned lock CELO flow for wallet signing.",
     inputSchema: z.object({
@@ -298,6 +352,58 @@ export const governanceToolDefinitions: ToolDefinition[] = [
         input.proposal_id as number,
         input.vote as "Abstain" | "No" | "Yes",
       );
+    },
+  },
+  {
+    name: "prepare_upvote",
+    description:
+      "Prepare unsigned governance queue upvote for wallet signing. Requires locked CELO.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+      proposal_id: nonNegativeIntSchema,
+    }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.governance.prepareUpvote(
+        from,
+        input.proposal_id as number,
+      );
+    },
+  },
+  {
+    name: "prepare_revoke_governance_votes",
+    description:
+      "Prepare unsigned bulk referendum vote revoke for wallet signing.",
+    inputSchema: z.object({ from: optionalWalletAddressSchema }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.governance.prepareRevokeGovernanceVotes(from);
+    },
+  },
+  {
+    name: "prepare_revoke_governance_upvote",
+    description: "Prepare unsigned queue upvote revoke for wallet signing.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+      proposal_id: nonNegativeIntSchema.optional(),
+    }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.governance.prepareRevokeGovernanceUpvote(from, {
+        proposalId: input.proposal_id as number | undefined,
+      });
     },
   },
 ];

@@ -132,6 +132,76 @@ export const governanceOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["steps"]),
   },
   {
+    id: "governance.prepareUpvote",
+    domain: "governance",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) => client.governance.prepareUpvote(fx.wallet, 1),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.prepareRevokeGovernanceVotes",
+    domain: "governance",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareRevokeGovernanceVotes(fx.wallet),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.prepareRevokeGovernanceUpvote",
+    domain: "governance",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareRevokeGovernanceUpvote(fx.wallet),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeUpvote",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Pick a Queued proposal from get_governance_proposals manually",
+    sdk: {
+      invoke: (client, fx) => client.governance.prepareUpvote(fx.wallet, 1),
+    },
+    mcp: { tool: "execute_upvote", arguments: () => ({ proposal_id: 1 }) },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeRevokeGovernanceVotes",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Requires active referendum votes — check get_governance_votes",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareRevokeGovernanceVotes(fx.wallet),
+    },
+    mcp: { tool: "execute_revoke_governance_votes", arguments: () => ({}) },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeRevokeGovernanceUpvote",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Requires an active queue upvote — check get_governance_votes",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareRevokeGovernanceUpvote(fx.wallet),
+    },
+    mcp: { tool: "execute_revoke_governance_upvote", arguments: () => ({}) },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
     id: "governance.executeWithdrawCelo",
     domain: "governance",
     layer: "write",

@@ -24,6 +24,11 @@ import {
 } from "../types/prepared.js";
 import { assertCeloAccountRegistered } from "../utils/celo-account.js";
 import { formatCeloAmount } from "../utils/celo-format.js";
+import {
+  lesserAndGreaterAfterRevokeUpvote,
+  lesserAndGreaterAfterUpvote,
+  type GovernanceQueueEntry,
+} from "../utils/governance-queue.js";
 
 const STAGE_EXPIRY_MS: Partial<Record<ProposalStageName, number>> = {
   Queued: 4 * 24 * 60 * 60 * 1000,
@@ -51,6 +56,12 @@ export interface GovernanceProposalsOptions {
 /** Options for reading governance votes cast by an address. */
 export interface GovernanceVotesOptions {
   /** When set, return only votes for this proposal ID. */
+  proposalId?: number;
+}
+
+/** Options for revoking a governance queue upvote. */
+export interface GovernanceRevokeUpvoteOptions {
+  /** When set, assert the active upvote matches this proposal ID. */
   proposalId?: number;
 }
 
@@ -272,6 +283,22 @@ export class GovernanceService {
 
     entries.sort((a, b) => b.id - a.id);
     return entries;
+  }
+
+  private async getGovernanceQueue(): Promise<GovernanceQueueEntry[]> {
+    const client = this.getClient();
+    const [queuedIds, queuedUpvotes] = (await client.readContract({
+      address: CELO_CORE_CONTRACTS.governance,
+      abi: governanceAbi,
+      functionName: "getQueue",
+    })) as readonly [readonly bigint[], readonly bigint[]];
+
+    return queuedIds
+      .map((id, index) => ({
+        proposalId: Number(id),
+        upvotes: queuedUpvotes[index] ?? 0n,
+      }))
+      .filter((entry) => entry.proposalId !== 0);
   }
 
   /**
@@ -879,6 +906,168 @@ export class GovernanceService {
         ),
       ],
       `Vote ${vote} on governance proposal #${proposalId}`,
+    );
+  }
+
+  /** Upvote a Queued governance proposal (one active queue upvote per account). */
+  async prepareUpvote(
+    from: `0x${string}`,
+    proposalId: number,
+  ): Promise<SerializedPreparedFlow> {
+    const governanceAccount = await this.resolveGovernanceAccount(from);
+    const client = this.getClient();
+    const governance = CELO_CORE_CONTRACTS.governance;
+    const queue = await this.getGovernanceQueue();
+
+    if (!queue.some((entry) => entry.proposalId === proposalId)) {
+      throw new Error(
+        `Proposal ${proposalId} is not in the governance queue. Use get_governance_proposals to find Queued proposals.`,
+      );
+    }
+
+    const [existingUpvoteProposalId] = (await client.readContract({
+      address: governance,
+      abi: governanceAbi,
+      functionName: "getUpvoteRecord",
+      args: [governanceAccount],
+    })) as readonly [bigint, bigint];
+
+    const existingId = Number(existingUpvoteProposalId);
+    if (existingId !== 0 && queue.some((entry) => entry.proposalId === existingId)) {
+      throw new Error(
+        `Account already has an active upvote on proposal ${existingId}. Revoke it with prepare_revoke_governance_upvote before upvoting another proposal.`,
+      );
+    }
+
+    const lockedGold = (await client.readContract({
+      address: CELO_CORE_CONTRACTS.lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getAccountTotalLockedGold",
+      args: [governanceAccount],
+    })) as bigint;
+
+    if (lockedGold === 0n) {
+      throw new Error(
+        "Cannot upvote without locked CELO. Lock CELO first with execute_lock_celo.",
+      );
+    }
+
+    const { lesser, greater } = lesserAndGreaterAfterUpvote(
+      queue,
+      proposalId,
+      lockedGold,
+    );
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: governanceAbi,
+        functionName: "upvote",
+        args: [BigInt(proposalId), BigInt(lesser), BigInt(greater)],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          governance,
+          data,
+          `Upvote proposal #${proposalId} with ${formatCeloAmount(lockedGold)} locked CELO`,
+        ),
+      ],
+      `Upvote governance proposal #${proposalId}`,
+    );
+  }
+
+  /** Revoke all active referendum votes for an account (bulk on-chain). */
+  async prepareRevokeGovernanceVotes(
+    from: `0x${string}`,
+  ): Promise<SerializedPreparedFlow> {
+    const governanceAccount = await this.resolveGovernanceAccount(from);
+    const votes = await this.getGovernanceVotes(governanceAccount);
+
+    if (votes.referendumVotes.length === 0) {
+      throw new Error("No referendum votes to revoke for this address.");
+    }
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: governanceAbi,
+        functionName: "revokeVotes",
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.governance,
+          data,
+          `Revoke ${votes.referendumVotes.length} referendum vote(s)`,
+        ),
+      ],
+      `Revoke all governance referendum votes for ${governanceAccount}`,
+    );
+  }
+
+  /** Revoke the account's active queue upvote. */
+  async prepareRevokeGovernanceUpvote(
+    from: `0x${string}`,
+    options: GovernanceRevokeUpvoteOptions = {},
+  ): Promise<SerializedPreparedFlow> {
+    const governanceAccount = await this.resolveGovernanceAccount(from);
+    const client = this.getClient();
+    const governance = CELO_CORE_CONTRACTS.governance;
+
+    const [upvoteProposalId, upvoteWeight] = (await client.readContract({
+      address: governance,
+      abi: governanceAbi,
+      functionName: "getUpvoteRecord",
+      args: [governanceAccount],
+    })) as readonly [bigint, bigint];
+
+    const proposalId = Number(upvoteProposalId);
+    if (proposalId === 0) {
+      throw new Error("No active governance upvote to revoke for this address.");
+    }
+
+    if (
+      options.proposalId !== undefined &&
+      options.proposalId !== proposalId
+    ) {
+      throw new Error(
+        `Active upvote is on proposal ${proposalId}, not ${options.proposalId}.`,
+      );
+    }
+
+    const queue = await this.getGovernanceQueue();
+    const { lesser, greater } = lesserAndGreaterAfterRevokeUpvote(
+      queue,
+      proposalId,
+      upvoteWeight,
+    );
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: governanceAbi,
+        functionName: "revokeUpvote",
+        args: [BigInt(lesser), BigInt(greater)],
+      }),
+      this.attributionTags,
+    );
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          governance,
+          data,
+          `Revoke upvote on proposal #${proposalId}`,
+        ),
+      ],
+      `Revoke governance upvote on proposal #${proposalId}`,
     );
   }
 }

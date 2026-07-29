@@ -167,6 +167,12 @@ export type GovernanceWriteExecutors = {
     vote: "Abstain" | "No" | "Yes",
     signer?: "celo" | "self_agent",
   ) => Promise<unknown>;
+  upvote: (proposalId: number, signer?: "celo" | "self_agent") => Promise<unknown>;
+  revokeGovernanceVotes: (signer?: "celo" | "self_agent") => Promise<unknown>;
+  revokeGovernanceUpvote: (
+    proposalId?: number,
+    signer?: "celo" | "self_agent",
+  ) => Promise<unknown>;
 };
 
 export type StakingWriteExecutors = {
