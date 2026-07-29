@@ -24,6 +24,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "gooddollar.getUbiClaimEligibility": "get_gooddollar_ubi_entitlement",
   "gooddollar.getWhitelistingInfo": "get_gooddollar_whitelisting_info",
   "governance.getGovernanceProposals": "get_governance_proposals",
+  "governance.getGovernanceVotes": "get_governance_votes",
   "governance.getLockedCeloBalance": "get_locked_celo_balance",
   "governance.getPendingWithdrawals": "get_pending_withdrawals",
   "governance.getProposalDetails": "get_proposal_details",

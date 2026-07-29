@@ -15,6 +15,13 @@ export const accountsAbi = [
   },
   {
     type: "function",
+    name: "voteSignerToAccount",
+    inputs: [{ name: "signer", type: "address" }],
+    outputs: [{ name: "", type: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "createAccount",
     inputs: [],
     outputs: [],

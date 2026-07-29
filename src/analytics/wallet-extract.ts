@@ -18,6 +18,7 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   "gooddollar.getIdentityLink": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getUbiClaimEligibility": { positional: 0, objectKeys: ["address"] },
   "gooddollar.getWhitelistingInfo": { positional: 0, objectKeys: ["address"] },
+  "governance.getGovernanceVotes": { positional: 0, objectKeys: ["address"] },
   "governance.getLockedCeloBalance": { positional: 0, objectKeys: ["address"] },
   "governance.getPendingWithdrawals": { positional: 0, objectKeys: ["address"] },
   "humanness.checkHumanness": { positional: 0, objectKeys: ["address"] },

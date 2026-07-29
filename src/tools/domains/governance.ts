@@ -101,6 +101,25 @@ export const governanceToolDefinitions: ToolDefinition[] = [
     handler: async (runtime) => runtime.celina.governance.getVotableProposals(),
   },
   {
+    name: "get_governance_votes",
+    description:
+      "Referendum votes and queue upvotes cast by an address on Celo governance.",
+    inputSchema: z.object({
+      address: optionalWalletAddressSchema,
+      proposal_id: nonNegativeIntSchema.optional(),
+    }),
+    families: ["read"],
+    mcp: { title: "Get Governance Votes", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const target = resolveWalletFromRuntime(runtime, {
+        address: input.address as string | undefined,
+      });
+      return runtime.celina.governance.getGovernanceVotes(target, {
+        proposalId: input.proposal_id as number | undefined,
+      });
+    },
+  },
+  {
     name: "execute_lock_celo",
     description:
       "Lock CELO for governance and staking. Requires humanness verification and a registered Celo account.",

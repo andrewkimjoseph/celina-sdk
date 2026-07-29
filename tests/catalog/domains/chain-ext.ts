@@ -65,6 +65,19 @@ export const governanceOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["proposals"]),
   },
   {
+    id: "governance.getGovernanceVotes",
+    domain: "governance",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) => client.governance.getGovernanceVotes(fx.wallet),
+    },
+    mcp: {
+      tool: "get_governance_votes",
+      arguments: (fx) => ({ address: fx.wallet }),
+    },
+    assert: (result) => assertHasKeys(result, ["referendumVotes", "upvote", "message"]),
+  },
+  {
     id: "governance.prepareLockCelo",
     domain: "governance",
     layer: "prepare",

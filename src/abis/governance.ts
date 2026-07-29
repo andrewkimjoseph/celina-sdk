@@ -58,6 +58,43 @@ export const governanceAbi = [
   },
   {
     type: "function",
+    name: "getVoteRecord",
+    inputs: [
+      { name: "account", type: "address" },
+      { name: "index", type: "uint256" },
+    ],
+    outputs: [
+      { name: "proposalId", type: "uint256" },
+      { name: "deprecatedValue", type: "uint256" },
+      { name: "deprecatedWeight", type: "uint256" },
+      { name: "yesVotes", type: "uint256" },
+      { name: "noVotes", type: "uint256" },
+      { name: "abstainVotes", type: "uint256" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getUpvoteRecord",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [
+      { name: "proposalId", type: "uint256" },
+      { name: "weight", type: "uint256" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "isDequeuedProposal",
+    inputs: [
+      { name: "proposalId", type: "uint256" },
+      { name: "index", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "vote",
     inputs: [
       { name: "proposalId", type: "uint256" },

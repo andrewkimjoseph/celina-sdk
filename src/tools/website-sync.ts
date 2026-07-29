@@ -116,6 +116,7 @@ export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   get_locked_celo_balance: "Governance",
   get_pending_withdrawals: "Governance",
   get_votable_proposals: "Governance",
+  get_governance_votes: "Governance",
   execute_lock_celo: "Governance",
   execute_unlock_celo: "Governance",
   execute_relock_celo: "Governance",

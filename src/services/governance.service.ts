@@ -4,6 +4,7 @@
  */
 import { encodeFunctionData, isAddress, parseEther } from "viem";
 import { CELO_CORE_CONTRACTS } from "../config/celo-core-contracts.js";
+import { accountsAbi } from "../abis/accounts.js";
 import { lockedGoldAbi } from "../abis/locked-gold.js";
 import {
   governanceAbi,
@@ -45,6 +46,12 @@ export interface GovernanceProposalsOptions {
   offset?: number;
   /** Max proposals when using `offset` (capped at 100). */
   limit?: number;
+}
+
+/** Options for reading governance votes cast by an address. */
+export interface GovernanceVotesOptions {
+  /** When set, return only votes for this proposal ID. */
+  proposalId?: number;
 }
 
 function extractCgpFromUrl(url: string): number | null {
@@ -115,6 +122,41 @@ export class GovernanceService {
 
   private getClient() {
     return this.clientFactory.getClients().public;
+  }
+
+  /** Resolve vote-signer EOA to the Celo account that holds vote records. */
+  private async resolveGovernanceAccount(
+    address: `0x${string}`,
+  ): Promise<`0x${string}`> {
+    const client = this.getClient();
+    const accounts = CELO_CORE_CONTRACTS.accounts;
+
+    const isRegistered = await client.readContract({
+      address: accounts,
+      abi: accountsAbi,
+      functionName: "isAccount",
+      args: [address],
+    });
+
+    if (isRegistered) {
+      return address;
+    }
+
+    try {
+      const account = await client.readContract({
+        address: accounts,
+        abi: accountsAbi,
+        functionName: "voteSignerToAccount",
+        args: [address],
+      });
+      if (account !== "0x0000000000000000000000000000000000000000") {
+        return account;
+      }
+    } catch {
+      // Not a vote signer; use address as-is.
+    }
+
+    return address;
   }
 
   private async fetchProposal(
@@ -396,6 +438,133 @@ export class GovernanceService {
         votable.length > 0
           ? `${votable.length} proposal(s) in Referendum`
           : "No proposals currently in Referendum",
+    };
+  }
+
+  /** Referendum votes and queue upvotes cast by an address on Celo governance. */
+  async getGovernanceVotes(
+    address: `0x${string}`,
+    options: GovernanceVotesOptions = {},
+  ) {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+
+    const governanceAccount = await this.resolveGovernanceAccount(address);
+    const client = this.getClient();
+    const governance = CELO_CORE_CONTRACTS.governance;
+
+    let entries = (await this.getDequeueWithIndices()).filter(
+      (entry) => entry.proposalId !== 0,
+    );
+    if (options.proposalId !== undefined) {
+      entries = entries.filter((entry) => entry.proposalId === options.proposalId);
+    }
+
+    const voteRecordCalls = entries.map((entry) => ({
+      address: governance,
+      abi: governanceAbi,
+      functionName: "getVoteRecord" as const,
+      args: [governanceAccount, BigInt(entry.index)] as const,
+    }));
+
+    const [voteResults, upvoteResult, goldUsed] = await Promise.all([
+      voteRecordCalls.length > 0
+        ? client.multicall({ contracts: voteRecordCalls, allowFailure: true })
+        : Promise.resolve([]),
+      client.readContract({
+        address: governance,
+        abi: governanceAbi,
+        functionName: "getUpvoteRecord",
+        args: [governanceAccount],
+      }),
+      client.readContract({
+        address: governance,
+        abi: governanceAbi,
+        functionName: "getAmountOfGoldUsedForVoting",
+        args: [governanceAccount],
+      }),
+    ]);
+
+    const referendumVotes = [];
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i]!;
+      const result = voteResults[i];
+      if (!result || result.status !== "success") {
+        continue;
+      }
+
+      const [recordProposalId, , , yesVotes, noVotes, abstainVotes] =
+        result.result as readonly [bigint, bigint, bigint, bigint, bigint, bigint];
+
+      const proposalId = Number(recordProposalId);
+      if (proposalId === 0) {
+        continue;
+      }
+
+      const totalWeight = yesVotes + noVotes + abstainVotes;
+      if (totalWeight === 0n) {
+        continue;
+      }
+
+      const stale = proposalId !== entry.proposalId;
+      const proposal = await this.fetchProposal(proposalId, 0, false);
+
+      referendumVotes.push({
+        proposalId,
+        dequeueIndex: entry.index,
+        yesVotes: yesVotes.toString(),
+        noVotes: noVotes.toString(),
+        abstainVotes: abstainVotes.toString(),
+        totalWeight: totalWeight.toString(),
+        totalWeightFormatted: formatCeloAmount(totalWeight),
+        stale,
+        stage: proposal ? proposalStageName(proposal.stage) : undefined,
+        url: proposal?.url,
+      });
+    }
+
+    const [upvoteProposalId, upvoteWeight] = upvoteResult as readonly [bigint, bigint];
+    let upvote: {
+      proposalId: number;
+      weight: string;
+      weightFormatted: string;
+    } | null = null;
+
+    if (Number(upvoteProposalId) !== 0) {
+      const upvoteEntry = {
+        proposalId: Number(upvoteProposalId),
+        weight: upvoteWeight.toString(),
+        weightFormatted: formatCeloAmount(upvoteWeight),
+      };
+      if (
+        options.proposalId === undefined ||
+        upvoteEntry.proposalId === options.proposalId
+      ) {
+        upvote = upvoteEntry;
+      }
+    }
+
+    const parts: string[] = [];
+    if (referendumVotes.length > 0) {
+      parts.push(`${referendumVotes.length} referendum vote(s)`);
+    }
+    if (upvote) {
+      parts.push("1 active upvote");
+    }
+
+    return {
+      network: "mainnet" as const,
+      address: governanceAccount,
+      ...(governanceAccount !== address ? { queriedAddress: address } : {}),
+      goldUsedForVoting: goldUsed.toString(),
+      goldUsedForVotingFormatted: formatCeloAmount(goldUsed),
+      upvote,
+      referendumVotes,
+      message:
+        parts.length > 0
+          ? parts.join(", ")
+          : "No governance votes found for this address",
     };
   }
 
