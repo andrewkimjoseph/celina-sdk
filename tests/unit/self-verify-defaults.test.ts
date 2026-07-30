@@ -44,7 +44,7 @@ function mockVerifyReads(opts: {
             gender: "",
             expiryDate: "",
             olderThan: opts.olderThan,
-            ofac: [opts.ofacClear, false, false] as const,
+            ofac: [opts.ofacClear, opts.ofacClear, opts.ofacClear] as const,
           };
         default:
           throw new Error(`unexpected read: ${functionName}`);

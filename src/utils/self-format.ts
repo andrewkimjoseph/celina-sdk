@@ -42,7 +42,78 @@ export function formatSelfSessionLinksDisplay(links: SelfSessionLinks): string {
 export interface SelfCredentialLike {
   nationality?: string;
   olderThan?: bigint | number;
+  older_than?: number;
   ofac?: boolean[];
+  ofac_clear?: boolean;
+}
+
+export interface SelfOfacScreening {
+  is_on_sdn_list: boolean;
+  is_on_consolidated_list: boolean;
+  is_on_ofac_list: boolean;
+}
+
+export interface ParsedSelfOfacScreening {
+  ofac_clear: boolean;
+  ofac_screened: boolean;
+  ofac_screening: SelfOfacScreening;
+}
+
+export interface FormattedSelfCredentials {
+  nationality?: string;
+  older_than: number;
+  ofac_clear: boolean;
+  ofac_screened: boolean;
+  ofac_screening: SelfOfacScreening;
+}
+
+export interface SelfCredentialsInput {
+  nationality?: string;
+  olderThan?: bigint | number;
+  ofac?: readonly boolean[] | null;
+}
+
+/** Self on-chain/API ofac is bool[3]: [isOnSdnList, isOnConsolidatedList, isOnOfacList]. */
+export function parseSelfOfacScreening(
+  ofac?: readonly boolean[] | null,
+): ParsedSelfOfacScreening {
+  const is_on_sdn_list = ofac?.[0] === true;
+  const is_on_consolidated_list = ofac?.[1] === true;
+  const is_on_ofac_list = ofac?.[2] === true;
+  const ofac_screened =
+    ofac !== undefined &&
+    ofac !== null &&
+    (is_on_sdn_list || is_on_consolidated_list || is_on_ofac_list);
+  const ofac_clear =
+    is_on_sdn_list && is_on_consolidated_list && is_on_ofac_list;
+
+  return {
+    ofac_clear,
+    ofac_screened,
+    ofac_screening: {
+      is_on_sdn_list,
+      is_on_consolidated_list,
+      is_on_ofac_list,
+    },
+  };
+}
+
+export function formatSelfCredentials(
+  raw?: SelfCredentialsInput | null,
+): FormattedSelfCredentials {
+  const nationality = raw?.nationality || undefined;
+  const older_than = Number(raw?.olderThan ?? 0);
+  const { ofac_clear, ofac_screened, ofac_screening } = parseSelfOfacScreening(
+    raw?.ofac,
+  );
+
+  return {
+    nationality,
+    older_than,
+    ofac_clear,
+    ofac_screened,
+    ofac_screening,
+  };
 }
 
 export function formatCredentialsSummary(
@@ -53,14 +124,20 @@ export function formatCredentialsSummary(
   }
 
   const parts = ["Verified human"];
-  const age = Number(credentials.olderThan ?? 0);
+  const age = Number(credentials.older_than ?? credentials.olderThan ?? 0);
 
   if (age > 0) {
     parts.push(`${age}+`);
   }
 
-  if (credentials.ofac?.[0] === true) {
+  const ofacClear =
+    credentials.ofac_clear ??
+    parseSelfOfacScreening(credentials.ofac).ofac_clear;
+
+  if (ofacClear) {
     parts.push("OFAC clear");
+  } else if (credentials.ofac?.length || credentials.ofac_clear === false) {
+    parts.push("OFAC not fully clear");
   }
 
   if (credentials.nationality) {

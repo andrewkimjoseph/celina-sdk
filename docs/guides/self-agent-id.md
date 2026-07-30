@@ -41,7 +41,7 @@ await celina.self.verifyAgent({
 await celina.self.lookupAgent(1);
 ```
 
-Verified agents expose credentials including `nationality` (ISO 3166-1 alpha-3, when disclosed at registration), `older_than`, and `ofac_clear`.
+Verified agents expose credentials including `nationality` (ISO 3166-1 alpha-3, when disclosed at registration), `older_than`, `ofac_clear`, and `ofac_screening` with three labeled flags from Self’s on-chain `bool[3]` OFAC field: `is_on_sdn_list`, `is_on_consolidated_list`, and `is_on_ofac_list`. **`ofac_clear` is true only when all three are true** (full screening passed at registration). `lookup_self_agent`, `verify_self_agent`, and `get_self_identity` return this normalized shape — not a raw `ofac` array.
 
 ## Registration flow
 

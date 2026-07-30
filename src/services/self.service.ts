@@ -40,6 +40,7 @@ import {
 import {
   formatAgentInfo,
   formatCredentialsSummary,
+  formatSelfCredentials,
   proofExpiryFields,
   resolveSelfSessionLinks,
   truncateBody,
@@ -112,11 +113,7 @@ function normalizeCredentials(raw: {
   olderThan: bigint;
   ofac: readonly boolean[];
 }) {
-  return {
-    nationality: raw.nationality || undefined,
-    older_than: Number(raw.olderThan),
-    ofac_clear: raw.ofac[0] === true,
-  };
+  return formatSelfCredentials(raw);
 }
 
 export class SelfService {
@@ -360,11 +357,11 @@ export class SelfService {
   async lookupAgent(agentId: number) {
     const info = await getAgentInfo(agentId, this.apiBase);
     const formatted = formatAgentInfo(info);
-    const credentialsSummary = formatCredentialsSummary(
-      info.credentials as
-        | { nationality?: string; olderThan?: number; ofac?: boolean[] }
-        | undefined,
-    );
+    const rawCredentials = info.credentials as
+      | { nationality?: string; olderThan?: number; ofac?: boolean[] }
+      | undefined;
+    const credentials = formatSelfCredentials(rawCredentials);
+    const credentialsSummary = formatCredentialsSummary(credentials);
 
     const client = this.registryClient();
     const [proofExpiresAtRaw, isProofFresh] = await Promise.all([
@@ -386,6 +383,7 @@ export class SelfService {
 
     return {
       ...formatted,
+      credentials,
       credentialsSummary,
       ...proofExpiryFields(proofExpiresAtRaw),
       is_expired: !isProofFresh && proofExpiresAtSecs > 0,
@@ -645,11 +643,12 @@ export class SelfService {
       }),
     ]);
 
-    const credentialsSummary = formatCredentialsSummary({
+    const credentials = formatSelfCredentials({
       nationality: rawCredentials.nationality,
       olderThan: rawCredentials.olderThan,
       ofac: [...rawCredentials.ofac],
     });
+    const credentialsSummary = formatCredentialsSummary(credentials);
 
     const expiry = proofExpiryFields(proofExpiresAt);
     const proofExpiresAtSecs = Number(proofExpiresAt);
@@ -679,6 +678,7 @@ export class SelfService {
       nullifier: Number(nullifier),
       agentCount: Number(agentCount),
       verificationStrength,
+      credentials,
       credentials_summary: credentialsSummary,
       ...expiry,
       is_expired: isExpired,
