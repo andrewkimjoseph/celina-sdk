@@ -1,20 +1,26 @@
 import { describe, expect, it } from "vitest";
 import {
+  SELF_OFAC_CHECK_DEFINITIONS,
   formatCredentialsSummary,
   formatSelfCredentials,
   parseSelfOfacScreening,
 } from "../../src/utils/self-format.js";
 
+const expectedChecks = (
+  clears: [boolean, boolean, boolean],
+) =>
+  SELF_OFAC_CHECK_DEFINITIONS.map(({ list, label, index }) => ({
+    list,
+    label,
+    clear: clears[index],
+  }));
+
 describe("parseSelfOfacScreening", () => {
-  it("maps all three true to ofac_clear and labeled screening flags", () => {
+  it("maps all three true to ofac_clear and labeled ofac_checks", () => {
     expect(parseSelfOfacScreening([true, true, true])).toEqual({
       ofac_clear: true,
       ofac_screened: true,
-      ofac_screening: {
-        is_on_sdn_list: true,
-        is_on_consolidated_list: true,
-        is_on_ofac_list: true,
-      },
+      ofac_checks: expectedChecks([true, true, true]),
     });
   });
 
@@ -22,17 +28,16 @@ describe("parseSelfOfacScreening", () => {
     expect(parseSelfOfacScreening([false, false, false])).toEqual({
       ofac_clear: false,
       ofac_screened: false,
-      ofac_screening: {
-        is_on_sdn_list: false,
-        is_on_consolidated_list: false,
-        is_on_ofac_list: false,
-      },
+      ofac_checks: expectedChecks([false, false, false]),
     });
   });
 
   it("fails ofac_clear when only the first flag is true", () => {
     expect(parseSelfOfacScreening([true, false, false]).ofac_clear).toBe(false);
     expect(parseSelfOfacScreening([true, false, false]).ofac_screened).toBe(true);
+    expect(parseSelfOfacScreening([true, false, false]).ofac_checks).toEqual(
+      expectedChecks([true, false, false]),
+    );
   });
 });
 
@@ -49,11 +54,7 @@ describe("formatSelfCredentials", () => {
       older_than: 18,
       ofac_clear: true,
       ofac_screened: true,
-      ofac_screening: {
-        is_on_sdn_list: true,
-        is_on_consolidated_list: true,
-        is_on_ofac_list: true,
-      },
+      ofac_checks: expectedChecks([true, true, true]),
     });
   });
 });

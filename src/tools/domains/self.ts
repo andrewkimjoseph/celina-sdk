@@ -54,7 +54,8 @@ export const selfToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "lookup_self_agent",
-    description: "Look up a Self Agent ID by numeric on-chain ID.",
+    description:
+      "Look up a Self Agent ID by numeric on-chain ID. Returns credentials with ofac_clear (all OFAC checks passed) and ofac_checks — a labeled array where clear: true means not on that sanctions list.",
     inputSchema: z.object({
       agent_id: positiveIntSchema,
     }),

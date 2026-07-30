@@ -47,16 +47,36 @@ export interface SelfCredentialLike {
   ofac_clear?: boolean;
 }
 
-export interface SelfOfacScreening {
-  is_on_sdn_list: boolean;
-  is_on_consolidated_list: boolean;
-  is_on_ofac_list: boolean;
+export type SelfOfacCheckList = "sdn" | "consolidated" | "other_ofac";
+
+export interface SelfOfacCheck {
+  list: SelfOfacCheckList;
+  label: string;
+  clear: boolean;
 }
+
+export const SELF_OFAC_CHECK_DEFINITIONS = [
+  {
+    list: "sdn" as const,
+    label: "Specially Designated Nationals (SDN)",
+    index: 0,
+  },
+  {
+    list: "consolidated" as const,
+    label: "Consolidated non-SDN sanctions",
+    index: 1,
+  },
+  {
+    list: "other_ofac" as const,
+    label: "Other OFAC sanctions lists",
+    index: 2,
+  },
+] as const;
 
 export interface ParsedSelfOfacScreening {
   ofac_clear: boolean;
   ofac_screened: boolean;
-  ofac_screening: SelfOfacScreening;
+  ofac_checks: SelfOfacCheck[];
 }
 
 export interface FormattedSelfCredentials {
@@ -64,7 +84,7 @@ export interface FormattedSelfCredentials {
   older_than: number;
   ofac_clear: boolean;
   ofac_screened: boolean;
-  ofac_screening: SelfOfacScreening;
+  ofac_checks: SelfOfacCheck[];
 }
 
 export interface SelfCredentialsInput {
@@ -73,28 +93,29 @@ export interface SelfCredentialsInput {
   ofac?: readonly boolean[] | null;
 }
 
-/** Self on-chain/API ofac is bool[3]: [isOnSdnList, isOnConsolidatedList, isOnOfacList]. */
+/**
+ * Self on-chain/API ofac is bool[3] with OpenAPI labels
+ * [isOnSdnList, isOnConsolidatedList, isOnOfacList] — true means cleared (not on list).
+ * Celina exposes `clear` on each labeled check so consumers are not misled by Self's names.
+ */
 export function parseSelfOfacScreening(
   ofac?: readonly boolean[] | null,
 ): ParsedSelfOfacScreening {
-  const is_on_sdn_list = ofac?.[0] === true;
-  const is_on_consolidated_list = ofac?.[1] === true;
-  const is_on_ofac_list = ofac?.[2] === true;
+  const ofac_checks = SELF_OFAC_CHECK_DEFINITIONS.map(({ list, label, index }) => ({
+    list,
+    label,
+    clear: ofac?.[index] === true,
+  }));
   const ofac_screened =
     ofac !== undefined &&
     ofac !== null &&
-    (is_on_sdn_list || is_on_consolidated_list || is_on_ofac_list);
-  const ofac_clear =
-    is_on_sdn_list && is_on_consolidated_list && is_on_ofac_list;
+    ofac_checks.some((check) => check.clear);
+  const ofac_clear = ofac_checks.every((check) => check.clear);
 
   return {
     ofac_clear,
     ofac_screened,
-    ofac_screening: {
-      is_on_sdn_list,
-      is_on_consolidated_list,
-      is_on_ofac_list,
-    },
+    ofac_checks,
   };
 }
 
@@ -103,7 +124,7 @@ export function formatSelfCredentials(
 ): FormattedSelfCredentials {
   const nationality = raw?.nationality || undefined;
   const older_than = Number(raw?.olderThan ?? 0);
-  const { ofac_clear, ofac_screened, ofac_screening } = parseSelfOfacScreening(
+  const { ofac_clear, ofac_screened, ofac_checks } = parseSelfOfacScreening(
     raw?.ofac,
   );
 
@@ -112,7 +133,7 @@ export function formatSelfCredentials(
     older_than,
     ofac_clear,
     ofac_screened,
-    ofac_screening,
+    ofac_checks,
   };
 }
 
