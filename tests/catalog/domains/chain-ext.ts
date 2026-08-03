@@ -329,6 +329,24 @@ export const stakingOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["delegatees"]),
   },
   {
+    id: "staking.getStakeEligibility",
+    domain: "staking",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) =>
+        client.staking.getStakeEligibility(fx.wallet, fx.validatorGroup, "0.01"),
+    },
+    mcp: {
+      tool: "get_stake_eligibility",
+      arguments: (fx) => ({
+        group_address: fx.validatorGroup,
+        amount: "0.01",
+        address: fx.wallet,
+      }),
+    },
+    assert: (result) => assertHasKeys(result, ["canStake", "reasons", "canReceiveVotes"]),
+  },
+  {
     id: "staking.prepareStake",
     domain: "staking",
     layer: "prepare",

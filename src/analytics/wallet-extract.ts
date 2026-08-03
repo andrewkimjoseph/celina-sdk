@@ -27,6 +27,7 @@ export const WALLET_EXTRACT_BY_SDK_METHOD: Readonly<
   "self.verifySelfAgent": { objectKeys: ["address","agent_address"] },
   "staking.getActivatableStakes": { positional: 0, objectKeys: ["address"] },
   "staking.getDelegationInfo": { positional: 0, objectKeys: ["address"] },
+  "staking.getStakeEligibility": { objectKeys: ["address"] },
   "staking.getStakingBalances": { positional: 0, objectKeys: ["address"] },
   "staking.getValidatorGroupDetails": { objectKeys: ["address"] },
   "token.getBalances": { objectKeys: ["address"] },

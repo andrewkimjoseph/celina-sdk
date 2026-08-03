@@ -25,6 +25,14 @@ import {
 } from "../utils/celo-format.js";
 import { findLesserAndGreaterAfterVote } from "../utils/election-vote-neighbors.js";
 import { fromFixidity, percentToFixidity } from "../utils/fixidity.js";
+import {
+  assertStakeEligible,
+  deriveStakeEligibility,
+  type StakeEligibilityResult,
+} from "../utils/stake-eligibility.js";
+import { isCeloAccountRegistered } from "../utils/celo-account.js";
+
+export type { StakeEligibilityResult } from "../utils/stake-eligibility.js";
 
 const MAX_ELECTABLE_VALIDATORS = 110;
 const MIN_INCREMENTAL_VOTE_AMOUNT = parseEther("0.000001");
@@ -410,7 +418,7 @@ export class StakingService {
     const accounts = CELO_CORE_CONTRACTS.accounts;
     const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
 
-    const [groupInfo, name, votes, eligibleGroups, totalLockedGold, allValidators] =
+    const [groupInfo, name, votes, eligibleGroups, totalLockedGold, allValidators, canReceiveVotes] =
       await Promise.all([
         client.readContract({
           address: validators,
@@ -463,6 +471,12 @@ export class StakingService {
           .catch(() => [] as readonly `0x${string}`[]) as Promise<
           readonly `0x${string}`[]
         >,
+        client.readContract({
+          address: election,
+          abi: electionAbi,
+          functionName: "canReceiveVotes",
+          args: [groupAddress],
+        }) as Promise<bigint>,
       ]);
 
     const members = groupInfo[0];
@@ -546,6 +560,8 @@ export class StakingService {
       votesFormatted: formatCeloAmount(votes),
       capacity: capacity.toString(),
       capacityFormatted: formatCeloAmount(capacity),
+      canReceiveVotes: canReceiveVotes.toString(),
+      canReceiveVotesFormatted: formatCeloAmount(canReceiveVotes),
       lastSlashed,
       eligible,
       numMembers: members.length,
@@ -676,15 +692,87 @@ export class StakingService {
     }));
   }
 
+  /**
+   * Check whether a stake with the given amount would succeed before execute_stake.
+   * Uses Election.canReceiveVotes, non-voting locked balance, and account registration.
+   */
+  async getStakeEligibility(
+    address: `0x${string}`,
+    groupAddress: `0x${string}`,
+    amount: string,
+  ): Promise<StakeEligibilityResult> {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+    if (!isAddress(groupAddress)) {
+      throw new Error(`Invalid group address: ${groupAddress}`);
+    }
+
+    const amountWei = parseEther(amount);
+    const client = this.getClient();
+    const election = CELO_CORE_CONTRACTS.election;
+    const accounts = CELO_CORE_CONTRACTS.accounts;
+    const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+    const [
+      canReceiveVotes,
+      nonvotingLocked,
+      accountRegistered,
+      eligibleGroups,
+      groupName,
+    ] = await Promise.all([
+      client.readContract({
+        address: election,
+        abi: electionAbi,
+        functionName: "canReceiveVotes",
+        args: [groupAddress],
+      }) as Promise<bigint>,
+      client.readContract({
+        address: lockedGold,
+        abi: lockedGoldAbi,
+        functionName: "getAccountNonvotingLockedGold",
+        args: [address],
+      }) as Promise<bigint>,
+      isCeloAccountRegistered(this.clientFactory, address),
+      client.readContract({
+        address: election,
+        abi: electionAbi,
+        functionName: "getEligibleValidatorGroups",
+      }) as Promise<readonly `0x${string}`[]>,
+      client
+        .readContract({
+          address: accounts,
+          abi: accountsAbi,
+          functionName: "getName",
+          args: [groupAddress],
+        })
+        .catch(() => undefined) as Promise<string | undefined>,
+    ]);
+
+    const inEligibleGroups = eligibleGroups.some(
+      (g) => g.toLowerCase() === groupAddress.toLowerCase(),
+    );
+
+    return deriveStakeEligibility({
+      address,
+      groupAddress,
+      groupName: groupName || undefined,
+      amount,
+      amountWei,
+      canReceiveVotes,
+      nonvotingLocked,
+      accountRegistered,
+      inEligibleGroups,
+    });
+  }
+
   async prepareStake(
     from: `0x${string}`,
     groupAddress: `0x${string}`,
     amount: string,
   ): Promise<SerializedPreparedFlow> {
-    await assertCeloAccountRegistered(this.clientFactory, from);
-    if (!isAddress(groupAddress)) {
-      throw new Error(`Invalid group address: ${groupAddress}`);
-    }
+    const eligibility = await this.getStakeEligibility(from, groupAddress, amount);
+    assertStakeEligible(eligibility);
 
     const amountWei = parseEther(amount);
     const groups = await this.fetchEligibleGroupsWithVotes();

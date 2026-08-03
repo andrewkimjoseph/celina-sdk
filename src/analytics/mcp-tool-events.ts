@@ -43,6 +43,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "self.verifySelfRequest": "verify_self_request",
   "staking.getActivatableStakes": "get_activatable_stakes",
   "staking.getDelegationInfo": "get_delegation_info",
+  "staking.getStakeEligibility": "get_stake_eligibility",
   "staking.getStakingBalances": "get_staking_balances",
   "staking.getTotalStakingInfo": "get_total_staking_info",
   "staking.getValidatorGroupDetails": "get_validator_group_details",

@@ -111,9 +111,31 @@ export const stakingToolDefinitions: ToolDefinition[] = [
     },
   },
   {
+    name: "get_stake_eligibility",
+    description:
+      "Check whether a stake would succeed before execute_stake. Validates Election.canReceiveVotes (group headroom), non-voting locked CELO balance, and Celo account registration. If canStake is false, read reasons — common failure is 'Group cannot receive votes' when a group is at capacity.",
+    inputSchema: z.object({
+      group_address: addressSchema,
+      amount: z.string().describe("CELO amount to stake (human-readable, from locked balance)"),
+      address: optionalWalletAddressSchema,
+    }),
+    families: ["read"],
+    mcp: { title: "Get Stake Eligibility", annotations: readOnly },
+    handler: async (runtime, input) => {
+      const target = resolveWalletFromRuntime(runtime, {
+        address: input.address as string | undefined,
+      });
+      return runtime.celina.staking.getStakeEligibility(
+        target,
+        input.group_address as `0x${string}`,
+        input.amount as string,
+      );
+    },
+  },
+  {
     name: "execute_stake",
     description:
-      "Stake locked CELO with a validator group. Requires humanness verification and registered Celo account.",
+      "Stake locked CELO with a validator group. Requires humanness verification and registered Celo account. Call get_stake_eligibility first.",
     inputSchema: z.object({
       group_address: addressSchema,
       amount: z.string(),
