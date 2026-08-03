@@ -94,14 +94,14 @@ See [Quick start](getting-started/quick-start.md), [LLM tool catalog](guides/too
 | `uniswap`     | `getSwapQuote`, `estimateSwap`                   | `prepareSwap`                                |
 | `aave`        | —                                                | `prepareSupply`, `prepareWithdraw`           |
 | `governance`  | proposals, votable proposals, locked balance, pending withdrawals | `prepareLockCelo`, `prepareUnlockCelo`, `prepareRelockCelo`, `prepareWithdrawCelo`, `prepareVote` (humanness-gated) |
-| `staking`     | balances, activatable stakes, validator groups, delegation info | `prepareStake`, `prepareActivateStake`, `prepareUnstake`, `prepareDelegatePower`, `prepareUndelegatePower` (humanness-gated) |
+| `staking`     | balances, activatable stakes, validator groups, delegation info, `getStakeEligibility` | `prepareStake`, `prepareActivateStake`, `prepareUnstake`, `prepareDelegatePower`, `prepareUndelegatePower` (humanness-gated) |
 | `humanness`   | `checkHumanness` — dual-rail Self **or** GoodDollar        | —                                            |
 | `nft`         | NFT info, balance                                | —                                            |
 | `contract`    | `callFunction`, `estimateGas`                    | `prepareFunction`                            |
 | `self`        | verify, lookup, session lifecycle                | agent signing (Node + `selfAgentPrivateKey`) |
 | `agentKarma`  | karma, ERC-8004 agent, counterparty trust policy | —                                            |
 
-Governance and staking `prepare*` writes require `checkHumanness` to pass first — see [Humanness](guides/humanness.md). GoodDollar identity has two distinct paths (first-time face verify vs connecting a secondary wallet to an existing verified root) — see [GoodDollar UBI](guides/gooddollar.md#face-verify-vs-connect).
+Governance and staking `prepare*` writes require `checkHumanness` to pass first — see [Humanness](guides/humanness.md). Before staking, call `getStakeEligibility` (or rely on `prepareStake`'s built-in check) — see [Staking](guides/staking.md#stake-eligibility-pre-check). GoodDollar identity has two distinct paths (first-time face verify vs connecting a secondary wallet to an existing verified root) — see [GoodDollar UBI](guides/gooddollar.md#face-verify-vs-connect).
 
 Full method signatures: [API reference](api-reference/).
 

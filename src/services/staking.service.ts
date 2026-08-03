@@ -27,6 +27,7 @@ import { findLesserAndGreaterAfterVote } from "../utils/election-vote-neighbors.
 import { fromFixidity, percentToFixidity } from "../utils/fixidity.js";
 import {
   assertStakeEligible,
+  computeGroupVoteHeadroom,
   deriveStakeEligibility,
   type StakeEligibilityResult,
 } from "../utils/stake-eligibility.js";
@@ -418,7 +419,7 @@ export class StakingService {
     const accounts = CELO_CORE_CONTRACTS.accounts;
     const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
 
-    const [groupInfo, name, votes, eligibleGroups, totalLockedGold, allValidators, canReceiveVotes] =
+    const [groupInfo, name, votes, eligibleGroups, totalLockedGold, allValidators, totalVotesForGroup] =
       await Promise.all([
         client.readContract({
           address: validators,
@@ -474,7 +475,7 @@ export class StakingService {
         client.readContract({
           address: election,
           abi: electionAbi,
-          functionName: "canReceiveVotes",
+          functionName: "getTotalVotesForGroup",
           args: [groupAddress],
         }) as Promise<bigint>,
       ]);
@@ -488,6 +489,7 @@ export class StakingService {
       totalLockedGold || votes,
       totalValidators,
     );
+    const voteHeadroom = computeGroupVoteHeadroom(capacity, totalVotesForGroup);
 
     const memberCalls = members.flatMap((member) => [
       {
@@ -560,8 +562,8 @@ export class StakingService {
       votesFormatted: formatCeloAmount(votes),
       capacity: capacity.toString(),
       capacityFormatted: formatCeloAmount(capacity),
-      canReceiveVotes: canReceiveVotes.toString(),
-      canReceiveVotesFormatted: formatCeloAmount(canReceiveVotes),
+      canReceiveVotes: voteHeadroom.toString(),
+      canReceiveVotesFormatted: formatCeloAmount(voteHeadroom),
       lastSlashed,
       eligible,
       numMembers: members.length,
@@ -654,6 +656,68 @@ export class StakingService {
     };
   }
 
+  private async fetchGroupVoteHeadroom(groupAddress: `0x${string}`): Promise<bigint> {
+    const client = this.getClient();
+    const election = CELO_CORE_CONTRACTS.election;
+    const validators = CELO_CORE_CONTRACTS.validators;
+    const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+    const [groupInfoResult, totalVotesForGroup, totalLockedGold, allValidators] =
+      await Promise.all([
+        client
+          .readContract({
+            address: validators,
+            abi: validatorsMinimalAbi,
+            functionName: "getValidatorGroup",
+            args: [groupAddress],
+          })
+          .catch(() => null) as Promise<
+          | readonly [
+              readonly `0x${string}`[],
+              bigint,
+              bigint,
+              string,
+              readonly bigint[],
+              bigint,
+              bigint,
+            ]
+          | null
+        >,
+        client.readContract({
+          address: election,
+          abi: electionAbi,
+          functionName: "getTotalVotesForGroup",
+          args: [groupAddress],
+        }) as Promise<bigint>,
+        client
+          .readContract({
+            address: lockedGold,
+            abi: lockedGoldAbi,
+            functionName: "getTotalLockedGold",
+          })
+          .catch(() => 0n) as Promise<bigint>,
+        client
+          .readContract({
+            address: validators,
+            abi: validatorsMinimalAbi,
+            functionName: "getRegisteredValidators",
+          })
+          .catch(() => [] as readonly `0x${string}`[]) as Promise<
+          readonly `0x${string}`[]
+        >,
+      ]);
+
+    const numMembers = groupInfoResult?.[0]?.length ?? 0;
+    const totalValidators = allValidators.length || MAX_ELECTABLE_VALIDATORS;
+    const capacity = calculateGroupCapacity(
+      numMembers,
+      totalLockedGold || totalVotesForGroup,
+      totalValidators,
+    );
+
+    return computeGroupVoteHeadroom(capacity, totalVotesForGroup);
+  }
+
   private buildStep(
     to: `0x${string}`,
     data: `0x${string}`,
@@ -694,7 +758,8 @@ export class StakingService {
 
   /**
    * Check whether a stake with the given amount would succeed before execute_stake.
-   * Uses Election.canReceiveVotes, non-voting locked balance, and account registration.
+   * Uses computed group headroom and Election.canReceiveVotes(group, amount),
+   * non-voting locked balance, and account registration.
    */
   async getStakeEligibility(
     address: `0x${string}`,
@@ -715,18 +780,20 @@ export class StakingService {
     const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
 
     const [
-      canReceiveVotes,
+      voteHeadroom,
+      canReceiveAmount,
       nonvotingLocked,
       accountRegistered,
       eligibleGroups,
       groupName,
     ] = await Promise.all([
+      this.fetchGroupVoteHeadroom(groupAddress),
       client.readContract({
         address: election,
         abi: electionAbi,
         functionName: "canReceiveVotes",
-        args: [groupAddress],
-      }) as Promise<bigint>,
+        args: [groupAddress, amountWei],
+      }) as Promise<boolean>,
       client.readContract({
         address: lockedGold,
         abi: lockedGoldAbi,
@@ -759,7 +826,8 @@ export class StakingService {
       groupName: groupName || undefined,
       amount,
       amountWei,
-      canReceiveVotes,
+      canReceiveVotes: voteHeadroom,
+      canReceiveAmount,
       nonvotingLocked,
       accountRegistered,
       inEligibleGroups,

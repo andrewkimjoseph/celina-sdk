@@ -41,6 +41,7 @@
 - [SendPreparedFlowMode](type-aliases/SendPreparedFlowMode.md)
 - [SendPreparedFlowOptions](type-aliases/SendPreparedFlowOptions.md)
 - [SendPreparedFlowResult](type-aliases/SendPreparedFlowResult.md)
+- [StakeEligibilityResult](type-aliases/StakeEligibilityResult.md)
 - [UserOpCall](type-aliases/UserOpCall.md)
 - [VoteValueName](type-aliases/VoteValueName.md)
 
@@ -131,6 +132,12 @@ Re-exports [ContractCallParams](../services/contract.service/interfaces/Contract
 ### CounterpartyDecision
 
 Re-exports [CounterpartyDecision](../services/agentkarma.service/interfaces/CounterpartyDecision.md)
+
+***
+
+### FaceVerificationLinkResult
+
+Re-exports [FaceVerificationLinkResult](../services/gooddollar.service/type-aliases/FaceVerificationLinkResult.md)
 
 ***
 

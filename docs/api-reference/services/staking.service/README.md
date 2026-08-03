@@ -9,3 +9,9 @@
 ## Classes
 
 - [StakingService](classes/StakingService.md)
+
+## References
+
+### StakeEligibilityResult
+
+Re-exports [StakeEligibilityResult](../../index/type-aliases/StakeEligibilityResult.md)

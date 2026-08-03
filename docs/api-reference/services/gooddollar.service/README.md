@@ -17,6 +17,7 @@
 
 ## Type Aliases
 
+- [FaceVerificationLinkResult](type-aliases/FaceVerificationLinkResult.md)
 - [GoodDollarReserveAmountSide](type-aliases/GoodDollarReserveAmountSide.md)
 
 ## References

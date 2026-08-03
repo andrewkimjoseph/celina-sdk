@@ -6,7 +6,7 @@
 
 # Interface: SerializedPreparedFlow
 
-Defined in: [src/types/prepared.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L39)
+Defined in: [src/types/prepared.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L39)
 
 Prepared flow = ordered unsigned transactions ready to sign or submit as UserOps —
 not a runtime workflow engine. JSON-safe form returned by `prepare*` tools and chat APIs.
@@ -24,7 +24,7 @@ then call `sendTransactionAsync` (wagmi), `walletClient.sendTransaction` (viem),
 
 > **chainId**: `42220`
 
-Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L28)
+Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L28)
 
 Celo chain id (`celo.id` / [CHAIN](../../../index/variables/CHAIN.md).id); always `42220` for Celina today.
 
@@ -38,7 +38,7 @@ Celo chain id (`celo.id` / [CHAIN](../../../index/variables/CHAIN.md).id); alway
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L29)
+Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L29)
 
 #### Inherited from
 
@@ -50,7 +50,7 @@ Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina
 
 > **preparedFlow**: `true`
 
-Defined in: [src/types/prepared.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L41)
+Defined in: [src/types/prepared.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L41)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [src/types/prepared.ts:41](https://github.com/andrewkimjoseph/celina
 
 > **steps**: [`PreparedTx`](PreparedTx.md)[]
 
-Defined in: [src/types/prepared.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L40)
+Defined in: [src/types/prepared.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L40)
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: [src/types/prepared.ts:40](https://github.com/andrewkimjoseph/celina
 
 > **summary**: `string`
 
-Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/types/prepared.ts#L26)
+Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L26)
 
 #### Inherited from
 

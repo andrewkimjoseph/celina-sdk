@@ -6,7 +6,7 @@
 
 # Interface: RegisterSelfAgentParams
 
-Defined in: [src/services/self.service.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L66)
+Defined in: [src/services/self.service.ts:67](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L67)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/self.service.ts:66](https://github.com/andrewkimjoseph
 
 > `optional` **agentDescription?**: `string`
 
-Defined in: [src/services/self.service.ts:72](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L72)
+Defined in: [src/services/self.service.ts:75](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L75)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/self.service.ts:72](https://github.com/andrewkimjoseph
 
 > `optional` **agentName?**: `string`
 
-Defined in: [src/services/self.service.ts:71](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L71)
+Defined in: [src/services/self.service.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L74)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/self.service.ts:71](https://github.com/andrewkimjoseph
 
 > `optional` **humanAddress?**: `` `0x${string}` ``
 
-Defined in: [src/services/self.service.ts:70](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L70)
+Defined in: [src/services/self.service.ts:73](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L73)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/services/self.service.ts:70](https://github.com/andrewkimjoseph
 
 > `optional` **minimumAge?**: `0` \| `18` \| `21`
 
-Defined in: [src/services/self.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L68)
+Defined in: [src/services/self.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L69)
 
 ***
 
@@ -46,7 +46,17 @@ Defined in: [src/services/self.service.ts:68](https://github.com/andrewkimjoseph
 
 > `optional` **mode?**: [`SelfRegistrationMode`](../../../index/type-aliases/SelfRegistrationMode.md)
 
-Defined in: [src/services/self.service.ts:67](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L67)
+Defined in: [src/services/self.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L68)
+
+***
+
+### nationality?
+
+> `optional` **nationality?**: `boolean`
+
+Defined in: [src/services/self.service.ts:72](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L72)
+
+Request nationality disclosure into the proof (ISO alpha-3 on-chain). Default true.
 
 ***
 
@@ -54,4 +64,4 @@ Defined in: [src/services/self.service.ts:67](https://github.com/andrewkimjoseph
 
 > `optional` **ofac?**: `boolean`
 
-Defined in: [src/services/self.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/self.service.ts#L69)
+Defined in: [src/services/self.service.ts:70](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/self.service.ts#L70)

@@ -344,7 +344,46 @@ export const stakingOperations: OperationSpec[] = [
         address: fx.wallet,
       }),
     },
-    assert: (result) => assertHasKeys(result, ["canStake", "reasons", "canReceiveVotes"]),
+    assert: (result) => {
+      const obj = assertHasKeys(result, [
+        "canStake",
+        "reasons",
+        "canReceiveVotes",
+      ]);
+      assert.equal(typeof obj.canStake, "boolean");
+      assert.equal(Array.isArray(obj.reasons), true);
+    },
+  },
+  {
+    id: "staking.getStakeEligibility.cLabs",
+    domain: "staking",
+    layer: "read",
+    sdk: {
+      invoke: (client, fx) =>
+        client.staking.getStakeEligibility(
+          fx.wallet,
+          "0xE09632da4dEAFb3DA2Cd6939F31c98607fCCdBC5",
+          "1",
+        ),
+    },
+    mcp: {
+      tool: "get_stake_eligibility",
+      arguments: (fx) => ({
+        group_address: "0xE09632da4dEAFb3DA2Cd6939F31c98607fCCdBC5",
+        amount: "1",
+        address: fx.wallet,
+      }),
+    },
+    assert: (result) => {
+      const obj = assertHasKeys(result, [
+        "canStake",
+        "reasons",
+        "canReceiveVotes",
+        "groupName",
+      ]);
+      assert.equal(typeof obj.canStake, "boolean");
+      assert.equal(Array.isArray(obj.reasons), true);
+    },
   },
   {
     id: "staking.prepareStake",

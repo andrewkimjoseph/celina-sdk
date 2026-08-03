@@ -8,7 +8,7 @@
 
 > **UserOpCall** = `object`
 
-Defined in: [src/aa/types.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L55)
+Defined in: [src/aa/types.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L55)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/aa/types.ts:55](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > `optional` **data?**: `` `0x${string}` ``
 
-Defined in: [src/aa/types.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L57)
+Defined in: [src/aa/types.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L57)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/aa/types.ts:57](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > **to**: `` `0x${string}` ``
 
-Defined in: [src/aa/types.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L56)
+Defined in: [src/aa/types.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L56)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [src/aa/types.ts:56](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > `optional` **value?**: `bigint`
 
-Defined in: [src/aa/types.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/aa/types.ts#L58)
+Defined in: [src/aa/types.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L58)

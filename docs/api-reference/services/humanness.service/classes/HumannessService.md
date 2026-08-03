@@ -6,7 +6,7 @@
 
 # Class: HumannessService
 
-Defined in: [src/services/humanness.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L29)
+Defined in: [src/services/humanness.service.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L29)
 
 Address-bound humanness gate across Self and GoodDollar rails.
 
@@ -16,7 +16,7 @@ Address-bound humanness gate across Self and GoodDollar rails.
 
 > **new HumannessService**(`clientFactory`, `selfService`): `HumannessService`
 
-Defined in: [src/services/humanness.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L30)
+Defined in: [src/services/humanness.service.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L30)
 
 #### Parameters
 
@@ -38,7 +38,7 @@ Defined in: [src/services/humanness.service.ts:30](https://github.com/andrewkimj
 
 > **checkHumanness**(`signerAddress`): `Promise`\<[`HumannessCheckResult`](../interfaces/HumannessCheckResult.md)\>
 
-Defined in: [src/services/humanness.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L39)
+Defined in: [src/services/humanness.service.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L39)
 
 Check whether an address passes humanness on either Self or GoodDollar.
 

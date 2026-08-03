@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { parseEther } from "viem";
-import { deriveStakeEligibility } from "../../src/utils/stake-eligibility.js";
+import {
+  computeGroupVoteHeadroom,
+  deriveStakeEligibility,
+} from "../../src/utils/stake-eligibility.js";
 
 const ADDRESS = "0x5409ED021D9299bf6814279A6A1411A7e866A631" as const;
 const GROUP = "0xe09632da4deafb3da2cd6939f31c98607fccdbc5" as const;
@@ -12,10 +15,28 @@ const baseInput = {
   amount: "1",
   amountWei: parseEther("1"),
   canReceiveVotes: parseEther("100"),
+  canReceiveAmount: true,
   nonvotingLocked: parseEther("10"),
   accountRegistered: true,
   inEligibleGroups: true,
 };
+
+describe("computeGroupVoteHeadroom", () => {
+  it("returns capacity minus total votes when under cap", () => {
+    expect(
+      computeGroupVoteHeadroom(parseEther("100"), parseEther("40")),
+    ).toBe(parseEther("60"));
+  });
+
+  it("returns zero when at or over cap", () => {
+    expect(
+      computeGroupVoteHeadroom(parseEther("100"), parseEther("100")),
+    ).toBe(0n);
+    expect(
+      computeGroupVoteHeadroom(parseEther("100"), parseEther("150")),
+    ).toBe(0n);
+  });
+});
 
 describe("deriveStakeEligibility", () => {
   it("returns canStake true when all checks pass", () => {
@@ -30,6 +51,18 @@ describe("deriveStakeEligibility", () => {
     const result = deriveStakeEligibility({
       ...baseInput,
       canReceiveVotes: 0n,
+    });
+
+    expect(result.canStake).toBe(false);
+    expect(result.reasons.some((r) => r.includes("cannot receive votes"))).toBe(
+      true,
+    );
+  });
+
+  it("blocks when on-chain canReceiveAmount is false", () => {
+    const result = deriveStakeEligibility({
+      ...baseInput,
+      canReceiveAmount: false,
     });
 
     expect(result.canStake).toBe(false);
@@ -81,10 +114,21 @@ describe("StakingService.getStakeEligibility", () => {
   it("maps on-chain reads into eligibility result", async () => {
     const { StakingService } = await import("../../src/services/staking.service.js");
 
-    const readContract = async (args: { functionName: string; args?: unknown[] }) => {
+    const readContract = async (args: {
+      functionName: string;
+      args?: unknown[];
+    }) => {
       switch (args.functionName) {
         case "canReceiveVotes":
-          return 0n;
+          return false;
+        case "getTotalVotesForGroup":
+          return parseEther("1000");
+        case "getValidatorGroup":
+          return [[GROUP], 0n, 0n, "", [], 0n, 0n];
+        case "getTotalLockedGold":
+          return parseEther("1000000");
+        case "getRegisteredValidators":
+          return [GROUP];
         case "getAccountNonvotingLockedGold":
           return parseEther("10");
         case "isAccount":
@@ -109,6 +153,8 @@ describe("StakingService.getStakeEligibility", () => {
     expect(result.canStake).toBe(false);
     expect(result.groupName).toBe("cLabs");
     expect(result.inEligibleGroups).toBe(true);
-    expect(result.canReceiveVotes).toBe("0");
+    expect(result.reasons.some((r) => r.includes("cannot receive votes"))).toBe(
+      true,
+    );
   });
 });

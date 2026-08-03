@@ -13,3 +13,5 @@
 ## Interfaces
 
 - [GovernanceProposalsOptions](interfaces/GovernanceProposalsOptions.md)
+- [GovernanceRevokeUpvoteOptions](interfaces/GovernanceRevokeUpvoteOptions.md)
+- [GovernanceVotesOptions](interfaces/GovernanceVotesOptions.md)

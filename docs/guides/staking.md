@@ -33,7 +33,39 @@ const { groups, pagination } = await celina.staking.getValidatorGroups({ page: 1
 // groups[].address, groups[].votes, groups[].capacity, groups[].members
 
 const details = await celina.staking.getValidatorGroupDetails("0xGroupAddress");
+// details.canReceiveVotes, details.canReceiveVotesFormatted — remaining headroom before the group hits its cap
 ```
+
+## Stake eligibility pre-check
+
+Before staking, check whether the transaction would succeed on-chain. The SDK:
+
+- Computes **group headroom** as `capacity − getTotalVotesForGroup(group)` (remaining CELO the group can accept before hitting its cap)
+- Calls on-chain **`Election.canReceiveVotes(group, amount)`** (returns `bool`) — the exact gate `vote()` uses
+
+When headroom is zero or the bool is false, stake reverts with **"Group cannot receive votes"** (e.g. cLabs at capacity).
+
+```ts
+const eligibility = await celina.staking.getStakeEligibility(
+  "0xYourAddress",
+  "0xGroupAddress",
+  "100",
+);
+// eligibility.canStake — true when all gates pass
+// eligibility.reasons[] — human-readable blockers when canStake is false
+// eligibility.maxStakeAmountFormatted — min(non-voting locked, headroom)
+// eligibility.canReceiveVotesFormatted, eligibility.nonvotingLockedFormatted
+```
+
+Recommended flow:
+
+1. `getValidatorGroupDetails` — inspect `canReceiveVotesFormatted` for group headroom
+2. `getStakeEligibility` — validate account registration, locked balance, and amount against headroom
+3. Only then `prepareStake` / `execute_stake`
+
+`prepareStake` runs the same validation via `assertStakeEligible` and throws before building unsigned steps — so browser apps get fail-fast behavior even without an explicit pre-check call.
+
+The result type `StakeEligibilityResult` is exported from `@andrewkimjoseph/celina-sdk`.
 
 ## Network totals and delegation
 
@@ -52,6 +84,7 @@ All five are humanness-gated by convention (see [Humanness](humanness.md)) — t
 
 ```ts
 // Stake — casts an Election vote for a validator group; finds lesser/greater neighbors on-chain
+// Validates eligibility first (same checks as getStakeEligibility) — throws if canStake would be false
 const stakeFlow = await celina.staking.prepareStake(from, groupAddress, "100");
 
 // Activate — converts pending votes to active once activatable
@@ -91,7 +124,8 @@ for (const step of flow.steps) {
 | `getValidatorGroupDetails` | `get_validator_group_details` | — (read, both surfaces) |
 | `getTotalStakingInfo` | `get_total_staking_info` | — (read, both surfaces) |
 | `getDelegationInfo` | `get_delegation_info` | — (read, both surfaces) |
-| `prepareStake` | `execute_stake` | `prepare_stake` |
+| `getStakeEligibility` | `get_stake_eligibility` | — (read, both surfaces) |
+| `prepareStake` | `execute_stake` (call `get_stake_eligibility` first; enforced in SDK for `prepareStake`) | `prepare_stake` |
 | `prepareActivateStake` | `execute_activate_stake` | `prepare_activate_stake` |
 | `prepareUnstake` | `execute_unstake` | `prepare_unstake` |
 | `prepareDelegatePower` | `execute_delegate_power` | `prepare_delegate_power` |

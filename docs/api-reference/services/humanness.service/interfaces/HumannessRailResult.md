@@ -6,7 +6,7 @@
 
 # Interface: HumannessRailResult
 
-Defined in: [src/services/humanness.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L11)
+Defined in: [src/services/humanness.service.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L11)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/humanness.service.ts:11](https://github.com/andrewkimj
 
 > `optional` **agentId?**: `number`
 
-Defined in: [src/services/humanness.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L14)
+Defined in: [src/services/humanness.service.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L14)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/humanness.service.ts:14](https://github.com/andrewkimj
 
 > **checked**: `boolean`
 
-Defined in: [src/services/humanness.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L12)
+Defined in: [src/services/humanness.service.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L12)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/humanness.service.ts:12](https://github.com/andrewkimj
 
 > **isHuman**: `boolean`
 
-Defined in: [src/services/humanness.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L13)
+Defined in: [src/services/humanness.service.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L13)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [src/services/humanness.service.ts:13](https://github.com/andrewkimj
 
 > `optional` **reason?**: `string`
 
-Defined in: [src/services/humanness.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L16)
+Defined in: [src/services/humanness.service.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L16)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [src/services/humanness.service.ts:16](https://github.com/andrewkimj
 
 > `optional` **whitelistedRoot?**: `` `0x${string}` ``
 
-Defined in: [src/services/humanness.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/humanness.service.ts#L15)
+Defined in: [src/services/humanness.service.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/humanness.service.ts#L15)

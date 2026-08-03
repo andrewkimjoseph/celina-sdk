@@ -8,7 +8,7 @@
 
 > **findLesserAndGreaterAfterVote**(`groups`, `targetGroup`, `voteWeight`): `object`
 
-Defined in: [src/utils/election-vote-neighbors.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/utils/election-vote-neighbors.ts#L12)
+Defined in: [src/utils/election-vote-neighbors.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/utils/election-vote-neighbors.ts#L12)
 
 Find lesser/greater neighbour validator groups after a vote weight change.
 Mirrors Celo Mondo's findLesserAndGreaterAfterVote (groups sorted descending).

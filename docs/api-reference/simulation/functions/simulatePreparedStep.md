@@ -8,7 +8,7 @@
 
 > **simulatePreparedStep**(`publicClient`, `params`, `options?`): `Promise`\<`void`\>
 
-Defined in: [src/simulation/simulate-prepared-step.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/simulation/simulate-prepared-step.ts#L54)
+Defined in: [src/simulation/simulate-prepared-step.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/simulation/simulate-prepared-step.ts#L54)
 
 Simulate a prepared transaction step against current chain state.
 Throws when the transaction would revert — call immediately before send.

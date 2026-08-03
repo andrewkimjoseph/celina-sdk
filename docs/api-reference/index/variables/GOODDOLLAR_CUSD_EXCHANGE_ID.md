@@ -8,6 +8,6 @@
 
 > `const` **GOODDOLLAR\_CUSD\_EXCHANGE\_ID**: `"0xba77f5c7bb3317643c6d81d1ef3f9913561741d92095f88efa402faf2cbe9124"`
 
-Defined in: [src/config/gooddollar.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/config/gooddollar.ts#L22)
+Defined in: [src/config/gooddollar.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/config/gooddollar.ts#L22)
 
 Exchange pool id for G$ ↔ USDm (CUSD in GoodProtocol deployment).

@@ -6,7 +6,7 @@
 
 # Interface: GoodDollarReserveSwapParams
 
-Defined in: [src/services/gooddollar.service.ts:85](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/gooddollar.service.ts#L85)
+Defined in: [src/services/gooddollar.service.ts:104](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/gooddollar.service.ts#L104)
 
 Optional parameters for GoodDollar reserve swap prepares.
 
@@ -16,7 +16,7 @@ Optional parameters for GoodDollar reserve swap prepares.
 
 > `optional` **amountSide?**: [`GoodDollarReserveAmountSide`](../type-aliases/GoodDollarReserveAmountSide.md)
 
-Defined in: [src/services/gooddollar.service.ts:94](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/gooddollar.service.ts#L94)
+Defined in: [src/services/gooddollar.service.ts:113](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/gooddollar.service.ts#L113)
 
 `in` (default): `amount` is token_in spend. `out`: `amount` is desired token_out;
 SDK resolves required token_in via MentoBroker `getAmountIn`.
@@ -27,7 +27,7 @@ SDK resolves required token_in via MentoBroker `getAmountIn`.
 
 > `optional` **recipient?**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar.service.ts:89](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/gooddollar.service.ts#L89)
+Defined in: [src/services/gooddollar.service.ts:108](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/gooddollar.service.ts#L108)
 
 Address receiving output tokens (default: `from`).
 
@@ -37,6 +37,6 @@ Address receiving output tokens (default: `from`).
 
 > `optional` **slippageTolerance?**: `number`
 
-Defined in: [src/services/gooddollar.service.ts:87](https://github.com/andrewkimjoseph/celina-sdk/blob/108a06415a8ecf8f0740dcf787117e653a3ffce0/src/services/gooddollar.service.ts#L87)
+Defined in: [src/services/gooddollar.service.ts:106](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/services/gooddollar.service.ts#L106)
 
 Max slippage tolerance in percent (default `0.5`).

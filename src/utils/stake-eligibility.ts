@@ -7,11 +7,22 @@ export type StakeEligibilityInput = {
   groupName?: string;
   amount: string;
   amountWei: bigint;
+  /** Remaining vote headroom before the group hits its cap. */
   canReceiveVotes: bigint;
+  /** On-chain Election.canReceiveVotes(group, amount) — exact gate used by vote(). */
+  canReceiveAmount: boolean;
   nonvotingLocked: bigint;
   accountRegistered: boolean;
   inEligibleGroups: boolean;
 };
+
+/** Headroom = max(0, capacity - totalVotesForGroup). */
+export function computeGroupVoteHeadroom(
+  capacity: bigint,
+  totalVotesForGroup: bigint,
+): bigint {
+  return capacity > totalVotesForGroup ? capacity - totalVotesForGroup : 0n;
+}
 
 export type StakeEligibilityResult = {
   network: "mainnet";
@@ -47,7 +58,7 @@ export function deriveStakeEligibility(
     reasons.push("Stake amount must be greater than zero.");
   }
 
-  if (input.canReceiveVotes === 0n) {
+  if (!input.canReceiveAmount || input.canReceiveVotes === 0n) {
     reasons.push("Group cannot receive votes (at capacity).");
   } else if (input.amountWei > input.canReceiveVotes) {
     reasons.push(
