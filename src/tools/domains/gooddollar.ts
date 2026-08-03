@@ -223,7 +223,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_face_verification_link",
     description:
-      "Generate a GoodDollar face verification link for the MCP server wallet (first-time verify this wallet as an identity root). Skipped when the signer is already whitelisted or linked to a verified root. Requires a signing key.",
+      "Generate a GoodDollar face verification link for the MCP server wallet (first-time verify this wallet as an identity root). Skipped when the signer is already whitelisted or linked to a verified root. Requires a signing key. Link generation is implemented in celina-sdk; MCP forwards configured viem clients.",
     inputSchema: z.object({
       callback_url: z.string().url().describe("URL to redirect after verification"),
     }),

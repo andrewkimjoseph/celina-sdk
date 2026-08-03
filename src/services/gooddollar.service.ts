@@ -7,8 +7,11 @@ import {
   formatUnits,
   maxUint256,
   type Hex,
+  type PublicClient,
+  type WalletClient,
 } from "viem";
 import type { CeloClientFactory } from "../clients/celo-client.js";
+import { IdentitySDK } from "../clients/citizen-sdk.js";
 import { goodDollarBrokerAbi } from "../abis/gooddollar-broker.js";
 import { goodDollarIdentityAbi } from "../abis/gooddollar-identity.js";
 import { ubiSchemeAbi } from "../abis/ubi-scheme.js";
@@ -45,6 +48,7 @@ import { resolveUbiPeriodEligibility } from "../utils/gooddollar-ubi-period.js";
 import {
   buildConnectIdentityError,
   deriveGoodDollarIdentityGuidance,
+  shouldSkipFaceVerification,
   type GoodDollarIdentityGuidance,
 } from "./gooddollar-identity-guidance.js";
 
@@ -64,6 +68,21 @@ const SECONDS_PER_DAY = 86400n;
 
 const G_DOLLAR_DECIMALS = 18;
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
+
+export type FaceVerificationLinkResult = {
+  from: `0x${string}`;
+  callbackUrl: string;
+  link?: string;
+  network: "celo-mainnet";
+  skipped?: boolean;
+  reason?: string;
+  guidance?: {
+    recommendedAction: string;
+    message: string;
+    whitelistedRoot?: `0x${string}`;
+    connectedTo?: `0x${string}`;
+  };
+};
 
 const STATUS_LABELS: Record<number, string> = {
   0: "none",
@@ -271,6 +290,61 @@ export class GoodDollarService {
       whitelistedRoot: link.whitelistedRoot,
       connectedTo: link.connectedTo,
     });
+  }
+
+  /**
+   * Generate a GoodDollar face verification link for a wallet that needs first-time verification.
+   * Callers supply viem clients with a local account — the SDK does not read private keys.
+   */
+  async getFaceVerificationLink(params: {
+    publicClient: PublicClient;
+    walletClient: WalletClient;
+    accountAddress: `0x${string}`;
+    callbackUrl: string;
+  }): Promise<FaceVerificationLinkResult> {
+    const { publicClient, walletClient, accountAddress, callbackUrl } = params;
+    const guidance = await this.getIdentityGuidance(accountAddress);
+
+    if (shouldSkipFaceVerification(guidance)) {
+      return {
+        from: accountAddress,
+        callbackUrl,
+        network: "celo-mainnet",
+        skipped: true,
+        reason: guidance.recommendedAction,
+        guidance: {
+          recommendedAction: guidance.recommendedAction,
+          message: guidance.message,
+          whitelistedRoot: guidance.whitelistedRoot,
+          connectedTo: guidance.connectedTo,
+        },
+      };
+    }
+
+    if (!IdentitySDK) {
+      throw new Error("@goodsdks/citizen-sdk IdentitySDK export not found.");
+    }
+
+    // Use direct construction — IdentitySDK.init() always returns the base class
+    // and signs via RPC personal_sign, which Forno does not support.
+    const sdk = new IdentitySDK({
+      publicClient: publicClient as never,
+      walletClient: walletClient as never,
+      env: "production",
+    });
+
+    const link = await sdk.generateFVLink(false, callbackUrl, 42220);
+
+    return {
+      from: accountAddress,
+      callbackUrl,
+      link,
+      network: "celo-mainnet",
+      guidance: {
+        recommendedAction: guidance.recommendedAction,
+        message: guidance.message,
+      },
+    };
   }
 
   /**

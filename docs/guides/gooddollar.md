@@ -138,15 +138,24 @@ const guidance = await celina.gooddollar.getIdentityGuidance("0xYourAddress");
 
 If you already verified on wallet A and the current signer is wallet B: do not face-verify B. Set `CELO_PRIVATE_KEY` to wallet A and call `execute_connect_gooddollar_identity` with `connected_account` set to wallet B.
 
-**MCP face-verification pre-check:** `get_gooddollar_face_verification_link` calls `getIdentityGuidance` first. When `shouldSkipFaceVerification(guidance)` is `true` (`connect_secondary` or `already_verified`), it returns `{ skipped: true, reason, guidance }` **without** generating a link — no wasted round trip to the citizen-sdk.
+**Face verification link generation:** `celina.gooddollar.getFaceVerificationLink(...)` is a direct SDK method. Callers supply their own viem `publicClient` and `walletClient` (e.g. from wagmi in the browser or a Node signer in MCP). The SDK runs `getIdentityGuidance` first; when `shouldSkipFaceVerification(guidance)` is `true` (`connect_secondary` or `already_verified`), it returns `{ skipped: true, reason, guidance }` **without** calling citizen-sdk.
 
 ```ts
 import { shouldSkipFaceVerification } from "@andrewkimjoseph/celina-sdk";
 
-if (shouldSkipFaceVerification(guidance)) {
-  // guidance.message already explains what to do instead
+const result = await celina.gooddollar.getFaceVerificationLink({
+  publicClient,
+  walletClient,
+  accountAddress: "0xYourAddress",
+  callbackUrl: "https://your-app.example/callback",
+});
+
+if (result.skipped) {
+  // result.guidance.message explains what to do instead
 }
 ```
+
+The MCP tool `get_gooddollar_face_verification_link` is a thin wrapper: it builds clients from `CELO_PRIVATE_KEY` / `SELF_AGENT_PRIVATE_KEY` and forwards them into this SDK method.
 
 `prepareConnectIdentity` (→ `execute_connect_gooddollar_identity`) throws a guidance-aware error when the signer is not the whitelisted root — including the specific remediation for a *connected* wallet trying to connect another wallet (not allowed; only the root can).
 
