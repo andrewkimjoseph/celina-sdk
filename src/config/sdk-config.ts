@@ -1,5 +1,7 @@
 import { detectConsumerPackageName } from "../analytics/consumer-package.js";
 
+import { parsePrivateKeyEnv } from "../utils/normalize-private-key.js";
+
 /** RPC configuration for `createCelinaClient()`. */
 export interface SdkConfig {
   /** Celo mainnet JSON-RPC URL (default Forno). */
@@ -44,11 +46,16 @@ export const DEFAULT_RPC_URL = "https://forno.celo.org";
  * @param opts - Optional RPC overrides from `createCelinaClient(opts)`
  */
 export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
-  const selfAgentPrivateKey =
+  const rawSelfAgentPrivateKey =
     opts?.selfAgentPrivateKey ??
     (typeof process !== "undefined"
-      ? (process.env.SELF_AGENT_PRIVATE_KEY as `0x${string}` | undefined)
+      ? process.env.SELF_AGENT_PRIVATE_KEY
       : undefined);
+
+  const selfAgentPrivateKey =
+    rawSelfAgentPrivateKey === undefined
+      ? undefined
+      : parsePrivateKeyEnv(rawSelfAgentPrivateKey, "SELF_AGENT_PRIVATE_KEY");
 
   return {
     rpcUrl: opts?.rpcUrl ?? DEFAULT_RPC_URL,
