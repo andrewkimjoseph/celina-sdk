@@ -6,7 +6,7 @@
 
 # Interface: PreparedTx
 
-Defined in: [src/types/prepared.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L9)
+Defined in: [src/types/prepared.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L9)
 
 One unsigned transaction in a prepared list (`steps`).
 Calldata may already include Celina ERC-8021 attribution from `prepare*`.
@@ -17,7 +17,7 @@ Calldata may already include Celina ERC-8021 attribution from `prepare*`.
 
 > `optional` **data?**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L13)
+Defined in: [src/types/prepared.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L13)
 
 ***
 
@@ -25,7 +25,7 @@ Defined in: [src/types/prepared.ts:13](https://github.com/andrewkimjoseph/celina
 
 > **description**: `string`
 
-Defined in: [src/types/prepared.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L16)
+Defined in: [src/types/prepared.ts:16](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L16)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [src/types/prepared.ts:16](https://github.com/andrewkimjoseph/celina
 
 > **kind**: [`PreparedTxKind`](../type-aliases/PreparedTxKind.md)
 
-Defined in: [src/types/prepared.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L11)
+Defined in: [src/types/prepared.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L11)
 
 Step category for UI and wallet routing.
 
@@ -43,7 +43,7 @@ Step category for UI and wallet routing.
 
 > **to**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L12)
+Defined in: [src/types/prepared.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L12)
 
 ***
 
@@ -51,6 +51,6 @@ Defined in: [src/types/prepared.ts:12](https://github.com/andrewkimjoseph/celina
 
 > `optional` **value?**: `string`
 
-Defined in: [src/types/prepared.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/types/prepared.ts#L15)
+Defined in: [src/types/prepared.ts:15](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/types/prepared.ts#L15)
 
 Wei amount as decimal string for JSON serialization

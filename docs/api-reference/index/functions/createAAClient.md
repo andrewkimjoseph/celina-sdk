@@ -8,7 +8,7 @@
 
 > **createAAClient**(`options`): `Promise`\<[`AAClient`](../type-aliases/AAClient.md)\>
 
-Defined in: [src/aa/create-aa-client.ts:102](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/create-aa-client.ts#L102)
+Defined in: [src/aa/create-aa-client.ts:102](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/aa/create-aa-client.ts#L102)
 
 Create an ERC-4337 AA client on Celo mainnet (Simple Smart Account, EntryPoint 0.7).
 

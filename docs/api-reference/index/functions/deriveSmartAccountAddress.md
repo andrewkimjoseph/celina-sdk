@@ -8,7 +8,7 @@
 
 > **deriveSmartAccountAddress**(`owner`, `publicClient?`): `Promise`\<\{ `eoaAddress`: `` `0x${string}` ``; `smartAccountAddress`: `` `0x${string}` ``; \}\>
 
-Defined in: [src/aa/create-aa-client.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/create-aa-client.ts#L44)
+Defined in: [src/aa/create-aa-client.ts:44](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/aa/create-aa-client.ts#L44)
 
 Derive the counterfactual Simple Smart Account address for an EOA owner
 (EntryPoint 0.7) without submitting a UserOp.

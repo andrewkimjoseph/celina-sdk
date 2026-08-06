@@ -18,7 +18,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP — hosted reads (36 tools); no server-key writes; no sponsorship keys |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP + A2A — **44 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -29,6 +29,17 @@ npm i @andrewkimjoseph/celina-sdk
 ```
 
 Requires Node.js ≥ 20.
+
+## Package exports
+
+| Export | Purpose |
+|--------|---------|
+| `@andrewkimjoseph/celina-sdk` | `createCelinaClient`, domain services, `parsePrivateKeyEnv` |
+| `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) |
+| `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run prepared txs before broadcast |
+| `@andrewkimjoseph/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-host) |
+| `@andrewkimjoseph/celina-sdk/oasf` | OASF manifest helpers for agent discovery |
+| `@andrewkimjoseph/celina-sdk/testing` | Test harness entry for fork/integration tests |
 
 ### LLM tool catalog (v0.5+)
 
@@ -51,6 +62,9 @@ Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkim
 - [Prepared-step simulation](docs/guides/prepared-step-simulation.md) — `simulatePreparedStep` before wallet send
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
+- [Governance](docs/guides/governance.md) — lock CELO, vote, upvote, withdraw (humanness-gated)
+- [Staking](docs/guides/staking.md) — validator election stake, activate, delegate (humanness-gated)
+- [Humanness](docs/guides/humanness.md) — dual-rail Self + GoodDollar gate for governance/staking writes
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
 - [AgentKarma reputation](docs/guides/agentkarma.md) — karma reads and counterparty trust policy
 - [Telemetry](docs/guides/telemetry.md) — optional Amplitude read metrics (`device_id` per project, `user_id` per wallet; opt out with `analyticsEnabled: false`)
@@ -86,6 +100,11 @@ const reserveFlow = await celina.gooddollar.prepareReserveSwap(
   "USDm",
   "1000",
 );
+
+// Governance & staking (humanness-gated prepare* for browser signing)
+const human = await celina.humanness.checkHumanness("0xYourAddress");
+const proposals = await celina.governance.getProposals({ stage: "Queued" });
+const groups = await celina.staking.getValidatorGroups();
 ```
 
 ## Prepared flows and calldata tagging
@@ -104,7 +123,9 @@ See [Prepared flows](docs/concepts/prepared-flows.md), [On-chain attribution](do
 
 ### MCP session wallet (not in the SDK)
 
-Local **celina-mcp** with `CELO_PRIVATE_KEY` can omit wallet params on many tools and use **`get_wallet_address`** instead of shelling out for the signer. The SDK always requires an explicit `0x…` from your app (e.g. wagmi). See [MCP session wallet](docs/guides/mcp-session-wallet.md). **Celeste AI** is an independent app built on this SDK + browser wallet signing — it does not use celina-mcp.
+Local **celina-mcp** stdio can configure **`CELO_PRIVATE_KEY`**, **`SELF_AGENT_PRIVATE_KEY`**, or **both**. With a key set, omit wallet params on many MCP tools and use **`get_wallet_address`** instead of shelling out for the signer. Pass optional `signer: "celo" | "self_agent"` on execute tools when both keys are configured. **Self-only** setups (no `CELO_PRIVATE_KEY`) are valid for governance/staking when the Self agent passes humanness — do not leave placeholder CELO keys in config.
+
+The SDK always requires an explicit `0x…` from your app (e.g. wagmi). See [MCP session wallet](docs/guides/mcp-session-wallet.md). **Celeste AI** is an independent app built on this SDK + browser wallet signing — it does not use celina-mcp.
 
 ## GoodDollar
 
@@ -134,6 +155,10 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 - [x] Aave tools (`getBalances` / MCP `get_aave_balances`, `prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
 - [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)
 - [x] Self Agent ID (`lookupSelfAgent`, registration & lifecycle tools)
+- [x] Governance (`prepareLockCelo`, `prepareVote`, `prepareUpvote`, revoke prepares — humanness-gated)
+- [x] Staking (`prepareStake`, `prepareActivateStake`, delegate/undelegate prepares — humanness-gated)
+- [x] Humanness dual-rail gate (`checkHumanness` — Self Agent ID or GoodDollar whitelist)
+- [x] GoodDollar identity link, face verification, connect/disconnect wallet tools
 
 ## License
 

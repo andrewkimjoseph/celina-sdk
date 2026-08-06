@@ -139,7 +139,7 @@ export type { MentoFxParams } from "./services/mento-fx.service.js";
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
 /** Pagination and metadata options for governance proposal lists. */
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";
-export type { StakeEligibilityResult } from "./services/staking.service.js";
+export type { StakeEligibilityResult, GetGovernanceDelegatesOptions, GovernanceDelegate, GovernanceDelegateMetadata, GovernanceDelegatesResult } from "./services/staking.service.js";
 /** On-chain VoteValue enum names for governance voting. */
 export type { VoteValueName } from "./abis/governance.js";
 export { VOTE_VALUES, voteValueToInt } from "./abis/governance.js";

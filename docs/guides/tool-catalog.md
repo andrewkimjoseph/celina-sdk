@@ -75,6 +75,7 @@ Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Bro
 | **`check_attribution_tag`** | Unified custom `tags` list (excludes platform `CELINA`/`celina`) or confirm one tag |
 | **`verify_attribution_tag`** | Raw legacy + ERC-8021 layer decode |
 | **`get_stake_eligibility`** | Before `execute_stake` — validates group headroom, locked balance, account registration |
+| **`get_governance_delegates`** | User asks who to delegate to — Celo Mondo curated directory + optional stats |
 
 See [On-chain attribution](on-chain-attribution.md) and [Staking](staking.md#stake-eligibility-pre-check).
 

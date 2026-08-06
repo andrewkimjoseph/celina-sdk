@@ -329,6 +329,30 @@ export const stakingOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["delegatees"]),
   },
   {
+    id: "staking.getGovernanceDelegates",
+    domain: "staking",
+    layer: "read",
+    sdk: {
+      invoke: (client) =>
+        client.staking.getGovernanceDelegates({ limit: 3, includeStats: true }),
+    },
+    mcp: {
+      tool: "get_governance_delegates",
+      arguments: () => ({ limit: 3, include_stats: true }),
+    },
+    assert: (result) => {
+      const obj = assertHasKeys(result, ["delegates", "source", "pagination"]);
+      assert.equal(obj.source, "celo-mondo");
+      assert.equal(Array.isArray(obj.delegates), true);
+      if ((obj.delegates as unknown[]).length > 0) {
+        assertHasKeys((obj.delegates as Record<string, unknown>[])[0]!, [
+          "name",
+          "address",
+        ]);
+      }
+    },
+  },
+  {
     id: "staking.getStakeEligibility",
     domain: "staking",
     layer: "read",

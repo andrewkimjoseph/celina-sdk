@@ -8,7 +8,7 @@
 
 > **verifyAttributionInCalldata**(`data`, `tag?`): [`AttributionVerificationResult`](../type-aliases/AttributionVerificationResult.md)
 
-Defined in: [src/config/celina-tag.ts:193](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/config/celina-tag.ts#L193)
+Defined in: [src/config/celina-tag.ts:193](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/config/celina-tag.ts#L193)
 
 Decode ERC-8021 attribution from calldata; optionally check for a tag.
 

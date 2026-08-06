@@ -8,7 +8,7 @@
 
 > `const` **SELF\_HEADERS**: `object`
 
-Defined in: [src/config/self.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/config/self.ts#L32)
+Defined in: [src/config/self.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/config/self.ts#L32)
 
 ## Type Declaration
 

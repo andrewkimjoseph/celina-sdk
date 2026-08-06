@@ -78,6 +78,30 @@ const delegation = await celina.staking.getDelegationInfo("0xYourAddress");
 // delegation.governanceVotingPowerFormatted
 ```
 
+## Governance delegation (LockedGold)
+
+**Distinct from validator-group staking:** `prepareDelegatePower` delegates **governance voting power** on locked CELO to another address (percent 1–100). It does not stake with a validator group.
+
+There is **no on-chain delegate registry**. [Celo Mondo](https://mondo.celo.org/delegate) maintains a curated off-chain directory; Celina mirrors it:
+
+```ts
+const { delegates, source, directoryNote } =
+  await celina.staking.getGovernanceDelegates({
+    search: "governance",
+    limit: 10,
+    includeStats: true, // default — LockedGold voting power + total delegated TO them
+  });
+// delegates[].name, delegates[].address, delegates[].interests, delegates[].description
+```
+
+Recommended flow when the user has no delegatee in mind:
+
+1. `getGovernanceDelegates` — browse names and addresses
+2. `getLockedCeloBalance` + `getDelegationInfo` — confirm locked CELO and existing delegations
+3. `prepareDelegatePower` / `execute_delegate_power` with chosen `delegatee` and `percent`
+
+You can also delegate to **any** `0x…` address without using the directory.
+
 ## Prepare: stake, activate, unstake, delegate
 
 All five are humanness-gated by convention (see [Humanness](humanness.md)) — the SDK methods don't call `checkHumanness` themselves; celina-mcp's `execute_*` tools apply the gate before preparing.
@@ -124,6 +148,7 @@ for (const step of flow.steps) {
 | `getValidatorGroupDetails` | `get_validator_group_details` | — (read, both surfaces) |
 | `getTotalStakingInfo` | `get_total_staking_info` | — (read, both surfaces) |
 | `getDelegationInfo` | `get_delegation_info` | — (read, both surfaces) |
+| `getGovernanceDelegates` | `get_governance_delegates` | — (read, both surfaces) |
 | `getStakeEligibility` | `get_stake_eligibility` | — (read, both surfaces) |
 | `prepareStake` | `execute_stake` (call `get_stake_eligibility` first; enforced in SDK for `prepareStake`) | `prepare_stake` |
 | `prepareActivateStake` | `execute_activate_stake` | `prepare_activate_stake` |

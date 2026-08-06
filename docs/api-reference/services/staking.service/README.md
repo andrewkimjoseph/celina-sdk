@@ -12,6 +12,30 @@
 
 ## References
 
+### GetGovernanceDelegatesOptions
+
+Re-exports [GetGovernanceDelegatesOptions](../../index/type-aliases/GetGovernanceDelegatesOptions.md)
+
+***
+
+### GovernanceDelegate
+
+Re-exports [GovernanceDelegate](../../index/type-aliases/GovernanceDelegate.md)
+
+***
+
+### GovernanceDelegateMetadata
+
+Re-exports [GovernanceDelegateMetadata](../../index/type-aliases/GovernanceDelegateMetadata.md)
+
+***
+
+### GovernanceDelegatesResult
+
+Re-exports [GovernanceDelegatesResult](../../index/type-aliases/GovernanceDelegatesResult.md)
+
+***
+
 ### StakeEligibilityResult
 
 Re-exports [StakeEligibilityResult](../../index/type-aliases/StakeEligibilityResult.md)

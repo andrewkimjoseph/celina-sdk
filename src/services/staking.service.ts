@@ -32,8 +32,19 @@ import {
   type StakeEligibilityResult,
 } from "../utils/stake-eligibility.js";
 import { isCeloAccountRegistered } from "../utils/celo-account.js";
+import {
+  getGovernanceDelegates as fetchGovernanceDelegates,
+  type GetGovernanceDelegatesOptions,
+  type GovernanceDelegatesResult,
+} from "./governance-delegates.js";
 
 export type { StakeEligibilityResult } from "../utils/stake-eligibility.js";
+export type {
+  GetGovernanceDelegatesOptions,
+  GovernanceDelegate,
+  GovernanceDelegateMetadata,
+  GovernanceDelegatesResult,
+} from "./governance-delegates.js";
 
 const MAX_ELECTABLE_VALIDATORS = 110;
 const MIN_INCREMENTAL_VOTE_AMOUNT = parseEther("0.000001");
@@ -654,6 +665,16 @@ export class StakingService {
       governanceVotingPowerFormatted: formatCeloAmount(votingPower),
       delegatees: delegateeDetails,
     };
+  }
+
+  /**
+   * Curated Celo Mondo governance delegate directory with optional LockedGold stats.
+   * Off-chain directory — not an on-chain registry; any address can receive delegation.
+   */
+  async getGovernanceDelegates(
+    options?: GetGovernanceDelegatesOptions,
+  ): Promise<GovernanceDelegatesResult> {
+    return fetchGovernanceDelegates(this.getClient(), options);
   }
 
   private async fetchGroupVoteHeadroom(groupAddress: `0x${string}`): Promise<bigint> {

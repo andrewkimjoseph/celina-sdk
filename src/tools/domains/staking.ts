@@ -198,6 +198,32 @@ export const stakingToolDefinitions: ToolDefinition[] = [
     },
   },
   {
+    name: "get_governance_delegates",
+    description:
+      "Curated Celo Mondo governance delegate directory (name, address, interests, description). Use when the user asks who to delegate to — not an on-chain registry; any address can receive delegation. Optionally includes LockedGold stats (voting power, total delegated to them). Then call execute_delegate_power with a chosen delegatee address.",
+    inputSchema: z.object({
+      search: z
+        .string()
+        .optional()
+        .describe("Filter by name, address, interests, or description"),
+      limit: optionalBoundedPositiveInt(100),
+      offset: z.number().int().min(0).optional(),
+      include_stats: z
+        .boolean()
+        .optional()
+        .describe("Include on-chain LockedGold stats (default true)"),
+    }),
+    families: ["read"],
+    mcp: { title: "Get Governance Delegates", annotations: readOnly },
+    handler: async (runtime, input) =>
+      runtime.celina.staking.getGovernanceDelegates({
+        search: input.search as string | undefined,
+        limit: input.limit as number | undefined,
+        offset: input.offset as number | undefined,
+        includeStats: input.include_stats as boolean | undefined,
+      }),
+  },
+  {
     name: "execute_delegate_power",
     description: "Delegate governance voting power to another address. Requires humanness verification.",
     inputSchema: z.object({

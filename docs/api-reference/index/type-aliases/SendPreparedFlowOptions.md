@@ -8,7 +8,7 @@
 
 > **SendPreparedFlowOptions** = `object`
 
-Defined in: [src/aa/types.ts:46](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L46)
+Defined in: [src/aa/types.ts:46](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/aa/types.ts#L46)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/aa/types.ts:46](https://github.com/andrewkimjoseph/celina-sdk/b
 
 > `optional` **mode?**: [`SendPreparedFlowMode`](SendPreparedFlowMode.md)
 
-Defined in: [src/aa/types.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/15da21d7e6ad751c0106bbc57bbb0d6fb8e87371/src/aa/types.ts#L52)
+Defined in: [src/aa/types.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/aa/types.ts#L52)
 
 How to submit the prepared transactions (`steps`).
 `batch` (default): all steps in one UserOp.
