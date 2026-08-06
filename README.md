@@ -18,7 +18,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP + A2A — **44 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
+| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP + A2A — **45 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -63,7 +63,7 @@ Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkim
 - [wagmi integration](https://andrewkimjoseph.gitbook.io/celina-sdk/guides/wagmi-integration)
 - [GoodDollar](docs/guides/gooddollar.md) — UBI whitelist/claim and G$ ↔ USDm reserve swaps
 - [Governance](docs/guides/governance.md) — lock CELO, vote, upvote, withdraw (humanness-gated)
-- [Staking](docs/guides/staking.md) — validator election stake, activate, delegate (humanness-gated)
+- [Staking](docs/guides/staking.md) — validator election stake, Celo Mondo delegate directory, delegate/undelegate (humanness-gated)
 - [Humanness](docs/guides/humanness.md) — dual-rail Self + GoodDollar gate for governance/staking writes
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
 - [AgentKarma reputation](docs/guides/agentkarma.md) — karma reads and counterparty trust policy
@@ -105,6 +105,7 @@ const reserveFlow = await celina.gooddollar.prepareReserveSwap(
 const human = await celina.humanness.checkHumanness("0xYourAddress");
 const proposals = await celina.governance.getProposals({ stage: "Queued" });
 const groups = await celina.staking.getValidatorGroups();
+const delegates = await celina.staking.getGovernanceDelegates({ search: "governance", limit: 5 });
 ```
 
 ## Prepared flows and calldata tagging

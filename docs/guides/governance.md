@@ -95,10 +95,17 @@ for (const step of flow.steps) {
 
 If you intend to sign with `self_agent`, fund and register that address **before** locking — see [Two wallets: CELO + Self agent](mcp-session-wallet.md#two-wallets-celo--self-agent).
 
+## Governance delegation
+
+Delegating **governance voting power** on locked CELO is separate from voting on proposals — it routes through `LockedGold`, not `Governance`. See [Staking — Governance delegation](staking.md#governance-delegation-lockedgold) for the full flow.
+
+- **Discovery:** `getGovernanceDelegates` / MCP `get_governance_delegates` — curated [Celo Mondo](https://mondo.celo.org/delegate) directory (off-chain; not an on-chain registry). Any address can receive delegation.
+- **Execution:** `prepareDelegatePower` / MCP `execute_delegate_power` with a chosen delegatee and percent (1–100).
+
 ## Related
 
 - [Humanness](humanness.md) — gating model for the `execute_*` writes above
-- [Staking](staking.md) — validator election staking, the other humanness-gated write surface
+- [Staking](staking.md) — validator election staking, governance delegation, and Celo Mondo delegate directory
 - [MCP session wallet](mcp-session-wallet.md) — funding a Self agent from the main wallet
 - [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
