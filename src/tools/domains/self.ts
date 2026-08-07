@@ -16,8 +16,8 @@ import type { ToolDefinition } from "../types.js";
 const SELF_DEMO_VERIFY_URL = selfDemoUrl("/api/demo/verify");
 
 const selfRegistrationModeSchema = optionalEnumSchema([
-  "linked",
   "wallet-free",
+  "linked",
   "smartwallet",
   "self-custody",
   "ed25519",
@@ -93,9 +93,11 @@ export const selfToolDefinitions: ToolDefinition[] = [
   {
     name: "register_self_agent",
     description:
-      "Start Self Agent ID registration. Returns qr_code_url and deep_link — present BOTH to the user. Defaults to minimum_age 18, nationality disclosure, and OFAC screening (Self agents must not be tied to OFAC-listed humans). Pass minimum_age: 0, nationality: false, or ofac: false to opt out.",
+      "Start Self Agent ID registration. Returns qr_code_url and deep_link — present BOTH to the user. Default mode: wallet-free — omit mode for a standalone agent wallet. Use linked only when binding to a human's existing wallet (pass human_address). Defaults to minimum_age 18, nationality disclosure, and OFAC screening (Self agents must not be tied to OFAC-listed humans). Pass minimum_age: 0, nationality: false, or ofac: false to opt out.",
     inputSchema: z.object({
-      mode: selfRegistrationModeSchema,
+      mode: selfRegistrationModeSchema.describe(
+        "Registration mode. Default wallet-free when omitted. Use linked only with human_address to tie the agent to an existing human wallet.",
+      ),
       minimum_age: optionalAgeLiteralSchema,
       ofac: optionalBooleanSchema,
       nationality: optionalBooleanSchema,

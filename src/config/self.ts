@@ -44,3 +44,7 @@ export type SelfRegistrationMode =
   | "self-custody"
   | "ed25519"
   | "ed25519-linked";
+
+/** Default mode for Self Agent ID registration when mode is omitted. */
+export const SELF_DEFAULT_REGISTRATION_MODE =
+  "wallet-free" as const satisfies SelfRegistrationMode;

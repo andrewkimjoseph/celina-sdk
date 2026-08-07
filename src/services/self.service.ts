@@ -65,6 +65,7 @@ export interface VerifySelfRequestParams {
 }
 
 export interface RegisterSelfAgentParams {
+  /** Default: wallet-free when omitted. */
   mode?: SelfRegistrationMode;
   minimumAge?: 0 | 18 | 21;
   ofac?: boolean;

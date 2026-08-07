@@ -2,6 +2,7 @@ import {
   SELF_API_BASE,
   SELF_API_NETWORK,
   SELF_CHAIN_ID,
+  SELF_DEFAULT_REGISTRATION_MODE,
   type SelfRegistrationMode,
 } from "../config/self.js";
 
@@ -359,7 +360,7 @@ export async function requestRegistration(opts: {
 }) {
   const base = resolveApiBase(opts.apiBase);
   const payload = {
-    mode: opts.mode ?? "wallet-free",
+    mode: opts.mode ?? SELF_DEFAULT_REGISTRATION_MODE,
     network: SELF_API_NETWORK,
     disclosures: opts.disclosures,
     humanAddress: opts.humanAddress,
