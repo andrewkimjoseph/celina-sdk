@@ -26,7 +26,7 @@ flowchart TB
 
 | Layer                  | What it adds                                                                                                                                                               |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `@andrewkimjoseph/celina-sdk/aa` (`createAAClient`), and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP**                | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
 | **MCP host**           | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts**      | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys                                                                   |

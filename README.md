@@ -118,7 +118,7 @@ Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` s
 
 Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 
-For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
+For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) from `@andrewkimjoseph/celina-sdk/aa` with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
 
 See [Prepared flows](docs/concepts/prepared-flows.md), [On-chain attribution](docs/guides/on-chain-attribution.md), [Prepared-step simulation](docs/guides/prepared-step-simulation.md), and [Account Abstraction](docs/guides/account-abstraction.md).
 

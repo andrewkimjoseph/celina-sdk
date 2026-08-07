@@ -20,7 +20,8 @@ EOA paths (`prepare*` + wagmi / MCP `CELO_PRIVATE_KEY`) are unchanged. Celo `fee
 Pass a discriminant `provider` and the matching object. v1 supports **Pimlico** only:
 
 ```ts
-import { createAAClient, createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createAAClient } from "@andrewkimjoseph/celina-sdk/aa";
 import { privateKeyToAccount } from "viem/accounts";
 import { celo } from "viem/chains";
 
@@ -126,7 +127,7 @@ See [On-chain attribution](on-chain-attribution.md), [Prepared flows](../concept
 ## Derive address only
 
 ```ts
-import { deriveSmartAccountAddress } from "@andrewkimjoseph/celina-sdk";
+import { deriveSmartAccountAddress } from "@andrewkimjoseph/celina-sdk/aa";
 
 const { eoaAddress, smartAccountAddress } = await deriveSmartAccountAddress(owner);
 ```
