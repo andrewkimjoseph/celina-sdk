@@ -1,6 +1,6 @@
 import { detectConsumerPackageName } from "../analytics/consumer-package.js";
 
-import { parsePrivateKeyEnv } from "../utils/normalize-private-key.js";
+import { tryParsePrivateKeyEnv } from "../utils/normalize-private-key.js";
 
 /** RPC configuration for `createCelinaClient()`. */
 export interface SdkConfig {
@@ -52,10 +52,11 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
       ? process.env.SELF_AGENT_PRIVATE_KEY
       : undefined);
 
-  const selfAgentPrivateKey =
-    rawSelfAgentPrivateKey === undefined
-      ? undefined
-      : parsePrivateKeyEnv(rawSelfAgentPrivateKey, "SELF_AGENT_PRIVATE_KEY");
+  const selfAgentParsed = tryParsePrivateKeyEnv(
+    rawSelfAgentPrivateKey,
+    "SELF_AGENT_PRIVATE_KEY",
+  );
+  const selfAgentPrivateKey = selfAgentParsed.value;
 
   return {
     rpcUrl: opts?.rpcUrl ?? DEFAULT_RPC_URL,

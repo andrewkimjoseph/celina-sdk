@@ -241,10 +241,15 @@ export interface ToolRuntime {
   executors?: ToolRuntimeExecutors;
   /** MCP session wallet metadata for get_wallet_address. */
   mcpWallet?: {
-    address: `0x${string}`;
+    address?: `0x${string}`;
     hasWallet: boolean;
     /** Which configured key resolves to `address` when no explicit signer is requested. */
     signer?: "celo" | "self_agent";
+    /** Invalid env key messages when a key is set but malformed. */
+    keyErrors?: {
+      celo?: string;
+      selfAgent?: string;
+    };
     /** Every configured signer's address — lets a single call see both wallets at once. */
     wallets?: {
       celo?: { address: `0x${string}` };

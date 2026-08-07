@@ -151,7 +151,7 @@ export type {
 export { assertHumanness } from "./services/humanness.service.js";
 export { toFixidity, percentToFixidity, fromFixidity, FIXIDITY_ONE } from "./utils/fixidity.js";
 export { findLesserAndGreaterAfterVote } from "./utils/election-vote-neighbors.js";
-export { parsePrivateKeyEnv } from "./utils/normalize-private-key.js";
+export { parsePrivateKeyEnv, tryParsePrivateKeyEnv } from "./utils/normalize-private-key.js";
 /** Parameters for generic contract reads, estimates, and write prepares. */
 export type { ContractCallParams } from "./services/contract.service.js";
 /** Aave V3 Celo pool address and supported asset symbols. */

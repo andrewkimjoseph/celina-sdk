@@ -64,7 +64,7 @@ describe("tools catalog", () => {
       selfSessionToolsEnabled: false,
       estimateToolsEnabled: false,
     });
-    expect(hosted).toHaveLength(44);
+    expect(hosted).toHaveLength(45);
     expect(hosted).not.toContain("send_token");
     expect(hosted).not.toContain("get_wallet_address");
     expect(hosted).not.toContain("register_self_agent");

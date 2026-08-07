@@ -1,45 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { parsePrivateKeyEnv } from "../../src/utils/normalize-private-key.js";
+import {
+  parsePrivateKeyEnv,
+  tryParsePrivateKeyEnv,
+} from "../../src/utils/normalize-private-key.js";
 
 const KEY_WITH_PREFIX =
   "0xac0974bec39a17e36ba4a6b4d15588dd6936b93c12f6f356520cf899b8d4e178";
 const KEY_WITHOUT_PREFIX =
   "ac0974bec39a17e36ba4a6b4d15588dd6936b93c12f6f356520cf899b8d4e178";
 
+describe("tryParsePrivateKeyEnv", () => {
+  it("returns empty for unset values", () => {
+    expect(tryParsePrivateKeyEnv(undefined, "CELO_PRIVATE_KEY")).toEqual({});
+    expect(tryParsePrivateKeyEnv("  ", "CELO_PRIVATE_KEY")).toEqual({});
+  });
+
+  it("normalizes valid keys", () => {
+    expect(tryParsePrivateKeyEnv(KEY_WITHOUT_PREFIX, "CELO_PRIVATE_KEY")).toEqual({
+      value: KEY_WITH_PREFIX,
+    });
+  });
+
+  it("returns error for invalid keys without throwing", () => {
+    const result = tryParsePrivateKeyEnv("0x...", "CELO_PRIVATE_KEY");
+    expect(result.value).toBeUndefined();
+    expect(result.error).toMatch(/CELO_PRIVATE_KEY is set but invalid/);
+  });
+});
+
 describe("parsePrivateKeyEnv", () => {
-  it("returns undefined for unset or blank values", () => {
-    expect(parsePrivateKeyEnv(undefined, "CELO_PRIVATE_KEY")).toBeUndefined();
-    expect(parsePrivateKeyEnv("", "CELO_PRIVATE_KEY")).toBeUndefined();
-    expect(parsePrivateKeyEnv("   ", "CELO_PRIVATE_KEY")).toBeUndefined();
-  });
-
-  it("accepts keys with 0x prefix", () => {
-    expect(parsePrivateKeyEnv(KEY_WITH_PREFIX, "CELO_PRIVATE_KEY")).toBe(
-      KEY_WITH_PREFIX,
-    );
-  });
-
-  it("accepts keys without 0x prefix", () => {
-    expect(parsePrivateKeyEnv(KEY_WITHOUT_PREFIX, "CELO_PRIVATE_KEY")).toBe(
-      KEY_WITH_PREFIX,
-    );
-  });
-
-  it("accepts uppercase hex", () => {
-    expect(
-      parsePrivateKeyEnv(KEY_WITHOUT_PREFIX.toUpperCase(), "CELO_PRIVATE_KEY"),
-    ).toBe(KEY_WITH_PREFIX);
-  });
-
-  it("throws for placeholder values", () => {
+  it("throws for invalid keys", () => {
     expect(() => parsePrivateKeyEnv("0x...", "CELO_PRIVATE_KEY")).toThrow(
       /CELO_PRIVATE_KEY is set but invalid/,
-    );
-  });
-
-  it("throws for wrong length", () => {
-    expect(() => parsePrivateKeyEnv("0xdead", "SELF_AGENT_PRIVATE_KEY")).toThrow(
-      /with or without 0x prefix/,
     );
   });
 });

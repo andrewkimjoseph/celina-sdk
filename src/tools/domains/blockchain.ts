@@ -126,10 +126,16 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
     handler: async (runtime, input) => {
       const signer = input.signer as "celo" | "self_agent" | undefined;
       const wallets = runtime.mcpWallet?.wallets;
+      const keyErrors = runtime.mcpWallet?.keyErrors;
 
       if (signer) {
         const wallet = wallets?.[signer];
         if (!wallet) {
+          const keyError =
+            signer === "celo" ? keyErrors?.celo : keyErrors?.selfAgent;
+          if (keyError) {
+            throw new Error(keyError);
+          }
           throw new Error(
             signer === "celo"
               ? "CELO_PRIVATE_KEY is not configured."
@@ -144,6 +150,12 @@ export const blockchainToolDefinitions: ToolDefinition[] = [
       }
 
       if (!runtime.mcpWallet?.hasWallet) {
+        const keyError = [keyErrors?.celo, keyErrors?.selfAgent]
+          .filter(Boolean)
+          .join(" ");
+        if (keyError) {
+          throw new Error(keyError);
+        }
         throw new Error(
           "No wallet configured. Set CELO_PRIVATE_KEY or SELF_AGENT_PRIVATE_KEY in the server env.",
         );
