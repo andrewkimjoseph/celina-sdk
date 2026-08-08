@@ -79,7 +79,7 @@ Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Bro
 
 See [On-chain attribution](on-chain-attribution.md) and [Staking](staking.md#stake-eligibility-pre-check).
 
-## MCP host (reference)
+## MCP remote (reference)
 
 **celina-mcp** registers the catalog with `@modelcontextprotocol/sdk` — no Vercel AI SDK involved:
 
