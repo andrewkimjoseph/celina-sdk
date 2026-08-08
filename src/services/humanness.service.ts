@@ -56,9 +56,10 @@ export class HumannessService {
 
   private async checkSelfRail(signerAddress: `0x${string}`): Promise<HumannessRailResult> {
     try {
+      // Humanness gate: registered Self agent + age 18+. OFAC is not a write prerequisite.
       const result = await this.selfService.verifyAgent({
         agentAddress: signerAddress,
-        requireOfac: true,
+        requireOfac: false,
         requireAge: 18,
       });
       if (result.verified) {

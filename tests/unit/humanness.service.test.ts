@@ -28,27 +28,27 @@ describe("HumannessService", () => {
     expect(result.selfAgent.isHuman).toBe(true);
     expect(self.verifyAgent).toHaveBeenCalledWith({
       agentAddress: address,
-      requireOfac: true,
+      requireOfac: false,
       requireAge: 18,
     });
   });
 
-  it("fails Self rail when verifyAgent reports OFAC failure", async () => {
+  it("passes Self rail when verifyAgent succeeds without requiring OFAC", async () => {
     const self = {
       verifyAgent: vi.fn().mockResolvedValue({
-        verified: false,
-        reason: "Agent has not passed OFAC screening.",
+        verified: true,
+        agent_id: 7,
       }),
     } as unknown as SelfService;
 
     const service = new HumannessService(mockFactory(async () => false), self);
     const result = await service.checkHumanness(address);
 
-    expect(result.selfAgent.isHuman).toBe(false);
-    expect(result.selfAgent.reason).toMatch(/OFAC/i);
+    expect(result.isHumanOverall).toBe(true);
+    expect(result.selfAgent.isHuman).toBe(true);
     expect(self.verifyAgent).toHaveBeenCalledWith({
       agentAddress: address,
-      requireOfac: true,
+      requireOfac: false,
       requireAge: 18,
     });
   });

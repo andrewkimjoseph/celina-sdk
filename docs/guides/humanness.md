@@ -16,7 +16,7 @@ Both rails are checked in parallel. `isHumanOverall` is `result.selfAgent.isHuma
 | Field | Meaning |
 |-------|---------|
 | `signerAddress` | Address checked |
-| `selfAgent.isHuman` | `true` if `verify_self_agent` succeeds for this address |
+| `selfAgent.isHuman` | `true` if a registered Self agent passes age 18+ (OFAC not required for this gate) |
 | `selfAgent.agentId` | Numeric Self agent id, when verified |
 | `goodDollar.isHuman` | `true` if the address (or its whitelisted root, via `getWhitelistedRoot`) is GoodDollar-whitelisted |
 | `goodDollar.whitelistedRoot` | Root identity resolved for connected wallets |
@@ -78,7 +78,7 @@ celina-mcp calls `check_humanness` before humanness-gated `execute_*` governance
 
 ## Two ways to pass
 
-1. **Self Agent ID** — register once via `register_self_agent` (human scans a QR code); see [Self Agent ID](self-agent-id.md). Registration and Self-rail verification default to age 18+ and OFAC-clear; nationality is disclosed into credentials when requested (default on).
+1. **Self Agent ID** — register once via `register_self_agent` (human scans a QR code); see [Self Agent ID](self-agent-id.md). The humanness write gate requires a registered agent and age 18+; it does **not** require OFAC clearance. Use `verify_self_agent` (defaults include `require_ofac: true`) when you need to inspect OFAC status separately. Registration defaults still request nationality disclosure when enabled.
 2. **GoodDollar** — either face-verify this wallet directly, or connect it to an already-verified root; see [Face verify vs connect](gooddollar.md#face-verify-vs-connect). Whitelist-only — no OFAC/age/nationality fields on this rail.
 
 Either rail is sufficient — you do not need both.
