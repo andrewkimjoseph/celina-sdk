@@ -16,7 +16,7 @@ Pair with [wagmi](https://wagmi.sh) / viem when users sign in their wallet, `cre
 flowchart TB
   sdk["celina-sdk<br/>reads + prepare* + createAAClient + /tools"]
   mcp["celina-mcp<br/>registers catalog for MCP"]
-  host["celina-mcp-host<br/>Streamable HTTP: read + prepare"]
+  host["celina-mcp-remote<br/>Streamable HTTP: read + prepare"]
   browser["Browser agent hosts<br/>surface: browser + wagmi"]
 
   sdk --> mcp
@@ -28,7 +28,7 @@ flowchart TB
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `@andrewkimjoseph/celina-sdk/aa` (`createAAClient`), and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP**                | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
-| **MCP host**           | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
+| **MCP remote**           | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts**      | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys                                                                   |
 
 Third-party apps can consume the programmatic client only, or wire the full tool catalog into Vercel AI SDK / custom orchestrators — see [LLM tool catalog](guides/tool-catalog.md).
@@ -108,5 +108,5 @@ Full method signatures: [API reference](api-reference/).
 ### Related packages
 
 * [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) — MCP server; registers SDK tool catalog
-* [`celina-mcp-host`](https://github.com/andrewkimjoseph/celina-sdk/blob/main/celina-mcp-host/README.md) — hosted reads (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
+* [`celina-mcp-remote`](https://github.com/andrewkimjoseph/celina-mcp-remote) — hosted reads (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 * [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)

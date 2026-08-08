@@ -18,7 +18,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads |
-| **MCP host** | `celina-mcp-host` | Vercel Streamable HTTP + A2A — **45 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
+| **MCP remote** | `celina-mcp-remote` | Vercel Streamable HTTP + A2A — **45 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 
@@ -37,7 +37,7 @@ Requires Node.js ≥ 20.
 | `@andrewkimjoseph/celina-sdk` | `createCelinaClient`, domain services, `parsePrivateKeyEnv` |
 | `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) |
 | `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run prepared txs before broadcast |
-| `@andrewkimjoseph/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-host) |
+| `@andrewkimjoseph/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-remote) |
 | `@andrewkimjoseph/celina-sdk/oasf` | OASF manifest helpers for agent discovery |
 | `@andrewkimjoseph/celina-sdk/testing` | Test harness entry for fork/integration tests |
 
@@ -145,7 +145,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 ## Related packages
 
 - [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) — MCP server (`get_wallet_address`, optional address on wallet-scoped tools)
-- [`celina-mcp-host`](../celina-mcp-host/) — Vercel-hosted MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`)
+- [`celina-mcp-remote`](../celina-mcp-remote/) — Vercel-hosted remote MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`)
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 
 ## Roadmap
