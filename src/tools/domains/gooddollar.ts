@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL } from "../../config/gooddollar.js";
 import {
   addressSchema,
   executeEnvRequirements,
@@ -225,7 +226,13 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     description:
       "Generate a GoodDollar face verification link for the MCP server wallet (first-time verify this wallet as an identity root). Skipped when the signer is already whitelisted or linked to a verified root. Requires a signing key. Link generation is implemented in celina-sdk; MCP forwards configured viem clients.",
     inputSchema: z.object({
-      callback_url: z.string().url().describe("URL to redirect after verification"),
+      callback_url: z
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "URL to redirect after verification; defaults to Celina callback page",
+        ),
     }),
     families: ["read"],
     surfaces: ["mcp"],
@@ -234,7 +241,10 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
     handler: async (runtime, input) => {
       const svc = runtime.executors?.gooddollarIdentity;
       if (!svc) throw new Error("GoodDollar identity executor not configured.");
-      return svc.getFaceVerificationLink(input.callback_url as string);
+      const callbackUrl =
+        (input.callback_url as string | undefined) ??
+        GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL;
+      return svc.getFaceVerificationLink(callbackUrl);
     },
   },
   {

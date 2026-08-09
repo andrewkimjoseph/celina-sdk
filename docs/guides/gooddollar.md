@@ -141,13 +141,16 @@ If you already verified on wallet A and the current signer is wallet B: do not f
 **Face verification link generation:** `celina.gooddollar.getFaceVerificationLink(...)` is a direct SDK method. Callers supply their own viem `publicClient` and `walletClient` (e.g. from wagmi in the browser or a Node signer in MCP). The SDK runs `getIdentityGuidance` first; when `shouldSkipFaceVerification(guidance)` is `true` (`connect_secondary` or `already_verified`), it returns `{ skipped: true, reason, guidance }` **without** calling citizen-sdk.
 
 ```ts
-import { shouldSkipFaceVerification } from "@andrewkimjoseph/celina-sdk";
+import {
+  GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL,
+  shouldSkipFaceVerification,
+} from "@andrewkimjoseph/celina-sdk";
 
 const result = await celina.gooddollar.getFaceVerificationLink({
   publicClient,
   walletClient,
   accountAddress: "0xYourAddress",
-  callbackUrl: "https://your-app.example/callback",
+  callbackUrl: GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL,
 });
 
 if (result.skipped) {
@@ -155,7 +158,14 @@ if (result.skipped) {
 }
 ```
 
-The MCP tool `get_gooddollar_face_verification_link` is a thin wrapper: it builds clients from `CELO_PRIVATE_KEY` / `SELF_AGENT_PRIVATE_KEY` and forwards them into this SDK method.
+The MCP tool `get_gooddollar_face_verification_link` omits `callback_url` by default (same URL as above). After face verification, GoodDollar redirects to that page with **base64-encoded** query params:
+
+| Param | Example (encoded) | Decoded |
+|-------|-------------------|---------|
+| `verified` | `dHJ1ZQ%3D%3D` | `"true"` |
+| `chain` | `NDIyMjA%3D` | `"42220"` |
+
+Legacy flows may send plain `isVerified` / `reason` instead; the Celina callback page handles both.
 
 `prepareConnectIdentity` (→ `execute_connect_gooddollar_identity`) throws a guidance-aware error when the signer is not the whitelisted root — including the specific remediation for a *connected* wallet trying to connect another wallet (not allowed; only the root can).
 

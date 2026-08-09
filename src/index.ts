@@ -179,6 +179,7 @@ export type {
 } from "./config/celina-tag.js";
 export type { AaveAsset } from "./config/aave.js";
 export {
+  GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL,
   GOODDOLLAR_CUSD_EXCHANGE_ID,
   GOODDOLLAR_IDENTITY_ADDRESS,
   GOODDOLLAR_MENTO_BROKER,

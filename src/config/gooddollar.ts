@@ -26,6 +26,10 @@ export const GOODDOLLAR_CUSD_EXCHANGE_ID =
 export const GOODDOLLAR_RESERVE_COLLATERAL =
   "0x765DE816845861e75A25fCA122bb6898B8B1282a" as const;
 
+/** Default redirect URL after GoodDollar face verification (MCP / testing). */
+export const GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL =
+  "https://usecelina.xyz/gooddollar/verify/callback" as const;
+
 const GOODDOLLAR_SYMBOLS = new Set(["gooddollar", "g$"]);
 const RESERVE_COLLATERAL_SYMBOLS = new Set(["usdm", "cusd"]);
 
