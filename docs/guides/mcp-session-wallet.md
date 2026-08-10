@@ -2,6 +2,10 @@
 
 This guide applies to **[celina-mcp](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp)** when you run it locally with `CELO_PRIVATE_KEY` in the MCP server `env`. It does **not** apply to browser apps that use this SDK directly.
 
+## Prerequisites
+
+Install Celina MCP globally and configure your client to run **`celina-mcp`** (not `npx -y`). Global install avoids cold-start timeouts on Claude Desktop. Full steps: **[usecelina.xyz/mcp/local](https://www.usecelina.xyz/mcp/local)**.
+
 ## SDK vs MCP vs hosted
 
 | Runtime | Who is “the user”? | How the wallet is known |

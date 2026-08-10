@@ -107,6 +107,6 @@ Full method signatures: [API reference](api-reference/).
 
 ### Related packages
 
-* [`@andrewkimjoseph/celina-mcp`](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) — MCP server; registers SDK tool catalog
+* [`@andrewkimjoseph/celina-mcp`](https://www.usecelina.xyz/mcp/local) — MCP server; registers SDK tool catalog ([install guide](https://www.usecelina.xyz/mcp/local))
 * [`celina-mcp-remote`](https://github.com/andrewkimjoseph/celina-mcp-remote) — hosted reads (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
 * [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)
