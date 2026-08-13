@@ -34,7 +34,9 @@ import {
 import { isCeloAccountRegistered } from "../utils/celo-account.js";
 import {
   getGovernanceDelegates as fetchGovernanceDelegates,
+  getGovernanceDelegateDetails as fetchGovernanceDelegateDetails,
   type GetGovernanceDelegatesOptions,
+  type GovernanceDelegateDetailsResult,
   type GovernanceDelegatesResult,
 } from "./governance-delegates.js";
 
@@ -42,6 +44,7 @@ export type { StakeEligibilityResult } from "../utils/stake-eligibility.js";
 export type {
   GetGovernanceDelegatesOptions,
   GovernanceDelegate,
+  GovernanceDelegateDetailsResult,
   GovernanceDelegateMetadata,
   GovernanceDelegatesResult,
 } from "./governance-delegates.js";
@@ -675,6 +678,16 @@ export class StakingService {
     options?: GetGovernanceDelegatesOptions,
   ): Promise<GovernanceDelegatesResult> {
     return fetchGovernanceDelegates(this.getClient(), options);
+  }
+
+  /** Mondo profile (if listed) plus on-chain LockedGold stats for a delegate address. */
+  async getGovernanceDelegateDetails(
+    address: `0x${string}`,
+  ): Promise<GovernanceDelegateDetailsResult> {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
+    return fetchGovernanceDelegateDetails(this.getClient(), address);
   }
 
   private async fetchGroupVoteHeadroom(groupAddress: `0x${string}`): Promise<bigint> {

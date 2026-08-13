@@ -65,6 +65,25 @@ export type GovernanceDelegatesResult = {
   };
 };
 
+export type GovernanceDelegateDetailsResult = {
+  network: "mainnet";
+  address: `0x${string}`;
+  inMondoDirectory: boolean;
+  source: "celo-mondo";
+  sourceUrl: string;
+  directoryNote: string;
+  metadata: GovernanceDelegateMetadata | null;
+  votingPower: string;
+  votingPowerFormatted: string;
+  delegatedToBalance: string;
+  delegatedToBalanceFormatted: string;
+  delegatedByPercent: string;
+  totalLocked: string;
+  totalLockedFormatted: string;
+  nonvotingLocked: string;
+  nonvotingLockedFormatted: string;
+};
+
 type CachedMetadata = {
   fetchedAt: number;
   entries: GovernanceDelegateMetadata[];
@@ -135,6 +154,85 @@ function filterDelegatees(
   const slice = filtered.slice(safeOffset, safeOffset + safeLimit);
 
   return { slice, total };
+}
+
+function findMetadataByAddress(
+  entries: GovernanceDelegateMetadata[],
+  address: string,
+): GovernanceDelegateMetadata | undefined {
+  const normalized = address.toLowerCase();
+  return entries.find((d) => d.address.toLowerCase() === normalized);
+}
+
+async function fetchDelegateOnChainStats(
+  client: PublicClient,
+  address: `0x${string}`,
+): Promise<
+  Pick<
+    GovernanceDelegateDetailsResult,
+    | "votingPower"
+    | "votingPowerFormatted"
+    | "delegatedToBalance"
+    | "delegatedToBalanceFormatted"
+    | "delegatedByPercent"
+    | "totalLocked"
+    | "totalLockedFormatted"
+    | "nonvotingLocked"
+    | "nonvotingLockedFormatted"
+  >
+> {
+  const lockedGold = CELO_CORE_CONTRACTS.lockedGold;
+
+  const [
+    votingPower,
+    delegatedFraction,
+    delegatedToBalance,
+    totalLocked,
+    nonvotingLocked,
+  ] = await Promise.all([
+    client.readContract({
+      address: lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getAccountTotalGovernanceVotingPower",
+      args: [address],
+    }),
+    client.readContract({
+      address: lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getAccountTotalDelegatedFraction",
+      args: [address],
+    }),
+    client.readContract({
+      address: lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "totalDelegatedCelo",
+      args: [address],
+    }),
+    client.readContract({
+      address: lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getAccountTotalLockedGold",
+      args: [address],
+    }),
+    client.readContract({
+      address: lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getAccountNonvotingLockedGold",
+      args: [address],
+    }),
+  ]);
+
+  return {
+    votingPower: votingPower.toString(),
+    votingPowerFormatted: formatCeloAmount(votingPower),
+    delegatedToBalance: delegatedToBalance.toString(),
+    delegatedToBalanceFormatted: formatCeloAmount(delegatedToBalance),
+    delegatedByPercent: (fromFixidity(delegatedFraction) * 100).toFixed(2),
+    totalLocked: totalLocked.toString(),
+    totalLockedFormatted: formatCeloAmount(totalLocked),
+    nonvotingLocked: nonvotingLocked.toString(),
+    nonvotingLockedFormatted: formatCeloAmount(nonvotingLocked),
+  };
 }
 
 async function enrichDelegateesWithStats(
@@ -255,5 +353,25 @@ export async function getGovernanceDelegates(
       limit: safeLimit,
       hasMore: safeOffset + safeLimit < total,
     },
+  };
+}
+
+export async function getGovernanceDelegateDetails(
+  client: PublicClient,
+  address: `0x${string}`,
+): Promise<GovernanceDelegateDetailsResult> {
+  const allMetadata = await fetchMondoDelegateMetadata();
+  const metadata = findMetadataByAddress(allMetadata, address) ?? null;
+  const stats = await fetchDelegateOnChainStats(client, address);
+
+  return {
+    network: "mainnet",
+    address,
+    inMondoDirectory: metadata !== null,
+    source: "celo-mondo",
+    sourceUrl: CELO_MONDO_DELEGATES_URL,
+    directoryNote: DIRECTORY_NOTE,
+    metadata,
+    ...stats,
   };
 }

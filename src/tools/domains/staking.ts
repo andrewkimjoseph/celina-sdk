@@ -224,6 +224,20 @@ export const stakingToolDefinitions: ToolDefinition[] = [
       }),
   },
   {
+    name: "get_governance_delegate_details",
+    description:
+      "Look up a governance delegate by address — Celo Mondo profile (if listed) plus on-chain LockedGold stats.",
+    inputSchema: z.object({
+      address: addressSchema,
+    }),
+    families: ["read"],
+    mcp: { title: "Get Governance Delegate Details", annotations: readOnly },
+    handler: async (runtime, input) =>
+      runtime.celina.staking.getGovernanceDelegateDetails(
+        input.address as `0x${string}`,
+      ),
+  },
+  {
     name: "execute_delegate_power",
     description: "Delegate governance voting power to another address. Requires humanness verification.",
     inputSchema: z.object({

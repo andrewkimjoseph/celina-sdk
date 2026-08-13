@@ -94,11 +94,20 @@ const { delegates, source, directoryNote } =
 // delegates[].name, delegates[].address, delegates[].interests, delegates[].description
 ```
 
+When you already have a delegate address:
+
+```ts
+const details = await celina.staking.getGovernanceDelegateDetails("0xDelegatee");
+// details.inMondoDirectory, details.metadata?.name, details.metadata?.description
+// details.votingPowerFormatted, details.delegatedToBalanceFormatted
+```
+
 Recommended flow when the user has no delegatee in mind:
 
 1. `getGovernanceDelegates` — browse names and addresses
-2. `getLockedCeloBalance` + `getDelegationInfo` — confirm locked CELO and existing delegations
-3. `prepareDelegatePower` / `execute_delegate_power` with chosen `delegatee` and `percent`
+2. `getGovernanceDelegateDetails` — look up a known address (profile + stats)
+3. `getLockedCeloBalance` + `getDelegationInfo` — confirm locked CELO and existing delegations
+4. `prepareDelegatePower` / `execute_delegate_power` with chosen `delegatee` and `percent`
 
 You can also delegate to **any** `0x…` address without using the directory.
 
@@ -149,6 +158,7 @@ for (const step of flow.steps) {
 | `getTotalStakingInfo` | `get_total_staking_info` | — (read, both surfaces) |
 | `getDelegationInfo` | `get_delegation_info` | — (read, both surfaces) |
 | `getGovernanceDelegates` | `get_governance_delegates` | — (read, both surfaces) |
+| `getGovernanceDelegateDetails` | `get_governance_delegate_details` | — (read, both surfaces) |
 | `getStakeEligibility` | `get_stake_eligibility` | — (read, both surfaces) |
 | `prepareStake` | `execute_stake` (call `get_stake_eligibility` first; enforced in SDK for `prepareStake`) | `prepare_stake` |
 | `prepareActivateStake` | `execute_activate_stake` | `prepare_activate_stake` |
