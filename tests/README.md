@@ -10,13 +10,20 @@ Live Celo mainnet smoke tests driven by a single operation catalog in `tests/cat
 
 ```bash
 # celina-sdk
-npm test          # live mainnet SDK smoke (catalog)
-npm run test:unit # pure helpers (no RPC)
+npm test              # live mainnet SDK smoke (catalog)
+npm run test:unit     # pure helpers (no RPC)
+npm run test:fork     # Anvil fork tests (starts local proxy on :8545)
 
 # celina-mcp
 npm test          # build + live MCP smoke + registry parity
 npm run test:unit # MCP helper unit tests
 ```
+
+## Local `.env`
+
+Copy [`.env.example`](../.env.example) to `.env` at the **package root** (`celina-sdk/.env`, not `tests/.env`). Vitest auto-loads `.env` and `.env.local` for `npm test` and `npm run test:fork`. Shell-exported variables take precedence. Unit tests (`npm run test:unit`) do not load `.env`.
+
+Fork tests require a local Anvil proxy and run only via `npm run test:fork` — they are excluded from the default `npm test` suite.
 
 ## Environment matrix
 

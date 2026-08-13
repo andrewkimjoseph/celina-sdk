@@ -112,6 +112,7 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "dotenv": "^17.4.2",
     "@celo/devchain-anvil": "^17.0.7",
     "@types/node": "^22.0.0",
     "@viem/anvil": "^0.0.10",

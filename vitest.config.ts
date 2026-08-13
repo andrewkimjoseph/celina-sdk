@@ -13,9 +13,10 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    setupFiles: ["./tests/setup/load-env.ts"],
     testTimeout: 60_000,
     hookTimeout: 60_000,
     include: ["tests/**/*.test.ts"],
-    exclude: ["tests/unit/**"],
+    exclude: ["tests/unit/**", "tests/fork/**"],
   },
 });
