@@ -8,7 +8,7 @@
 
 > **formatDisplayAmount**(`amount`, `decimals`): `string`
 
-Defined in: [src/services/mento-fx.service.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/services/mento-fx.service.ts#L63)
+Defined in: [src/services/mento-fx.service.ts:63](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/mento-fx.service.ts#L63)
 
 Human-friendly amount for UI labels (handles raw base-unit integers).
 

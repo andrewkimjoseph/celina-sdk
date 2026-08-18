@@ -101,6 +101,25 @@ export const governanceToolDefinitions: ToolDefinition[] = [
     handler: async (runtime) => runtime.celina.governance.getVotableProposals(),
   },
   {
+    name: "get_queued_proposals",
+    description:
+      "Governance proposals currently in Queue with upvote weight. Fast on-chain read — use get_proposal_details for CGP title and markdown.",
+    inputSchema: z.object({}),
+    families: ["read"],
+    mcp: { title: "Get Queued Proposals", annotations: readOnly },
+    handler: async (runtime) => runtime.celina.governance.getQueuedProposals(),
+  },
+  {
+    name: "get_actionable_governance_proposals",
+    description:
+      "Queued and Referendum proposals you can act on now (upvote or vote). Fast on-chain read — use get_proposal_details on a proposal_id before governing.",
+    inputSchema: z.object({}),
+    families: ["read"],
+    mcp: { title: "Get Actionable Governance Proposals", annotations: readOnly },
+    handler: async (runtime) =>
+      runtime.celina.governance.getActionableGovernanceProposals(),
+  },
+  {
     name: "get_governance_votes",
     description:
       "Referendum votes and queue upvotes cast by an address on Celo governance.",

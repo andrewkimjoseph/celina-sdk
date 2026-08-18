@@ -8,7 +8,7 @@
 
 > **StakeEligibilityResult** = `object`
 
-Defined in: [src/utils/stake-eligibility.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L27)
+Defined in: [src/utils/stake-eligibility.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L27)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/utils/stake-eligibility.ts:27](https://github.com/andrewkimjose
 
 > **accountRegistered**: `boolean`
 
-Defined in: [src/utils/stake-eligibility.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L38)
+Defined in: [src/utils/stake-eligibility.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L38)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/utils/stake-eligibility.ts:38](https://github.com/andrewkimjose
 
 > **address**: `` `0x${string}` ``
 
-Defined in: [src/utils/stake-eligibility.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L29)
+Defined in: [src/utils/stake-eligibility.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L29)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/utils/stake-eligibility.ts:29](https://github.com/andrewkimjose
 
 > **amount**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L32)
+Defined in: [src/utils/stake-eligibility.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L32)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/utils/stake-eligibility.ts:32](https://github.com/andrewkimjose
 
 > **amountWei**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L33)
+Defined in: [src/utils/stake-eligibility.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L33)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/utils/stake-eligibility.ts:33](https://github.com/andrewkimjose
 
 > **canReceiveVotes**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L34)
+Defined in: [src/utils/stake-eligibility.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L34)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [src/utils/stake-eligibility.ts:34](https://github.com/andrewkimjose
 
 > **canReceiveVotesFormatted**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L35)
+Defined in: [src/utils/stake-eligibility.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L35)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [src/utils/stake-eligibility.ts:35](https://github.com/andrewkimjose
 
 > **canStake**: `boolean`
 
-Defined in: [src/utils/stake-eligibility.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L42)
+Defined in: [src/utils/stake-eligibility.ts:42](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L42)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [src/utils/stake-eligibility.ts:42](https://github.com/andrewkimjose
 
 > **groupAddress**: `` `0x${string}` ``
 
-Defined in: [src/utils/stake-eligibility.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L30)
+Defined in: [src/utils/stake-eligibility.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L30)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [src/utils/stake-eligibility.ts:30](https://github.com/andrewkimjose
 
 > `optional` **groupName?**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L31)
+Defined in: [src/utils/stake-eligibility.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L31)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [src/utils/stake-eligibility.ts:31](https://github.com/andrewkimjose
 
 > **inEligibleGroups**: `boolean`
 
-Defined in: [src/utils/stake-eligibility.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L39)
+Defined in: [src/utils/stake-eligibility.ts:39](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L39)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [src/utils/stake-eligibility.ts:39](https://github.com/andrewkimjose
 
 > **maxStakeAmount**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L40)
+Defined in: [src/utils/stake-eligibility.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L40)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [src/utils/stake-eligibility.ts:40](https://github.com/andrewkimjose
 
 > **maxStakeAmountFormatted**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L41)
+Defined in: [src/utils/stake-eligibility.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L41)
 
 ***
 
@@ -112,7 +112,7 @@ Defined in: [src/utils/stake-eligibility.ts:41](https://github.com/andrewkimjose
 
 > **network**: `"mainnet"`
 
-Defined in: [src/utils/stake-eligibility.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L28)
+Defined in: [src/utils/stake-eligibility.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L28)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [src/utils/stake-eligibility.ts:28](https://github.com/andrewkimjose
 
 > **nonvotingLocked**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L36)
+Defined in: [src/utils/stake-eligibility.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L36)
 
 ***
 
@@ -128,7 +128,7 @@ Defined in: [src/utils/stake-eligibility.ts:36](https://github.com/andrewkimjose
 
 > **nonvotingLockedFormatted**: `string`
 
-Defined in: [src/utils/stake-eligibility.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L37)
+Defined in: [src/utils/stake-eligibility.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L37)
 
 ***
 
@@ -136,4 +136,4 @@ Defined in: [src/utils/stake-eligibility.ts:37](https://github.com/andrewkimjose
 
 > **reasons**: `string`[]
 
-Defined in: [src/utils/stake-eligibility.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/utils/stake-eligibility.ts#L43)
+Defined in: [src/utils/stake-eligibility.ts:43](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/stake-eligibility.ts#L43)

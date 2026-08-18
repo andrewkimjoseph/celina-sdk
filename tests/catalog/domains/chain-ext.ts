@@ -65,6 +65,34 @@ export const governanceOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["proposals"]),
   },
   {
+    id: "governance.getQueuedProposals",
+    domain: "governance",
+    layer: "read",
+    sdk: { invoke: (client) => client.governance.getQueuedProposals() },
+    mcp: { tool: "get_queued_proposals", arguments: () => ({}) },
+    assert: (result) => assertHasKeys(result, ["proposals"]),
+  },
+  {
+    id: "governance.getActionableGovernanceProposals",
+    domain: "governance",
+    layer: "read",
+    sdk: {
+      invoke: (client) => client.governance.getActionableGovernanceProposals(),
+    },
+    mcp: {
+      tool: "get_actionable_governance_proposals",
+      arguments: () => ({}),
+    },
+    assert: (result) =>
+      assertHasKeys(result, [
+        "hasAny",
+        "hasQueued",
+        "hasReferendum",
+        "queued",
+        "referendum",
+      ]),
+  },
+  {
     id: "governance.getGovernanceVotes",
     domain: "governance",
     layer: "read",
@@ -166,7 +194,7 @@ export const governanceOperations: OperationSpec[] = [
     layer: "write",
     requiresWrites: true,
     requiresEnv: ["CELO_PRIVATE_KEY"],
-    skip: () => "Pick a Queued proposal from get_governance_proposals manually",
+    skip: () => "Pick a Queued proposal from get_queued_proposals manually",
     sdk: {
       invoke: (client, fx) => client.governance.prepareUpvote(fx.wallet, 1),
     },

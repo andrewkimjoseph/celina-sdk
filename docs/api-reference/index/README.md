@@ -8,7 +8,6 @@
 
 ## Classes
 
-- [GasSponsorshipService](classes/GasSponsorshipService.md)
 - [SelfApiError](classes/SelfApiError.md)
 - [SelfExpiredSessionError](classes/SelfExpiredSessionError.md)
 
@@ -25,14 +24,10 @@
 
 ## Type Aliases
 
-- [AAClient](type-aliases/AAClient.md)
 - [AaveAsset](type-aliases/AaveAsset.md)
 - [AttributionCheckResult](type-aliases/AttributionCheckResult.md)
 - [AttributionVerificationResult](type-aliases/AttributionVerificationResult.md)
 - [CelinaClientOptions](type-aliases/CelinaClientOptions.md)
-- [CreateAAClientOptions](type-aliases/CreateAAClientOptions.md)
-- [GasSponsorshipConfig](type-aliases/GasSponsorshipConfig.md)
-- [GasSponsorshipProviderId](type-aliases/GasSponsorshipProviderId.md)
 - [GetGovernanceDelegatesOptions](type-aliases/GetGovernanceDelegatesOptions.md)
 - [GoodDollarIdentityGuidance](type-aliases/GoodDollarIdentityGuidance.md)
 - [GoodDollarIdentityGuidanceInput](type-aliases/GoodDollarIdentityGuidanceInput.md)
@@ -40,13 +35,8 @@
 - [GovernanceDelegate](type-aliases/GovernanceDelegate.md)
 - [GovernanceDelegateMetadata](type-aliases/GovernanceDelegateMetadata.md)
 - [GovernanceDelegatesResult](type-aliases/GovernanceDelegatesResult.md)
-- [PimlicoGasSponsorshipConfig](type-aliases/PimlicoGasSponsorshipConfig.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
-- [SendPreparedFlowMode](type-aliases/SendPreparedFlowMode.md)
-- [SendPreparedFlowOptions](type-aliases/SendPreparedFlowOptions.md)
-- [SendPreparedFlowResult](type-aliases/SendPreparedFlowResult.md)
 - [StakeEligibilityResult](type-aliases/StakeEligibilityResult.md)
-- [UserOpCall](type-aliases/UserOpCall.md)
 - [VoteValueName](type-aliases/VoteValueName.md)
 
 ## Variables
@@ -58,6 +48,7 @@
 - [ERC\_8021\_MARKER](variables/ERC_8021_MARKER.md)
 - [FIXIDITY\_ONE](variables/FIXIDITY_ONE.md)
 - [GOODDOLLAR\_CUSD\_EXCHANGE\_ID](variables/GOODDOLLAR_CUSD_EXCHANGE_ID.md)
+- [GOODDOLLAR\_FACE\_VERIFICATION\_CALLBACK\_URL](variables/GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL.md)
 - [GOODDOLLAR\_HUMANNESS\_REMEDIATION](variables/GOODDOLLAR_HUMANNESS_REMEDIATION.md)
 - [GOODDOLLAR\_IDENTITY\_ADDRESS](variables/GOODDOLLAR_IDENTITY_ADDRESS.md)
 - [GOODDOLLAR\_MENTO\_BROKER](variables/GOODDOLLAR_MENTO_BROKER.md)
@@ -78,10 +69,8 @@
 - [checkAttributionInCalldata](functions/checkAttributionInCalldata.md)
 - [clearSelfSessionsForTests](functions/clearSelfSessionsForTests.md)
 - [collectAttributionTags](functions/collectAttributionTags.md)
-- [createAAClient](functions/createAAClient.md)
 - [createCelinaClient](functions/createCelinaClient.md)
 - [deriveGoodDollarIdentityGuidance](functions/deriveGoodDollarIdentityGuidance.md)
-- [deriveSmartAccountAddress](functions/deriveSmartAccountAddress.md)
 - [findLesserAndGreaterAfterVote](functions/findLesserAndGreaterAfterVote.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
@@ -90,7 +79,6 @@
 - [normalizeAttributionTags](functions/normalizeAttributionTags.md)
 - [parsePrivateKeyEnv](functions/parsePrivateKeyEnv.md)
 - [percentToFixidity](functions/percentToFixidity.md)
-- [preparedStepsToUserOpCalls](functions/preparedStepsToUserOpCalls.md)
 - [resolveAaveAsset](functions/resolveAaveAsset.md)
 - [resolveSelfSessionLinks](functions/resolveSelfSessionLinks.md)
 - [runWithAnalyticsWallet](functions/runWithAnalyticsWallet.md)
@@ -99,6 +87,7 @@
 - [stripErc8021SuffixIfPresent](functions/stripErc8021SuffixIfPresent.md)
 - [toErc8021AttributionCodes](functions/toErc8021AttributionCodes.md)
 - [toFixidity](functions/toFixidity.md)
+- [tryParsePrivateKeyEnv](functions/tryParsePrivateKeyEnv.md)
 - [verifyAttributionInCalldata](functions/verifyAttributionInCalldata.md)
 - [voteValueToInt](functions/voteValueToInt.md)
 

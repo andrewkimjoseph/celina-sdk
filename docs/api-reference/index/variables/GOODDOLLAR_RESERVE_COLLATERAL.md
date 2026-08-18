@@ -8,6 +8,6 @@
 
 > `const` **GOODDOLLAR\_RESERVE\_COLLATERAL**: `"0x765DE816845861e75A25fCA122bb6898B8B1282a"`
 
-Defined in: [src/config/gooddollar.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/config/gooddollar.ts#L26)
+Defined in: [src/config/gooddollar.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/config/gooddollar.ts#L26)
 
 Reserve collateral token (USDm / cUSD) for the G$ pool on Celo.

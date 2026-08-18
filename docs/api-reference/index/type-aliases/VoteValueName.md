@@ -8,6 +8,6 @@
 
 > **VoteValueName** = *typeof* [`VOTE_VALUES`](../variables/VOTE_VALUES.md)\[`number`\]
 
-Defined in: [src/abis/governance.ts:139](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/abis/governance.ts#L139)
+Defined in: [src/abis/governance.ts:139](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/abis/governance.ts#L139)
 
 On-chain VoteValue enum names for governance voting.

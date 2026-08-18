@@ -468,6 +468,65 @@ export class GovernanceService {
     };
   }
 
+  /** Proposals currently in Queue stage with upvote weight. */
+  async getQueuedProposals() {
+    const queue = await this.getGovernanceQueue();
+    const queued = [];
+
+    for (const entry of queue) {
+      const proposal = await this.fetchProposal(entry.proposalId, 0, false);
+      if (!proposal) continue;
+      const stageName = proposalStageName(proposal.stage);
+      if (stageName === "Queued") {
+        queued.push({
+          proposalId: entry.proposalId,
+          upvotes: formatCeloAmount(entry.upvotes),
+          stage: stageName,
+          url: proposal.url,
+        });
+      }
+    }
+
+    return {
+      network: "mainnet" as const,
+      proposals: queued,
+      message:
+        queued.length > 0
+          ? `${queued.length} proposal(s) in Queue`
+          : "No proposals currently in Queue",
+    };
+  }
+
+  /** Queued and Referendum proposals you can upvote or vote on now. */
+  async getActionableGovernanceProposals() {
+    const [queuedResult, referendumResult] = await Promise.all([
+      this.getQueuedProposals(),
+      this.getVotableProposals(),
+    ]);
+
+    const hasQueued = queuedResult.proposals.length > 0;
+    const hasReferendum = referendumResult.proposals.length > 0;
+    const hasAny = hasQueued || hasReferendum;
+
+    const parts: string[] = [];
+    if (hasQueued) {
+      parts.push(`${queuedResult.proposals.length} Queued`);
+    }
+    if (hasReferendum) {
+      parts.push(`${referendumResult.proposals.length} Referendum`);
+    }
+
+    return {
+      network: "mainnet" as const,
+      hasAny,
+      hasQueued,
+      hasReferendum,
+      queued: queuedResult.proposals,
+      referendum: referendumResult.proposals,
+      message: hasAny ? parts.join(", ") : "No actionable proposals",
+    };
+  }
+
   /** Referendum votes and queue upvotes cast by an address on Celo governance. */
   async getGovernanceVotes(
     address: `0x${string}`,
@@ -921,7 +980,7 @@ export class GovernanceService {
 
     if (!queue.some((entry) => entry.proposalId === proposalId)) {
       throw new Error(
-        `Proposal ${proposalId} is not in the governance queue. Use get_governance_proposals to find Queued proposals.`,
+        `Proposal ${proposalId} is not in the governance queue. Use get_queued_proposals to find Queued proposals.`,
       );
     }
 

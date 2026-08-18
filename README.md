@@ -18,7 +18,7 @@ Celina is layered from chain logic through agent tooling:
 |-------|---------|------|
 | **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
 | **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads ([install guide](https://www.usecelina.xyz/mcp/local)) |
-| **MCP remote** | `celina-mcp-remote` | Vercel Streamable HTTP + A2A — **46 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
+| **MCP remote** | `celina-mcp-remote` | Vercel Streamable HTTP + A2A — **48 hosted read/prepare tools**; no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
 

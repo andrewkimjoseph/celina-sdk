@@ -8,7 +8,7 @@
 
 > `const` **CHAIN**: `object` = `celo`
 
-Defined in: [src/config/chains.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/be01eb873c2753717e97a5aa979160c630e5980b/src/config/chains.ts#L7)
+Defined in: [src/config/chains.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/config/chains.ts#L7)
 
 ## Type Declaration
 

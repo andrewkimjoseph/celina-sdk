@@ -10,6 +10,10 @@
 
 - [StakingService](classes/StakingService.md)
 
+## Type Aliases
+
+- [GovernanceDelegateDetailsResult](type-aliases/GovernanceDelegateDetailsResult.md)
+
 ## References
 
 ### GetGovernanceDelegatesOptions
