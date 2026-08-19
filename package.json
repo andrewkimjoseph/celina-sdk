@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.25.6",
+  "version": "0.25.7",
   "description": "Celina SDK — Celo mainnet reads, unsigned transaction preparation, and ERC-4337 createAAClient for sponsored UserOps.",
   "type": "module",
   "sideEffects": false,
@@ -49,11 +49,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "prebuild": "node scripts/generate-mcp-analytics-map.mjs",
-    "build": "npm run prebuild && rm -rf build && tsc && tsc -p tsconfig.testing.json",
+    "prebuild": "node scripts/generate-mcp-analytics-map.mjs && node scripts/bundle-cjs-deps.mjs",
+    "build": "npm run prebuild && rm -rf build && tsc && tsc -p tsconfig.testing.json && node scripts/copy-generated-bundles.mjs",
     "dev": "tsc --watch",
-    "test": "vitest run",
-    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test": "node scripts/bundle-cjs-deps.mjs && vitest run",
+    "test:unit": "node scripts/bundle-cjs-deps.mjs && vitest run --config vitest.unit.config.ts",
     "test:fork": "vitest run --config vitest.fork.config.ts",
     "docs:api": "typedoc",
     "docs:summary": "node scripts/update-api-summary.mjs",
@@ -112,7 +112,7 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
-    "dotenv": "^17.4.2",
+    "esbuild": "^0.25.9",
     "@celo/devchain-anvil": "^17.0.7",
     "@types/node": "^22.0.0",
     "@viem/anvil": "^0.0.10",
