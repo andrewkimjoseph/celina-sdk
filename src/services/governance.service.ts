@@ -123,6 +123,19 @@ interface RawProposal {
   votes: { yes: string; no: string; abstain: string };
 }
 
+const ACTIONABLE_PROPOSAL_SCAN_LIMIT = 120;
+
+interface ProposalSnapshot {
+  stageName: ProposalStageName;
+  url: string;
+}
+
+interface ActionableDiscovery {
+  queueEntries: GovernanceQueueEntry[];
+  dequeueEntries: Array<{ index: number; proposalId: number }>;
+  snapshots: Map<number, ProposalSnapshot>;
+}
+
 /** Celo on-chain governance proposal reads, CGP enrichment, and LockedGold writes. */
 export class GovernanceService {
   private readonly attributionTags?: string[];
@@ -301,6 +314,107 @@ export class GovernanceService {
       .filter((entry) => entry.proposalId !== 0);
   }
 
+  private async getProposalSnapshots(
+    proposalIds: number[],
+  ): Promise<Map<number, ProposalSnapshot>> {
+    const uniqueIds = Array.from(new Set(proposalIds)).filter((id) => id > 0);
+    if (uniqueIds.length === 0) return new Map();
+
+    const client = this.getClient();
+    const governance = CELO_CORE_CONTRACTS.governance;
+
+    const proposalCalls = uniqueIds.map((id) => ({
+      address: governance,
+      abi: governanceAbi,
+      functionName: "getProposal" as const,
+      args: [BigInt(id)] as const,
+    }));
+    const stageCalls = uniqueIds.map((id) => ({
+      address: governance,
+      abi: governanceAbi,
+      functionName: "getProposalStage" as const,
+      args: [BigInt(id)] as const,
+    }));
+
+    const [proposalResults, stageResults] = await Promise.all([
+      client.multicall({ contracts: proposalCalls, allowFailure: true }),
+      client.multicall({ contracts: stageCalls, allowFailure: true }),
+    ]);
+
+    const snapshots = new Map<number, ProposalSnapshot>();
+    for (let i = 0; i < uniqueIds.length; i++) {
+      const id = uniqueIds[i]!;
+      const proposalResult = proposalResults[i];
+      const stageResult = stageResults[i];
+
+      if (
+        !proposalResult ||
+        proposalResult.status !== "success" ||
+        !stageResult ||
+        stageResult.status !== "success"
+      ) {
+        continue;
+      }
+
+      const [proposer, deposit, timestampSec, , url] = proposalResult.result as readonly [
+        `0x${string}`,
+        bigint,
+        bigint,
+        bigint,
+        string,
+        bigint,
+        boolean,
+      ];
+
+      if (
+        proposer === "0x0000000000000000000000000000000000000000" &&
+        deposit === 0n &&
+        timestampSec === 0n
+      ) {
+        continue;
+      }
+
+      snapshots.set(id, {
+        stageName: proposalStageName(Number(stageResult.result)),
+        url,
+      });
+    }
+
+    return snapshots;
+  }
+
+  private async discoverActionableProposals(
+    limit = ACTIONABLE_PROPOSAL_SCAN_LIMIT,
+  ): Promise<ActionableDiscovery> {
+    const [queueEntriesRaw, dequeueEntriesRaw] = await Promise.all([
+      this.getGovernanceQueue(),
+      this.getDequeueWithIndices(),
+    ]);
+
+    const queueEntries = queueEntriesRaw.filter((entry) => entry.proposalId !== 0);
+    const dequeueEntries = dequeueEntriesRaw.filter((entry) => entry.proposalId !== 0);
+
+    const selectedIds = Array.from(
+      new Set([
+        ...queueEntries.map((entry) => entry.proposalId),
+        ...dequeueEntries.map((entry) => entry.proposalId),
+      ]),
+    )
+      .sort((a, b) => b - a)
+      .slice(0, Math.max(limit, 1));
+
+    const selected = new Set(selectedIds);
+    const queueLimited = queueEntries
+      .filter((entry) => selected.has(entry.proposalId))
+      .sort((a, b) => b.proposalId - a.proposalId);
+    const dequeueLimited = dequeueEntries
+      .filter((entry) => selected.has(entry.proposalId))
+      .sort((a, b) => b.proposalId - a.proposalId);
+
+    const snapshots = await this.getProposalSnapshots(selectedIds);
+    return { queueEntries: queueLimited, dequeueEntries: dequeueLimited, snapshots };
+  }
+
   /**
    * List governance proposals with pagination and optional CGP metadata.
    * @param options - Pagination (`page`/`pageSize` or `offset`/`limit`) and filters
@@ -439,24 +553,22 @@ export class GovernanceService {
   }
 
   /** Proposals currently in Referendum stage with their dequeue index. */
-  async getVotableProposals() {
-    const entries = await this.getDequeueWithIndices();
-    const votable = [];
-
-    for (const entry of entries) {
-      if (entry.proposalId === 0) continue;
-      const proposal = await this.fetchProposal(entry.proposalId, 0, false);
-      if (!proposal) continue;
-      const stageName = proposalStageName(proposal.stage);
-      if (stageName === "Referendum") {
-        votable.push({
+  async getVotableProposals(options: { limit?: number } = {}) {
+    const { dequeueEntries, snapshots } = await this.discoverActionableProposals(
+      options.limit ?? ACTIONABLE_PROPOSAL_SCAN_LIMIT,
+    );
+    const votable = dequeueEntries.flatMap((entry) => {
+      const snapshot = snapshots.get(entry.proposalId);
+      if (!snapshot || snapshot.stageName !== "Referendum") return [];
+      return [
+        {
           proposalId: entry.proposalId,
           index: entry.index,
-          stage: stageName,
-          url: proposal.url,
-        });
-      }
-    }
+          stage: snapshot.stageName,
+          url: snapshot.url,
+        },
+      ];
+    });
 
     return {
       network: "mainnet" as const,
@@ -469,23 +581,22 @@ export class GovernanceService {
   }
 
   /** Proposals currently in Queue stage with upvote weight. */
-  async getQueuedProposals() {
-    const queue = await this.getGovernanceQueue();
-    const queued = [];
-
-    for (const entry of queue) {
-      const proposal = await this.fetchProposal(entry.proposalId, 0, false);
-      if (!proposal) continue;
-      const stageName = proposalStageName(proposal.stage);
-      if (stageName === "Queued") {
-        queued.push({
+  async getQueuedProposals(options: { limit?: number } = {}) {
+    const { queueEntries, snapshots } = await this.discoverActionableProposals(
+      options.limit ?? ACTIONABLE_PROPOSAL_SCAN_LIMIT,
+    );
+    const queued = queueEntries.flatMap((entry) => {
+      const snapshot = snapshots.get(entry.proposalId);
+      if (!snapshot || snapshot.stageName !== "Queued") return [];
+      return [
+        {
           proposalId: entry.proposalId,
           upvotes: formatCeloAmount(entry.upvotes),
-          stage: stageName,
-          url: proposal.url,
-        });
-      }
-    }
+          stage: snapshot.stageName,
+          url: snapshot.url,
+        },
+      ];
+    });
 
     return {
       network: "mainnet" as const,
@@ -499,21 +610,45 @@ export class GovernanceService {
 
   /** Queued and Referendum proposals you can upvote or vote on now. */
   async getActionableGovernanceProposals() {
-    const [queuedResult, referendumResult] = await Promise.all([
-      this.getQueuedProposals(),
-      this.getVotableProposals(),
-    ]);
+    const { queueEntries, dequeueEntries, snapshots } =
+      await this.discoverActionableProposals();
 
-    const hasQueued = queuedResult.proposals.length > 0;
-    const hasReferendum = referendumResult.proposals.length > 0;
+    const queued = queueEntries.flatMap((entry) => {
+      const snapshot = snapshots.get(entry.proposalId);
+      if (!snapshot || snapshot.stageName !== "Queued") return [];
+      return [
+        {
+          proposalId: entry.proposalId,
+          upvotes: formatCeloAmount(entry.upvotes),
+          stage: snapshot.stageName,
+          url: snapshot.url,
+        },
+      ];
+    });
+
+    const referendum = dequeueEntries.flatMap((entry) => {
+      const snapshot = snapshots.get(entry.proposalId);
+      if (!snapshot || snapshot.stageName !== "Referendum") return [];
+      return [
+        {
+          proposalId: entry.proposalId,
+          index: entry.index,
+          stage: snapshot.stageName,
+          url: snapshot.url,
+        },
+      ];
+    });
+
+    const hasQueued = queued.length > 0;
+    const hasReferendum = referendum.length > 0;
     const hasAny = hasQueued || hasReferendum;
 
     const parts: string[] = [];
     if (hasQueued) {
-      parts.push(`${queuedResult.proposals.length} Queued`);
+      parts.push(`${queued.length} Queued`);
     }
     if (hasReferendum) {
-      parts.push(`${referendumResult.proposals.length} Referendum`);
+      parts.push(`${referendum.length} Referendum`);
     }
 
     return {
@@ -521,8 +656,8 @@ export class GovernanceService {
       hasAny,
       hasQueued,
       hasReferendum,
-      queued: queuedResult.proposals,
-      referendum: referendumResult.proposals,
+      queued,
+      referendum,
       message: hasAny ? parts.join(", ") : "No actionable proposals",
     };
   }
