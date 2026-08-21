@@ -1299,7 +1299,8 @@ export class GovernanceService {
   }
 
   /**
-   * Call Governance.dequeueProposalsIfReady (public; anyone can pay gas).
+   * Prepare Governance.dequeueProposalsIfReady (on-chain the call is permissionless).
+   * Celina MCP execute_dequeue_proposals_if_ready is humanness-gated.
    * When overdue, moves up to concurrentProposals from the queue into Approval.
    */
   async prepareDequeueProposalsIfReady(

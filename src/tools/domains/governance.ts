@@ -253,7 +253,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "execute_dequeue_proposals_if_ready",
     description:
-      "Call Governance.dequeueProposalsIfReady. When dequeue is overdue, moves top concurrent proposals from Queue into Approval. Anyone can pay gas (not humanness-gated). Use when get_queued_proposals reports dequeueReady.",
+      "Call Governance.dequeueProposalsIfReady. When dequeue is overdue, moves top concurrent proposals from Queue into Approval. Requires humanness verification. Use when get_queued_proposals reports dequeueReady.",
     inputSchema: z.object({
       signer: optionalSignerSchema,
     }),
@@ -413,7 +413,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_dequeue_proposals_if_ready",
     description:
-      "Prepare unsigned Governance.dequeueProposalsIfReady for wallet signing. When overdue, moves top queued proposals into Approval.",
+      "Prepare unsigned Governance.dequeueProposalsIfReady for wallet signing. When overdue, moves top queued proposals into Approval. MCP execute_dequeue_proposals_if_ready requires humanness verification.",
     inputSchema: z.object({
       from: optionalWalletAddressSchema,
     }),
