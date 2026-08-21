@@ -125,6 +125,8 @@ export const TOOL_CATEGORY_BY_NAME: Record<string, WebsiteToolCategory> = {
   execute_withdraw_celo: "Governance",
   execute_vote: "Governance",
   execute_upvote: "Governance",
+  execute_dequeue_proposals_if_ready: "Governance",
+  prepare_dequeue_proposals_if_ready: "Governance",
   execute_revoke_governance_votes: "Governance",
   execute_revoke_governance_upvote: "Governance",
   prepare_lock_celo: "Governance",
