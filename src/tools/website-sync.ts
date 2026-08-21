@@ -192,6 +192,7 @@ function firstSentence(text: string): string {
 type ZodSchemaNode = {
   _def?: {
     typeName?: string;
+    schema?: unknown;
     innerType?: unknown;
     description?: string;
   };
@@ -204,19 +205,47 @@ function unwrapZodSchema(schema: unknown): ZodSchemaNode | null {
   return schema as ZodSchemaNode;
 }
 
+/** Peel ZodEffects (preprocess/refine) and optional/default wrappers to the core type. */
+function unwrapZodLayers(schema: unknown): unknown {
+  let current = schema;
+  for (let i = 0; i < 8; i++) {
+    const zod = unwrapZodSchema(current);
+    const typeName = zod?._def?.typeName;
+    if (typeName === "ZodEffects" && zod?._def?.schema !== undefined) {
+      current = zod._def.schema;
+      continue;
+    }
+    if (
+      (typeName === "ZodOptional" || typeName === "ZodDefault") &&
+      zod?._def?.innerType !== undefined
+    ) {
+      current = zod._def.innerType;
+      continue;
+    }
+    break;
+  }
+  return current;
+}
+
 function isZodOptional(schema: unknown): boolean {
-  const zod = unwrapZodSchema(schema);
-  const typeName = zod?._def?.typeName;
-  return typeName === "ZodOptional" || typeName === "ZodDefault";
+  let current = schema;
+  for (let i = 0; i < 8; i++) {
+    const zod = unwrapZodSchema(current);
+    const typeName = zod?._def?.typeName;
+    if (typeName === "ZodOptional" || typeName === "ZodDefault") {
+      return true;
+    }
+    if (typeName === "ZodEffects" && zod?._def?.schema !== undefined) {
+      current = zod._def.schema;
+      continue;
+    }
+    break;
+  }
+  return false;
 }
 
 function zodInnerSchema(schema: unknown): unknown {
-  const zod = unwrapZodSchema(schema);
-  if (!zod?._def) return schema;
-  if (isZodOptional(schema)) {
-    return zod._def.innerType;
-  }
-  return schema;
+  return unwrapZodLayers(schema);
 }
 
 function zodFieldType(schema: unknown): string {
@@ -237,7 +266,11 @@ function zodFieldDescription(schema: unknown, fallback: string): string {
   if (zod?._def?.description) {
     return zod._def.description;
   }
-  if (isZodOptional(schema)) {
+  const typeName = zod?._def?.typeName;
+  if (typeName === "ZodEffects" && zod?._def?.schema !== undefined) {
+    return zodFieldDescription(zod._def.schema, fallback);
+  }
+  if (typeName === "ZodOptional" || typeName === "ZodDefault") {
     return zodFieldDescription(zod?._def?.innerType, fallback);
   }
   return fallback;
