@@ -103,7 +103,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "get_queued_proposals",
     description:
-      "Governance proposals currently in Queue with upvote weight. Fast on-chain read — use get_proposal_details for CGP title and markdown.",
+      "Governance proposals currently in Queue with upvote weight. Includes dequeueReady and upvoteable flags — when dequeue is overdue, top proposals are not upvoteable until execute_dequeue_proposals_if_ready. Use get_proposal_details for CGP title and markdown.",
     inputSchema: z.object({}),
     families: ["read"],
     mcp: { title: "Get Queued Proposals", annotations: readOnly },
@@ -112,7 +112,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "get_actionable_governance_proposals",
     description:
-      "Queued and Referendum proposals you can act on now (upvote or vote). Fast on-chain read — use get_proposal_details on a proposal_id before governing.",
+      "Queued and Referendum proposals you can act on now (upvote or vote). When dequeueReady, queued items may have upvoteable=false — call execute_dequeue_proposals_if_ready first. Use get_proposal_details on a proposal_id before governing.",
     inputSchema: z.object({}),
     families: ["read"],
     mcp: { title: "Get Actionable Governance Proposals", annotations: readOnly },
@@ -235,7 +235,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "execute_upvote",
     description:
-      "Upvote a Queued governance proposal. Requires locked CELO; only one active queue upvote per account.",
+      "Upvote a Queued governance proposal. Requires locked CELO; only one active queue upvote per account. Fails early if dequeue is overdue and the proposal would be dequeued first — use execute_dequeue_proposals_if_ready.",
     inputSchema: z.object({
       proposal_id: nonNegativeIntSchema,
       signer: optionalSignerSchema,
@@ -248,6 +248,23 @@ export const governanceToolDefinitions: ToolDefinition[] = [
       const write = runtime.executors?.governanceWrite;
       if (!write) throw new Error("Governance write executor not configured.");
       return write.upvote(input.proposal_id as number, resolveSigner(input));
+    },
+  },
+  {
+    name: "execute_dequeue_proposals_if_ready",
+    description:
+      "Call Governance.dequeueProposalsIfReady. When dequeue is overdue, moves top concurrent proposals from Queue into Approval. Anyone can pay gas (not humanness-gated). Use when get_queued_proposals reports dequeueReady.",
+    inputSchema: z.object({
+      signer: optionalSignerSchema,
+    }),
+    families: ["execute"],
+    surfaces: ["mcp"],
+    requiresEnv: [...executeEnvRequirements],
+    mcp: { title: "Dequeue Governance Proposals If Ready", annotations: destructive },
+    handler: async (runtime, input) => {
+      const write = runtime.executors?.governanceWrite;
+      if (!write) throw new Error("Governance write executor not configured.");
+      return write.dequeueProposalsIfReady(resolveSigner(input));
     },
   },
   {
@@ -376,7 +393,7 @@ export const governanceToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_upvote",
     description:
-      "Prepare unsigned governance queue upvote for wallet signing. Requires locked CELO.",
+      "Prepare unsigned governance queue upvote for wallet signing. Requires locked CELO. Fails early if dequeue is overdue for this proposal — use prepare_dequeue_proposals_if_ready first.",
     inputSchema: z.object({
       from: optionalWalletAddressSchema,
       proposal_id: nonNegativeIntSchema,
@@ -391,6 +408,22 @@ export const governanceToolDefinitions: ToolDefinition[] = [
         from,
         input.proposal_id as number,
       );
+    },
+  },
+  {
+    name: "prepare_dequeue_proposals_if_ready",
+    description:
+      "Prepare unsigned Governance.dequeueProposalsIfReady for wallet signing. When overdue, moves top queued proposals into Approval.",
+    inputSchema: z.object({
+      from: optionalWalletAddressSchema,
+    }),
+    families: ["prepare"],
+    surfaces: ["browser"],
+    handler: async (runtime, input) => {
+      const from = resolveWalletFromRuntime(runtime, {
+        from: input.from as string | undefined,
+      });
+      return runtime.celina.governance.prepareDequeueProposalsIfReady(from);
     },
   },
   {

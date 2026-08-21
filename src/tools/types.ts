@@ -168,6 +168,7 @@ export type GovernanceWriteExecutors = {
     signer?: "celo" | "self_agent",
   ) => Promise<unknown>;
   upvote: (proposalId: number, signer?: "celo" | "self_agent") => Promise<unknown>;
+  dequeueProposalsIfReady: (signer?: "celo" | "self_agent") => Promise<unknown>;
   revokeGovernanceVotes: (signer?: "celo" | "self_agent") => Promise<unknown>;
   revokeGovernanceUpvote: (
     proposalId?: number,

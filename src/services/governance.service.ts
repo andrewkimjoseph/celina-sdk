@@ -25,8 +25,11 @@ import {
 import { assertCeloAccountRegistered } from "../utils/celo-account.js";
 import { formatCeloAmount } from "../utils/celo-format.js";
 import {
+  isGovernanceDequeueReady,
   lesserAndGreaterAfterRevokeUpvote,
   lesserAndGreaterAfterUpvote,
+  proposalIdsNextToDequeue,
+  type GovernanceDequeueSchedule,
   type GovernanceQueueEntry,
 } from "../utils/governance-queue.js";
 
@@ -134,6 +137,9 @@ interface ActionableDiscovery {
   queueEntries: GovernanceQueueEntry[];
   dequeueEntries: Array<{ index: number; proposalId: number }>;
   snapshots: Map<number, ProposalSnapshot>;
+  dequeueSchedule: GovernanceDequeueSchedule;
+  dequeueReady: boolean;
+  nextDequeueProposalIds: number[];
 }
 
 /** Celo on-chain governance proposal reads, CGP enrichment, and LockedGold writes. */
@@ -314,6 +320,67 @@ export class GovernanceService {
       .filter((entry) => entry.proposalId !== 0);
   }
 
+  private async getDequeueSchedule(): Promise<GovernanceDequeueSchedule> {
+    const client = this.getClient();
+    const governance = CELO_CORE_CONTRACTS.governance;
+    const [lastDequeue, dequeueFrequency, concurrentProposals] = await Promise.all([
+      client.readContract({
+        address: governance,
+        abi: governanceAbi,
+        functionName: "lastDequeue",
+      }),
+      client.readContract({
+        address: governance,
+        abi: governanceAbi,
+        functionName: "dequeueFrequency",
+      }),
+      client.readContract({
+        address: governance,
+        abi: governanceAbi,
+        functionName: "concurrentProposals",
+      }),
+    ]);
+
+    return {
+      lastDequeue: Number(lastDequeue),
+      dequeueFrequency: Number(dequeueFrequency),
+      concurrentProposals: Number(concurrentProposals),
+      now: Math.floor(Date.now() / 1000),
+    };
+  }
+
+  private formatDequeueSchedule(schedule: GovernanceDequeueSchedule, dequeueReady: boolean) {
+    return {
+      lastDequeue: schedule.lastDequeue,
+      lastDequeueISO: new Date(schedule.lastDequeue * 1000).toISOString(),
+      dequeueFrequencySeconds: schedule.dequeueFrequency,
+      concurrentProposals: schedule.concurrentProposals,
+      dequeueReady,
+      secondsUntilDequeueReady: dequeueReady
+        ? 0
+        : Math.max(0, schedule.lastDequeue + schedule.dequeueFrequency - schedule.now),
+    };
+  }
+
+  private assertUpvoteNotBlockedByPendingDequeue(
+    proposalId: number,
+    queue: GovernanceQueueEntry[],
+    schedule: GovernanceDequeueSchedule,
+  ): void {
+    if (!isGovernanceDequeueReady(schedule)) return;
+
+    const nextIds = proposalIdsNextToDequeue(queue, schedule.concurrentProposals);
+    if (!nextIds.includes(proposalId)) return;
+
+    throw new Error(
+      `Cannot upvote proposal ${proposalId}: governance dequeue is overdue. ` +
+        `The next write (including upvote) runs dequeueProposalsIfReady first and would remove ` +
+        `proposal(s) [${nextIds.join(", ")}] from the queue, then upvote reverts with ` +
+        `"cannot upvote a proposal not in the queue". Call execute_dequeue_proposals_if_ready ` +
+        `(or prepare_dequeue_proposals_if_ready) first; those proposals move to Approval, then vote in Referendum.`,
+    );
+  }
+
   private async getProposalSnapshots(
     proposalIds: number[],
   ): Promise<Map<number, ProposalSnapshot>> {
@@ -386,13 +453,18 @@ export class GovernanceService {
   private async discoverActionableProposals(
     limit = ACTIONABLE_PROPOSAL_SCAN_LIMIT,
   ): Promise<ActionableDiscovery> {
-    const [queueEntriesRaw, dequeueEntriesRaw] = await Promise.all([
+    const [queueEntriesRaw, dequeueEntriesRaw, dequeueSchedule] = await Promise.all([
       this.getGovernanceQueue(),
       this.getDequeueWithIndices(),
+      this.getDequeueSchedule(),
     ]);
 
     const queueEntries = queueEntriesRaw.filter((entry) => entry.proposalId !== 0);
     const dequeueEntries = dequeueEntriesRaw.filter((entry) => entry.proposalId !== 0);
+    const dequeueReady = isGovernanceDequeueReady(dequeueSchedule);
+    const nextDequeueProposalIds = dequeueReady
+      ? proposalIdsNextToDequeue(queueEntries, dequeueSchedule.concurrentProposals)
+      : [];
 
     const selectedIds = Array.from(
       new Set([
@@ -412,7 +484,14 @@ export class GovernanceService {
       .sort((a, b) => b.proposalId - a.proposalId);
 
     const snapshots = await this.getProposalSnapshots(selectedIds);
-    return { queueEntries: queueLimited, dequeueEntries: dequeueLimited, snapshots };
+    return {
+      queueEntries: queueLimited,
+      dequeueEntries: dequeueLimited,
+      snapshots,
+      dequeueSchedule,
+      dequeueReady,
+      nextDequeueProposalIds,
+    };
   }
 
   /**
@@ -582,46 +661,72 @@ export class GovernanceService {
 
   /** Proposals currently in Queue stage with upvote weight. */
   async getQueuedProposals(options: { limit?: number } = {}) {
-    const { queueEntries, snapshots } = await this.discoverActionableProposals(
+    const {
+      queueEntries,
+      snapshots,
+      dequeueSchedule,
+      dequeueReady,
+      nextDequeueProposalIds,
+    } = await this.discoverActionableProposals(
       options.limit ?? ACTIONABLE_PROPOSAL_SCAN_LIMIT,
     );
+    const nextDequeueSet = new Set(nextDequeueProposalIds);
     const queued = queueEntries.flatMap((entry) => {
       const snapshot = snapshots.get(entry.proposalId);
       if (!snapshot || snapshot.stageName !== "Queued") return [];
+      const upvoteable = !dequeueReady || !nextDequeueSet.has(entry.proposalId);
       return [
         {
           proposalId: entry.proposalId,
           upvotes: formatCeloAmount(entry.upvotes),
           stage: snapshot.stageName,
           url: snapshot.url,
+          upvoteable,
         },
       ];
     });
 
+    const schedule = this.formatDequeueSchedule(dequeueSchedule, dequeueReady);
+    let message =
+      queued.length > 0
+        ? `${queued.length} proposal(s) in Queue`
+        : "No proposals currently in Queue";
+    if (dequeueReady && nextDequeueProposalIds.length > 0) {
+      message += `. Dequeue overdue — next write will dequeue [${nextDequeueProposalIds.join(", ")}]; those are not upvoteable. Use execute_dequeue_proposals_if_ready.`;
+    }
+
     return {
       network: "mainnet" as const,
       proposals: queued,
-      message:
-        queued.length > 0
-          ? `${queued.length} proposal(s) in Queue`
-          : "No proposals currently in Queue",
+      ...schedule,
+      nextDequeueProposalIds,
+      message,
     };
   }
 
   /** Queued and Referendum proposals you can upvote or vote on now. */
   async getActionableGovernanceProposals() {
-    const { queueEntries, dequeueEntries, snapshots } =
-      await this.discoverActionableProposals();
+    const {
+      queueEntries,
+      dequeueEntries,
+      snapshots,
+      dequeueSchedule,
+      dequeueReady,
+      nextDequeueProposalIds,
+    } = await this.discoverActionableProposals();
 
+    const nextDequeueSet = new Set(nextDequeueProposalIds);
     const queued = queueEntries.flatMap((entry) => {
       const snapshot = snapshots.get(entry.proposalId);
       if (!snapshot || snapshot.stageName !== "Queued") return [];
+      const upvoteable = !dequeueReady || !nextDequeueSet.has(entry.proposalId);
       return [
         {
           proposalId: entry.proposalId,
           upvotes: formatCeloAmount(entry.upvotes),
           stage: snapshot.stageName,
           url: snapshot.url,
+          upvoteable,
         },
       ];
     });
@@ -639,26 +744,40 @@ export class GovernanceService {
       ];
     });
 
+    const upvoteableQueued = queued.filter((p) => p.upvoteable);
     const hasQueued = queued.length > 0;
+    const hasUpvoteableQueued = upvoteableQueued.length > 0;
     const hasReferendum = referendum.length > 0;
-    const hasAny = hasQueued || hasReferendum;
+    const hasAny = hasUpvoteableQueued || hasReferendum;
 
     const parts: string[] = [];
     if (hasQueued) {
-      parts.push(`${queued.length} Queued`);
+      parts.push(
+        `${queued.length} Queued (${upvoteableQueued.length} upvoteable)`,
+      );
     }
     if (hasReferendum) {
       parts.push(`${referendum.length} Referendum`);
     }
+    if (dequeueReady && nextDequeueProposalIds.length > 0) {
+      parts.push(
+        `dequeue overdue → [${nextDequeueProposalIds.join(", ")}] (use execute_dequeue_proposals_if_ready)`,
+      );
+    }
+
+    const schedule = this.formatDequeueSchedule(dequeueSchedule, dequeueReady);
 
     return {
       network: "mainnet" as const,
       hasAny,
       hasQueued,
+      hasUpvoteableQueued,
       hasReferendum,
       queued,
       referendum,
-      message: hasAny ? parts.join(", ") : "No actionable proposals",
+      ...schedule,
+      nextDequeueProposalIds,
+      message: parts.length > 0 ? parts.join(", ") : "No actionable proposals",
     };
   }
 
@@ -1111,13 +1230,18 @@ export class GovernanceService {
     const governanceAccount = await this.resolveGovernanceAccount(from);
     const client = this.getClient();
     const governance = CELO_CORE_CONTRACTS.governance;
-    const queue = await this.getGovernanceQueue();
+    const [queue, dequeueSchedule] = await Promise.all([
+      this.getGovernanceQueue(),
+      this.getDequeueSchedule(),
+    ]);
 
     if (!queue.some((entry) => entry.proposalId === proposalId)) {
       throw new Error(
         `Proposal ${proposalId} is not in the governance queue. Use get_queued_proposals to find Queued proposals.`,
       );
     }
+
+    this.assertUpvoteNotBlockedByPendingDequeue(proposalId, queue, dequeueSchedule);
 
     const [existingUpvoteProposalId] = (await client.readContract({
       address: governance,
@@ -1171,6 +1295,49 @@ export class GovernanceService {
         ),
       ],
       `Upvote governance proposal #${proposalId}`,
+    );
+  }
+
+  /**
+   * Call Governance.dequeueProposalsIfReady (public; anyone can pay gas).
+   * When overdue, moves up to concurrentProposals from the queue into Approval.
+   */
+  async prepareDequeueProposalsIfReady(
+    from: `0x${string}`,
+  ): Promise<SerializedPreparedFlow> {
+    const [queue, dequeueSchedule] = await Promise.all([
+      this.getGovernanceQueue(),
+      this.getDequeueSchedule(),
+    ]);
+    const dequeueReady = isGovernanceDequeueReady(dequeueSchedule);
+    const nextIds = dequeueReady
+      ? proposalIdsNextToDequeue(queue, dequeueSchedule.concurrentProposals)
+      : [];
+
+    const data = appendCelinaCalldataTag(
+      encodeFunctionData({
+        abi: governanceAbi,
+        functionName: "dequeueProposalsIfReady",
+      }),
+      this.attributionTags,
+    );
+
+    const summary = dequeueReady
+      ? nextIds.length > 0
+        ? `Dequeue overdue proposals [${nextIds.join(", ")}] into Approval`
+        : "Call dequeueProposalsIfReady (queue empty)"
+      : `Call dequeueProposalsIfReady (no-op until ${new Date((dequeueSchedule.lastDequeue + dequeueSchedule.dequeueFrequency) * 1000).toISOString()})`;
+
+    return this.toPreparedFlow(
+      from,
+      [
+        this.buildStep(
+          CELO_CORE_CONTRACTS.governance,
+          data,
+          summary,
+        ),
+      ],
+      summary,
     );
   }
 

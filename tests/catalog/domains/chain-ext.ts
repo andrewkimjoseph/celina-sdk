@@ -70,7 +70,7 @@ export const governanceOperations: OperationSpec[] = [
     layer: "read",
     sdk: { invoke: (client) => client.governance.getQueuedProposals() },
     mcp: { tool: "get_queued_proposals", arguments: () => ({}) },
-    assert: (result) => assertHasKeys(result, ["proposals"]),
+    assert: (result) => assertHasKeys(result, ["proposals", "dequeueReady", "nextDequeueProposalIds"]),
   },
   {
     id: "governance.getActionableGovernanceProposals",
@@ -87,9 +87,12 @@ export const governanceOperations: OperationSpec[] = [
       assertHasKeys(result, [
         "hasAny",
         "hasQueued",
+        "hasUpvoteableQueued",
         "hasReferendum",
         "queued",
         "referendum",
+        "dequeueReady",
+        "nextDequeueProposalIds",
       ]),
   },
   {
@@ -169,6 +172,16 @@ export const governanceOperations: OperationSpec[] = [
     assert: (result) => assertHasKeys(result, ["steps"]),
   },
   {
+    id: "governance.prepareDequeueProposalsIfReady",
+    domain: "governance",
+    layer: "prepare",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareDequeueProposalsIfReady(fx.wallet),
+    },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
     id: "governance.prepareRevokeGovernanceVotes",
     domain: "governance",
     layer: "prepare",
@@ -199,6 +212,20 @@ export const governanceOperations: OperationSpec[] = [
       invoke: (client, fx) => client.governance.prepareUpvote(fx.wallet, 1),
     },
     mcp: { tool: "execute_upvote", arguments: () => ({ proposal_id: 1 }) },
+    assert: (result) => assertHasKeys(result, ["steps"]),
+  },
+  {
+    id: "governance.executeDequeueProposalsIfReady",
+    domain: "governance",
+    layer: "write",
+    requiresWrites: true,
+    requiresEnv: ["CELO_PRIVATE_KEY"],
+    skip: () => "Call when get_queued_proposals reports dequeueReady",
+    sdk: {
+      invoke: (client, fx) =>
+        client.governance.prepareDequeueProposalsIfReady(fx.wallet),
+    },
+    mcp: { tool: "execute_dequeue_proposals_if_ready", arguments: () => ({}) },
     assert: (result) => assertHasKeys(result, ["steps"]),
   },
   {

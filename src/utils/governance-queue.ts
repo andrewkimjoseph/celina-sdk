@@ -3,6 +3,31 @@ export interface GovernanceQueueEntry {
   upvotes: bigint;
 }
 
+/** Schedule fields from Governance.lastDequeue / dequeueFrequency / concurrentProposals. */
+export interface GovernanceDequeueSchedule {
+  lastDequeue: number;
+  dequeueFrequency: number;
+  concurrentProposals: number;
+  /** Unix seconds used for the ready check. */
+  now: number;
+}
+
+export function isGovernanceDequeueReady(schedule: GovernanceDequeueSchedule): boolean {
+  return schedule.now >= schedule.lastDequeue + schedule.dequeueFrequency;
+}
+
+/**
+ * IDs that `dequeueProposalsIfReady` would pop when overdue.
+ * `queue` must be in on-chain getQueue order (highest upvotes / head first).
+ */
+export function proposalIdsNextToDequeue(
+  queue: GovernanceQueueEntry[],
+  concurrentProposals: number,
+): number[] {
+  const n = Math.min(Math.max(concurrentProposals, 0), queue.length);
+  return queue.slice(0, n).map((entry) => entry.proposalId);
+}
+
 function sortQueueByUpvotes(queue: GovernanceQueueEntry[]): GovernanceQueueEntry[] {
   return [...queue].sort((a, b) => {
     if (a.upvotes > b.upvotes) return 1;

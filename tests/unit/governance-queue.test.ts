@@ -1,8 +1,44 @@
 import { describe, expect, it } from "vitest";
 import {
+  isGovernanceDequeueReady,
   lesserAndGreaterAfterRevokeUpvote,
   lesserAndGreaterAfterUpvote,
+  proposalIdsNextToDequeue,
 } from "../../src/utils/governance-queue.js";
+
+describe("governance dequeue schedule", () => {
+  it("detects overdue dequeue", () => {
+    expect(
+      isGovernanceDequeueReady({
+        lastDequeue: 100,
+        dequeueFrequency: 86400,
+        concurrentProposals: 3,
+        now: 100 + 86400,
+      }),
+    ).toBe(true);
+    expect(
+      isGovernanceDequeueReady({
+        lastDequeue: 100,
+        dequeueFrequency: 86400,
+        concurrentProposals: 3,
+        now: 100 + 86399,
+      }),
+    ).toBe(false);
+  });
+
+  it("picks head of queue for next dequeue (contract order)", () => {
+    const queue = [
+      { proposalId: 30, upvotes: 300n },
+      { proposalId: 20, upvotes: 200n },
+      { proposalId: 10, upvotes: 100n },
+    ];
+    expect(proposalIdsNextToDequeue(queue, 3)).toEqual([30, 20, 10]);
+    expect(proposalIdsNextToDequeue(queue, 1)).toEqual([30]);
+    expect(proposalIdsNextToDequeue([{ proposalId: 308, upvotes: 0n }], 3)).toEqual([
+      308,
+    ]);
+  });
+});
 
 describe("governance-queue neighbors", () => {
   const queue = [
