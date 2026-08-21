@@ -692,7 +692,7 @@ export class GovernanceService {
         ? `${queued.length} proposal(s) in Queue`
         : "No proposals currently in Queue";
     if (dequeueReady && nextDequeueProposalIds.length > 0) {
-      message += `. Dequeue overdue — next write will dequeue [${nextDequeueProposalIds.join(", ")}]; those are not upvoteable. Use execute_dequeue_proposals_if_ready.`;
+      message += `. Dequeue overdue; nextDequeueProposalIds=[${nextDequeueProposalIds.join(", ")}]; not upvoteable`;
     }
 
     return {
@@ -761,7 +761,7 @@ export class GovernanceService {
     }
     if (dequeueReady && nextDequeueProposalIds.length > 0) {
       parts.push(
-        `dequeue overdue → [${nextDequeueProposalIds.join(", ")}] (use execute_dequeue_proposals_if_ready)`,
+        `dequeue overdue; nextDequeueProposalIds=[${nextDequeueProposalIds.join(", ")}]`,
       );
     }
 
