@@ -72,6 +72,7 @@
 - [createCelinaClient](functions/createCelinaClient.md)
 - [deriveGoodDollarIdentityGuidance](functions/deriveGoodDollarIdentityGuidance.md)
 - [findLesserAndGreaterAfterVote](functions/findLesserAndGreaterAfterVote.md)
+- [drainCelinaAnalytics](functions/drainCelinaAnalytics.md)
 - [flushCelinaAnalytics](functions/flushCelinaAnalytics.md)
 - [formatSelfSessionLinksDisplay](functions/formatSelfSessionLinksDisplay.md)
 - [fromFixidity](functions/fromFixidity.md)

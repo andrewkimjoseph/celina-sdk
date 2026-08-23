@@ -126,4 +126,26 @@ describe("wrapServiceForAnalytics", () => {
     await service.getNetworkStatus();
     expect(tracked).toEqual([]);
   });
+
+  it("drainCelinaAnalytics waits for in-flight tracks", async () => {
+    let finished = false;
+    setTrackFnForTests(() => {
+      finished = true;
+    });
+
+    const service = wrapServiceForAnalytics(
+      "blockchain",
+      {
+        async getNetworkStatus() {
+          return { ok: true };
+        },
+      },
+      enabledConfig,
+    );
+
+    await service.getNetworkStatus();
+    const { drainCelinaAnalytics } = await import("../../src/analytics/amplitude.js");
+    await drainCelinaAnalytics();
+    expect(finished).toBe(true);
+  });
 });

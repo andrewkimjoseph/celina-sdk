@@ -12,6 +12,7 @@ export type TrackMcpToolContext = {
 };
 
 let initialized = false;
+const inflight = new Set<Promise<void>>();
 let testTrackFn:
   | ((
       eventName: string,
@@ -56,8 +57,7 @@ async function ensureInit(config: SdkConfig): Promise<boolean> {
   }
 }
 
-/** Track an MCP tool name event; never throws to callers. */
-export async function trackMcpTool(
+async function trackMcpToolImpl(
   eventName: string,
   config: SdkConfig,
   context?: TrackMcpToolContext,
@@ -92,6 +92,24 @@ export async function trackMcpTool(
   } catch {
     // telemetry must not break SDK reads
   }
+}
+
+/** Track an MCP tool name event; never throws to callers. */
+export function trackMcpTool(
+  eventName: string,
+  config: SdkConfig,
+  context?: TrackMcpToolContext,
+): Promise<void> {
+  const run = trackMcpToolImpl(eventName, config, context);
+  inflight.add(run);
+  void run.finally(() => inflight.delete(run));
+  return run;
+}
+
+/** Await in-flight Amplitude tracks, then flush. Use with Worker/Vercel waitUntil. */
+export async function drainCelinaAnalytics(): Promise<void> {
+  await Promise.allSettled([...inflight]);
+  await flushCelinaAnalytics();
 }
 
 /** Await any queued Amplitude events (e.g. end of a Next.js route via `after()`). */

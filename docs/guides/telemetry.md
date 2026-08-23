@@ -23,18 +23,18 @@ Telemetry is **on** for server-side use (MCP, your app's API routes, scripts) un
 
 Browser bundles that import the SDK do not load the Amplitude Node client and do not send events.
 
-On **serverless** hosts (Vercel, AWS Lambda, Cloudflare Workers), the SDK **awaits track and flush** after each tracked read so events are not dropped when the isolate freezes at response end. For long streaming handlers you can also call `flushCelinaAnalytics()` from `next/server` `after()` as a safety net.
+On **serverless** hosts (Vercel, AWS Lambda, Cloudflare Workers), do **not** await Amplitude on the request path — that adds ingest RTT (or a hung timeout) to every read. Track is fire-and-forget; keep the isolate alive with `waitUntil(drainCelinaAnalytics())` (Workers) or `waitUntil` / `after(() => drainCelinaAnalytics())` (Vercel / Next). `flushCelinaAnalytics()` alone no-ops if init has not finished yet.
 
 ### Singleton clients (e.g. Next.js API routes)
 
 When one shared `createCelinaClient()` serves many users, wrap the handler:
 
 ```ts
-import { runWithAnalyticsWallet, flushCelinaAnalytics } from "@andrewkimjoseph/celina-sdk";
+import { runWithAnalyticsWallet, drainCelinaAnalytics } from "@andrewkimjoseph/celina-sdk";
 import { after } from "next/server";
 
 export async function POST(req: Request) {
-  after(() => flushCelinaAnalytics());
+  after(() => drainCelinaAnalytics());
   const { address } = await req.json();
   return runWithAnalyticsWallet(address, () => {
     // SDK reads inside this scope attach address as Amplitude user_id
