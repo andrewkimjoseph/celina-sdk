@@ -56,12 +56,12 @@ async function ensureInit(config: SdkConfig): Promise<boolean> {
   }
 }
 
-/** Fire-and-forget MCP tool name event; never throws to callers. */
-export function trackMcpTool(
+/** Track an MCP tool name event; never throws to callers. */
+export async function trackMcpTool(
   eventName: string,
   config: SdkConfig,
   context?: TrackMcpToolContext,
-): void {
+): Promise<void> {
   if (!isAnalyticsEnabled(config)) {
     return;
   }
@@ -79,22 +79,19 @@ export function trackMcpTool(
     return;
   }
 
-  void (async () => {
-    try {
-      if (!(await ensureInit(config))) {
-        return;
-      }
-      const amplitude = await import("@amplitude/analytics-node");
-      await amplitude.track(eventName, undefined, {
-        device_id: resolveDeviceId(config),
-        ...(userId ? { user_id: userId } : {}),
-      }).promise;
-      // Serverless (Vercel, Lambda) freezes when the handler returns unless we flush.
-      await amplitude.flush().promise;
-    } catch {
-      // telemetry must not break SDK reads
+  try {
+    if (!(await ensureInit(config))) {
+      return;
     }
-  })();
+    const amplitude = await import("@amplitude/analytics-node");
+    await amplitude.track(eventName, undefined, {
+      device_id: resolveDeviceId(config),
+      ...(userId ? { user_id: userId } : {}),
+    }).promise;
+    await amplitude.flush().promise;
+  } catch {
+    // telemetry must not break SDK reads
+  }
 }
 
 /** Await any queued Amplitude events (e.g. end of a Next.js route via `after()`). */

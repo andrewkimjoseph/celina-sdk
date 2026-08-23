@@ -33,12 +33,12 @@ export function wrapServiceForAnalytics<T extends object>(
         const result = fn.apply(target, args);
         const context = { methodKey, args };
         if (result !== null && typeof result === "object" && "then" in result) {
-          return (result as Promise<unknown>).then((resolved) => {
-            trackMcpTool(eventName, config, context);
+          return (result as Promise<unknown>).then(async (resolved) => {
+            await trackMcpTool(eventName, config, context);
             return resolved;
           });
         }
-        trackMcpTool(eventName, config, context);
+        void trackMcpTool(eventName, config, context);
         return result;
       };
     },
