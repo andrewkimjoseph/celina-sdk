@@ -45,7 +45,7 @@ export interface CelinaA2AAgentCard {
 }
 
 const DEFAULT_DESCRIPTION =
-  "Celo mainnet specialist agent — hosted read-only access to balances, DeFi quotes, governance, staking, NFTs, and Self Agent ID verification via structured tool calls.";
+  "Celina is a third-party, open-source stack that gives an LLM read, prepare, and execute access to Celo mainnet through an SDK, an MCP server, and a REST API. This hosted agent exposes read-only access to balances, DeFi quotes, governance, staking, NFTs, and Self Agent ID verification via structured tool calls.";
 
 export function buildCelinaA2ASkills(): CelinaA2ASkill[] {
   return buildSkillsFromToolNames(getHostedMcpToolNames(), TOOL_CATEGORY_BY_NAME);

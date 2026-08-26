@@ -6,7 +6,7 @@
 
 > **Server-side only.** This package includes server-native dependencies (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for the browser. Import it only from Node.js environments — API routes, background workers (BullMQ / Vercel Cron), or CLI scripts.
 
-Celo mainnet library for frontend apps and agents: **reads**, **unsigned transaction preparation**, and optional **ERC-4337 AA** via `createAAClient` (app-owned gas sponsorship credentials).
+Celina is a third-party, open-source stack that gives an LLM read, prepare, and execute access to Celo mainnet through an SDK, an MCP server, and a REST API. This package is the SDK — a Celo mainnet library for frontend apps and agents: **reads**, **unsigned transaction preparation**, and optional **ERC-4337 AA** via `createAAClient` (app-owned gas sponsorship credentials).
 
 Pair with [wagmi](https://wagmi.sh) / viem for EOA signing, or `createAAClient` for sponsored/batched UserOps.
 

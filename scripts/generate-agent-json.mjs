@@ -55,7 +55,7 @@ const discoveryServices = [
 ];
 
 existing.description =
-  "Celina is an open-source agent stack for Celo mainnet — MCP server, A2A specialist agent, OASF discovery, SDK, and hosted endpoint for balances, swaps, Self Agent ID, and chain tools for LLM agents.";
+  "Celina is a third-party, open-source stack that gives an LLM read, prepare, and execute access to Celo mainnet through an SDK, an MCP server, and a REST API.";
 existing.services = [...preservedServices, ...discoveryServices];
 
 writeFileSync(agentJsonPath, `${JSON.stringify(existing, null, 2)}\n`, "utf8");
