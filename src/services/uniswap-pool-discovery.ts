@@ -10,6 +10,7 @@ import {
 import { stateViewAbi } from "../abis/uniswap-state-view.js";
 import {
   normalizeUniswapPoolKey,
+  toUniswapRoutingCurrency,
   UNISWAP_DEFAULT_TICK_SPACING,
   UNISWAP_FEE_TIERS,
   UNISWAP_HUB_CURRENCIES,
@@ -120,6 +121,19 @@ function buildPoolIndex(
   return { edges, adjacency, poolsByPair, source, fetchedAt: Date.now() };
 }
 
+/**
+ * Map a subgraph token id to the currency used for routing. The subgraph may
+ * index native CELO as `address(0)`, but v4 liquidity actually sits on WCELO
+ * pairs (see `toUniswapRoutingCurrency`), so normalize here to keep
+ * subgraph-sourced pools consistent with the on-chain fallback's graph.
+ */
+function normalizeSubgraphCurrency(tokenId: string): `0x${string}` {
+  if (tokenId.toLowerCase() === UNISWAP_V4.nativeCurrency) {
+    return toUniswapRoutingCurrency("native");
+  }
+  return tokenId as `0x${string}`;
+}
+
 async function fetchSubgraphPools(): Promise<UniswapPoolKey[] | null> {
   try {
     const response = await fetch(UNISWAP_SUBGRAPH_URL, {
@@ -160,8 +174,8 @@ async function fetchSubgraphPools(): Promise<UniswapPoolKey[] | null> {
     }
 
     return pools.map((pool) => ({
-      currency0: pool.token0.id as `0x${string}`,
-      currency1: pool.token1.id as `0x${string}`,
+      currency0: normalizeSubgraphCurrency(pool.token0.id),
+      currency1: normalizeSubgraphCurrency(pool.token1.id),
       fee: Number(pool.feeTier),
       tickSpacing: Number(pool.tickSpacing),
       hooks: (pool.hooks || UNISWAP_V4.zeroHooks) as `0x${string}`,
@@ -171,52 +185,90 @@ async function fetchSubgraphPools(): Promise<UniswapPoolKey[] | null> {
   }
 }
 
-async function probePoolOnChain(
+/**
+ * Contracts probed per `multicall` batch (2 reads per pool → up to 50 pools
+ * per call). Keeps each on-chain round trip well under RPC call-size/gas
+ * caps while still collapsing hundreds of individual `readContract` calls —
+ * which blow past Cloudflare Workers' per-invocation subrequest ceiling —
+ * into a small, fixed number of batched requests.
+ */
+const MULTICALL_CHUNK_SIZE = 100;
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+}
+
+/**
+ * Probe candidate pools for initialization (non-zero price + liquidity) via
+ * batched `multicall` reads rather than one `readContract` per pool.
+ * @param client - Celo public client for StateView probing
+ * @param candidates - Pool keys and their precomputed pool ids to probe
+ */
+async function probePoolsOnChain(
   client: PublicClient,
-  currencyA: `0x${string}`,
-  currencyB: `0x${string}`,
-  fee: number,
-  tickSpacing: number,
-): Promise<UniswapPoolKey | null> {
-  const poolKey = normalizeUniswapPoolKey({
-    currency0: currencyA,
-    currency1: currencyB,
-    fee,
-    tickSpacing,
-    hooks: UNISWAP_V4.zeroHooks,
-  });
-
-  const poolId = computeUniswapPoolId(poolKey);
-
-  try {
-    const [slot0, liquidity] = await Promise.all([
-      client.readContract({
-        address: UNISWAP_V4.stateView,
-        abi: stateViewAbi,
-        functionName: "getSlot0",
-        args: [poolId],
-      }),
-      client.readContract({
-        address: UNISWAP_V4.stateView,
-        abi: stateViewAbi,
-        functionName: "getLiquidity",
-        args: [poolId],
-      }),
-    ]);
-
-    if (slot0[0] > 0n && liquidity > 0n) {
-      return poolKey;
-    }
-  } catch {
-    // pool not initialized
+  candidates: { poolKey: UniswapPoolKey; poolId: `0x${string}` }[],
+): Promise<UniswapPoolKey[]> {
+  if (candidates.length === 0) {
+    return [];
   }
 
-  return null;
+  const batches = chunk(candidates, MULTICALL_CHUNK_SIZE);
+
+  const batchResults = await Promise.all(
+    batches.map(async (batch) => {
+      const contracts = batch.flatMap(({ poolId }) => [
+        {
+          address: UNISWAP_V4.stateView,
+          abi: stateViewAbi,
+          functionName: "getSlot0" as const,
+          args: [poolId] as const,
+        },
+        {
+          address: UNISWAP_V4.stateView,
+          abi: stateViewAbi,
+          functionName: "getLiquidity" as const,
+          args: [poolId] as const,
+        },
+      ]);
+
+      const results = await client.multicall({ contracts, allowFailure: true });
+
+      const found: UniswapPoolKey[] = [];
+      for (let i = 0; i < batch.length; i++) {
+        const slot0Result = results[i * 2];
+        const liquidityResult = results[i * 2 + 1];
+
+        if (
+          slot0Result?.status === "success" &&
+          liquidityResult?.status === "success"
+        ) {
+          const slot0 = slot0Result.result as readonly [
+            bigint,
+            number,
+            number,
+            number,
+          ];
+          const liquidity = liquidityResult.result as bigint;
+
+          if (slot0[0] > 0n && liquidity > 0n) {
+            found.push(batch[i]!.poolKey);
+          }
+        }
+      }
+      return found;
+    }),
+  );
+
+  return batchResults.flat();
 }
 
 async function buildOnChainIndex(client: PublicClient): Promise<UniswapPoolIndex> {
   const hubs = [...UNISWAP_HUB_CURRENCIES];
-  const probes: Promise<UniswapPoolKey | null>[] = [];
+  const candidates: { poolKey: UniswapPoolKey; poolId: `0x${string}` }[] = [];
 
   for (let i = 0; i < hubs.length; i++) {
     for (let j = i + 1; j < hubs.length; j++) {
@@ -230,16 +282,20 @@ async function buildOnChainIndex(client: PublicClient): Promise<UniswapPoolIndex
           UNISWAP_DEFAULT_TICK_SPACING[fee] ??
           UNISWAP_DEFAULT_TICK_SPACING[3000]!;
 
-        probes.push(
-          probePoolOnChain(client, currency0, currency1, fee, tickSpacing),
-        );
+        const poolKey = normalizeUniswapPoolKey({
+          currency0,
+          currency1,
+          fee,
+          tickSpacing,
+          hooks: UNISWAP_V4.zeroHooks,
+        });
+
+        candidates.push({ poolKey, poolId: computeUniswapPoolId(poolKey) });
       }
     }
   }
 
-  const poolKeys = (await Promise.all(probes)).filter(
-    (poolKey): poolKey is UniswapPoolKey => poolKey !== null,
-  );
+  const poolKeys = await probePoolsOnChain(client, candidates);
 
   return buildPoolIndex(poolKeys, "onchain");
 }
