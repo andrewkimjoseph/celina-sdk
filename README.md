@@ -10,6 +10,8 @@ Celina is a third-party, open-source stack that gives an LLM read, prepare, and 
 
 Pair with [wagmi](https://wagmi.sh) / viem for EOA signing, or `createAAClient` for sponsored/batched UserOps.
 
+Listed in the [official Celo MCP docs](https://docs.celo.org/build-on-celo/build-with-ai/mcp/celina).
+
 ## Stack
 
 Celina is layered from chain logic through agent tooling:
