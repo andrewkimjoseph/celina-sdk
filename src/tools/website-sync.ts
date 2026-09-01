@@ -20,7 +20,7 @@ export type WebsiteToolCategory =
   | "Contract"
   | "AgentKarma";
 
-export type WebsiteToolKind = "read" | "write";
+export type WebsiteToolKind = "read" | "write" | "prepare";
 
 export type WebsiteToolAvailability = "hosted" | "stdio" | "both";
 
@@ -183,7 +183,9 @@ function toolNameToSlug(name: string): string {
 }
 
 function familyToKind(families: ToolFamily[]): WebsiteToolKind {
-  return families.includes("execute") ? "write" : "read";
+  if (families.includes("execute")) return "write";
+  if (families.includes("prepare")) return "prepare";
+  return "read";
 }
 
 function firstSentence(text: string): string {
@@ -336,9 +338,20 @@ export function getHostedMcpToolCount(): number {
 }
 
 export function getWebsiteToolBaselines(): WebsiteToolBaseline[] {
-  return filterToolDefinitions(ALL_TOOL_DEFINITIONS, { surface: "mcp" }).map(
-    toWebsiteToolBaseline,
-  );
+  const mcp = filterToolDefinitions(ALL_TOOL_DEFINITIONS, { surface: "mcp" });
+  const prepare = filterToolDefinitions(ALL_TOOL_DEFINITIONS, {
+    families: ["prepare"],
+  });
+  const byName = new Map<string, ToolDefinition>();
+  for (const definition of mcp) {
+    byName.set(definition.name, definition);
+  }
+  for (const definition of prepare) {
+    if (!byName.has(definition.name)) {
+      byName.set(definition.name, definition);
+    }
+  }
+  return [...byName.values()].map(toWebsiteToolBaseline);
 }
 
 export function getMcpToolNameSet(): Set<string> {
