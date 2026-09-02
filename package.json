@@ -1,6 +1,6 @@
 {
   "name": "@andrewkimjoseph/celina-sdk",
-  "version": "0.25.22",
+  "version": "0.25.23",
   "description": "Celina SDK — Celo mainnet reads, unsigned transaction preparation, and ERC-4337 createAAClient for sponsored UserOps.",
   "type": "module",
   "sideEffects": false,
@@ -96,7 +96,7 @@
   },
   "homepage": "https://andrewkimjoseph.gitbook.io/celina-sdk",
   "dependencies": {
-    "@agentkarma/sdk": "^0.2.2",
+    "@agentkarma/sdk": "^0.2.4",
     "@amplitude/analytics-node": "^1.5.21",
     "@celo/attribution-tags": "^0.3.0",
     "@goodsdks/citizen-sdk": "^1.0.0",
