@@ -147,7 +147,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 ## Related packages
 
 - [`@andrewkimjoseph/celina-mcp`](https://www.usecelina.xyz/mcp/local) — MCP server (`get_wallet_address`, optional address on wallet-scoped tools); [install guide](https://www.usecelina.xyz/mcp/local)
-- [`celina-mcp-remote`](../celina-mcp-remote/) — Vercel-hosted remote MCP endpoint (`https://mcp.usecelina.xyz/api/mcp`)
+- [`celina-mcp-remote`](../celina-mcp-remote/) — Cloudflare Worker-hosted remote MCP endpoint (`https://mcp.usecelina.xyz/mcp`)
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 
 ## Roadmap

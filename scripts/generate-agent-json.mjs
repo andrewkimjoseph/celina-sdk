@@ -43,7 +43,7 @@ const mcpVersion = mcpService?.version ?? "0.9.7";
 const discoveryServices = [
   {
     name: "MCP",
-    endpoint: `${MCP}/api/mcp`,
+    endpoint: `${MCP}/mcp`,
     version: mcpVersion,
   },
   {

@@ -57,7 +57,7 @@ export function buildCelinaAgentCard(options: CelinaAgentCardOptions): CelinaA2A
     options.baseUrl ??
     "https://mcp.usecelina.xyz"
   ).replace(/\/$/, "");
-  const jsonRpcUrl = `${mcpBase}/api/a2a`;
+  const jsonRpcUrl = `${mcpBase}/a2a`;
   const skills = buildCelinaA2ASkills();
 
   return {

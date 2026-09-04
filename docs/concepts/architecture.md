@@ -58,7 +58,7 @@ flowchart TB
 |-------|------|
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
-| **MCP remote** | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
+| **MCP remote** | Public `https://mcp.usecelina.xyz/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
 
 Third-party apps can use the programmatic client only, or wire the tool catalog into chat APIs — see [Tool catalog](../guides/tool-catalog.md).

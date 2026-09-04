@@ -28,7 +28,7 @@ flowchart TB
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `@andrewkimjoseph/celina-sdk/aa` (`createAAClient`), and `@andrewkimjoseph/celina-sdk/tools` |
 | **MCP**                | Registers filtered catalog via `registerSdkTools`; stdio `execute_*` with `CELO_PRIVATE_KEY`; optional address defaults via [session wallet](guides/mcp-session-wallet.md) |
-| **MCP remote**           | Public `https://mcp.usecelina.xyz/api/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
+| **MCP remote**           | Public `https://mcp.usecelina.xyz/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts**      | `filterToolDefinitions(..., { surface: "browser" })` — user signs prepared txs in wallet; no server keys                                                                   |
 
 Third-party apps can consume the programmatic client only, or wire the full tool catalog into Vercel AI SDK / custom orchestrators — see [LLM tool catalog](guides/tool-catalog.md).
@@ -108,5 +108,5 @@ Full method signatures: [API reference](api-reference/).
 ### Related packages
 
 * [`@andrewkimjoseph/celina-mcp`](https://www.usecelina.xyz/mcp/local) — MCP server; registers SDK tool catalog ([install guide](https://www.usecelina.xyz/mcp/local))
-* [`celina-mcp-remote`](https://github.com/andrewkimjoseph/celina-mcp-remote) — hosted reads (`https://mcp.usecelina.xyz/api/mcp`); no server-key writes
+* [`celina-mcp-remote`](https://github.com/andrewkimjoseph/celina-mcp-remote) — hosted reads (`https://mcp.usecelina.xyz/mcp`); no server-key writes
 * [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk)

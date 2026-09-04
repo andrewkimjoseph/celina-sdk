@@ -69,7 +69,7 @@ const result = await celina.agentKarma.evaluateCounterparty(
 
 ## MCP tools
 
-On hosted MCP (`https://mcp.usecelina.xyz/api/mcp`) and local stdio MCP, three read tools are available:
+On hosted MCP (`https://mcp.usecelina.xyz/mcp`) and local stdio MCP, three read tools are available:
 
 | Tool | Purpose |
 |------|---------|

@@ -75,8 +75,8 @@ export function buildCelinaOasfRecord(
     locators: [
       { type: "source_code", urls: ["https://github.com/andrewkimjoseph/celina-sdk"] },
       { type: "web", urls: [site] },
-      { type: "mcp", urls: [`${mcp}/api/mcp`] },
-      { type: "a2a", urls: [`${mcp}/api/a2a`] },
+      { type: "mcp", urls: [`${mcp}/mcp`] },
+      { type: "a2a", urls: [`${mcp}/a2a`] },
       { type: "agent_card", urls: [`${site}/.well-known/agent-card.json`] },
       { type: "registration", urls: [`${site}/agent.json`] },
     ],
