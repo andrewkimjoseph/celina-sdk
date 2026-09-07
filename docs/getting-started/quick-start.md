@@ -52,6 +52,7 @@ Simulate each step immediately before signing to catch reverts before gas is spe
 
 ```ts
 import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
+import { reportCelinaOnchainTxn } from "@andrewkimjoseph/celina-sdk/onchain-stats";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();
@@ -73,6 +74,7 @@ for (const step of flow.steps) {
   if (receipt.status === "reverted") {
     throw new Error(`Transaction reverted: ${hash}`);
   }
+  reportCelinaOnchainTxn(hash);
 }
 ```
 

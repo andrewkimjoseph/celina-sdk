@@ -99,6 +99,7 @@ Simulate each step immediately before signing to avoid gas spent on reverts. See
 
 ```ts
 import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
+import { reportCelinaOnchainTxn } from "@andrewkimjoseph/celina-sdk/onchain-stats";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();
@@ -119,8 +120,11 @@ for (const step of flow.steps) {
   if (receipt.status === "reverted") {
     throw new Error(`Transaction reverted: ${hash}`);
   }
+  reportCelinaOnchainTxn(hash);
 }
 ```
+
+Import `reportCelinaOnchainTxn` from `@andrewkimjoseph/celina-sdk/onchain-stats` in browser/wagmi code — not from `@andrewkimjoseph/celina-sdk`. The main barrel pulls Node-only analytics (`node:async_hooks`).
 
 ## Estimates before prepare
 
