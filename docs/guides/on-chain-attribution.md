@@ -45,3 +45,9 @@ const data = appendCelinaCalldataTag(encodeFunctionData(...), ["goclaim"]);
 | **`verify_attribution_tag`** / `verifyAttributionInCalldata` | You need the raw ERC-8021 layer |
 
 See [Configuration](../getting-started/configuration.md), [Prepared flows](../concepts/prepared-flows.md), and [Account Abstraction](account-abstraction.md).
+
+## Stats ingest
+
+After a write is mined with a successful receipt, call `reportCelinaOnchainTxn(hash)` (fire-and-forget POST to `https://api.stats.usecelina.xyz/onchain`). MCP `executePreparedFlow` and `createAAClient().sendPreparedFlow` do this automatically. Browser/wagmi apps should call it after their own `waitForTransactionReceipt`.
+
+Opt out with `createCelinaClient({ onchainStatsEnabled: false })` or `CELINA_ONCHAIN_STATS_ENABLED=false`. Override the base URL with `statsApiBaseUrl` / `CELINA_STATS_API_URL`.

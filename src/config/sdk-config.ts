@@ -28,6 +28,16 @@ export interface SdkConfig {
    */
   analyticsWalletAddress?: string;
   /**
+   * Report successful writes to celina-stats-api (default on).
+   * Opt out with `onchainStatsEnabled: false` or `CELINA_ONCHAIN_STATS_ENABLED=false`.
+   */
+  onchainStatsEnabled?: boolean;
+  /**
+   * Override celina-stats-api base URL (default `https://api.stats.usecelina.xyz`).
+   * Also reads `CELINA_STATS_API_URL`.
+   */
+  statsApiBaseUrl?: string;
+  /**
    * Optional custom calldata attribution tags for ERC-8021 Schema 0 codes
    * after platform `celina` on prepared transaction steps (deduped, stable order).
    *
@@ -72,6 +82,12 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
     analyticsDeviceId:
       opts?.analyticsDeviceId ?? detectConsumerPackageName(),
     analyticsWalletAddress: opts?.analyticsWalletAddress,
+    onchainStatsEnabled: opts?.onchainStatsEnabled,
+    statsApiBaseUrl:
+      opts?.statsApiBaseUrl ??
+      (typeof process !== "undefined"
+        ? process.env.CELINA_STATS_API_URL
+        : undefined),
     attributionTags: opts?.attributionTags,
   };
 }

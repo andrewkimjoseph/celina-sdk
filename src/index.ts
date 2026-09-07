@@ -27,6 +27,7 @@ import { TokenService } from "./services/token.service.js";
 import { TransactionService } from "./services/transaction.service.js";
 import { SelfService } from "./services/self.service.js";
 import { wrapServiceForAnalytics } from "./analytics/wrap-service.js";
+import { applyOnchainStatsConfig } from "./analytics/onchain-stats.js";
 
 /** Optional RPC overrides when creating a Celina client. */
 export type CelinaClientOptions = Partial<SdkConfig> & {
@@ -89,6 +90,7 @@ export interface CelinaClient {
  */
 export function createCelinaClient(opts?: CelinaClientOptions): CelinaClient {
   const config = resolveSdkConfig(opts);
+  applyOnchainStatsConfig(config);
   const clientFactory = new CeloClientFactory(config);
   const ensClientFactory = new EnsClientFactory(config);
   const tokenService = new TokenService(clientFactory);
@@ -223,6 +225,10 @@ export {
   flushCelinaAnalytics,
 } from "./analytics/amplitude.js";
 export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";
+export {
+  DEFAULT_STATS_API_BASE_URL,
+  reportCelinaOnchainTxn,
+} from "./analytics/onchain-stats.js";
 /** Optional read-only AgentKarma reputation adapter (agentkarma.io). */
 export { AgentKarmaService } from "./services/agentkarma.service.js";
 export type {

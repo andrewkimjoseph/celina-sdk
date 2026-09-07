@@ -16,6 +16,8 @@ const celina = createCelinaClient({
 | `rpcUrl` | `string` | `https://forno.celo.org` | Celo mainnet JSON-RPC endpoint |
 | `ethRpcUrl` | `string` | — | Ethereum mainnet RPC for ENS resolution |
 | `attributionTags` | `string[]` | — | Custom ERC-8021 Schema 0 codes after platform `celina` (see below) |
+| `onchainStatsEnabled` | `boolean` | `true` | Report successful writes to celina-stats-api |
+| `statsApiBaseUrl` | `string` | `https://api.stats.usecelina.xyz` | Override stats ingest URL (`CELINA_STATS_API_URL`) |
 
 All options are optional. Omit them to use the public Celo Forno endpoint.
 

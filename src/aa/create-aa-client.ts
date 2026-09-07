@@ -16,6 +16,7 @@ import type {
 } from "../types/prepared.js";
 import { GasSponsorshipService } from "./gas-sponsorship.js";
 import { preparedStepsToUserOpCalls } from "./prepared-calls.js";
+import { reportCelinaOnchainTxn } from "../analytics/onchain-stats.js";
 import type {
   CreateAAClientOptions,
   GasSponsorshipProviderId,
@@ -149,6 +150,7 @@ export async function createAAClient(
         return { mode, userOpHashes, transactionHashes, success: false };
       }
       transactionHashes.push(receipt.receipt.transactionHash);
+      reportCelinaOnchainTxn(receipt.receipt.transactionHash);
       return { mode, userOpHashes, transactionHashes, success: true };
     }
 
@@ -164,6 +166,7 @@ export async function createAAClient(
         return { mode, userOpHashes, transactionHashes, success: false };
       }
       transactionHashes.push(receipt.receipt.transactionHash);
+      reportCelinaOnchainTxn(receipt.receipt.transactionHash);
     }
     return { mode, userOpHashes, transactionHashes, success: true };
   }
