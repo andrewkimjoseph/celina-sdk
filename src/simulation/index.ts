@@ -3,7 +3,11 @@
  */
 export type { PreparedTx } from "../types/prepared.js";
 export {
+  PreparedFlowExecutionError,
+  isPreparedFlowExecutionError,
   simulatePreparedStep,
+  simulatePreparedStepWithRetry,
   type SimulatePreparedStepOptions,
   type SimulatePreparedStepParams,
+  type SimulatePreparedStepRetryOptions,
 } from "./simulate-prepared-step.js";

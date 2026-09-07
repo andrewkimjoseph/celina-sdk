@@ -1,7 +1,12 @@
 import { encodeFunctionData, erc20Abi, maxUint256 } from "viem";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildErc8021AttributionSuffix } from "../../src/config/celina-tag.js";
-import { simulatePreparedStep } from "../../src/simulation/simulate-prepared-step.js";
+import {
+  PreparedFlowExecutionError,
+  isPreparedFlowExecutionError,
+  simulatePreparedStep,
+  simulatePreparedStepWithRetry,
+} from "../../src/simulation/simulate-prepared-step.js";
 
 const account = "0xA3872860EE9FEaB369c1a5E911CeCc2F4c40f702" as const;
 const feeCurrency = "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e" as const;
@@ -120,5 +125,90 @@ describe("simulatePreparedStep", () => {
         },
       }),
     ).rejects.toThrow(/Simulation failed for "Supply 981.84 USDT to Aave V3": insufficient balance/);
+  });
+});
+
+const retryStep = {
+  kind: "contract" as const,
+  to: "0xcb695bc5d3aa22cad1e6df07801b061a05a0233a" as const,
+  data: "0x",
+  value: "0",
+  description: "Swap 1 CELO → USDT via Uniswap v4",
+};
+
+describe("simulatePreparedStepWithRetry", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("returns on first success", async () => {
+    const publicClient = {
+      call: vi.fn().mockResolvedValue({ data: "0x" }),
+    };
+
+    await simulatePreparedStepWithRetry(publicClient as never, {
+      account,
+      step: retryStep,
+    });
+
+    expect(publicClient.call).toHaveBeenCalledTimes(1);
+  });
+
+  it("retries after a failed simulation then succeeds", async () => {
+    vi.useFakeTimers();
+    const publicClient = {
+      call: vi
+        .fn()
+        .mockRejectedValueOnce(new Error("execution reverted"))
+        .mockResolvedValueOnce({ data: "0x" }),
+    };
+
+    const promise = simulatePreparedStepWithRetry(
+      publicClient as never,
+      { account, step: retryStep },
+      undefined,
+      { delaysMs: [10, 20, 30] },
+    );
+
+    await vi.runAllTimersAsync();
+    await promise;
+    expect(publicClient.call).toHaveBeenCalledTimes(2);
+  });
+
+  it("rethrows after retries are exhausted", async () => {
+    vi.useFakeTimers();
+    const publicClient = {
+      call: vi.fn().mockRejectedValue(new Error("execution reverted")),
+    };
+
+    const promise = simulatePreparedStepWithRetry(
+      publicClient as never,
+      { account, step: retryStep },
+      undefined,
+      { delaysMs: [5, 5] },
+    );
+
+    const assertion = expect(promise).rejects.toThrow(
+      /Simulation failed for "Swap 1 CELO → USDT via Uniswap v4"/,
+    );
+    await vi.runAllTimersAsync();
+    await assertion;
+    expect(publicClient.call).toHaveBeenCalledTimes(3);
+  });
+});
+
+describe("PreparedFlowExecutionError", () => {
+  it("is detected by name and stepHashes", () => {
+    const error = new PreparedFlowExecutionError("swap failed", ["0xabc"], 2);
+    expect(isPreparedFlowExecutionError(error)).toBe(true);
+    expect(error.stepHashes).toEqual(["0xabc"]);
+    expect(error.stepCount).toBe(2);
+  });
+
+  it("rejects unrelated errors", () => {
+    expect(isPreparedFlowExecutionError(new Error("network timeout"))).toBe(
+      false,
+    );
   });
 });

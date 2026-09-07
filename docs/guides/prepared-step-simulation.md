@@ -18,17 +18,19 @@ For approve → action flows (Aave supply, Mento FX, Uniswap):
 2. Wait for confirmation
 3. Simulate and send step 2 (supply/swap) — simulating step 2 before step 1 mines falsely fails with insufficient allowance
 
+After a mined approval, the next `eth_call` can still hit a lagging RPC replica. Use `simulatePreparedStepWithRetry` for sequential execution — it retries with short backoff before treating the revert as final.
+
 ## Basic usage
 
 ```ts
-import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
+import { simulatePreparedStepWithRetry } from "@andrewkimjoseph/celina-sdk/simulation";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();
 const publicClient = usePublicClient(); // viem PublicClient — or createPublicClient in non-wagmi apps
 
 for (const step of flow.steps) {
-  await simulatePreparedStep(publicClient!, {
+  await simulatePreparedStepWithRetry(publicClient!, {
     account: address,
     step,
   });
@@ -65,12 +67,12 @@ Wallet-specific logic (MiniPay detection, gas buffer when spend token equals fee
 ## Layered approach
 
 1. **Prepare-time checks** — `prepare*` methods and `estimate*` catch obvious issues early (balance, quotes)
-2. **Sign-time simulation** — `simulatePreparedStep` before each send (this guide)
+2. **Sign-time simulation** — `simulatePreparedStepWithRetry` before each send (this guide)
 3. **Post-mine receipt check** — safety net if simulation missed an edge case
 
 ## MCP server
 
-Local stdio MCP with `CELO_PRIVATE_KEY` calls the same helper in `executePreparedFlow` before `wallet.sendTransaction`. No `feeCurrency` — the server wallet pays CELO gas.
+Local stdio MCP with `CELO_PRIVATE_KEY` calls `simulatePreparedStepWithRetry` in `executePreparedFlow` before `wallet.sendTransaction`. No `feeCurrency` — the server wallet pays CELO gas. If a later step still fails after retries, `PreparedFlowExecutionError` includes hashes already confirmed on-chain.
 
 ## Related
 

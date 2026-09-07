@@ -18,6 +18,45 @@ export type SimulatePreparedStepParams = {
   step: PreparedTx;
 };
 
+/** Backoff between simulation retries after a failed `eth_call` / `estimateGas`. */
+export type SimulatePreparedStepRetryOptions = {
+  /** Delays in ms after each failed attempt. Default: 750, 1500, 3000. */
+  delaysMs?: readonly number[];
+};
+
+const DEFAULT_RETRY_DELAYS_MS = [750, 1500, 3000] as const;
+
+/**
+ * Thrown when a multi-step prepared flow fails after one or more steps already
+ * broadcast. Carries confirmed hashes so hosts can report partial progress.
+ */
+export class PreparedFlowExecutionError extends Error {
+  readonly stepHashes: `0x${string}`[];
+  readonly stepCount?: number;
+
+  constructor(
+    message: string,
+    stepHashes: `0x${string}`[] = [],
+    stepCount?: number,
+  ) {
+    super(message);
+    this.name = "PreparedFlowExecutionError";
+    this.stepHashes = stepHashes;
+    this.stepCount = stepCount;
+  }
+}
+
+export function isPreparedFlowExecutionError(
+  error: unknown,
+): error is PreparedFlowExecutionError {
+  return (
+    error instanceof PreparedFlowExecutionError ||
+    (error instanceof Error &&
+      error.name === "PreparedFlowExecutionError" &&
+      Array.isArray((error as PreparedFlowExecutionError).stepHashes))
+  );
+}
+
 function stepRequest(
   account: `0x${string}`,
   step: PreparedTx,
@@ -76,4 +115,39 @@ export async function simulatePreparedStep(
   } catch (error) {
     throw new Error(simulationErrorMessage(params.step, error));
   }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+/**
+ * Simulate a prepared step, retrying on failure to absorb RPC replica lag
+ * after a prior approval is mined. Genuine reverts still fail after retries.
+ */
+export async function simulatePreparedStepWithRetry(
+  publicClient: PublicClient,
+  params: SimulatePreparedStepParams,
+  options?: SimulatePreparedStepOptions,
+  retry?: SimulatePreparedStepRetryOptions,
+): Promise<void> {
+  const delaysMs = retry?.delaysMs ?? DEFAULT_RETRY_DELAYS_MS;
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= delaysMs.length; attempt++) {
+    if (attempt > 0) {
+      await sleep(delaysMs[attempt - 1]!);
+    }
+
+    try {
+      await simulatePreparedStep(publicClient, params, options);
+      return;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError;
 }

@@ -42,7 +42,7 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 | **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, governance locks/votes, validator staking/delegation, generic contract writes (`chainId: 42220`) |
 | **Humanness**            | `client.humanness.checkHumanness` — dual-rail Self Agent ID **or** GoodDollar whitelist check gating governance/staking prepares |
 | **Sponsored UserOps**    | `createAAClient` + `sendPreparedFlow` (app-owned Pimlico key; optional `attributionTags`)                             |
-| **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` before each wallet send                            |
+| **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` / `simulatePreparedStepWithRetry` before each wallet send |
 | **On-chain stats**       | `@andrewkimjoseph/celina-sdk/onchain-stats` — `reportCelinaOnchainTxn` after a successful receipt (browser-safe)     |
 | **Attribution**          | Dual CELINA suffixes; prefer `check_attribution_tag` / `checkAttributionInCalldata` for unified custom tags          |
 | **Tool catalog**         | `ALL_TOOL_DEFINITIONS`, `filterToolDefinitions` — same tools as celina-mcp, filterable by `surface` and `families`   |

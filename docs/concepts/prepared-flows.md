@@ -70,7 +70,9 @@ Sign and confirm each step sequentially. Do not skip or reorder steps.
 
 Call `simulatePreparedStep` from `@andrewkimjoseph/celina-sdk/simulation` **per step, immediately before** `sendTransactionAsync` — after any prior step is mined. Simulation uses current chain state; simulating step 2 before step 1 confirms falsely fails with insufficient allowance.
 
-Local stdio MCP **`execute_*`** tools use the same helper internally before signing with `CELO_PRIVATE_KEY`.
+After a mined approval, the next `eth_call` can still hit a lagging RPC replica and revert with an opaque message. Hosts that execute sequential steps (MCP `execute_*`, wallet confirm cards) should use `simulatePreparedStepWithRetry` instead — it retries with short backoff before treating the revert as final.
+
+Local stdio MCP **`execute_*`** tools use `simulatePreparedStepWithRetry` internally before signing with `CELO_PRIVATE_KEY`.
 
 See [Prepared-step simulation](../guides/prepared-step-simulation.md).
 
