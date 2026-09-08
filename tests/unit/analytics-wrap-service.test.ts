@@ -47,6 +47,26 @@ describe("wrapServiceForAnalytics", () => {
     expect(tracked).toEqual(["get_network_status"]);
   });
 
+  it("tracks SDK methods whose catalog ids include a variant suffix", async () => {
+    const tracked: string[] = [];
+    setTrackFnForTests((eventName) => {
+      tracked.push(eventName);
+    });
+
+    const service = wrapServiceForAnalytics(
+      "gooddollar",
+      {
+        async getReserveQuote() {
+          return { expectedOut: "1" };
+        },
+      },
+      enabledConfig,
+    );
+
+    await service.getReserveQuote();
+    expect(tracked).toEqual(["get_gooddollar_reserve_quote"]);
+  });
+
   it("passes wallet as user_id context from read args", async () => {
     const seen: Array<string | undefined> = [];
     setTrackFnForTests((_eventName, _config, _context, userId) => {

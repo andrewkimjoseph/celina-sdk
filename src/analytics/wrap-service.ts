@@ -4,6 +4,21 @@ import { trackMcpTool } from "./events-stats.js";
 import { MCP_TOOL_EVENT_BY_SDK_METHOD } from "./mcp-tool-events.js";
 
 /**
+ * Catalog ids sometimes include a variant suffix (`gooddollar.getReserveQuote.sell`).
+ * SDK wrappers look up `service.method` (`gooddollar.getReserveQuote`). Collapse those
+ * suffixes so a direct SDK call still maps to the same MCP tool event.
+ */
+function eventNameForSdkMethod(methodKey: string): string | undefined {
+  const exact = MCP_TOOL_EVENT_BY_SDK_METHOD[methodKey];
+  if (exact) return exact;
+  const prefix = `${methodKey}.`;
+  for (const [id, eventName] of Object.entries(MCP_TOOL_EVENT_BY_SDK_METHOD)) {
+    if (id.startsWith(prefix)) return eventName;
+  }
+  return undefined;
+}
+
+/**
  * Wrap a domain service so catalog-mapped async reads report usage events (MCP tool names)
  * to celina-stats-api.
  */
@@ -24,7 +39,7 @@ export function wrapServiceForAnalytics<T extends object>(
       }
 
       const methodKey = `${serviceKey}.${prop}`;
-      const eventName = MCP_TOOL_EVENT_BY_SDK_METHOD[methodKey];
+      const eventName = eventNameForSdkMethod(methodKey);
       if (!eventName) {
         return value.bind(target);
       }
