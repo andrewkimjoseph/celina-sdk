@@ -20,6 +20,8 @@ On **Node.js**, the SDK reports usage counts for **read** operations directly to
 | celeste-ai | `celeste_ai` | Explicit `analyticsDeviceId` |
 | goclaim-app | `goclaim_app` | Explicit `analyticsDeviceId` |
 | insights/pax_v2 functions | `pax` | Explicit `analyticsDeviceId` |
+| the-good-pax-app | `the_good_pax_app` | Explicit `analyticsDeviceId` |
+| g-usdm-quote | `g_usdm_quote` | Explicit `analyticsDeviceId` |
 
 New integrations should follow this pattern: pass `analyticsDeviceId` explicitly in `createCelinaClient()` (or forward a caller id via a header, like celina-api/celina-bot do) rather than relying on auto-detection.
 
