@@ -8,9 +8,9 @@
 
 > **drainCelinaAnalytics**(): `Promise`\<`void`\>
 
-Defined in: [src/analytics/amplitude.ts](https://github.com/andrewkimjoseph/celina-sdk/blob/main/src/analytics/amplitude.ts)
+Defined in: src/analytics/events-stats.ts:137
 
-Await in-flight Amplitude tracks, then flush. Pass this to Worker/Vercel `waitUntil` so events send after the response.
+Await in-flight `POST /events` calls. Use with Worker/Vercel `waitUntil`.
 
 ## Returns
 

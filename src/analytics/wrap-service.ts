@@ -1,10 +1,11 @@
 import type { SdkConfig } from "../config/sdk-config.js";
-import { trackMcpTool } from "./amplitude.js";
 import { isAnalyticsEnabled } from "./config.js";
+import { trackMcpTool } from "./events-stats.js";
 import { MCP_TOOL_EVENT_BY_SDK_METHOD } from "./mcp-tool-events.js";
 
 /**
- * Wrap a domain service so catalog-mapped async reads emit Amplitude events (MCP tool names).
+ * Wrap a domain service so catalog-mapped async reads report usage events (MCP tool names)
+ * to celina-stats-api.
  */
 export function wrapServiceForAnalytics<T extends object>(
   serviceKey: string,

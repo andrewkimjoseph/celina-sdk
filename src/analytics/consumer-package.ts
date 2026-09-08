@@ -8,7 +8,7 @@ const SDK_DEVICE_IDS = new Set(["andrewkimjoseph_celina_sdk", "celina-sdk"]);
 let detectionCached = false;
 let detectedDeviceId: string | undefined;
 
-/** Amplitude-safe id from npm `package.json` `name` (strip `@`, `/` and `-` → `_`). */
+/** Telemetry-safe device id from npm `package.json` `name` (strip `@`, `/` and `-` → `_`). */
 export function sanitizePackageDeviceId(name: string): string {
   const stripped = name.startsWith("@") ? name.slice(1) : name;
   return stripped.replace(/\//g, "_").replace(/-/g, "_");
@@ -110,7 +110,7 @@ function parseStackFramePaths(stack: string): string[] {
 }
 
 /**
- * npm package name of the app that called `createCelinaClient()`, sanitized for Amplitude.
+ * npm package name of the app that called `createCelinaClient()`, sanitized for telemetry.
  * Returns `undefined` when detection fails or the consumer is the SDK itself.
  */
 export function detectConsumerPackageName(stack?: string): string | undefined {

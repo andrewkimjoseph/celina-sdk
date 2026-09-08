@@ -8,7 +8,7 @@
 
 > **AttributionVerificationResult** = `object`
 
-Defined in: [src/config/celina-tag.ts:156](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/config/celina-tag.ts#L156)
+Defined in: [src/config/celina-tag.ts:156](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/celina-tag.ts#L156)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/config/celina-tag.ts:156](https://github.com/andrewkimjoseph/ce
 
 > **erc8021**: \{ `codes`: `string`[]; `schemaId`: `number`; \} \| `null`
 
-Defined in: [src/config/celina-tag.ts:157](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/config/celina-tag.ts#L157)
+Defined in: [src/config/celina-tag.ts:157](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/celina-tag.ts#L157)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [src/config/celina-tag.ts:157](https://github.com/andrewkimjoseph/ce
 
 > **matched**: `boolean`
 
-Defined in: [src/config/celina-tag.ts:158](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/config/celina-tag.ts#L158)
+Defined in: [src/config/celina-tag.ts:158](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/celina-tag.ts#L158)

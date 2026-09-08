@@ -6,7 +6,7 @@
 
 # Class: StakingService
 
-Defined in: [src/services/staking.service.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L66)
+Defined in: [src/services/staking.service.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L66)
 
 Validator election staking reads and writes via Celo core contracts.
 
@@ -16,7 +16,7 @@ Validator election staking reads and writes via Celo core contracts.
 
 > **new StakingService**(`clientFactory`): `StakingService`
 
-Defined in: [src/services/staking.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L69)
+Defined in: [src/services/staking.service.ts:69](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L69)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/staking.service.ts:69](https://github.com/andrewkimjos
 
 > **getActivatableStakes**(`address`): `Promise`\<\{ `activatableGroups`: `string`[]; `address`: `` `0x${string}` ``; `groupToIsActivatable`: `Record`\<`string`, `boolean`\>; `network`: `"mainnet"`; `summary`: \{ `activatableGroupsFormatted?`: `undefined`; `message`: `string`; `totalActivatableGroups`: `number`; `totalPendingGroups`: `number`; \}; \} \| \{ `activatableGroups`: `string`[]; `address`: `` `0x${string}` ``; `groupToIsActivatable`: `Record`\<`string`, `boolean`\>; `network`: `"mainnet"`; `summary`: \{ `activatableGroupsFormatted`: `string`[]; `message`: `string`; `totalActivatableGroups`: `number`; `totalPendingGroups`: `number`; \}; \}\>
 
-Defined in: [src/services/staking.service.ts:183](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L183)
+Defined in: [src/services/staking.service.ts:183](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L183)
 
 Pending stakes that can be activated in the current epoch.
 
@@ -62,7 +62,7 @@ When `address` is not a valid hex address
 
 > **getDelegationInfo**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `delegatees`: `object`[]; `governanceVotingPower`: `string`; `governanceVotingPowerFormatted`: `string`; `network`: `"mainnet"`; `totalDelegatedFraction`: `string`; `totalDelegatedPercent`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:614](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L614)
+Defined in: [src/services/staking.service.ts:614](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L614)
 
 Governance vote delegation info from LockedGold for an address.
 
@@ -82,7 +82,7 @@ Governance vote delegation info from LockedGold for an address.
 
 > **getGovernanceDelegateDetails**(`address`): `Promise`\<[`GovernanceDelegateDetailsResult`](../type-aliases/GovernanceDelegateDetailsResult.md)\>
 
-Defined in: [src/services/staking.service.ts:684](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L684)
+Defined in: [src/services/staking.service.ts:684](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L684)
 
 Mondo profile (if listed) plus on-chain LockedGold stats for a delegate address.
 
@@ -102,7 +102,7 @@ Mondo profile (if listed) plus on-chain LockedGold stats for a delegate address.
 
 > **getGovernanceDelegates**(`options?`): `Promise`\<[`GovernanceDelegatesResult`](../../../index/type-aliases/GovernanceDelegatesResult.md)\>
 
-Defined in: [src/services/staking.service.ts:677](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L677)
+Defined in: [src/services/staking.service.ts:677](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L677)
 
 Curated Celo Mondo governance delegate directory with optional LockedGold stats.
 Off-chain directory — not an on-chain registry; any address can receive delegation.
@@ -123,7 +123,7 @@ Off-chain directory — not an on-chain registry; any address can receive delega
 
 > **getStakeEligibility**(`address`, `groupAddress`, `amount`): `Promise`\<[`StakeEligibilityResult`](../../../index/type-aliases/StakeEligibilityResult.md)\>
 
-Defined in: [src/services/staking.service.ts:798](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L798)
+Defined in: [src/services/staking.service.ts:798](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L798)
 
 Check whether a stake with the given amount would succeed before execute_stake.
 Uses computed group headroom and Election.canReceiveVotes(group, amount),
@@ -153,7 +153,7 @@ non-voting locked balance, and account registration.
 
 > **getStakingBalances**(`address`): `Promise`\<\{ `active`: `string`; `activeFormatted`: `string`; `address`: `` `0x${string}` ``; `groups`: `object`[]; `network`: `"mainnet"`; `pending`: `string`; `pendingFormatted`: `string`; `total`: `string`; `totalFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:83](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L83)
+Defined in: [src/services/staking.service.ts:83](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L83)
 
 Active and pending CELO vote balances per validator group for an account.
 
@@ -181,7 +181,7 @@ When `address` is not a valid hex address
 
 > **getTotalStakingInfo**(): `Promise`\<\{ `network`: `"mainnet"`; `summary`: \{ `message`: `string`; `networkParticipation`: `string`; \}; `totalVotes`: `string`; `totalVotesCelo`: `number`; `totalVotesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:593](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L593)
+Defined in: [src/services/staking.service.ts:593](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L593)
 
 Network-wide total active staking votes across all validator groups.
 
@@ -197,7 +197,7 @@ Total votes in wei and human-readable CELO formatting
 
 > **getValidatorGroupDetails**(`groupAddress`): `Promise`\<\{ `address`: `` `0x${string}` ``; `canReceiveVotes`: `string`; `canReceiveVotesFormatted`: `string`; `capacity`: `string`; `capacityFormatted`: `string`; `eligible`: `boolean`; `lastSlashed`: `number` \| `null`; `members`: `object`[]; `name`: `string`; `network`: `"mainnet"`; `numElected`: `number`; `numMembers`: `number`; `votes`: `string`; `votesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:425](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L425)
+Defined in: [src/services/staking.service.ts:425](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L425)
 
 Detailed validator group profile including member validators and scores.
 
@@ -225,7 +225,7 @@ When `groupAddress` is not a valid hex address
 
 > **getValidatorGroups**(`options?`): `Promise`\<\{ `groups`: `object`[]; `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `totalVotes`: `string`; `totalVotesFormatted`: `string`; \}\>
 
-Defined in: [src/services/staking.service.ts:250](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L250)
+Defined in: [src/services/staking.service.ts:250](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L250)
 
 Paginated list of validator groups registered on Celo.
 
@@ -269,7 +269,7 @@ Group addresses, vote totals, capacity, and pagination metadata
 
 > **prepareActivateStake**(`from`, `groupAddress`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/staking.service.ts:909](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L909)
+Defined in: [src/services/staking.service.ts:909](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L909)
 
 #### Parameters
 
@@ -291,7 +291,7 @@ Defined in: [src/services/staking.service.ts:909](https://github.com/andrewkimjo
 
 > **prepareDelegatePower**(`from`, `delegatee`, `percent`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/staking.service.ts:1034](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L1034)
+Defined in: [src/services/staking.service.ts:1034](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L1034)
 
 #### Parameters
 
@@ -317,7 +317,7 @@ Defined in: [src/services/staking.service.ts:1034](https://github.com/andrewkimj
 
 > **prepareStake**(`from`, `groupAddress`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/staking.service.ts:871](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L871)
+Defined in: [src/services/staking.service.ts:871](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L871)
 
 #### Parameters
 
@@ -343,7 +343,7 @@ Defined in: [src/services/staking.service.ts:871](https://github.com/andrewkimjo
 
 > **prepareUndelegatePower**(`from`, `delegatee`, `percent`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/staking.service.ts:1070](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L1070)
+Defined in: [src/services/staking.service.ts:1070](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L1070)
 
 #### Parameters
 
@@ -369,7 +369,7 @@ Defined in: [src/services/staking.service.ts:1070](https://github.com/andrewkimj
 
 > **prepareUnstake**(`from`, `groupAddress`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/staking.service.ts:947](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/staking.service.ts#L947)
+Defined in: [src/services/staking.service.ts:947](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/staking.service.ts#L947)
 
 #### Parameters
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { setTrackFnForTests } from "../../src/analytics/amplitude.js";
+import { setTrackFnForTests } from "../../src/analytics/events-stats.js";
 import { runWithAnalyticsWallet } from "../../src/analytics/wallet-context.js";
 import { wrapServiceForAnalytics } from "../../src/analytics/wrap-service.js";
 import type { SdkConfig } from "../../src/config/sdk-config.js";
@@ -144,7 +144,7 @@ describe("wrapServiceForAnalytics", () => {
     );
 
     await service.getNetworkStatus();
-    const { drainCelinaAnalytics } = await import("../../src/analytics/amplitude.js");
+    const { drainCelinaAnalytics } = await import("../../src/analytics/events-stats.js");
     await drainCelinaAnalytics();
     expect(finished).toBe(true);
   });

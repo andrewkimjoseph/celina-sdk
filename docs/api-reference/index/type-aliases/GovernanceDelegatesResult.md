@@ -8,7 +8,7 @@
 
 > **GovernanceDelegatesResult** = `object`
 
-Defined in: [src/services/governance-delegates.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L54)
+Defined in: [src/services/governance-delegates.ts:54](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L54)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/governance-delegates.ts:54](https://github.com/andrewk
 
 > **delegates**: [`GovernanceDelegate`](GovernanceDelegate.md)[]
 
-Defined in: [src/services/governance-delegates.ts:59](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L59)
+Defined in: [src/services/governance-delegates.ts:59](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L59)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/governance-delegates.ts:59](https://github.com/andrewk
 
 > **directoryNote**: `string`
 
-Defined in: [src/services/governance-delegates.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L58)
+Defined in: [src/services/governance-delegates.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L58)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/services/governance-delegates.ts:58](https://github.com/andrewk
 
 > **network**: `"mainnet"`
 
-Defined in: [src/services/governance-delegates.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L55)
+Defined in: [src/services/governance-delegates.ts:55](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L55)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/services/governance-delegates.ts:55](https://github.com/andrewk
 
 > **pagination**: `object`
 
-Defined in: [src/services/governance-delegates.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L60)
+Defined in: [src/services/governance-delegates.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L60)
 
 #### hasMore
 
@@ -64,7 +64,7 @@ Defined in: [src/services/governance-delegates.ts:60](https://github.com/andrewk
 
 > **source**: `"celo-mondo"`
 
-Defined in: [src/services/governance-delegates.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L56)
+Defined in: [src/services/governance-delegates.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L56)
 
 ***
 
@@ -72,4 +72,4 @@ Defined in: [src/services/governance-delegates.ts:56](https://github.com/andrewk
 
 > **sourceUrl**: `string`
 
-Defined in: [src/services/governance-delegates.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L57)
+Defined in: [src/services/governance-delegates.ts:57](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L57)

@@ -8,7 +8,7 @@
 
 > **GovernanceDelegate** = [`GovernanceDelegateMetadata`](GovernanceDelegateMetadata.md) & `object`
 
-Defined in: [src/services/governance-delegates.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance-delegates.ts#L38)
+Defined in: [src/services/governance-delegates.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance-delegates.ts#L38)
 
 ## Type Declaration
 

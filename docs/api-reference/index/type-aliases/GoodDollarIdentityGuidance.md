@@ -8,7 +8,7 @@
 
 > **GoodDollarIdentityGuidance** = `object`
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L7)
+Defined in: [src/services/gooddollar-identity-guidance.ts:7](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L7)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:7](https://github.com/
 
 > `optional` **connectedTo?**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L12)
+Defined in: [src/services/gooddollar-identity-guidance.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L12)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:12](https://github.com
 
 > **isConnectedWallet**: `boolean`
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L10)
+Defined in: [src/services/gooddollar-identity-guidance.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L10)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:10](https://github.com
 
 > **isWhitelistedRoot**: `boolean`
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L9)
+Defined in: [src/services/gooddollar-identity-guidance.ts:9](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L9)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:9](https://github.com/
 
 > **message**: `string`
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L14)
+Defined in: [src/services/gooddollar-identity-guidance.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L14)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:14](https://github.com
 
 > **recommendedAction**: [`GoodDollarIdentityRecommendedAction`](GoodDollarIdentityRecommendedAction.md)
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L13)
+Defined in: [src/services/gooddollar-identity-guidance.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L13)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:13](https://github.com
 
 > **signerAddress**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L8)
+Defined in: [src/services/gooddollar-identity-guidance.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L8)
 
 ***
 
@@ -64,4 +64,4 @@ Defined in: [src/services/gooddollar-identity-guidance.ts:8](https://github.com/
 
 > `optional` **whitelistedRoot?**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar-identity-guidance.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/gooddollar-identity-guidance.ts#L11)
+Defined in: [src/services/gooddollar-identity-guidance.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/gooddollar-identity-guidance.ts#L11)

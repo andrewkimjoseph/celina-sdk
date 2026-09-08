@@ -8,6 +8,6 @@
 
 > `const` **FIXIDITY\_ONE**: `bigint`
 
-Defined in: [src/utils/fixidity.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/utils/fixidity.ts#L2)
+Defined in: [src/utils/fixidity.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/utils/fixidity.ts#L2)
 
 Celo Fixidity fractions use 1e24 precision.

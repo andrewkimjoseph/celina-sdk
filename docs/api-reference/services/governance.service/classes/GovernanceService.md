@@ -6,7 +6,7 @@
 
 # Class: GovernanceService
 
-Defined in: [src/services/governance.service.ts:127](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L127)
+Defined in: [src/services/governance.service.ts:146](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L146)
 
 Celo on-chain governance proposal reads, CGP enrichment, and LockedGold writes.
 
@@ -16,7 +16,7 @@ Celo on-chain governance proposal reads, CGP enrichment, and LockedGold writes.
 
 > **new GovernanceService**(`clientFactory`): `GovernanceService`
 
-Defined in: [src/services/governance.service.ts:130](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L130)
+Defined in: [src/services/governance.service.ts:149](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L149)
 
 #### Parameters
 
@@ -32,15 +32,15 @@ Defined in: [src/services/governance.service.ts:130](https://github.com/andrewki
 
 ### getActionableGovernanceProposals()
 
-> **getActionableGovernanceProposals**(): `Promise`\<\{ `hasAny`: `boolean`; `hasQueued`: `boolean`; `hasReferendum`: `boolean`; `message`: `string`; `network`: `"mainnet"`; `queued`: `object`[]; `referendum`: `object`[]; \}\>
+> **getActionableGovernanceProposals**(): `Promise`\<\{ `concurrentProposals`: `number`; `dequeueFrequencySeconds`: `number`; `dequeueReady`: `boolean`; `hasAny`: `boolean`; `hasQueued`: `boolean`; `hasReferendum`: `boolean`; `hasUpvoteableQueued`: `boolean`; `lastDequeue`: `number`; `lastDequeueISO`: `string`; `message`: `string`; `network`: `"mainnet"`; `nextDequeueProposalIds`: `number`[]; `queued`: `object`[]; `referendum`: `object`[]; `secondsUntilDequeueReady`: `number`; \}\>
 
-Defined in: [src/services/governance.service.ts:501](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L501)
+Defined in: [src/services/governance.service.ts:708](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L708)
 
 Queued and Referendum proposals you can upvote or vote on now.
 
 #### Returns
 
-`Promise`\<\{ `hasAny`: `boolean`; `hasQueued`: `boolean`; `hasReferendum`: `boolean`; `message`: `string`; `network`: `"mainnet"`; `queued`: `object`[]; `referendum`: `object`[]; \}\>
+`Promise`\<\{ `concurrentProposals`: `number`; `dequeueFrequencySeconds`: `number`; `dequeueReady`: `boolean`; `hasAny`: `boolean`; `hasQueued`: `boolean`; `hasReferendum`: `boolean`; `hasUpvoteableQueued`: `boolean`; `lastDequeue`: `number`; `lastDequeueISO`: `string`; `message`: `string`; `network`: `"mainnet"`; `nextDequeueProposalIds`: `number`[]; `queued`: `object`[]; `referendum`: `object`[]; `secondsUntilDequeueReady`: `number`; \}\>
 
 ***
 
@@ -48,7 +48,7 @@ Queued and Referendum proposals you can upvote or vote on now.
 
 > **getDequeueWithIndices**(): `Promise`\<`object`[]\>
 
-Defined in: [src/services/governance.service.ts:427](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L427)
+Defined in: [src/services/governance.service.ts:620](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L620)
 
 Raw getDequeue with positional indices preserved for Governance.vote().
 
@@ -62,7 +62,7 @@ Raw getDequeue with positional indices preserved for Governance.vote().
 
 > **getGovernanceProposals**(`options?`): `Promise`\<\{ `network`: `"mainnet"`; `pagination`: \{ `hasMore`: `boolean`; `limit`: `number`; `offset`: `number`; `page`: `number`; `pageSize`: `number`; `total`: `number`; `totalPages`: `number`; \}; `proposals`: `object`[]; \}\>
 
-Defined in: [src/services/governance.service.ts:309](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L309)
+Defined in: [src/services/governance.service.ts:502](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L502)
 
 List governance proposals with pagination and optional CGP metadata.
 
@@ -86,7 +86,7 @@ Proposals with stage names, vote totals, and optional CGP frontmatter
 
 > **getGovernanceVotes**(`address`, `options?`): `Promise`\<\{ `address`: `` `0x${string}` ``; `goldUsedForVoting`: `string`; `goldUsedForVotingFormatted`: `string`; `message`: `string`; `network`: `"mainnet"`; `queriedAddress?`: `` `0x${string}` ``; `referendumVotes`: `object`[]; `upvote`: \{ `proposalId`: `number`; `weight`: `string`; `weightFormatted`: `string`; \} \| `null`; \}\>
 
-Defined in: [src/services/governance.service.ts:531](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L531)
+Defined in: [src/services/governance.service.ts:785](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L785)
 
 Referendum votes and queue upvotes cast by an address on Celo governance.
 
@@ -110,7 +110,7 @@ Referendum votes and queue upvotes cast by an address on Celo governance.
 
 > **getLockedCeloBalance**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `delegatedFraction`: `string`; `governanceVotingPower`: `string`; `governanceVotingPowerFormatted`: `string`; `network`: `"mainnet"`; `nonvotingLocked`: `string`; `nonvotingLockedFormatted`: `string`; `totalLocked`: `string`; `totalLockedFormatted`: `string`; \}\>
 
-Defined in: [src/services/governance.service.ts:658](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L658)
+Defined in: [src/services/governance.service.ts:912](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L912)
 
 Locked CELO balances and governance voting power for an address.
 
@@ -130,7 +130,7 @@ Locked CELO balances and governance voting power for an address.
 
 > **getPendingWithdrawals**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `matureCount`: `number`; `network`: `"mainnet"`; `unlockingPeriodSeconds`: `number`; `withdrawals`: `object`[]; \}\>
 
-Defined in: [src/services/governance.service.ts:708](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L708)
+Defined in: [src/services/governance.service.ts:962](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L962)
 
 Pending LockedGold withdrawals with maturity timestamps.
 
@@ -150,7 +150,7 @@ Pending LockedGold withdrawals with maturity timestamps.
 
 > **getProposalDetails**(`proposalId`): `Promise`\<\{ `content`: `null`; `error`: `string`; `network`: `"mainnet"`; `proposal`: `null`; \} \| \{ `content`: `string` \| `null`; `error`: `null`; `network`: `"mainnet"`; `proposal`: \{ `deposit`: `string`; `expiryTimestamp`: `number` \| `null`; `id`: `number`; `isApproved`: `boolean`; `metadata`: `Record`\<`string`, `unknown`\> \| `null`; `networkWeight`: `string`; `numTransactions`: `number`; `proposer`: `string`; `stage`: `number`; `stageName`: `"Approval"` \| `"None"` \| `"Queued"` \| `"Referendum"` \| `"Execution"` \| `"Executed"` \| `"Expiration"` \| `"Rejected"` \| `"Withdrawn"`; `timestamp`: `number`; `upvotes`: `number`; `url`: `string`; `votes`: \{ `abstain`: `string`; `no`: `string`; `yes`: `string`; \}; \}; \}\>
 
-Defined in: [src/services/governance.service.ts:392](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L392)
+Defined in: [src/services/governance.service.ts:585](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L585)
 
 Full details for a single proposal, including CGP markdown body when available.
 
@@ -172,11 +172,41 @@ Proposal record, CGP content, or `{ proposal: null, error }` if missing
 
 ### getQueuedProposals()
 
-> **getQueuedProposals**(): `Promise`\<\{ `message`: `string`; `network`: `"mainnet"`; `proposals`: `object`[]; \}\>
+> **getQueuedProposals**(`options?`): `Promise`\<\{ `concurrentProposals`: `number`; `dequeueFrequencySeconds`: `number`; `dequeueReady`: `boolean`; `lastDequeue`: `number`; `lastDequeueISO`: `string`; `message`: `string`; `network`: `"mainnet"`; `nextDequeueProposalIds`: `number`[]; `proposals`: `object`[]; `secondsUntilDequeueReady`: `number`; \}\>
 
-Defined in: [src/services/governance.service.ts:472](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L472)
+Defined in: [src/services/governance.service.ts:663](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L663)
 
 Proposals currently in Queue stage with upvote weight.
+
+#### Parameters
+
+##### options?
+
+###### limit?
+
+`number`
+
+#### Returns
+
+`Promise`\<\{ `concurrentProposals`: `number`; `dequeueFrequencySeconds`: `number`; `dequeueReady`: `boolean`; `lastDequeue`: `number`; `lastDequeueISO`: `string`; `message`: `string`; `network`: `"mainnet"`; `nextDequeueProposalIds`: `number`[]; `proposals`: `object`[]; `secondsUntilDequeueReady`: `number`; \}\>
+
+***
+
+### getVotableProposals()
+
+> **getVotableProposals**(`options?`): `Promise`\<\{ `message`: `string`; `network`: `"mainnet"`; `proposals`: `object`[]; \}\>
+
+Defined in: [src/services/governance.service.ts:635](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L635)
+
+Proposals currently in Referendum stage with their dequeue index.
+
+#### Parameters
+
+##### options?
+
+###### limit?
+
+`number`
 
 #### Returns
 
@@ -184,17 +214,25 @@ Proposals currently in Queue stage with upvote weight.
 
 ***
 
-### getVotableProposals()
+### prepareDequeueProposalsIfReady()
 
-> **getVotableProposals**(): `Promise`\<\{ `message`: `string`; `network`: `"mainnet"`; `proposals`: `object`[]; \}\>
+> **prepareDequeueProposalsIfReady**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:442](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L442)
+Defined in: [src/services/governance.service.ts:1306](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1306)
 
-Proposals currently in Referendum stage with their dequeue index.
+Prepare Governance.dequeueProposalsIfReady (on-chain the call is permissionless).
+Celina MCP execute_dequeue_proposals_if_ready is humanness-gated.
+When overdue, moves up to concurrentProposals from the queue into Approval.
+
+#### Parameters
+
+##### from
+
+`` `0x${string}` ``
 
 #### Returns
 
-`Promise`\<\{ `message`: `string`; `network`: `"mainnet"`; `proposals`: `object`[]; \}\>
+`Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
 ***
 
@@ -202,7 +240,7 @@ Proposals currently in Referendum stage with their dequeue index.
 
 > **prepareLockCelo**(`from`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:784](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L784)
+Defined in: [src/services/governance.service.ts:1038](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1038)
 
 Lock CELO, relocking matured pending withdrawals first (reverse index order).
 
@@ -226,7 +264,7 @@ Lock CELO, relocking matured pending withdrawals first (reverse index order).
 
 > **prepareRelockCelo**(`from`, `index`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:866](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L866)
+Defined in: [src/services/governance.service.ts:1120](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1120)
 
 #### Parameters
 
@@ -252,7 +290,7 @@ Defined in: [src/services/governance.service.ts:866](https://github.com/andrewki
 
 > **prepareRevokeGovernanceUpvote**(`from`, `options?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:1075](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L1075)
+Defined in: [src/services/governance.service.ts:1378](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1378)
 
 Revoke the account's active queue upvote.
 
@@ -276,7 +314,7 @@ Revoke the account's active queue upvote.
 
 > **prepareRevokeGovernanceVotes**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:1043](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L1043)
+Defined in: [src/services/governance.service.ts:1346](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1346)
 
 Revoke all active referendum votes for an account (bulk on-chain).
 
@@ -296,7 +334,7 @@ Revoke all active referendum votes for an account (bulk on-chain).
 
 > **prepareUnlockCelo**(`from`, `amount`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:841](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L841)
+Defined in: [src/services/governance.service.ts:1095](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1095)
 
 #### Parameters
 
@@ -318,7 +356,7 @@ Defined in: [src/services/governance.service.ts:841](https://github.com/andrewki
 
 > **prepareUpvote**(`from`, `proposalId`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:972](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L972)
+Defined in: [src/services/governance.service.ts:1226](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1226)
 
 Upvote a Queued governance proposal (one active queue upvote per account).
 
@@ -342,7 +380,7 @@ Upvote a Queued governance proposal (one active queue upvote per account).
 
 > **prepareVote**(`from`, `proposalId`, `vote`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:930](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L930)
+Defined in: [src/services/governance.service.ts:1184](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1184)
 
 #### Parameters
 
@@ -368,7 +406,7 @@ Defined in: [src/services/governance.service.ts:930](https://github.com/andrewki
 
 > **prepareWithdrawCelo**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/governance.service.ts:896](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/services/governance.service.ts#L896)
+Defined in: [src/services/governance.service.ts:1150](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L1150)
 
 Withdraw all matured pending withdrawals.
 

@@ -8,9 +8,11 @@
 
 > **flushCelinaAnalytics**(): `Promise`\<`void`\>
 
-Defined in: [src/analytics/amplitude.ts:101](https://github.com/andrewkimjoseph/celina-sdk/blob/c35fe1db07a45a3cd14b2185df4abf2e6a2ec609/src/analytics/amplitude.ts#L101)
+Defined in: src/analytics/events-stats.ts:146
 
-Await any queued Amplitude events (e.g. end of a Next.js route via `after()`).
+Await any queued event posts (e.g. end of a Next.js route via `after()`).
+Alias of [drainCelinaAnalytics](drainCelinaAnalytics.md) — kept as a separate export for API compatibility;
+there is no separate client-side batch to flush now that events post individually.
 
 ## Returns
 

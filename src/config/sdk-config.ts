@@ -12,14 +12,16 @@ export interface SdkConfig {
   selfAgentPrivateKey?: `0x${string}`;
   /** Self Agent ID REST API base (default https://app.ai.self.xyz). */
   selfApiBase?: string;
-  /** Amplitude read telemetry (default on; opt out with `analyticsEnabled: false`). */
-  analyticsEnabled?: boolean;
-  /** Override bundled Amplitude project API key. */
-  amplitudeApiKey?: string;
   /**
-   * Amplitude `device_id`. When omitted, auto-detected from the consuming package
-   * `package.json` name (sanitized, e.g. `celeste_ai`, `andrewkimjoseph_celina_mcp`),
-   * then `celina-sdk`.
+   * Read telemetry reported to celina-stats-api (default on).
+   * Opt out with `analyticsEnabled: false`.
+   */
+  analyticsEnabled?: boolean;
+  /**
+   * `device_id` reported with telemetry events. When omitted, auto-detected from the
+   * consuming package `package.json` name (sanitized, e.g. `celeste_ai`,
+   * `andrewkimjoseph_celina_mcp`), then `celina_sdk`. Prefer setting this explicitly —
+   * auto-detection can be unreliable in bundled/serverless deployments.
    */
   analyticsDeviceId?: string;
   /**
@@ -78,7 +80,6 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
         ? process.env.SELF_AGENT_API_BASE
         : undefined),
     analyticsEnabled: opts?.analyticsEnabled,
-    amplitudeApiKey: opts?.amplitudeApiKey,
     analyticsDeviceId:
       opts?.analyticsDeviceId ?? detectConsumerPackageName(),
     analyticsWalletAddress: opts?.analyticsWalletAddress,

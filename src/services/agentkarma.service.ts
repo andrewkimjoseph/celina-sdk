@@ -12,7 +12,7 @@
  *  - non-routing: never proxies an agent call; it only reads reputation.
  *  - no private keys / no env requirement.
  *
- * It is intentionally NOT wrapped in Celina's Amplitude analytics proxy: this
+ * It is intentionally NOT wrapped in Celina's read-telemetry proxy: this
  * is an external reputation service, not a Celo on-chain read Celina tracks.
  */
 import {

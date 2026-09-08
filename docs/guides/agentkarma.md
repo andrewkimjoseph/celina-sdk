@@ -7,7 +7,7 @@ The SDK exposes [AgentKarma](https://agentkarma.io) via `celina.agentKarma` — 
 - **Read-only** — never signs, never executes a transaction, never holds custody
 - **Non-routing** — never proxies an agent call; only reads reputation
 - **No keys** — no `CELO_PRIVATE_KEY` or env requirement
-- **External API** — calls agentkarma.io; not wrapped in Celina Amplitude analytics (unlike on-chain Celina reads)
+- **External API** — calls agentkarma.io; not wrapped in Celina's read telemetry (unlike on-chain Celina reads)
 
 For direct AgentKarma integration outside Celina, see [`@agentkarma/sdk`](https://www.npmjs.com/package/@agentkarma/sdk).
 

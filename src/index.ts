@@ -223,7 +223,7 @@ export { clearSelfSessionsForTests } from "./services/self-session-store.js";
 export {
   drainCelinaAnalytics,
   flushCelinaAnalytics,
-} from "./analytics/amplitude.js";
+} from "./analytics/events-stats.js";
 export { runWithAnalyticsWallet } from "./analytics/wallet-context.js";
 export {
   DEFAULT_STATS_API_BASE_URL,
