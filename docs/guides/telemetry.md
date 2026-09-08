@@ -11,6 +11,8 @@ On **Node.js**, the SDK reports usage counts for **read** operations directly to
 
 ### Canonical device ids across the Celina ecosystem
 
+The Celina ecosystem is the `celina-*` packages plus [celeste-ai](https://github.com/andrewkimjoseph/celeste-ai). Other apps that embed the SDK are consumers, not ecosystem members.
+
 | Project | `device_id` | How it's set |
 |---|---|---|
 | celina-sdk (no override) | `celina_sdk` | Default fallback |
@@ -18,12 +20,8 @@ On **Node.js**, the SDK reports usage counts for **read** operations directly to
 | celina-api | `celina_api` (default), or caller-supplied | `X-Celina-Client` request header, sanitized |
 | celina-bot | `celina_bot` | Sends `X-Celina-Client: celina_bot` to celina-api (doesn't embed the SDK directly) |
 | celeste-ai | `celeste_ai` | Explicit `analyticsDeviceId` |
-| goclaim-app | `goclaim_app` | Explicit `analyticsDeviceId` |
-| insights/pax_v2 functions | `pax` | Explicit `analyticsDeviceId` |
-| the-good-pax-app | `the_good_pax_app` | Explicit `analyticsDeviceId` |
-| g-usdm-quote | `g_usdm_quote` | Explicit `analyticsDeviceId` |
 
-New integrations should follow this pattern: pass `analyticsDeviceId` explicitly in `createCelinaClient()` (or forward a caller id via a header, like celina-api/celina-bot do) rather than relying on auto-detection.
+Consumers should follow this pattern: pass `analyticsDeviceId` explicitly in `createCelinaClient()` (or forward a caller id via a header, like celina-api/celina-bot do) rather than relying on auto-detection.
 
 Wallet resolution order:
 
