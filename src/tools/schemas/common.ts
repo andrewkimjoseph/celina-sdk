@@ -204,7 +204,7 @@ export function optionalBoundedPositiveIntRange(min: number, max: number) {
 
 export const tokenSymbolSchema = z
   .string()
-  .describe("Celo mainnet token symbol (e.g. CELO, USDm, USDC, USDT)");
+  .describe("Celo mainnet token symbol (e.g. CELO, USDm, USDC, USDT, USAT)");
 
 export const ensNameSchema = z
   .string()

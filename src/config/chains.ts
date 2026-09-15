@@ -163,6 +163,15 @@ export const KNOWN_TOKENS: KnownToken[] = [
     decimals: 6,
   },
   {
+    symbol: "USAT",
+    aliases: ["USA₮"],
+    address: "0xD2ab3C9A02DBBAB236BfEC45D1d755DF4267F771",
+    issuer: "Tether",
+    useCase:
+      "US Dollar-backed stablecoin issued by Anchorage Digital Bank (Tether America USD)",
+    decimals: 6,
+  },
+  {
     symbol: "WETH",
     address: "0xD221812de1BD094f35587EE8E174B07B6167D9Af",
     issuer: "Wrapped Ether",

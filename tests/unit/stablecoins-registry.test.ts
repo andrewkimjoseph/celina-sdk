@@ -7,6 +7,23 @@ describe("STABLECOINS registry", () => {
     expect(symbols).toContain("USDm");
     expect(symbols).toContain("USDT");
     expect(symbols).toContain("USDC");
+    expect(symbols).toContain("USAT");
+  });
+
+  it("resolves USAT by symbol, alias, and address with 6 decimals", () => {
+    const bySymbol = findKnownToken("USAT");
+    const byAlias = findKnownToken("USA₮");
+    const byAddress = findKnownToken(
+      "0xD2ab3C9A02DBBAB236BfEC45D1d755DF4267F771",
+    );
+
+    expect(bySymbol?.symbol).toBe("USAT");
+    expect(bySymbol?.decimals).toBe(6);
+    expect(bySymbol?.address).toBe(
+      "0xD2ab3C9A02DBBAB236BfEC45D1d755DF4267F771",
+    );
+    expect(byAlias?.symbol).toBe("USAT");
+    expect(byAddress?.symbol).toBe("USAT");
   });
 
   it("excludes GoodDollar and WETH from stablecoin scans", () => {

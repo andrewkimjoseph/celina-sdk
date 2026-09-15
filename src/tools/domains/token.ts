@@ -39,7 +39,7 @@ export const tokenToolDefinitions: ToolDefinition[] = [
   {
     name: "get_stablecoin_balances",
     description:
-      `Scan fiat-pegged registry stablecoins (Mento *m, USDT, USDC, etc.) for an address in one call. Omits zero balances by default. Excludes GoodDollar (G$) and WETH — use get_token_balance or GoodDollar tools for those.${NON_IDENTITY_BALANCE_NOTE}`,
+      `Scan fiat-pegged registry stablecoins (Mento *m, USDT, USDC, USAT, etc.) for an address in one call. Omits zero balances by default. Excludes GoodDollar (G$) and WETH — use get_token_balance or GoodDollar tools for those.${NON_IDENTITY_BALANCE_NOTE}`,
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
       stablecoins: z.array(z.string()).optional(),
