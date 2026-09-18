@@ -74,7 +74,7 @@ The SDK discovers v4 pools via the Celo v4 subgraph when available, otherwise by
 Call `listPairs` (MCP / browser: `get_uniswap_swap_pairs`) to see which registry tokens currently have a pool or 2-hop path — do not invent pairs.
 
 ```ts
-const listing = await celina.uniswap.listPairs("EURm");
+const listing = await celina.uniswap.listPairs("USDC");
 console.log(listing.counterparts);
 console.log(listing.source); // "subgraph" or "onchain"
 ```
