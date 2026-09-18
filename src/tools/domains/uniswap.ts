@@ -1,4 +1,6 @@
+import { z } from "zod";
 import {
+  tokenSymbolSchema,
   uniswapQuoteSchema,
   uniswapWalletSchema,
 } from "../schemas/common.js";
@@ -15,6 +17,26 @@ function mapUniswapWalletOptions(input: Record<string, unknown>) {
 }
 
 export const uniswapToolDefinitions: ToolDefinition[] = [
+  {
+    name: "get_uniswap_swap_pairs",
+    description:
+      "List Uniswap v4 registry-token pairs on Celo mainnet (direct pools and 2-hop routes). Call this before listing Uniswap pairs — do not invent them.",
+    inputSchema: z.object({
+      token: tokenSymbolSchema
+        .optional()
+        .describe(
+          "Optional registry token. When set, only pairs involving this token are returned.",
+        ),
+    }),
+    families: ["read"],
+    mcp: { title: "Get Uniswap Swap Pairs", annotations: { readOnlyHint: true } },
+    handler: async (runtime, input) =>
+      runtime.celina.uniswap.listPairs(
+        input.token
+          ? normalizeRegistryTokenInput(input.token as string)
+          : undefined,
+      ),
+  },
   {
     name: "get_uniswap_quote",
     description: "Uniswap v4 AMM quote for a token pair on Celo mainnet.",

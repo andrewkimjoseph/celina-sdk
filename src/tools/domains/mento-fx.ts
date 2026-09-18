@@ -1,6 +1,8 @@
+import { z } from "zod";
 import {
   mentoFxQuoteSchema,
   mentoFxWalletSchema,
+  tokenSymbolSchema,
 } from "../schemas/common.js";
 import type { ToolDefinition } from "../types.js";
 import { normalizeRegistryTokenInput } from "../utils/normalize-token.js";
@@ -15,6 +17,26 @@ function mapMentoWalletOptions(input: Record<string, unknown>) {
 }
 
 export const mentoFxToolDefinitions: ToolDefinition[] = [
+  {
+    name: "get_mento_swap_pairs",
+    description:
+      "List tradable Mento FX registry-token pairs on Celo mainnet. Call this before listing Mento pairs — do not invent them.",
+    inputSchema: z.object({
+      token: tokenSymbolSchema
+        .optional()
+        .describe(
+          "Optional registry token. When set, only pairs involving this token are returned.",
+        ),
+    }),
+    families: ["read"],
+    mcp: { title: "Get Mento Swap Pairs", annotations: { readOnlyHint: true } },
+    handler: async (runtime, input) =>
+      runtime.celina.mentoFx.listPairs(
+        input.token
+          ? normalizeRegistryTokenInput(input.token as string)
+          : undefined,
+      ),
+  },
   {
     name: "get_mento_fx_quote",
     description:

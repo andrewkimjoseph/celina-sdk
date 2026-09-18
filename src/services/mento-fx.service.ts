@@ -30,6 +30,11 @@ import {
   serializePreparedFlow,
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
+import {
+  buildPairsFromMentoRoutes,
+  withTokenFilter,
+  type SwapPairsResult,
+} from "./swap-pairs.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
 /** Optional parameters for Mento FX swap estimates and prepares. */
@@ -324,6 +329,27 @@ export class MentoFxService {
       expectedOut: formatUnits(expectedOutWei, resolvedOut.decimals),
       routeHops,
     };
+  }
+
+  /**
+   * Tradable Mento FX registry-token pairs on Celo mainnet.
+   * Uses the same route graph as `getFxQuote` — no quotes, no market-hours check.
+   * @param token - Optional registry symbol; when set, only pairs involving that token
+   */
+  async listPairs(token?: string): Promise<SwapPairsResult> {
+    const { public: client } = this.clientFactory.getClients();
+    const mento = await this.getMentoClient(client);
+    const routes = await mento.routes.getRoutes({ cached: true });
+    const pairs = buildPairsFromMentoRoutes(routes);
+    const symbol = token ? this.tokenService.resolveToken(token).symbol : undefined;
+    return withTokenFilter(
+      {
+        network: "mainnet",
+        protocol: "mento_fx",
+        pairs,
+      },
+      symbol,
+    );
   }
 
   /**

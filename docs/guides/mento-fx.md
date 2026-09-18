@@ -67,9 +67,14 @@ const flow = await celina.mentoFx.prepareFx(
 
 ## Supported pairs
 
-Any pair with a Mento FX route on Celo mainnet. Common examples: `USDm` ↔ `EURm`, `USDm` ↔ `cUSD`, `cEUR` ↔ `EURm`.
+Call `listPairs` (MCP / browser: `get_mento_swap_pairs`) instead of guessing. It returns the same route graph `getFxQuote` uses.
 
-If no route exists, the SDK throws: `No Mento FX route for X → Y`.
+```ts
+const listing = await celina.mentoFx.listPairs("EURm");
+console.log(listing.counterparts); // e.g. ["USDm", …] — not every stable
+```
+
+Omit `token` to list every registry pair. If no route exists for a quote, the SDK throws: `No Mento FX route for X → Y`.
 
 ## Market hours
 

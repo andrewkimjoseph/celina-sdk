@@ -9,6 +9,38 @@ function fromAddress(fx: Parameters<OperationSpec["assert"]>[1]): `0x${string}` 
 
 export const mentoFxOperations: OperationSpec[] = [
   {
+    id: "mentoFx.listPairs",
+    domain: "mentoFx",
+    layer: "read",
+    sdk: {
+      invoke: (client) => client.mentoFx.listPairs("EURm"),
+    },
+    mcp: {
+      tool: "get_mento_swap_pairs",
+      arguments: () => ({
+        token: "EURm",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["pairs", "protocol", "network"]);
+      const listing = result as {
+        protocol?: string;
+        counterparts?: string[];
+        pairs?: Array<{ token_a: string; token_b: string }>;
+      };
+      if (listing.protocol !== "mento_fx") {
+        throw new Error(`Expected mento_fx, got ${listing.protocol}`);
+      }
+      const counterparts = listing.counterparts ?? [];
+      if (counterparts.includes("CELO")) {
+        throw new Error("EURm Mento counterparts must not include CELO");
+      }
+      if (counterparts.length === 0 && (listing.pairs?.length ?? 0) === 0) {
+        throw new Error("Expected at least one Mento FX pair involving EURm");
+      }
+    },
+  },
+  {
     id: "mentoFx.getFxQuote",
     domain: "mentoFx",
     layer: "read",
@@ -81,6 +113,30 @@ export const mentoFxOperations: OperationSpec[] = [
 ];
 
 export const uniswapOperations: OperationSpec[] = [
+  {
+    id: "uniswap.listPairs",
+    domain: "uniswap",
+    layer: "read",
+    sdk: {
+      invoke: (client) => client.uniswap.listPairs("USDC"),
+    },
+    mcp: {
+      tool: "get_uniswap_swap_pairs",
+      arguments: () => ({
+        token: "USDC",
+      }),
+    },
+    assert: (result) => {
+      assertHasKeys(result, ["pairs", "protocol", "network"]);
+      const listing = result as { protocol?: string; pairs?: unknown[] };
+      if (listing.protocol !== "uniswap_v4") {
+        throw new Error(`Expected uniswap_v4, got ${listing.protocol}`);
+      }
+      if (!Array.isArray(listing.pairs) || listing.pairs.length === 0) {
+        throw new Error("Expected at least one Uniswap v4 pair involving USDC");
+      }
+    },
+  },
   {
     id: "uniswap.getSwapQuote",
     domain: "uniswap",

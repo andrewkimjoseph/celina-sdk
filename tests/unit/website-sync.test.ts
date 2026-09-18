@@ -41,6 +41,17 @@ describe("website-sync", () => {
     expect(tag?.description).toContain("Omit to list all tags");
   });
 
+  it("maps swap pair tools to Mento FX and Uniswap", () => {
+    const mento = toWebsiteToolBaseline(getToolDefinition("get_mento_swap_pairs")!);
+    expect(mento.category).toBe("Mento FX");
+    expect(mento.kind).toBe("read");
+    expect(mento.inputs.find((field) => field.name === "token")?.required).toBe(false);
+
+    const uni = toWebsiteToolBaseline(getToolDefinition("get_uniswap_swap_pairs")!);
+    expect(uni.category).toBe("Uniswap");
+    expect(uni.kind).toBe("read");
+  });
+
   it("falls back to snake_case field names when no describe is set", () => {
     const baseline = toWebsiteToolBaseline({
       name: "test_tool",

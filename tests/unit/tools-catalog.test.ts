@@ -50,6 +50,8 @@ describe("tools catalog", () => {
     expect(getMcpToolNames().length).toBeGreaterThan(30);
     expect(getBrowserToolNames().length).toBeGreaterThan(20);
     expect(getBrowserToolNames()).toContain("get_swap_quote");
+    expect(getBrowserToolNames()).toContain("get_mento_swap_pairs");
+    expect(getBrowserToolNames()).toContain("get_uniswap_swap_pairs");
     expect(getBrowserToolNames()).not.toContain("send_token");
   });
 
@@ -64,11 +66,13 @@ describe("tools catalog", () => {
       selfSessionToolsEnabled: false,
       estimateToolsEnabled: false,
     });
-    expect(hosted).toHaveLength(48);
+    expect(hosted).toHaveLength(50);
     expect(hosted).not.toContain("send_token");
     expect(hosted).not.toContain("get_wallet_address");
     expect(hosted).not.toContain("register_self_agent");
     expect(hosted).not.toContain("estimate_send");
     expect(hosted).toContain("get_mento_fx_quote");
+    expect(hosted).toContain("get_mento_swap_pairs");
+    expect(hosted).toContain("get_uniswap_swap_pairs");
   });
 });

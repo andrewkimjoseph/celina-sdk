@@ -38,6 +38,12 @@ import {
 } from "../types/prepared.js";
 import { CHAIN } from "../config/chains.js";
 import { findBestUniswapRoute, applySlippage } from "./uniswap-path-router.js";
+import { getUniswapPoolIndex } from "./uniswap-pool-discovery.js";
+import {
+  buildPairsFromUniswapIndex,
+  withTokenFilter,
+  type SwapPairsResult,
+} from "./swap-pairs.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
 /** Optional parameters for Uniswap v4 swap estimates and prepares. */
@@ -381,6 +387,26 @@ export class UniswapService {
 
     throw new Error(
       "Could not estimate Uniswap swap gas: failed to simulate ERC-20 allowance for this token.",
+    );
+  }
+
+  /**
+   * Uniswap v4 registry-token pairs on Celo mainnet (direct pools and 2-hop routes).
+   * @param token - Optional registry symbol; when set, only pairs involving that token
+   */
+  async listPairs(token?: string): Promise<SwapPairsResult> {
+    const { public: client } = this.clientFactory.getClients();
+    const index = await getUniswapPoolIndex(client);
+    const pairs = buildPairsFromUniswapIndex(index);
+    const symbol = token ? this.tokenService.resolveToken(token).symbol : undefined;
+    return withTokenFilter(
+      {
+        network: "mainnet",
+        protocol: "uniswap_v4",
+        pairs,
+        source: index.source,
+      },
+      symbol,
     );
   }
 

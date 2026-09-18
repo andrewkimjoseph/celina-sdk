@@ -72,6 +72,8 @@ Catalog layout: `src/tools/domains/*.ts` (merged in `ALL_TOOL_DEFINITIONS`). Bro
 
 | Tool | Prefer when |
 |------|-------------|
+| **`get_mento_swap_pairs`** | User asks which Mento FX pairs exist — do not invent pairs |
+| **`get_uniswap_swap_pairs`** | User asks which Uniswap v4 pairs exist — do not invent pairs |
 | **`check_attribution_tag`** | Unified custom `tags` list (excludes platform `CELINA`/`celina`) or confirm one tag |
 | **`verify_attribution_tag`** | Raw legacy + ERC-8021 layer decode |
 | **`get_stake_eligibility`** | Before `execute_stake` — validates group headroom, locked balance, account registration |

@@ -34,6 +34,7 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "humanness.checkHumanness": "check_humanness",
   "mentoFx.estimateFx": "estimate_mento_fx",
   "mentoFx.getFxQuote": "get_mento_fx_quote",
+  "mentoFx.listPairs": "get_mento_swap_pairs",
   "nft.getNftBalance": "get_nft_balance",
   "nft.getNftInfo": "get_nft_info",
   "self.authenticatedSelfFetch": "authenticated_self_fetch",
@@ -61,4 +62,5 @@ export const MCP_TOOL_EVENT_BY_SDK_METHOD: Readonly<Record<string, string>> = {
   "transaction.getGasFeeData": "get_gas_fee_data",
   "uniswap.estimateSwap": "estimate_uniswap_swap",
   "uniswap.getSwapQuote": "get_uniswap_quote",
+  "uniswap.listPairs": "get_uniswap_swap_pairs",
 } as const;
