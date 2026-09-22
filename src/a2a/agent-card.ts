@@ -9,7 +9,7 @@ import {
 } from "../tools/website-sync.js";
 
 export interface CelinaAgentCardOptions {
-  /** Public MCP host base URL for JSON-RPC execution, e.g. https://mcp.usecelina.xyz */
+  /** Public remote MCP base URL for JSON-RPC execution, e.g. https://mcp.usecelina.xyz */
   mcpBaseUrl?: string;
   /** @deprecated Use mcpBaseUrl. Kept for backward compatibility. */
   baseUrl?: string;

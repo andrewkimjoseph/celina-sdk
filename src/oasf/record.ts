@@ -39,7 +39,7 @@ export interface CelinaOasfRecordOptions {
   version?: string;
   /** Public site base URL, e.g. https://usecelina.xyz */
   siteBaseUrl?: string;
-  /** MCP host base URL for execution endpoints */
+  /** Remote MCP base URL for execution endpoints */
   mcpBaseUrl?: string;
 }
 
