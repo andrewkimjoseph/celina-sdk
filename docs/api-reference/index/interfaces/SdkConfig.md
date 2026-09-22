@@ -31,7 +31,7 @@ auto-detection can be unreliable in bundled/serverless deployments.
 
 Defined in: [src/config/sdk-config.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L19)
 
-Read telemetry reported to celina-stats-api (default on).
+Read telemetry reported to Amplitude (default on).
 Opt out with `analyticsEnabled: false`.
 
 ***
@@ -119,5 +119,6 @@ Self Agent ID REST API base (default https://app.ai.self.xyz).
 
 Defined in: [src/config/sdk-config.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L41)
 
-Override celina-stats-api base URL (default `https://api.stats.usecelina.xyz`).
-Also reads `CELINA_STATS_API_URL`.
+Override celina-stats-api base URL for on-chain hash reporting
+(default `https://api.stats.usecelina.xyz`). Also reads `CELINA_STATS_API_URL`.
+Read-tool telemetry goes to Amplitude and does not use this URL.

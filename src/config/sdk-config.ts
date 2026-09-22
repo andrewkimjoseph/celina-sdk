@@ -13,7 +13,7 @@ export interface SdkConfig {
   /** Self Agent ID REST API base (default https://app.ai.self.xyz). */
   selfApiBase?: string;
   /**
-   * Read telemetry reported to celina-stats-api (default on).
+   * Read telemetry reported to Amplitude (default on).
    * Opt out with `analyticsEnabled: false`.
    */
   analyticsEnabled?: boolean;
@@ -35,8 +35,9 @@ export interface SdkConfig {
    */
   onchainStatsEnabled?: boolean;
   /**
-   * Override celina-stats-api base URL (default `https://api.stats.usecelina.xyz`).
-   * Also reads `CELINA_STATS_API_URL`.
+   * Override celina-stats-api base URL for on-chain hash reporting
+   * (default `https://api.stats.usecelina.xyz`). Also reads `CELINA_STATS_API_URL`.
+   * Read-tool telemetry goes to Amplitude and does not use this URL.
    */
   statsApiBaseUrl?: string;
   /**

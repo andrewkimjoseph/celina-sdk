@@ -3,8 +3,16 @@ import {
   isAnalyticsEnabled,
   resolveDeviceId,
 } from "./config.js";
-import { DEFAULT_STATS_API_BASE_URL } from "./onchain-stats.js";
 import { resolveAnalyticsWallet } from "./wallet-context.js";
+
+/** Amplitude HTTP API v2. Write key only — cannot read the export. */
+export const AMPLITUDE_HTTP_API_URL = "https://api2.amplitude.com/2/httpapi";
+
+/**
+ * Celina stats Amplitude project write key.
+ * Public ingest credential; the export secret stays on celina-stats-api.
+ */
+export const AMPLITUDE_WRITE_API_KEY = "b8d30326c023a17e70f0a42432824279";
 
 export type TrackMcpToolContext = {
   methodKey: string;
@@ -30,7 +38,7 @@ let testTrackFn:
   | null = null;
 let testFetch: typeof fetch | null = null;
 
-/** Test-only hook to assert telemetry without POSTing to celina-stats-api. */
+/** Test-only hook to assert telemetry without POSTing to Amplitude. */
 export function setTrackFnForTests(
   fn:
     | ((
@@ -44,23 +52,9 @@ export function setTrackFnForTests(
   testTrackFn = fn;
 }
 
-/** Test-only: replace `fetch` used by the real `POST /events` path. */
+/** Test-only: replace `fetch` used by the Amplitude HTTP API path. */
 export function setEventsStatsFetchForTests(fn: typeof fetch | null): void {
   testFetch = fn;
-}
-
-function envFlag(name: string): string | undefined {
-  if (typeof process === "undefined") return undefined;
-  const value = process.env[name]?.trim();
-  return value ? value : undefined;
-}
-
-/** Resolve celina-stats-api base URL: `statsApiBaseUrl` config -> `CELINA_STATS_API_URL` -> default. */
-function resolveBaseUrl(config: SdkConfig): string {
-  const fromConfig = config.statsApiBaseUrl?.trim();
-  const fromEnv = envFlag("CELINA_STATS_API_URL");
-  const raw = fromConfig || fromEnv || DEFAULT_STATS_API_BASE_URL;
-  return raw.replace(/\/+$/, "");
 }
 
 function randomInsertId(): string {
@@ -71,17 +65,28 @@ function randomInsertId(): string {
   }
 }
 
-async function postEvent(config: SdkConfig, payload: EventPayload): Promise<void> {
+async function postEvent(payload: EventPayload): Promise<void> {
   const doFetch = testFetch ?? globalThis.fetch;
   if (typeof doFetch !== "function") {
     return;
   }
-  const url = `${resolveBaseUrl(config)}/events`;
+  const event: Record<string, unknown> = {
+    event_type: payload.event,
+    device_id: payload.deviceId,
+    insert_id: payload.insertId,
+    time: Date.parse(payload.occurredAt),
+  };
+  if (payload.userId) {
+    event.user_id = payload.userId;
+  }
   try {
-    await doFetch(url, {
+    await doFetch(AMPLITUDE_HTTP_API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        api_key: AMPLITUDE_WRITE_API_KEY,
+        events: [event],
+      }),
     });
   } catch {
     // telemetry must not break SDK reads
@@ -118,7 +123,7 @@ async function trackMcpToolImpl(
     occurredAt: new Date().toISOString(),
   };
 
-  await postEvent(config, payload);
+  await postEvent(payload);
 }
 
 /** Track an MCP tool name event; never throws to callers. */
@@ -133,7 +138,7 @@ export function trackMcpTool(
   return run;
 }
 
-/** Await in-flight `POST /events` calls. Use with Worker/Vercel `waitUntil`. */
+/** Await in-flight Amplitude telemetry calls. Use with Worker/Vercel `waitUntil`. */
 export async function drainCelinaAnalytics(): Promise<void> {
   await Promise.allSettled([...inflight]);
 }
