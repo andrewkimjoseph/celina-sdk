@@ -10,7 +10,7 @@
 
 Defined in: src/analytics/events-stats.ts:137
 
-Await in-flight Amplitude telemetry calls. Use with Worker/Vercel `waitUntil`.
+Await in-flight telemetry posts. Use with Worker/Vercel `waitUntil`.
 
 ## Returns
 

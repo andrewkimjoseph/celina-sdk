@@ -35,7 +35,7 @@ function resolveEnabled(config?: Pick<SdkConfig, "onchainStatsEnabled">): boolea
   return true;
 }
 
-function resolveBaseUrl(config?: Pick<SdkConfig, "statsApiBaseUrl">): string {
+export function resolveStatsApiBaseUrl(config?: Pick<SdkConfig, "statsApiBaseUrl">): string {
   const fromConfig = config?.statsApiBaseUrl?.trim();
   const fromEnv = envFlag("CELINA_STATS_API_URL");
   const raw = fromConfig || fromEnv || DEFAULT_STATS_API_BASE_URL;
@@ -46,7 +46,7 @@ function resolveBaseUrl(config?: Pick<SdkConfig, "statsApiBaseUrl">): string {
 export function applyOnchainStatsConfig(config: SdkConfig): void {
   runtime = {
     enabled: resolveEnabled(config),
-    baseUrl: resolveBaseUrl(config),
+    baseUrl: resolveStatsApiBaseUrl(config),
   };
 }
 

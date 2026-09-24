@@ -3,16 +3,8 @@ import {
   isAnalyticsEnabled,
   resolveDeviceId,
 } from "./config.js";
+import { resolveStatsApiBaseUrl } from "./onchain-stats.js";
 import { resolveAnalyticsWallet } from "./wallet-context.js";
-
-/** Amplitude HTTP API v2. Write key only — cannot read the export. */
-export const AMPLITUDE_HTTP_API_URL = "https://api2.amplitude.com/2/httpapi";
-
-/**
- * Celina stats Amplitude project write key.
- * Public ingest credential; the export secret stays on celina-stats-api.
- */
-export const AMPLITUDE_WRITE_API_KEY = "b8d30326c023a17e70f0a42432824279";
 
 export type TrackMcpToolContext = {
   methodKey: string;
@@ -38,7 +30,7 @@ let testTrackFn:
   | null = null;
 let testFetch: typeof fetch | null = null;
 
-/** Test-only hook to assert telemetry without POSTing to Amplitude. */
+/** Test-only hook to assert telemetry without POSTing to celina-stats-api. */
 export function setTrackFnForTests(
   fn:
     | ((
@@ -52,7 +44,7 @@ export function setTrackFnForTests(
   testTrackFn = fn;
 }
 
-/** Test-only: replace `fetch` used by the Amplitude HTTP API path. */
+/** Test-only: replace `fetch` used by the stats-api telemetry path. */
 export function setEventsStatsFetchForTests(fn: typeof fetch | null): void {
   testFetch = fn;
 }
@@ -65,7 +57,7 @@ function randomInsertId(): string {
   }
 }
 
-async function postEvent(payload: EventPayload): Promise<void> {
+async function postEvent(payload: EventPayload, baseUrl: string): Promise<void> {
   const doFetch = testFetch ?? globalThis.fetch;
   if (typeof doFetch !== "function") {
     return;
@@ -80,13 +72,10 @@ async function postEvent(payload: EventPayload): Promise<void> {
     event.user_id = payload.userId;
   }
   try {
-    await doFetch(AMPLITUDE_HTTP_API_URL, {
+    await doFetch(`${baseUrl}/telemetry`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        api_key: AMPLITUDE_WRITE_API_KEY,
-        events: [event],
-      }),
+      body: JSON.stringify(event),
     });
   } catch {
     // telemetry must not break SDK reads
@@ -123,7 +112,7 @@ async function trackMcpToolImpl(
     occurredAt: new Date().toISOString(),
   };
 
-  await postEvent(payload);
+  await postEvent(payload, resolveStatsApiBaseUrl(config));
 }
 
 /** Track an MCP tool name event; never throws to callers. */
@@ -138,7 +127,7 @@ export function trackMcpTool(
   return run;
 }
 
-/** Await in-flight Amplitude telemetry calls. Use with Worker/Vercel `waitUntil`. */
+/** Await in-flight telemetry posts. Use with Worker/Vercel `waitUntil`. */
 export async function drainCelinaAnalytics(): Promise<void> {
   await Promise.allSettled([...inflight]);
 }

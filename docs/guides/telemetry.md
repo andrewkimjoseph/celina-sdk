@@ -1,6 +1,6 @@
 # Telemetry (Amplitude)
 
-On **Node.js**, the SDK reports usage counts for **read** operations to [Amplitude](https://amplitude.com)'s HTTP API. [celina-stats-api](https://api.stats.usecelina.xyz) copies those events into its stats store on the daily export cron. Each event uses the same name as the corresponding Celina MCP tool (for example `get_stablecoin_balances`, `verify_self_agent`). The Amplitude write key ships in the SDK. The export secret stays on the stats Worker.
+On **Node.js**, the SDK reports usage counts for **read** operations to [celina-stats-api](https://api.stats.usecelina.xyz) `POST /telemetry`. That Worker holds the Amplitude write key and forwards one event to Amplitude. The daily export cron copies those events into the stats store. Each event uses the same name as the corresponding Celina MCP tool (for example `get_stablecoin_balances`, `verify_self_agent`). The write key does not ship in the SDK. The export secret stays on the stats Worker.
 
 ## What is sent
 
@@ -72,4 +72,4 @@ const celina = createCelinaClient({
 |--------|---------|
 | `analyticsDeviceId` in `createCelinaClient()` | Override auto-detected `device_id` (recommended for every non-SDK integration) |
 | `analyticsWalletAddress` in `createCelinaClient()` | Default wallet for `user_id` when reads omit an address |
-| `statsApiBaseUrl` in `createCelinaClient()` / `CELINA_STATS_API_URL` env | Override the celina-stats-api base URL for on-chain hash reporting only (default `https://api.stats.usecelina.xyz`). Read telemetry goes to Amplitude. |
+| `statsApiBaseUrl` in `createCelinaClient()` / `CELINA_STATS_API_URL` env | Override the celina-stats-api base URL for on-chain hash reporting and read telemetry (default `https://api.stats.usecelina.xyz`) |
