@@ -25,6 +25,8 @@ Copy [`.env.example`](../.env.example) to `.env` at the **package root** (`celin
 
 Fork tests require a local Anvil proxy and run only via `npm run test:fork` — they are excluded from the default `npm test` suite.
 
+`npm test` also runs `tests/telemetry-live.test.ts`. That smoke posts three read events to production celina-stats-api with device id `celina_sdk` and expects HTTP 204. The catalog client used by the rest of the suite stays opted out (`analyticsEnabled: false`).
+
 ## Environment matrix
 
 | Variable | Effect |
