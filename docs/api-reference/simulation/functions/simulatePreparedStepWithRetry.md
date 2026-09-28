@@ -8,7 +8,7 @@
 
 > **simulatePreparedStepWithRetry**(`publicClient`, `params`, `options?`, `retry?`): `Promise`\<`void`\>
 
-Defined in: [src/simulation/simulate-prepared-step.ts:130](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/simulation/simulate-prepared-step.ts#L130)
+Defined in: [src/simulation/simulate-prepared-step.ts:130](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L130)
 
 Simulate a prepared step, retrying on failure to absorb RPC replica lag
 after a prior approval is mined. Genuine reverts still fail after retries.

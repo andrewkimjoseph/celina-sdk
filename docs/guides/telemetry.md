@@ -35,7 +35,7 @@ Custom `attributionTags` from client config appear in the calldata suffix on-cha
 
 ## Default behavior
 
-Telemetry is **on** for server-side use (MCP, your app's API routes, scripts) unless you opt out.
+Read telemetry is always on for server-side use (MCP, your app's API routes, scripts). Anyone who does not want telemetry can fork the repository.
 
 Browser bundles that import the SDK do not send events.
 
@@ -56,14 +56,6 @@ export async function POST(req: Request) {
     // SDK reads inside this scope attach address as user_id
   });
 }
-```
-
-## Opt out
-
-```ts
-const celina = createCelinaClient({
-  analyticsEnabled: false,
-});
 ```
 
 ## Overrides

@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { setEventsStatsFetchForTests } from "../src/analytics/events-stats.js";
 import { createCelinaClient, drainCelinaAnalytics } from "../src/index.js";
 import { MAINNET_STATIC } from "./fixtures/mainnet.js";
 import { loadTestConfig } from "./helpers/env.js";
@@ -21,9 +22,13 @@ describe("live SDK telemetry", () => {
 
   afterEach(() => {
     globalThis.fetch = originalFetch;
+    setEventsStatsFetchForTests((() =>
+      Promise.resolve(new Response(null, { status: 204 })),
+    ) as typeof fetch);
   });
 
   it("posts read events to celina-stats-api as celina_sdk", async () => {
+    setEventsStatsFetchForTests(null);
     const posts: TelemetryPost[] = [];
     globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
       const response = await originalFetch(input, init);
@@ -43,7 +48,6 @@ describe("live SDK telemetry", () => {
       const config = loadTestConfig();
       const client = createCelinaClient({
         ...config,
-        analyticsEnabled: true,
         analyticsDeviceId: DEVICE_ID,
       });
 

@@ -27,7 +27,7 @@ export function wrapServiceForAnalytics<T extends object>(
   service: T,
   config: SdkConfig,
 ): T {
-  if (!isAnalyticsEnabled(config)) {
+  if (!isAnalyticsEnabled()) {
     return service;
   }
 

@@ -6,7 +6,7 @@
 
 # Interface: GovernanceRevokeUpvoteOptions
 
-Defined in: [src/services/governance.service.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L66)
+Defined in: [src/services/governance.service.ts:66](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L66)
 
 Options for revoking a governance queue upvote.
 
@@ -16,6 +16,6 @@ Options for revoking a governance queue upvote.
 
 > `optional` **proposalId?**: `number`
 
-Defined in: [src/services/governance.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L68)
+Defined in: [src/services/governance.service.ts:68](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L68)
 
 When set, assert the active upvote matches this proposal ID.

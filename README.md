@@ -69,7 +69,7 @@ Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkim
 - [Humanness](docs/guides/humanness.md) — dual-rail Self + GoodDollar gate for governance/staking writes
 - [Self Agent ID](docs/guides/self-agent-id.md) — verify, register, refresh human-backed agents
 - [AgentKarma reputation](docs/guides/agentkarma.md) — karma reads and counterparty trust policy
-- [Telemetry](docs/guides/telemetry.md) — optional read metrics reported to celina-stats-api (`device_id` per project — set `analyticsDeviceId` explicitly; `user_id` per wallet; opt out with `analyticsEnabled: false`). On serverless hosts keep the isolate alive with `drainCelinaAnalytics()` via `waitUntil` / `after`.
+- [Telemetry](docs/guides/telemetry.md) — read metrics always reported to celina-stats-api (`device_id` per project — set `analyticsDeviceId` explicitly; `user_id` per wallet). On serverless hosts keep the isolate alive with `drainCelinaAnalytics()` via `waitUntil` / `after`. Anyone who does not want telemetry can fork the repository.
 - [API reference](https://andrewkimjoseph.gitbook.io/celina-sdk/api-reference)
 
 Docs source lives in [`docs/`](docs/) in this repository.

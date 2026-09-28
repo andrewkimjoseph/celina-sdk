@@ -40,7 +40,7 @@ describe("Mento legacy token aliases", () => {
   });
 
   it("resolveToken returns canonical symbol for legacy input", () => {
-    const client = createCelinaClient({ analyticsEnabled: false });
+    const client = createCelinaClient();
     const resolved = client.token.resolveToken("cKES");
     expect(resolved.symbol).toBe("KESm");
     expect(resolved.address).toBe("0x456a3D042C0DbD3db53D5489e98dFb038553B0d0");
@@ -48,7 +48,7 @@ describe("Mento legacy token aliases", () => {
   });
 
   it("throws for unknown tokens", () => {
-    const client = createCelinaClient({ analyticsEnabled: false });
+    const client = createCelinaClient();
     expect(() => client.token.resolveToken("cBRL")).toThrow(/Unknown token/);
     expect(() => client.token.resolveToken("NOTATOKEN")).toThrow(/Unknown token/);
   });

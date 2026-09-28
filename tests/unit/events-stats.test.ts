@@ -9,7 +9,6 @@ import type { SdkConfig } from "../../src/config/sdk-config.js";
 
 const enabledConfig: SdkConfig = {
   rpcUrl: "https://forno.celo.org",
-  analyticsEnabled: true,
   analyticsDeviceId: "test_device",
 };
 
@@ -55,21 +54,6 @@ describe("trackMcpTool (stats-api telemetry)", () => {
 
     const body = JSON.parse(String(calls[0]?.init.body));
     expect(body.user_id).toBe("0x1234567890123456789012345678901234567890");
-  });
-
-  it("does not POST when analyticsEnabled is false", async () => {
-    const calls: unknown[] = [];
-    setEventsStatsFetchForTests((() => {
-      calls.push(1);
-      return Promise.resolve(new Response(null, { status: 200 }));
-    }) as typeof fetch);
-
-    await trackMcpTool("get_wallet_address", {
-      ...enabledConfig,
-      analyticsEnabled: false,
-    });
-
-    expect(calls).toHaveLength(0);
   });
 
   it("does not throw when fetch rejects", async () => {

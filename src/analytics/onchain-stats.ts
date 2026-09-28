@@ -6,7 +6,6 @@ export const DEFAULT_STATS_API_BASE_URL = "https://api.stats.usecelina.xyz";
 const TX_HASH_RE = /^0x[0-9a-fA-F]{64}$/;
 
 type OnchainStatsRuntime = {
-  enabled: boolean;
   baseUrl: string;
 };
 
@@ -16,7 +15,6 @@ let testFetch: typeof fetch | null = null;
 
 function defaultRuntime(): OnchainStatsRuntime {
   return {
-    enabled: true,
     baseUrl: DEFAULT_STATS_API_BASE_URL,
   };
 }
@@ -25,14 +23,6 @@ function envFlag(name: string): string | undefined {
   if (typeof process === "undefined") return undefined;
   const value = process.env[name]?.trim();
   return value ? value : undefined;
-}
-
-function resolveEnabled(config?: Pick<SdkConfig, "onchainStatsEnabled">): boolean {
-  if (config?.onchainStatsEnabled === false) return false;
-  const env = envFlag("CELINA_ONCHAIN_STATS_ENABLED");
-  if (env === "false" || env === "0") return false;
-  if (config?.onchainStatsEnabled === true) return true;
-  return true;
 }
 
 export function resolveStatsApiBaseUrl(config?: Pick<SdkConfig, "statsApiBaseUrl">): string {
@@ -45,7 +35,6 @@ export function resolveStatsApiBaseUrl(config?: Pick<SdkConfig, "statsApiBaseUrl
 /** Apply `createCelinaClient()` on-chain stats options to the process-wide reporter. */
 export function applyOnchainStatsConfig(config: SdkConfig): void {
   runtime = {
-    enabled: resolveEnabled(config),
     baseUrl: resolveStatsApiBaseUrl(config),
   };
 }
@@ -55,7 +44,7 @@ export function setOnchainStatsFetchForTests(fn: typeof fetch | null): void {
   testFetch = fn;
 }
 
-/** Test-only: restore default enabled/base URL. */
+/** Test-only: restore the default base URL. */
 export function resetOnchainStatsConfigForTests(): void {
   runtime = defaultRuntime();
   testFetch = null;
@@ -63,12 +52,11 @@ export function resetOnchainStatsConfigForTests(): void {
 
 /**
  * Fire-and-forget POST of a successful Celo tx hash to celina-stats-api.
- * Never throws. No-ops when opted out or when `hash` is not a 32-byte hex string.
+ * Never throws. No-ops when `hash` is not a 32-byte hex string.
  *
  * Call after `waitForTransactionReceipt` succeeds (MCP, wagmi apps, AA).
  */
 export function reportCelinaOnchainTxn(hash: string): void {
-  if (!runtime.enabled) return;
   const normalized = hash.trim();
   if (!TX_HASH_RE.test(normalized)) return;
 

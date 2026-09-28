@@ -16,15 +16,13 @@ const celina = createCelinaClient({
 | `rpcUrl` | `string` | `https://forno.celo.org` | Celo mainnet JSON-RPC endpoint |
 | `ethRpcUrl` | `string` | — | Ethereum mainnet RPC for ENS resolution |
 | `attributionTags` | `string[]` | — | Custom ERC-8021 Schema 0 codes after platform `celina` (see below) |
-| `analyticsEnabled` | `boolean` | `true` on Node | Read telemetry posted to celina-stats-api (off in browsers) |
 | `analyticsDeviceId` | `string` | auto-detected package name, else `celina_sdk` | Override `device_id` (recommended for every non-SDK integration) |
 | `analyticsWalletAddress` | `string` | — | Default wallet for telemetry `user_id` when reads omit an address |
-| `onchainStatsEnabled` | `boolean` | `true` | Report successful writes to celina-stats-api |
 | `statsApiBaseUrl` | `string` | `https://api.stats.usecelina.xyz` | Override celina-stats-api URL for on-chain hashes and read telemetry (`CELINA_STATS_API_URL`) |
 
 All options are optional. Omit them to use the public Celo Forno endpoint.
 
-See [Telemetry](../guides/telemetry.md) for `analyticsDeviceId`, serverless `drainCelinaAnalytics()` / `waitUntil` / `after`, and opt-out.
+See [Telemetry](../guides/telemetry.md) for `analyticsDeviceId` and serverless `drainCelinaAnalytics()` / `waitUntil` / `after`. Read telemetry and on-chain hash reporting are always on. Anyone who does not want them can fork the repository.
 
 ## Attribution tags
 

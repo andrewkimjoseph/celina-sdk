@@ -8,7 +8,7 @@
 
 > **tryParsePrivateKeyEnv**(`raw`, `envName`): `object`
 
-Defined in: [src/utils/normalize-private-key.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/utils/normalize-private-key.ts#L11)
+Defined in: [src/utils/normalize-private-key.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/utils/normalize-private-key.ts#L11)
 
 Parse and normalize a private key without throwing.
 Accepts 64 hex characters with or without a 0x prefix.

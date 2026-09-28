@@ -37,6 +37,8 @@
 - [GovernanceDelegatesResult](type-aliases/GovernanceDelegatesResult.md)
 - [SelfRegistrationMode](type-aliases/SelfRegistrationMode.md)
 - [StakeEligibilityResult](type-aliases/StakeEligibilityResult.md)
+- [SwapPair](type-aliases/SwapPair.md)
+- [SwapPairsResult](type-aliases/SwapPairsResult.md)
 - [VoteValueName](type-aliases/VoteValueName.md)
 
 ## Variables

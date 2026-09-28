@@ -6,7 +6,7 @@
 
 # Interface: GovernanceVotesOptions
 
-Defined in: [src/services/governance.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L60)
+Defined in: [src/services/governance.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L60)
 
 Options for reading governance votes cast by an address.
 
@@ -16,6 +16,6 @@ Options for reading governance votes cast by an address.
 
 > `optional` **proposalId?**: `number`
 
-Defined in: [src/services/governance.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/services/governance.service.ts#L62)
+Defined in: [src/services/governance.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L62)
 
 When set, return only votes for this proposal ID.

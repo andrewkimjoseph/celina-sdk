@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { createCelinaClient } from "../../src/index.js";
 import {
   DEFAULT_STATS_API_BASE_URL,
   reportCelinaOnchainTxn,
@@ -37,18 +36,6 @@ describe("reportCelinaOnchainTxn", () => {
     }) as typeof fetch);
 
     reportCelinaOnchainTxn("0xabc");
-    expect(calls).toHaveLength(0);
-  });
-
-  it("skips when createCelinaClient opts out", () => {
-    createCelinaClient({ analyticsEnabled: false, onchainStatsEnabled: false });
-    const calls: unknown[] = [];
-    setOnchainStatsFetchForTests((() => {
-      calls.push(1);
-      return Promise.resolve(new Response(null, { status: 200 }));
-    }) as typeof fetch);
-
-    reportCelinaOnchainTxn(HASH);
     expect(calls).toHaveLength(0);
   });
 

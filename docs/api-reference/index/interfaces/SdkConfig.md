@@ -6,7 +6,7 @@
 
 # Interface: SdkConfig
 
-Defined in: [src/config/sdk-config.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L6)
+Defined in: [src/config/sdk-config.ts:6](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L6)
 
 RPC configuration for `createCelinaClient()`.
 
@@ -16,7 +16,7 @@ RPC configuration for `createCelinaClient()`.
 
 > `optional` **analyticsDeviceId?**: `string`
 
-Defined in: [src/config/sdk-config.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L26)
+Defined in: [src/config/sdk-config.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L21)
 
 `device_id` reported with telemetry events. When omitted, auto-detected from the
 consuming package `package.json` name (sanitized, e.g. `celeste_ai`,
@@ -25,22 +25,11 @@ auto-detection can be unreliable in bundled/serverless deployments.
 
 ***
 
-### analyticsEnabled?
-
-> `optional` **analyticsEnabled?**: `boolean`
-
-Defined in: [src/config/sdk-config.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L19)
-
-Read telemetry posted to celina-stats-api, which forwards it to Amplitude (default on).
-Opt out with `analyticsEnabled: false`.
-
-***
-
 ### analyticsWalletAddress?
 
 > `optional` **analyticsWalletAddress?**: `string`
 
-Defined in: [src/config/sdk-config.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L31)
+Defined in: [src/config/sdk-config.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L26)
 
 Default wallet for read telemetry `user_id` when args omit an address
 (e.g. MCP session signer with `CELO_PRIVATE_KEY`).
@@ -51,7 +40,7 @@ Default wallet for read telemetry `user_id` when args omit an address
 
 > `optional` **attributionTags?**: `string`[]
 
-Defined in: [src/config/sdk-config.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L50)
+Defined in: [src/config/sdk-config.ts:40](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L40)
 
 Optional custom calldata attribution tags for ERC-8021 Schema 0 codes
 after platform `celina` on prepared transaction steps (deduped, stable order).
@@ -66,20 +55,9 @@ Celo Builders on-chain tags matching `celo_<12 hex>` canonicalize to lowercase
 
 > `optional` **ethRpcUrl?**: `string`
 
-Defined in: [src/config/sdk-config.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L10)
+Defined in: [src/config/sdk-config.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L10)
 
 Ethereum mainnet RPC for ENS resolution (optional).
-
-***
-
-### onchainStatsEnabled?
-
-> `optional` **onchainStatsEnabled?**: `boolean`
-
-Defined in: [src/config/sdk-config.ts:36](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L36)
-
-Report successful writes to celina-stats-api (default on).
-Opt out with `onchainStatsEnabled: false` or `CELINA_ONCHAIN_STATS_ENABLED=false`.
 
 ***
 
@@ -87,7 +65,7 @@ Opt out with `onchainStatsEnabled: false` or `CELINA_ONCHAIN_STATS_ENABLED=false
 
 > **rpcUrl**: `string`
 
-Defined in: [src/config/sdk-config.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L8)
+Defined in: [src/config/sdk-config.ts:8](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L8)
 
 Celo mainnet JSON-RPC URL (default Forno).
 
@@ -97,7 +75,7 @@ Celo mainnet JSON-RPC URL (default Forno).
 
 > `optional` **selfAgentPrivateKey?**: `` `0x${string}` ``
 
-Defined in: [src/config/sdk-config.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L12)
+Defined in: [src/config/sdk-config.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L12)
 
 Self Agent ID signing key (Node only; also reads `SELF_AGENT_PRIVATE_KEY`).
 
@@ -107,7 +85,7 @@ Self Agent ID signing key (Node only; also reads `SELF_AGENT_PRIVATE_KEY`).
 
 > `optional` **selfApiBase?**: `string`
 
-Defined in: [src/config/sdk-config.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L14)
+Defined in: [src/config/sdk-config.ts:14](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L14)
 
 Self Agent ID REST API base (default https://app.ai.self.xyz).
 
@@ -117,7 +95,7 @@ Self Agent ID REST API base (default https://app.ai.self.xyz).
 
 > `optional` **statsApiBaseUrl?**: `string`
 
-Defined in: [src/config/sdk-config.ts:41](https://github.com/andrewkimjoseph/celina-sdk/blob/d1a92b5baf7555d6145bf2dd87e39acd80d0d9e3/src/config/sdk-config.ts#L41)
+Defined in: [src/config/sdk-config.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/sdk-config.ts#L31)
 
 Override celina-stats-api base URL for on-chain hash reporting and read telemetry
 (default `https://api.stats.usecelina.xyz`). Also reads `CELINA_STATS_API_URL`.

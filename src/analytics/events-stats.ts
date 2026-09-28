@@ -87,7 +87,7 @@ async function trackMcpToolImpl(
   config: SdkConfig,
   context?: TrackMcpToolContext,
 ): Promise<void> {
-  if (!isAnalyticsEnabled(config)) {
+  if (!isAnalyticsEnabled()) {
     return;
   }
 

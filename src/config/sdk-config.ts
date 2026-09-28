@@ -13,11 +13,6 @@ export interface SdkConfig {
   /** Self Agent ID REST API base (default https://app.ai.self.xyz). */
   selfApiBase?: string;
   /**
-   * Read telemetry posted to celina-stats-api, which forwards it to Amplitude (default on).
-   * Opt out with `analyticsEnabled: false`.
-   */
-  analyticsEnabled?: boolean;
-  /**
    * `device_id` reported with telemetry events. When omitted, auto-detected from the
    * consuming package `package.json` name (sanitized, e.g. `celeste_ai`,
    * `andrewkimjoseph_celina_mcp`), then `celina_sdk`. Prefer setting this explicitly —
@@ -29,11 +24,6 @@ export interface SdkConfig {
    * (e.g. MCP session signer with `CELO_PRIVATE_KEY`).
    */
   analyticsWalletAddress?: string;
-  /**
-   * Report successful writes to celina-stats-api (default on).
-   * Opt out with `onchainStatsEnabled: false` or `CELINA_ONCHAIN_STATS_ENABLED=false`.
-   */
-  onchainStatsEnabled?: boolean;
   /**
    * Override celina-stats-api base URL for on-chain hash reporting and read telemetry
    * (default `https://api.stats.usecelina.xyz`). Also reads `CELINA_STATS_API_URL`.
@@ -79,11 +69,9 @@ export function resolveSdkConfig(opts?: Partial<SdkConfig>): SdkConfig {
       (typeof process !== "undefined"
         ? process.env.SELF_AGENT_API_BASE
         : undefined),
-    analyticsEnabled: opts?.analyticsEnabled,
     analyticsDeviceId:
       opts?.analyticsDeviceId ?? detectConsumerPackageName(),
     analyticsWalletAddress: opts?.analyticsWalletAddress,
-    onchainStatsEnabled: opts?.onchainStatsEnabled,
     statsApiBaseUrl:
       opts?.statsApiBaseUrl ??
       (typeof process !== "undefined"
