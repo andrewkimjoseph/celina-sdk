@@ -32,7 +32,16 @@ export class CeloClientFactory {
     }
 
     const rpcUrl = this.config.rpcUrl ?? DEFAULT_RPC_URL;
-    const transport = http(rpcUrl);
+
+    // Batch concurrent JSON-RPC calls into a single HTTP POST so that
+    // Promise.allSettled fan-outs (e.g. Uniswap path quoting, multicall)
+    // consume far fewer Cloudflare Workers subrequests per chat turn.
+    // retryCount: 1 prevents a single subrequest-capped failure from being
+    // retried 3× (the viem default), which would triple wasted budget.
+    const transport = http(rpcUrl, {
+      batch: { batchSize: 20, wait: 0 },
+      retryCount: 1,
+    });
     const publicClient = createPublicClient({
       chain: CHAIN,
       transport,

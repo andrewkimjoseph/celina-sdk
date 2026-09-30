@@ -35,6 +35,16 @@ export type UniswapSwapRoute = {
 /** Maximum pools in a route (2 intermediate currencies → 3 pools). */
 const MAX_POOLS = 3;
 
+/**
+ * Maximum candidate paths to simulate per quote call. Paths are sorted
+ * shortest-first before slicing so the best (lowest-latency, fewest-hop)
+ * routes are always considered. Keeping this well below Cloudflare Workers'
+ * per-invocation subrequest limit (50 on the free plan, 10 000 on paid)
+ * ensures that one Uniswap quote does not crowd out the balance checks and
+ * prepare steps that follow it in the same chat turn.
+ */
+export const MAX_QUOTE_PATHS = 16;
+
 function otherToken(
   poolKey: UniswapPoolKey,
   currency: `0x${string}`,
@@ -193,7 +203,15 @@ export async function findBestUniswapRoute(
   amountIn: bigint,
 ): Promise<{ route: UniswapSwapRoute; amountOut: bigint; indexSource: string } | null> {
   const index = await getUniswapPoolIndex(client);
-  const candidatePaths = enumeratePaths(index, currencyIn, currencyOut);
+
+  // Sort shortest-first so 1-hop direct pools are always preferred, then cap to
+  // MAX_QUOTE_PATHS to keep the concurrent simulateContract fan-out bounded.
+  // Each simulateContract call is one Cloudflare Workers subrequest; an
+  // unbounded walk over a dense pool graph can exhaust the per-invocation
+  // budget before the subsequent balance-check and prepare steps can run.
+  const candidatePaths = enumeratePaths(index, currencyIn, currencyOut)
+    .sort((a, b) => a.length - b.length)
+    .slice(0, MAX_QUOTE_PATHS);
 
   // Quote every candidate path concurrently; failed quotes (e.g. uninitialized
   // pools or insufficient liquidity) are dropped rather than aborting the rest.
