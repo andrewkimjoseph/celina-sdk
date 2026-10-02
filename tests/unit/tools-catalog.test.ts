@@ -52,6 +52,12 @@ describe("tools catalog", () => {
     expect(getBrowserToolNames()).toContain("get_swap_quote");
     expect(getBrowserToolNames()).toContain("get_mento_swap_pairs");
     expect(getBrowserToolNames()).toContain("get_uniswap_swap_pairs");
+    expect(getBrowserToolNames()).toContain("verify_self_agent");
+    expect(getBrowserToolNames()).toContain("lookup_self_agent");
+    expect(getBrowserToolNames()).toContain("verify_self_request");
+    expect(getBrowserToolNames()).toContain("get_self_identity");
+    expect(getBrowserToolNames()).not.toContain("check_self_registration");
+    expect(getBrowserToolNames()).not.toContain("sign_self_request");
     expect(getBrowserToolNames()).not.toContain("send_token");
   });
 

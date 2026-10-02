@@ -44,13 +44,18 @@ export const selfToolDefinitions: ToolDefinition[] = [
       require_self_provider: optionalBooleanSchema,
     }),
     families: ["read"],
-    surfaces: ["mcp"],
+    surfaces: ["mcp", "browser"],
     mcp: {
       title: "Verify Self Agent",
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: true },
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).verifyAgent(input),
+      runtime.celina.self.verifyAgent({
+        agentAddress: input.agent_address as `0x${string}`,
+        requireAge: input.require_age as 0 | 18 | 21 | undefined,
+        requireOfac: input.require_ofac as boolean | undefined,
+        requireSelfProvider: input.require_self_provider as boolean | undefined,
+      }),
   },
   {
     name: "lookup_self_agent",
@@ -60,13 +65,13 @@ export const selfToolDefinitions: ToolDefinition[] = [
       agent_id: positiveIntSchema,
     }),
     families: ["read"],
-    surfaces: ["mcp"],
+    surfaces: ["mcp", "browser"],
     mcp: {
       title: "Look Up Self Agent",
       annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: true },
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).lookupAgent(input.agent_id as number),
+      runtime.celina.self.lookupAgent(input.agent_id as number),
   },
   {
     name: "verify_self_request",
@@ -82,13 +87,21 @@ export const selfToolDefinitions: ToolDefinition[] = [
       agent_key: optionalHexKeySchema,
     }),
     families: ["read"],
-    surfaces: ["mcp"],
+    surfaces: ["mcp", "browser"],
     mcp: {
       title: "Verify Self Agent Request",
       annotations: { readOnlyHint: true, idempotentHint: true },
     },
     handler: async (runtime, input) =>
-      requireSelf(runtime).verifyRequest(input),
+      runtime.celina.self.verifyRequest({
+        agentSignature: input.agent_signature as `0x${string}`,
+        agentTimestamp: input.agent_timestamp as string,
+        method: input.method as string,
+        path: (input.request_path ?? input.path) as string,
+        body: input.body as string | undefined,
+        keytype: input.keytype as string | undefined,
+        agentKey: input.agent_key as `0x${string}` | undefined,
+      }),
   },
   {
     name: "register_self_agent",
@@ -136,16 +149,33 @@ export const selfToolDefinitions: ToolDefinition[] = [
   {
     name: "get_self_identity",
     description:
-      "Return the configured Self agent identity. Requires SELF_AGENT_PRIVATE_KEY.",
-    inputSchema: z.object({}),
+      "Return a Self Agent ID identity. Pass agent_address to read any wallet on-chain without a key; omit it in a wallet chat to use the connected wallet. With no agent_address and a configured SELF_AGENT_PRIVATE_KEY, returns that server agent's identity.",
+    inputSchema: z.object({
+      agent_address: addressSchema
+        .optional()
+        .describe(
+          "Agent address to look up on-chain. Omit to use the connected wallet, or the configured Self agent key when an MCP executor is present.",
+        ),
+    }),
     families: ["read"],
-    surfaces: ["mcp"],
+    surfaces: ["mcp", "browser"],
     requiresEnv: ["SELF_AGENT_PRIVATE_KEY"],
     mcp: {
       title: "Get Self Agent Identity",
       annotations: { readOnlyHint: true, idempotentHint: true },
     },
-    handler: async (runtime) => requireSelf(runtime).getIdentity(),
+    handler: async (runtime, input) => {
+      const explicit =
+        typeof input.agent_address === "string" && input.agent_address.length > 0
+          ? input.agent_address
+          : undefined;
+      if (explicit || !runtime.executors?.self) {
+        return runtime.celina.self.getIdentityByAddress(
+          runtime.resolveWallet({ address: explicit }),
+        );
+      }
+      return runtime.executors.self.getIdentity();
+    },
   },
   {
     name: "refresh_self_proof",

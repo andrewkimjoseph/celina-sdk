@@ -117,3 +117,25 @@ describe("SelfService.verifyAgent defaults", () => {
     expect(result.verified).toBe(true);
   });
 });
+
+describe("SelfService.getIdentityByAddress", () => {
+  it("returns registered false for an unregistered address", async () => {
+    const readContract = vi.fn(async ({ functionName }: { functionName: string }) => {
+      if (functionName === "getAgentId") {
+        return 0n;
+      }
+      throw new Error(`unexpected read: ${functionName}`);
+    });
+    const service = new SelfService(
+      {
+        getClients: () => ({ public: { readContract } }),
+      } as unknown as CeloClientFactory,
+      {},
+    );
+
+    const result = await service.getIdentityByAddress(agentAddress);
+
+    expect(result.registered).toBe(false);
+    expect(result.address).toBe(agentAddress);
+  });
+});

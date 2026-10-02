@@ -2,6 +2,7 @@ import * as ed from "@noble/ed25519";
 import {
   getAddress,
   hexToBytes,
+  isAddress,
   isAddressEqual,
   keccak256,
   pad,
@@ -559,8 +560,11 @@ export class SelfService {
   }
 
   private async getAgentInfoFromKey(privateKey: `0x${string}`) {
-    const account = privateKeyToAccount(privateKey);
-    const agentKey = agentKeyFromAddress(account.address);
+    return this.getAgentInfoFromAddress(privateKeyToAccount(privateKey).address);
+  }
+
+  private async getAgentInfoFromAddress(address: `0x${string}`) {
+    const agentKey = agentKeyFromAddress(address);
     const client = this.registryClient();
 
     const agentId = await client.readContract({
@@ -573,7 +577,7 @@ export class SelfService {
     if (agentId === 0n) {
       return {
         registered: false as const,
-        address: account.address,
+        address,
         network: "mainnet" as const,
       };
     }
@@ -672,7 +676,7 @@ export class SelfService {
 
     return {
       registered: true as const,
-      address: account.address,
+      address,
       agentKey,
       agentId: Number(agentId),
       isVerified,
@@ -689,10 +693,13 @@ export class SelfService {
     };
   }
 
-  async getIdentity() {
-    const privateKey = this.resolveAgentPrivateKey();
-    const info = await this.getAgentInfoFromKey(privateKey);
+  /** On-chain Self identity for any address. Does not require a Self agent key. */
+  async getIdentityByAddress(address: `0x${string}`) {
+    if (!isAddress(address)) {
+      throw new Error(`Invalid address: ${address}`);
+    }
 
+    const info = await this.getAgentInfoFromAddress(getAddress(address));
     if (!info.registered) {
       return {
         ...info,
@@ -702,6 +709,11 @@ export class SelfService {
     }
 
     return info;
+  }
+
+  async getIdentity() {
+    const privateKey = this.resolveAgentPrivateKey();
+    return this.getIdentityByAddress(privateKeyToAccount(privateKey).address);
   }
 
   async registerAgent(params: RegisterSelfAgentParams = {}) {
