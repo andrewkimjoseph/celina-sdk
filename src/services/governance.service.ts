@@ -1083,7 +1083,7 @@ export class GovernanceService {
         this.buildStep(
           CELO_CORE_CONTRACTS.lockedGold,
           data,
-          `Lock ${formatCeloAmount(amountRemaining)} CELO`,
+          `Lock ${formatCeloAmount(amountRemaining)}`,
           amountRemaining,
         ),
       );
@@ -1291,7 +1291,7 @@ export class GovernanceService {
         this.buildStep(
           governance,
           data,
-          `Upvote proposal #${proposalId} with ${formatCeloAmount(lockedGold)} locked CELO`,
+          `Upvote proposal #${proposalId} with ${formatCeloAmount(lockedGold)} locked`,
         ),
       ],
       `Upvote governance proposal #${proposalId}`,

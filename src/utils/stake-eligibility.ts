@@ -62,7 +62,7 @@ export function deriveStakeEligibility(
     reasons.push("Group cannot receive votes (at capacity).");
   } else if (input.amountWei > input.canReceiveVotes) {
     reasons.push(
-      `Amount ${input.amount} CELO exceeds group headroom ${formatCeloAmount(input.canReceiveVotes)} CELO.`,
+      `Amount ${input.amount} CELO exceeds group headroom ${formatCeloAmount(input.canReceiveVotes)}.`,
     );
   }
 
