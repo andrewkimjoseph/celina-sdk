@@ -8,6 +8,17 @@ import { fromFixidity } from "../utils/fixidity.js";
 export const CELO_MONDO_DELEGATES_URL =
   "https://raw.githubusercontent.com/celo-org/celo-mondo/main/src/config/delegates.json";
 
+/** Next.js `public/` assets for the Mondo site, served as raw GitHub files. */
+export const CELO_MONDO_PUBLIC_BASE_URL =
+  "https://raw.githubusercontent.com/celo-org/celo-mondo/main/public";
+
+/** Mondo stores site paths (`/logos/...`). Clients must not join those onto the JSON URL. */
+export function resolveMondoLogoUri(logoUri: string): string {
+  if (/^https?:\/\//i.test(logoUri)) return logoUri;
+  const path = logoUri.startsWith("/") ? logoUri : `/${logoUri}`;
+  return `${CELO_MONDO_PUBLIC_BASE_URL}${path}`;
+}
+
 const DIRECTORY_NOTE =
   "Curated Celo Mondo delegate directory (off-chain). Not an on-chain registry — any address can receive governance delegation via LockedGold.";
 
@@ -121,9 +132,9 @@ async function fetchMondoDelegateMetadata(): Promise<GovernanceDelegateMetadata[
 
   const json: unknown = await response.json();
   const parsed = DelegateeMetadataMapSchema.parse(json);
-  const entries = Object.values(parsed).sort((a, b) =>
-    a.name.localeCompare(b.name),
-  );
+  const entries = Object.values(parsed)
+    .map((entry) => ({ ...entry, logoUri: resolveMondoLogoUri(entry.logoUri) }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   metadataCache = { fetchedAt: now, entries };
   return entries;

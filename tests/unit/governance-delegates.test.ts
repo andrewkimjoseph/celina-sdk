@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { parseEther } from "viem";
 import {
   CELO_MONDO_DELEGATES_URL,
+  CELO_MONDO_PUBLIC_BASE_URL,
   clearGovernanceDelegatesCacheForTests,
   getGovernanceDelegates,
 } from "../../src/services/governance-delegates.js";
@@ -58,6 +59,12 @@ describe("getGovernanceDelegates", () => {
     expect(result.directoryNote).toContain("off-chain");
     expect(result.delegates).toHaveLength(2);
     expect(result.delegates[0]?.name).toBe("Alice Delegate");
+    expect(result.delegates[0]?.logoUri).toBe(
+      `${CELO_MONDO_PUBLIC_BASE_URL}/logos/alice.png`,
+    );
+    expect(result.delegates[1]?.logoUri).toBe(
+      `${CELO_MONDO_PUBLIC_BASE_URL}/logos/bob.png`,
+    );
     expect(fetch).toHaveBeenCalledWith(
       CELO_MONDO_DELEGATES_URL,
       expect.objectContaining({ signal: expect.any(AbortSignal) }),

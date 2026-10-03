@@ -59,6 +59,7 @@ describe("getGovernanceDelegateDetails", () => {
 
     expect(result.inMondoDirectory).toBe(true);
     expect(result.metadata?.name).toBe("Sample Delegate");
+    expect(result.metadata?.logoUri).toBe("https://example.com/logo.png");
     expect(result.address).toBe(LISTED_ADDRESS);
     expect(result.votingPower).toBe("5000000000000000000");
     expect(result.delegatedToBalance).toBe("2000000000000000000");
