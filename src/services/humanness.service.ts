@@ -13,6 +13,8 @@ export interface HumannessRailResult {
   isHuman: boolean;
   agentId?: number;
   whitelistedRoot?: `0x${string}`;
+  /** True when the checked address is itself the GoodDollar identity root. */
+  isWhitelistedRoot?: boolean;
   reason?: string;
 }
 
@@ -102,8 +104,10 @@ export class HumannessService {
         args: [signerAddress],
       })) as `0x${string}`;
 
-      const identityAddress =
-        root !== ZERO_ADDRESS ? root : signerAddress;
+      const hasRoot = root !== ZERO_ADDRESS;
+      const identityAddress = hasRoot ? root : signerAddress;
+      const isWhitelistedRoot =
+        hasRoot && root.toLowerCase() === signerAddress.toLowerCase();
 
       const isWhitelisted = await client.readContract({
         address: GOODDOLLAR_IDENTITY_ADDRESS,
@@ -116,14 +120,16 @@ export class HumannessService {
         return {
           checked: true,
           isHuman: true,
-          whitelistedRoot: root !== ZERO_ADDRESS ? root : signerAddress,
+          whitelistedRoot: hasRoot ? root : signerAddress,
+          isWhitelistedRoot,
         };
       }
 
       return {
         checked: true,
         isHuman: false,
-        whitelistedRoot: root !== ZERO_ADDRESS ? root : undefined,
+        whitelistedRoot: hasRoot ? root : undefined,
+        isWhitelistedRoot,
         reason: "GoodDollar identity not whitelisted",
       };
     } catch (error) {

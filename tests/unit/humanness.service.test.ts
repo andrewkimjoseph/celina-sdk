@@ -72,6 +72,7 @@ describe("HumannessService", () => {
     const result = await service.checkHumanness(address);
     expect(result.isHumanOverall).toBe(true);
     expect(result.goodDollar.isHuman).toBe(true);
+    expect(result.goodDollar.isWhitelistedRoot).toBe(true);
   });
 
   it("returns reverify-index-out-of-bounds on IdentityV4 revert", async () => {

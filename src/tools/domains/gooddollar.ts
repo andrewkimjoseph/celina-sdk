@@ -39,7 +39,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_whitelisting_info",
     description:
-      "Check GoodDollar IdentityV4 whitelist status for a wallet. Connected wallets resolve to their verified root; returns isWhitelisted, whitelistedRoot, and checkedAddress.",
+      "Check GoodDollar IdentityV4 whitelist status for a wallet. Connected wallets resolve to their verified root; returns isWhitelisted, isWhitelistedRoot, whitelistedRoot, and checkedAddress.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),
@@ -55,7 +55,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_identity_link",
     description:
-      "How a wallet links to GoodDollar IdentityV4: whitelisted root, connected-to root, and live whitelist status.",
+      "How a wallet links to GoodDollar IdentityV4: whitelisted root, whether the address is itself the root (isWhitelistedRoot), connected-to root, and live whitelist status.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),
@@ -71,7 +71,7 @@ export const gooddollarToolDefinitions: ToolDefinition[] = [
   {
     name: "get_gooddollar_ubi_entitlement",
     description:
-      "Daily GoodDollar UBI claim eligibility: whitelist root, claimable G$, already claimed. Nested identity.isWhitelisted reflects the resolved root.",
+      "Daily GoodDollar UBI claim eligibility: whitelist root, claimable G$, already claimed. isWhitelistedRoot is true when the queried address is the identity root. Nested identity.isWhitelisted and identity.isWhitelistedRoot reflect the resolved root.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),

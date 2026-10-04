@@ -8,7 +8,7 @@ Dual-rail check that gates governance and staking writes: an address passes if i
 const result = await celina.humanness.checkHumanness("0xYourAddress");
 // result.isHumanOverall — true if either rail passed
 // result.selfAgent — { checked, isHuman, agentId?, reason? }
-// result.goodDollar — { checked, isHuman, whitelistedRoot?, reason? }
+// result.goodDollar — { checked, isHuman, whitelistedRoot?, isWhitelistedRoot?, reason? }
 ```
 
 Both rails are checked in parallel. `isHumanOverall` is `result.selfAgent.isHuman || result.goodDollar.isHuman`.
@@ -20,6 +20,7 @@ Both rails are checked in parallel. `isHumanOverall` is `result.selfAgent.isHuma
 | `selfAgent.agentId` | Numeric Self agent id, when verified |
 | `goodDollar.isHuman` | `true` if the address (or its whitelisted root, via `getWhitelistedRoot`) is GoodDollar-whitelisted |
 | `goodDollar.whitelistedRoot` | Root identity resolved for connected wallets |
+| `goodDollar.isWhitelistedRoot` | `true` when the checked address is itself the identity root |
 | `*.reason` | Why a rail failed (e.g. `"GoodDollar identity not whitelisted"`, `"reverify-index-out-of-bounds"`) |
 
 GoodDollar reads resolve connected wallets to their root before checking `isWhitelisted` — same root-resolution rule as [GoodDollar UBI](gooddollar.md#whitelist-status).
