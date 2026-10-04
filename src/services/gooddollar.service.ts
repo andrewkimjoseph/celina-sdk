@@ -178,6 +178,8 @@ export class GoodDollarService {
       identityAddress,
       isConnectedWallet:
         hasRoot && root.toLowerCase() !== address.toLowerCase(),
+      isWhitelistedRoot:
+        hasRoot && root.toLowerCase() === address.toLowerCase(),
     };
   }
 
@@ -371,16 +373,13 @@ export class GoodDollarService {
     ]);
 
     const connectedToAddr = connectedTo as `0x${string}`;
-    const isWhitelistedRoot =
-      link.root !== null &&
-      link.root.toLowerCase() === address.toLowerCase();
 
     return {
       address,
       contract: GOODDOLLAR_IDENTITY_ADDRESS,
       whitelistedRoot: link.root,
       isConnectedWallet: link.isConnectedWallet,
-      isWhitelistedRoot,
+      isWhitelistedRoot: link.isWhitelistedRoot,
       connectedTo:
         connectedToAddr !== ZERO_ADDRESS ? connectedToAddr : null,
       checkedAddress: link.identityAddress,
@@ -402,6 +401,7 @@ export class GoodDollarService {
       address,
       whitelistedRoot: link.root,
       isConnectedWallet: link.isConnectedWallet,
+      isWhitelistedRoot: link.isWhitelistedRoot,
       checkedAddress: link.identityAddress,
       ...data,
     };
@@ -551,6 +551,7 @@ export class GoodDollarService {
       contract: ubiContract,
       whitelistedRoot: root,
       isConnectedWallet: link.isConnectedWallet,
+      isWhitelistedRoot: link.isWhitelistedRoot,
       isEligibleToClaim,
       claimableAmount: claimable.toString(),
       claimableAmountFormatted:
@@ -572,6 +573,7 @@ export class GoodDollarService {
       identity: {
         checkedAddress: link.identityAddress,
         isWhitelisted: whitelistingData.isWhitelisted,
+        isWhitelistedRoot: link.isWhitelistedRoot,
         statusLabel: whitelistingData.statusLabel,
         reverification: whitelistingData.reverification,
       },

@@ -12,7 +12,7 @@ export const humannessToolDefinitions: ToolDefinition[] = [
   {
     name: "check_humanness",
     description:
-      "Check whether an address passes humanness on Self Agent ID or GoodDollar IdentityV4. Pass if either rail succeeds.",
+      "Check whether an address passes humanness on Self Agent ID or GoodDollar IdentityV4. Pass if either rail succeeds. The GoodDollar rail returns isWhitelistedRoot when the checked address is itself the identity root.",
     inputSchema: z.object({
       address: optionalWalletAddressSchema,
     }),

@@ -333,6 +333,7 @@ export const gooddollarOperations: OperationSpec[] = [
     assert: (result) => {
       assertHasKeys(result, [
         "isWhitelisted",
+        "isWhitelistedRoot",
         "whitelistedRoot",
         "isConnectedWallet",
         "checkedAddress",
@@ -353,6 +354,7 @@ export const gooddollarOperations: OperationSpec[] = [
     assert: (result) => {
       assertHasKeys(result, [
         "whitelistedRoot",
+        "isWhitelistedRoot",
         "isConnectedWallet",
         "checkedAddress",
         "isWhitelisted",
@@ -374,11 +376,14 @@ export const gooddollarOperations: OperationSpec[] = [
     assert: (result) => {
       assertHasKeys(result, [
         "isEligibleToClaim",
+        "isWhitelistedRoot",
         "claimableAmount",
         "secondsUntilNextClaim",
         "nextClaimAvailableIn",
         "ubiPeriodDay",
       ]);
+      const identity = (result as { identity?: Record<string, unknown> }).identity;
+      assertHasKeys(identity, ["isWhitelisted", "isWhitelistedRoot"]);
     },
   },
   {

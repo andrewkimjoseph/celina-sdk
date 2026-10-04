@@ -21,7 +21,7 @@ import {
 
 ```ts
 const link = await celina.gooddollar.getIdentityLink("0xYourAddress");
-// link.whitelistedRoot, link.isConnectedWallet, link.connectedTo, link.isWhitelisted
+// link.whitelistedRoot, link.isWhitelistedRoot, link.isConnectedWallet, link.connectedTo, link.isWhitelisted
 ```
 
 Use this when you need to know how a wallet maps to GoodDollar IdentityV4 before calling whitelist or UBI tools.
@@ -30,7 +30,7 @@ Use this when you need to know how a wallet maps to GoodDollar IdentityV4 before
 
 ```ts
 const info = await celina.gooddollar.getWhitelistingInfo("0xYourAddress");
-// info.isWhitelisted, info.whitelistedRoot, info.checkedAddress, info.reverification, …
+// info.isWhitelisted, info.isWhitelistedRoot, info.whitelistedRoot, info.checkedAddress, info.reverification, …
 ```
 
 Resolves connected wallets via Identity `getWhitelistedRoot`. Identity reads (`identities`, `isWhitelisted`, reverification) run on the **root** (`checkedAddress`), not the literal connected address.
@@ -39,6 +39,7 @@ Resolves connected wallets via Identity `getWhitelistedRoot`. Identity reads (`i
 |-------|---------|
 | `address` | Wallet you queried |
 | `whitelistedRoot` | Verified identity root, or `null` |
+| `isWhitelistedRoot` | `true` when the queried address is itself the identity root |
 | `isConnectedWallet` | `true` when the queried wallet maps to a different root |
 | `checkedAddress` | Identity used for whitelist/reverification reads |
 | `isWhitelisted` | Live whitelist status on `checkedAddress` |
@@ -65,6 +66,7 @@ Key fields:
 | Field | Meaning |
 |-------|---------|
 | `whitelistedRoot` | Verified identity root (connected wallets resolve here) |
+| `isWhitelistedRoot` | `true` when the queried address is itself the identity root |
 | `isConnectedWallet` | `true` when the checked address maps to a different root |
 | `isEligibleToClaim` | `true` when on-chain `claim()` should succeed (not raw `checkEntitlement` alone) |
 | `claimableAmountFormatted` | Amount from `checkEntitlement` (may be `estimateNextDailyUBI` during day-roll) |
@@ -78,6 +80,7 @@ Key fields:
 | `reasons` | Prioritized blockers; cooldown suppresses misleading identity errors |
 | `identity.checkedAddress` | Root used for whitelist/reverification (not the connected wallet) |
 | `identity.isWhitelisted` | Live whitelist status on the root |
+| `identity.isWhitelistedRoot` | Same as top-level `isWhitelistedRoot` |
 
 Entitlement uses Identity `getWhitelistedRoot` (same check as `UBISchemeV2.claim()`). Identity status in the entitlement response is evaluated on the **root**, so connected wallets do not surface stale whitelist data on the linked address.
 
