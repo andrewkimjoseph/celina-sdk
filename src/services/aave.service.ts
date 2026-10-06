@@ -1,10 +1,12 @@
 /** Aave V3 on Celo: prepareSupply and prepareWithdraw return multi-step flows (approve + pool call). */
 import { encodeFunctionData, erc20Abi, formatUnits } from "viem";
+import { aaveDataProviderAbi } from "../abis/aave-data-provider.js";
 import { aavePoolAbi } from "../abis/aave-pool.js";
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
 import {
   AAVE_ASSETS,
   AAVE_POOL,
+  AAVE_PROTOCOL_DATA_PROVIDER,
   resolveAaveAsset,
   type AaveAsset,
 } from "../config/aave.js";
@@ -55,6 +57,45 @@ export class AaveService {
           : "";
       throw new Error(
         `Insufficient ${asset.symbol} balance. Required ${amount} ${asset.symbol}, available ${balance.toString()} raw units.${celoHint}`,
+      );
+    }
+  }
+
+  /**
+   * Reject early when the Aave reserve's supply cap would be exceeded.
+   * Checked before any approve/supply step is built, so the error surfaces
+   * before the user ever signs a transaction. A `supplyCap` of 0 means
+   * Aave has no cap configured for this reserve.
+   */
+  private async assertSupplyCapAvailable(
+    asset: AaveAsset,
+    publicClient: CeloClients["public"],
+    amountWei: bigint,
+    decimals: number,
+  ) {
+    const [, supplyCap] = await publicClient.readContract({
+      address: AAVE_PROTOCOL_DATA_PROVIDER,
+      abi: aaveDataProviderAbi,
+      functionName: "getReserveCaps",
+      args: [asset.underlying],
+    });
+
+    if (supplyCap === 0n) {
+      return;
+    }
+
+    const supplyCapWei = supplyCap * 10n ** BigInt(decimals);
+    const totalSupply = await publicClient.readContract({
+      address: asset.aToken,
+      abi: erc20Abi,
+      functionName: "totalSupply",
+    });
+
+    if (totalSupply + amountWei > supplyCapWei) {
+      const available = supplyCapWei > totalSupply ? supplyCapWei - totalSupply : 0n;
+      const availableFormatted = formatUnits(available, decimals);
+      throw new Error(
+        `Aave ${asset.symbol} supply cap reached. Only ${availableFormatted} ${asset.symbol} can still be supplied to this market.`,
       );
     }
   }
@@ -189,6 +230,9 @@ export class AaveService {
 
     const resolved = this.tokenService.resolveToken(asset.symbol);
     const amountWei = this.tokenService.parseAmount(amount, resolved.decimals);
+
+    await this.assertSupplyCapAvailable(asset, publicClient, amountWei, resolved.decimals);
+
     const steps: PreparedTx[] = [];
 
     if (await this.needsApproval(asset.underlying, from, amountWei)) {

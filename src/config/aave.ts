@@ -9,6 +9,10 @@ const HEX_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
 export const AAVE_POOL = "0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402" as const;
 export const AAVE_CHAIN_ID = 42220;
 
+/** Aave V3 Celo protocol data provider — exposes per-reserve supply/borrow caps. */
+export const AAVE_PROTOCOL_DATA_PROVIDER =
+  "0x2e0f8D3B1631296cC7c56538D6Eb6032601E15ED" as const;
+
 /** Underlying and aToken addresses for one Aave V3 market on Celo. */
 export type AaveAsset = {
   symbol: string;
