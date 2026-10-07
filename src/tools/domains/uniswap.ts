@@ -20,7 +20,7 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
   {
     name: "get_uniswap_swap_pairs",
     description:
-      "List Uniswap v4 registry-token pairs on Celo mainnet (direct pools and 2-hop routes). Call this before listing Uniswap pairs — do not invent them.",
+      "List Uniswap v3 and v4 registry-token pairs on Celo mainnet. Each pair includes venues. v3 covers hub-token pools only. Call this before listing Uniswap pairs — do not invent them.",
     inputSchema: z.object({
       token: tokenSymbolSchema
         .optional()
@@ -39,7 +39,8 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "get_uniswap_quote",
-    description: "Uniswap v4 AMM quote for a token pair on Celo mainnet.",
+    description:
+      "Uniswap AMM quote for a token pair on Celo mainnet. Compares v3 and v4 and returns the higher output. protocol is uniswap_v3 or uniswap_v4.",
     inputSchema: uniswapQuoteSchema,
     families: ["read"],
     mcp: { title: "Get Uniswap Quote", annotations: { readOnlyHint: true } },
@@ -53,7 +54,7 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
   {
     name: "estimate_uniswap_swap",
     description:
-      "Estimate gas for a Uniswap v4 swap including ERC-20 and Permit2 approvals when needed.",
+      "Estimate gas for the better Uniswap v3 or v4 swap. v4 includes ERC-20 and Permit2 approvals when needed. v3 includes one ERC-20 approval to SwapRouter02 when needed.",
     inputSchema: uniswapWalletSchema,
     families: ["read"],
     mcp: { title: "Estimate Uniswap Swap", annotations: { readOnlyHint: true } },
@@ -79,7 +80,8 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "execute_uniswap_swap",
-    description: "Execute a Uniswap v4 swap on Celo mainnet. Requires CELO_PRIVATE_KEY.",
+    description:
+      "Execute the better Uniswap v3 or v4 swap on Celo mainnet. Requires CELO_PRIVATE_KEY. v3 uses SwapRouter02. v4 uses Universal Router and Permit2.",
     inputSchema: uniswapWalletSchema,
     families: ["execute"],
     surfaces: ["mcp"],
@@ -102,7 +104,7 @@ export const uniswapToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_uniswap_swap",
     description:
-      "Prepare Uniswap v4 swap only. Prefer prepare_swap after get_swap_quote for automatic routing.",
+      "Prepare the better Uniswap v3 or v4 swap only. Prefer prepare_swap after get_swap_quote for automatic routing.",
     inputSchema: uniswapWalletSchema,
     families: ["prepare"],
     surfaces: ["browser"],

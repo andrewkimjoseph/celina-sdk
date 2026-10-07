@@ -81,6 +81,48 @@ function buildPathKeys(
   return pathKeys;
 }
 
+/**
+ * Split a shared simulateContract budget across two venues.
+ * Each venue gets up to half, then leftover calls go to the venue with more candidates.
+ */
+export function splitQuoteBudget(
+  firstCount: number,
+  secondCount: number,
+  total = MAX_QUOTE_PATHS,
+): { first: number; second: number } {
+  const budget = Math.max(0, total);
+  const firstNeeded = Math.max(0, firstCount);
+  const secondNeeded = Math.max(0, secondCount);
+  if (firstNeeded + secondNeeded <= budget) {
+    return { first: firstNeeded, second: secondNeeded };
+  }
+
+  const half = Math.floor(budget / 2);
+  let first = Math.min(firstNeeded, half);
+  let second = Math.min(secondNeeded, budget - first);
+  let leftover = budget - first - second;
+
+  if (firstNeeded > first && leftover > 0) {
+    const give = Math.min(leftover, firstNeeded - first);
+    first += give;
+    leftover -= give;
+  }
+  if (secondNeeded > second && leftover > 0) {
+    const give = Math.min(leftover, secondNeeded - second);
+    second += give;
+  }
+
+  return { first, second };
+}
+
+export function countV4CandidatePaths(
+  index: UniswapPoolIndex,
+  currencyIn: `0x${string}`,
+  currencyOut: `0x${string}`,
+): number {
+  return enumeratePaths(index, currencyIn, currencyOut).length;
+}
+
 function enumeratePaths(
   index: UniswapPoolIndex,
   currencyIn: `0x${string}`,
@@ -201,17 +243,16 @@ export async function findBestUniswapRoute(
   currencyIn: `0x${string}`,
   currencyOut: `0x${string}`,
   amountIn: bigint,
+  maxPaths = MAX_QUOTE_PATHS,
+  index?: UniswapPoolIndex,
 ): Promise<{ route: UniswapSwapRoute; amountOut: bigint; indexSource: string } | null> {
-  const index = await getUniswapPoolIndex(client);
+  const poolIndex = index ?? (await getUniswapPoolIndex(client));
 
-  // Sort shortest-first so 1-hop direct pools are always preferred, then cap to
-  // MAX_QUOTE_PATHS to keep the concurrent simulateContract fan-out bounded.
-  // Each simulateContract call is one Cloudflare Workers subrequest; an
-  // unbounded walk over a dense pool graph can exhaust the per-invocation
-  // budget before the subsequent balance-check and prepare steps can run.
-  const candidatePaths = enumeratePaths(index, currencyIn, currencyOut)
+  // Sort shortest-first so 1-hop direct pools are always preferred, then cap
+  // simulateContract calls. Each call is one Cloudflare Workers subrequest.
+  const candidatePaths = enumeratePaths(poolIndex, currencyIn, currencyOut)
     .sort((a, b) => a.length - b.length)
-    .slice(0, MAX_QUOTE_PATHS);
+    .slice(0, Math.max(0, maxPaths));
 
   // Quote every candidate path concurrently; failed quotes (e.g. uninitialized
   // pools or insufficient liquidity) are dropped rather than aborting the rest.
@@ -255,7 +296,7 @@ export async function findBestUniswapRoute(
   return {
     route: best.route,
     amountOut: best.amountOut,
-    indexSource: index.source,
+    indexSource: poolIndex.source,
   };
 }
 

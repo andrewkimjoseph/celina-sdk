@@ -1,7 +1,7 @@
 /**
- * Uniswap v4 swaps on Celo mainnet: quote, estimate, and prepare flows.
- * Uses V4Quoter for pricing and Universal Router + Permit2 for execution calldata.
- * Pool discovery prefers the v4 subgraph; falls back to on-chain hub probing when unavailable.
+ * Uniswap swaps on Celo mainnet: quote, estimate, and prepare flows.
+ * Quotes the best v3 path and the best v4 path, then keeps the higher output.
+ * v4 uses V4Quoter and Universal Router + Permit2. v3 uses QuoterV2 and SwapRouter02.
  */
 import {
   encodeFunctionData,
@@ -21,9 +21,11 @@ import {
 import type { CeloClientFactory, CeloClients } from "../clients/celo-client.js";
 import { appendCelinaCalldataTag } from "../config/celina-tag.js";
 import {
+  UNISWAP_V3,
   UNISWAP_V4,
   uniswapInputTokenAddress,
   toUniswapRoutingCurrency,
+  type UniswapProtocol,
 } from "../config/uniswap.js";
 import {
   ALLOWANCE_MAPPING_SLOTS,
@@ -37,16 +39,21 @@ import {
   type SerializedPreparedFlow,
 } from "../types/prepared.js";
 import { CHAIN } from "../config/chains.js";
-import { findBestUniswapRoute, applySlippage } from "./uniswap-path-router.js";
+import { applySlippage } from "./uniswap-path-router.js";
+import { buildSwapRouter02Calldata } from "./uniswap-v3-path-router.js";
+import { getUniswapV3PoolIndex } from "./uniswap-v3-pool-discovery.js";
+import { findBestUniswapQuote } from "./uniswap-venue-quote.js";
 import { getUniswapPoolIndex } from "./uniswap-pool-discovery.js";
 import {
   buildPairsFromUniswapIndex,
+  mergeSwapPairs,
   withTokenFilter,
+  withVenue,
   type SwapPairsResult,
 } from "./swap-pairs.js";
 import { TokenService, type ResolvedToken } from "./token.service.js";
 
-/** Optional parameters for Uniswap v4 swap estimates and prepares. */
+/** Optional parameters for Uniswap swap estimates and prepares. */
 export interface UniswapSwapParams {
   /** Max slippage tolerance in percent (default `0.5`). */
   slippageTolerance?: number;
@@ -54,6 +61,11 @@ export interface UniswapSwapParams {
   deadlineMinutes?: number;
   /** Address receiving output tokens (default: `from`). */
   recipient?: `0x${string}`;
+  /**
+   * When set, quote and prepare only this venue.
+   * Omit to compare v3 and v4 and keep the higher output.
+   */
+  protocol?: UniswapProtocol;
 }
 
 const DEFAULT_SLIPPAGE = 0.5;
@@ -87,13 +99,13 @@ function formatUniswapError(
   const message = error instanceof Error ? error.message : String(error);
   if (/insufficient liquidity|amountOut.*0/i.test(message)) {
     throw new Error(
-      `Insufficient liquidity in Uniswap v4 pools for ${tokenIn} → ${tokenOut}.`,
+      `Insufficient liquidity in Uniswap v3/v4 pools for ${tokenIn} → ${tokenOut}.`,
     );
   }
   throw error instanceof Error ? error : new Error(message);
 }
 
-/** Uniswap v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet. */
+/** Uniswap v3 and v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet. */
 export class UniswapService {
   private readonly tokenService: TokenService;
   private readonly attributionTags?: string[];
@@ -114,6 +126,7 @@ export class UniswapService {
   }
 
   private baseQuoteFields(
+    protocol: UniswapProtocol,
     resolvedIn: ResolvedToken,
     resolvedOut: ResolvedToken,
     amount: string,
@@ -122,7 +135,7 @@ export class UniswapService {
     indexSource?: string,
   ) {
     return {
-      protocol: "uniswap_v4" as const,
+      protocol,
       network: "mainnet" as const,
       tokenIn: resolvedIn.symbol,
       tokenOut: resolvedOut.symbol,
@@ -153,7 +166,7 @@ export class UniswapService {
     if (from) {
       const celoHint =
         resolvedIn.address === "native"
-          ? " Uniswap v4 swaps require wrapped CELO (WCELO), not native CELO."
+          ? " Uniswap swaps require wrapped CELO (WCELO), not native CELO."
           : "";
       await this.tokenService.assertSpendableBalance(from, resolvedIn, amount, {
         spendToken: inputToken === "native" ? "native" : inputToken,
@@ -161,23 +174,24 @@ export class UniswapService {
       });
     }
 
-    const quote = await findBestUniswapRoute(
+    const quote = await findBestUniswapQuote(
       client,
       routingIn,
       routingOut,
       amountInWei,
+      { protocol: params?.protocol },
     );
 
     if (!quote) {
       throw new Error(
-        `No Uniswap v4 route for ${resolvedIn.symbol} → ${resolvedOut.symbol}.`,
+        `No Uniswap v3/v4 route for ${resolvedIn.symbol} → ${resolvedOut.symbol}.`,
       );
     }
 
     const { slippageTolerance, deadlineMinutes, deadline } = swapOptions(params);
     const amountOutMin = applySlippage(quote.amountOut, slippageTolerance);
 
-    return {
+    const shared = {
       client,
       resolvedIn,
       resolvedOut,
@@ -185,7 +199,7 @@ export class UniswapService {
       routingOut,
       inputToken,
       amountInWei,
-      route: quote.route,
+      hops: quote.hops,
       expectedOutWei: quote.amountOut,
       amountOutMin,
       slippageTolerance,
@@ -193,10 +207,15 @@ export class UniswapService {
       deadline,
       indexSource: quote.indexSource,
     };
+
+    if (quote.protocol === "uniswap_v3") {
+      return { ...shared, protocol: "uniswap_v3" as const, route: quote.route };
+    }
+    return { ...shared, protocol: "uniswap_v4" as const, route: quote.route };
   }
 
   private buildUniversalRouterCalldata(
-    built: Awaited<ReturnType<typeof this.buildSwapRoute>>,
+    built: Extract<Awaited<ReturnType<typeof this.buildSwapRoute>>, { protocol: "uniswap_v4" }>,
     _recipient: `0x${string}`,
   ): { to: `0x${string}`; data: Hex; value: bigint } {
     const {
@@ -271,6 +290,7 @@ export class UniswapService {
     tokenSymbol: string,
     amountInWei: bigint,
     deadline: bigint,
+    protocol: UniswapProtocol,
   ): Promise<PreparedTx[]> {
     if (inputToken === "native") {
       return [];
@@ -278,12 +298,14 @@ export class UniswapService {
 
     const steps: PreparedTx[] = [];
     const token = inputToken;
+    const erc20Spender =
+      protocol === "uniswap_v3" ? UNISWAP_V3.swapRouter02 : UNISWAP_V4.permit2;
 
     const erc20Allowance = await client.readContract({
       address: token,
       abi: erc20Abi,
       functionName: "allowance",
-      args: [from, UNISWAP_V4.permit2],
+      args: [from, erc20Spender],
     });
 
     if (erc20Allowance < amountInWei) {
@@ -294,13 +316,20 @@ export class UniswapService {
           encodeFunctionData({
             abi: erc20Abi,
             functionName: "approve",
-            args: [UNISWAP_V4.permit2, maxUint256],
+            args: [erc20Spender, maxUint256],
           }),
           this.attributionTags,
         ),
         value: "0",
-        description: `Approve ${tokenSymbol} for Uniswap Permit2`,
+        description:
+          protocol === "uniswap_v3"
+            ? `Approve ${tokenSymbol} for Uniswap SwapRouter02`
+            : `Approve ${tokenSymbol} for Uniswap Permit2`,
       });
+    }
+
+    if (protocol === "uniswap_v3") {
+      return steps;
     }
 
     const permit2Allowance = await client.readContract({
@@ -361,6 +390,7 @@ export class UniswapService {
     to: `0x${string}`,
     data: Hex,
     token: `0x${string}`,
+    spender: `0x${string}`,
     amount: bigint,
   ) {
     const request = { account: from, to, data, value: 0n };
@@ -372,7 +402,7 @@ export class UniswapService {
           stateOverride: erc20AllowanceStateOverride(
             token,
             from,
-            UNISWAP_V4.permit2,
+            spender,
             amount,
             mappingSlot,
           ),
@@ -390,28 +420,62 @@ export class UniswapService {
     );
   }
 
+  private venueLabel(protocol: UniswapProtocol): "v3" | "v4" {
+    return protocol === "uniswap_v3" ? "v3" : "v4";
+  }
+
+  private buildSwapCalldata(
+    built: Awaited<ReturnType<typeof this.buildSwapRoute>>,
+    recipient: `0x${string}`,
+  ): { to: `0x${string}`; data: Hex; value: bigint } {
+    if (built.protocol === "uniswap_v3") {
+      return {
+        to: UNISWAP_V3.swapRouter02,
+        data: buildSwapRouter02Calldata({
+          tokenIn: built.routingIn,
+          recipient,
+          amountIn: built.amountInWei,
+          amountOutMin: built.amountOutMin,
+          deadline: built.deadline,
+          pools: built.route.pools,
+        }),
+        value: 0n,
+      };
+    }
+    return this.buildUniversalRouterCalldata(built, recipient);
+  }
+
   /**
-   * Uniswap v4 registry-token pairs on Celo mainnet (direct pools and 2-hop routes).
+   * Uniswap registry-token pairs on Celo mainnet (v4 graph plus v3 hub pools).
+   * `protocol` stays `uniswap_v4` for existing consumers. Each pair's `venues`
+   * lists which versions can route it.
    * @param token - Optional registry symbol; when set, only pairs involving that token
    */
   async listPairs(token?: string): Promise<SwapPairsResult> {
     const { public: client } = this.clientFactory.getClients();
-    const index = await getUniswapPoolIndex(client);
-    const pairs = buildPairsFromUniswapIndex(index);
+    const [v4Index, v3Index] = await Promise.all([
+      getUniswapPoolIndex(client),
+      getUniswapV3PoolIndex(client),
+    ]);
+    const pairs = mergeSwapPairs([
+      withVenue(buildPairsFromUniswapIndex(v4Index), "uniswap_v4"),
+      withVenue(buildPairsFromUniswapIndex(v3Index), "uniswap_v3"),
+    ]);
     const symbol = token ? this.tokenService.resolveToken(token).symbol : undefined;
     return withTokenFilter(
       {
         network: "mainnet",
         protocol: "uniswap_v4",
         pairs,
-        source: index.source,
+        source: v4Index.source,
       },
       symbol,
     );
   }
 
   /**
-   * Expected Uniswap v4 output for a token pair — no wallet required.
+   * Expected Uniswap output for a token pair — no wallet required.
+   * Compares v3 and v4 and returns the higher output.
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
    * @param amount - Human-readable input amount
@@ -427,11 +491,12 @@ export class UniswapService {
       const built = await this.buildSwapRoute(tokenIn, tokenOut, amount, undefined, undefined);
       return {
         ...this.baseQuoteFields(
+          built.protocol,
           built.resolvedIn,
           built.resolvedOut,
           amount,
           built.expectedOutWei,
-          built.route.hops,
+          built.hops,
           built.indexSource,
         ),
         route: {
@@ -444,7 +509,8 @@ export class UniswapService {
   }
 
   /**
-   * Simulate gas for a Uniswap v4 swap from `from`, including Permit2 approvals when needed.
+   * Simulate gas for a Uniswap swap from `from`.
+   * v4 includes Permit2 approvals when needed. v3 includes one ERC-20 approval when needed.
    * @param from - Sender wallet address
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
@@ -468,8 +534,9 @@ export class UniswapService {
         built.resolvedIn.symbol,
         built.amountInWei,
         built.deadline,
+        built.protocol,
       );
-      const swapTx = this.buildUniversalRouterCalldata(built, recipient);
+      const swapTx = this.buildSwapCalldata(built, recipient);
       const taggedSwapData = appendCelinaCalldataTag(
         swapTx.data,
         this.attributionTags,
@@ -497,6 +564,9 @@ export class UniswapService {
                 swapTx.to,
                 taggedSwapData,
                 built.inputToken,
+                built.protocol === "uniswap_v3"
+                  ? UNISWAP_V3.swapRouter02
+                  : UNISWAP_V4.permit2,
                 built.amountInWei,
               )
             : await this.estimateCallGas(
@@ -511,11 +581,12 @@ export class UniswapService {
 
       return {
         ...this.baseQuoteFields(
+          built.protocol,
           built.resolvedIn,
           built.resolvedOut,
           amount,
           built.expectedOutWei,
-          built.route.hops,
+          built.hops,
           built.indexSource,
         ),
         from,
@@ -538,7 +609,10 @@ export class UniswapService {
   }
 
   /**
-   * Build unsigned Uniswap v4 steps (ERC-20 approve → Permit2 approve → swap when needed).
+   * Build unsigned Uniswap steps.
+   * v4: ERC-20 approve → Permit2 approve → Universal Router swap.
+   * v3: ERC-20 approve → SwapRouter02 multicall swap.
+   * Pass `params.protocol` to pin the venue from a quote the caller already chose.
    * @param from - Sender wallet address
    * @param tokenIn - Input token symbol or address
    * @param tokenOut - Output token symbol or address
@@ -568,9 +642,11 @@ export class UniswapService {
         built.resolvedIn.symbol,
         built.amountInWei,
         built.deadline,
+        built.protocol,
       );
 
-      const swapTx = this.buildUniversalRouterCalldata(built, recipient);
+      const swapTx = this.buildSwapCalldata(built, recipient);
+      const venue = this.venueLabel(built.protocol);
 
       const steps: PreparedTx[] = [
         ...approvalSteps,
@@ -579,14 +655,14 @@ export class UniswapService {
           to: swapTx.to,
           data: appendCelinaCalldataTag(swapTx.data, this.attributionTags),
           value: swapTx.value.toString(),
-          description: `Swap ${displayIn} ${built.resolvedIn.symbol} → ~${displayOut} ${built.resolvedOut.symbol} via Uniswap v4`,
+          description: `Swap ${displayIn} ${built.resolvedIn.symbol} → ~${displayOut} ${built.resolvedOut.symbol} via Uniswap ${venue}`,
         },
       ];
 
       const flow: PreparedFlow = {
         chainId: CHAIN.id,
         from,
-        summary: `Uniswap v4: ${displayIn} ${built.resolvedIn.symbol} → ${displayOut} ${built.resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
+        summary: `Uniswap ${venue}: ${displayIn} ${built.resolvedIn.symbol} → ${displayOut} ${built.resolvedOut.symbol}${recipient !== from ? ` (recipient ${recipient})` : ""}`,
         steps,
       };
 

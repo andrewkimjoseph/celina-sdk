@@ -22,7 +22,7 @@
 * [On-chain attribution](guides/on-chain-attribution.md)
 * [Send tokens](guides/send-tokens.md)
 * [Mento FX](guides/mento-fx.md)
-* [Uniswap v4](guides/uniswap.md)
+* [Uniswap v3 and v4](guides/uniswap.md)
 * [Aave](guides/aave.md)
 * [GoodDollar UBI](guides/gooddollar.md)
 * [Humanness](guides/humanness.md)

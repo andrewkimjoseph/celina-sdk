@@ -37,7 +37,7 @@ export const CATEGORY_TO_A2A_SKILL: Record<WebsiteToolCategory, CelinaA2ASkillMe
   },
   Uniswap: {
     id: "uniswap",
-    name: "Uniswap v4 quotes",
+    name: "Uniswap v3 and v4 quotes",
     tags: ["celo", "uniswap", "swap", "amm"],
   },
   Wallet: {

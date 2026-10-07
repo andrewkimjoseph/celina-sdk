@@ -195,7 +195,7 @@ for (const step of flow.steps) {
 
 - [Send tokens](send-tokens.md)
 - [Mento FX](mento-fx.md)
-- [Uniswap v4](uniswap.md)
+- [Uniswap v3 and v4](uniswap.md)
 - [Aave](aave.md)
 - [Prepared flows](../concepts/prepared-flows.md)
 - [Prepared-step simulation](prepared-step-simulation.md)

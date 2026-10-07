@@ -16,7 +16,7 @@ export const browserToolDefinitions: ToolDefinition[] = [
   {
     name: "get_swap_quote",
     description:
-      "Best swap quote on Celo — tries Mento FX, GoodDollar reserve (G$ ↔ USDm), and Uniswap v4 in parallel.",
+      "Best swap quote on Celo — tries Mento FX, GoodDollar reserve (G$ ↔ USDm), and Uniswap v3 and v4 in parallel.",
     inputSchema: z.object({
       token_in: z.string(),
       token_out: z.string(),
@@ -38,9 +38,11 @@ export const browserToolDefinitions: ToolDefinition[] = [
   {
     name: "prepare_swap",
     description:
-      "Prepare unsigned swap using the best route (Mento FX, GoodDollar reserve, or Uniswap v4).",
+      "Prepare unsigned swap using the best route (Mento FX, GoodDollar reserve, or Uniswap v3/v4).",
     inputSchema: uniswapWalletSchema.extend({
-      protocol: z.enum(["mento_fx", "uniswap_v4", "gooddollar_reserve"]).optional(),
+      protocol: z
+        .enum(["mento_fx", "uniswap_v3", "uniswap_v4", "gooddollar_reserve"])
+        .optional(),
       amount_side: goodDollarReserveAmountSideSchema,
     }),
     families: ["prepare"],

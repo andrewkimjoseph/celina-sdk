@@ -8,7 +8,7 @@
 
 > **SwapPair** = `object`
 
-Defined in: [src/services/swap-pairs.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L10)
+Defined in: [src/services/swap-pairs.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/swap-pairs.ts#L17)
 
 One unordered registry-token pair with hop count.
 
@@ -18,7 +18,7 @@ One unordered registry-token pair with hop count.
 
 > **hops**: `number`
 
-Defined in: [src/services/swap-pairs.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L13)
+Defined in: [src/services/swap-pairs.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/swap-pairs.ts#L20)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/services/swap-pairs.ts:13](https://github.com/andrewkimjoseph/c
 
 > **token\_a**: `string`
 
-Defined in: [src/services/swap-pairs.ts:11](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L11)
+Defined in: [src/services/swap-pairs.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/swap-pairs.ts#L18)
 
 ***
 
@@ -34,4 +34,14 @@ Defined in: [src/services/swap-pairs.ts:11](https://github.com/andrewkimjoseph/c
 
 > **token\_b**: `string`
 
-Defined in: [src/services/swap-pairs.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L12)
+Defined in: [src/services/swap-pairs.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/swap-pairs.ts#L19)
+
+***
+
+### venues?
+
+> `optional` **venues?**: `UniswapVenue`[]
+
+Defined in: [src/services/swap-pairs.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/swap-pairs.ts#L22)
+
+Set on Uniswap listings. Omitted for Mento pairs.

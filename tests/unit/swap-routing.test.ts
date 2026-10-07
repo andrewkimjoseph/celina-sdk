@@ -39,6 +39,7 @@ describe("getSwapQuoteWithFallback", () => {
     const client = mockClient({
       uniswap: {
         getSwapQuote: vi.fn().mockResolvedValue({
+          protocol: "uniswap_v4",
           tokenIn: "G$",
           tokenOut: "USDT",
           amountIn: "100",
@@ -52,5 +53,38 @@ describe("getSwapQuoteWithFallback", () => {
     const quote = await getSwapQuoteWithFallback(client, "GoodDollar", "USDT", "100");
 
     expect(quote.protocol).toBe("uniswap_v4");
+  });
+
+  it("returns uniswap_v3 when that venue wins the Uniswap quote", async () => {
+    const client = mockClient({
+      uniswap: {
+        getSwapQuote: vi.fn().mockResolvedValue({
+          protocol: "uniswap_v3",
+          tokenIn: "G$",
+          tokenOut: "USDT",
+          amountIn: "100",
+          expectedOut: "2",
+          routeHops: 1,
+          network: "mainnet",
+        }),
+      },
+    });
+
+    const quote = await getSwapQuoteWithFallback(client, "GoodDollar", "USDT", "100");
+    expect(quote.protocol).toBe("uniswap_v3");
+  });
+
+  it("treats a combined v3/v4 miss as a route error", async () => {
+    const client = mockClient({
+      uniswap: {
+        getSwapQuote: vi
+          .fn()
+          .mockRejectedValue(new Error("No Uniswap v3/v4 route for USDm → EURm.")),
+      },
+    });
+
+    await expect(
+      getSwapQuoteWithFallback(client, "USDm", "EURm", "20"),
+    ).rejects.toThrow(MARKET_CLOSED);
   });
 });

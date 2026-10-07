@@ -10,7 +10,7 @@
 
 Defined in: [src/services/swap-pairs.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L17)
 
-Mento FX or Uniswap v4 pair listing returned to tools and SDK callers.
+Mento FX or Uniswap pair listing returned to tools and SDK callers. Uniswap pairs include optional `venues`.
 
 ## Properties
 

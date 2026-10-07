@@ -50,7 +50,7 @@ export interface CelinaClient {
   transaction: TransactionService;
   /** Mento FX quotes, estimates, and `prepareFx` flows. */
   mentoFx: MentoFxService;
-  /** Uniswap v4 quotes, estimates, and `prepareSwap` flows. */
+  /** Uniswap v3 and v4 quotes, estimates, and `prepareSwap` flows. */
   uniswap: UniswapService;
   /** Aave V3 `getBalances`, `prepareSupply`, and `prepareWithdraw` on Celo. */
   aave: AaveService;
@@ -137,9 +137,9 @@ export type { SdkConfig } from "./config/sdk-config.js";
 export type { ResolvedToken } from "./services/token.service.js";
 /** Slippage, deadline, and recipient options for Mento FX swaps. */
 export type { MentoFxParams } from "./services/mento-fx.service.js";
-/** Unordered registry-token pair listing for Mento FX / Uniswap v4. */
+/** Unordered registry-token pair listing for Mento FX / Uniswap. */
 export type { SwapPair, SwapPairsResult } from "./services/swap-pairs.js";
-/** Slippage, deadline, and recipient options for Uniswap v4 swaps. */
+/** Slippage, deadline, recipient, and optional venue pin for Uniswap swaps. */
 export type { UniswapSwapParams } from "./services/uniswap.service.js";
 /** Pagination and metadata options for governance proposal lists. */
 export type { GovernanceProposalsOptions } from "./services/governance.service.js";

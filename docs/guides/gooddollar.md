@@ -210,7 +210,7 @@ const best = await getSwapQuoteWithFallback(celina, "GoodDollar", "USDm", "1000"
 // best.protocol === "gooddollar_reserve"
 ```
 
-For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the fallback when Mento FX has no route.
+For other G$ pairs (e.g. G$ → USDT), Uniswap v3 and v4 remain the AMM fallback when Mento FX has no route. The quote keeps the higher output.
 
 ## Non-identity tools
 
@@ -255,6 +255,6 @@ For browser wallet signing, call `prepareClaimUbi` and pass `flow.steps` to wagm
 - [Prepared-step simulation](prepared-step-simulation.md)
 - [wagmi integration](wagmi-integration.md)
 - [Prepared flows](../concepts/prepared-flows.md)
-- [Uniswap v4](uniswap.md) — swap G$ to other tokens when reserve does not apply (e.g. G$ → USDT)
+- [Uniswap v3 and v4](uniswap.md) — swap G$ to other tokens when reserve does not apply (e.g. G$ → USDT)
 - [GoodDollarService API](../api-reference/services/gooddollar.service/classes/GoodDollarService.md)
 - [GoodDollar core contracts](https://docs.gooddollar.org/for-developers/core-contracts)

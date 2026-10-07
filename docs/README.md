@@ -37,9 +37,9 @@ Third-party apps can consume the programmatic client only, or wire the full tool
 
 | Category                 | Examples                                                                                                             |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| **Reads**                | Token balances, Mento FX quotes, Uniswap v4 quotes, governance, staking, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
+| **Reads**                | Token balances, Mento FX quotes, Uniswap v3 and v4 quotes, governance, staking, ENS, GoodDollar whitelist/UBI, AgentKarma reputation |
 | **Estimates**            | Gas for sends, FX swaps, Uniswap swaps, generic contract calls                                                       |
-| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v4, Aave, GoodDollar UBI claim, governance locks/votes, validator staking/delegation, generic contract writes (`chainId: 42220`) |
+| **Prepare**              | Unsigned flows for sends, Mento FX, Uniswap v3 and v4, Aave, GoodDollar UBI claim, governance locks/votes, validator staking/delegation, generic contract writes (`chainId: 42220`) |
 | **Humanness**            | `client.humanness.checkHumanness` — dual-rail Self Agent ID **or** GoodDollar whitelist check gating governance/staking prepares |
 | **Sponsored UserOps**    | `createAAClient` + `sendPreparedFlow` (app-owned Pimlico key; optional `attributionTags`)                             |
 | **Sign-time simulation** | `@andrewkimjoseph/celina-sdk/simulation` — `simulatePreparedStep` / `simulatePreparedStepWithRetry` before each wallet send |
