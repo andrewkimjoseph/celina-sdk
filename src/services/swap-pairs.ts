@@ -1,19 +1,28 @@
 /**
- * Shared swap-pair listing helpers for Mento FX and Uniswap v4.
+ * Shared swap-pair listing helpers for Mento FX and Uniswap v3/v4.
  * Pair existence only — no quotes.
  */
 import { findKnownToken, KNOWN_TOKENS, MENTO_CELO_ADDRESS } from "../config/chains.js";
 import { toUniswapRoutingCurrency } from "../config/uniswap.js";
-import type { UniswapPoolIndex } from "./uniswap-pool-discovery.js";
+/** Graph fields shared by the v3 and v4 pool indexes. */
+type UniswapPairGraph = {
+  poolsByPair: Iterable<readonly [string, unknown]>;
+  adjacency: Map<string, Set<string>>;
+};
+
+/** Uniswap venue that currently has a pool or multi-hop path for a pair. */
+export type UniswapVenue = "uniswap_v3" | "uniswap_v4";
 
 /** One unordered registry-token pair with hop count. */
 export type SwapPair = {
   token_a: string;
   token_b: string;
   hops: number;
+  /** Set on Uniswap listings. Omitted for Mento pairs. */
+  venues?: UniswapVenue[];
 };
 
-/** Mento FX or Uniswap v4 pair listing returned to tools and SDK callers. */
+/** Mento FX or Uniswap pair listing returned to tools and SDK callers. */
 export type SwapPairsResult = {
   network: "mainnet";
   protocol: "mento_fx" | "uniswap_v4";
@@ -131,11 +140,46 @@ export function buildPairsFromMentoRoutes(routes: readonly MentoRouteLike[]): Sw
   return sortedPairs(map);
 }
 
+/** Tag every pair with a single Uniswap venue. */
+export function withVenue(pairs: SwapPair[], venue: UniswapVenue): SwapPair[] {
+  return pairs.map((pair) => ({ ...pair, venues: [venue] }));
+}
+
 /**
- * Build unordered registry pairs from a Uniswap v4 pool index.
+ * Merge pair listings. Hop count is the shortest path. Venues are the union.
+ */
+export function mergeSwapPairs(lists: SwapPair[][]): SwapPair[] {
+  const map = new Map<string, SwapPair>();
+  for (const list of lists) {
+    for (const pair of list) {
+      const key = pairKey(pair.token_a, pair.token_b);
+      const existing = map.get(key);
+      if (!existing) {
+        map.set(key, {
+          ...pair,
+          venues: pair.venues ? [...pair.venues] : undefined,
+        });
+        continue;
+      }
+      const venues = [
+        ...new Set([...(existing.venues ?? []), ...(pair.venues ?? [])]),
+      ].sort() as UniswapVenue[];
+      map.set(key, {
+        token_a: existing.token_a,
+        token_b: existing.token_b,
+        hops: Math.min(existing.hops, pair.hops),
+        ...(venues.length > 0 ? { venues } : {}),
+      });
+    }
+  }
+  return sortedPairs(map);
+}
+
+/**
+ * Build unordered registry pairs from a Uniswap pool index.
  * Direct pools are hops: 1; two-hop adjacency among registry tokens is hops: 2.
  */
-export function buildPairsFromUniswapIndex(index: UniswapPoolIndex): SwapPair[] {
+export function buildPairsFromUniswapIndex(index: UniswapPairGraph): SwapPair[] {
   const symbols = registrySymbolByRoutingAddress();
   const map = new Map<string, SwapPair>();
 

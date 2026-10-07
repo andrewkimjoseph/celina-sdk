@@ -1,8 +1,27 @@
 /**
- * Uniswap v4 contract addresses and routing helpers for Celo mainnet.
+ * Uniswap v3 and v4 contract addresses and routing helpers for Celo mainnet.
  * @see https://docs.celo.org/tooling/contracts/uniswap-contracts
  */
 import { MENTO_CELO_ADDRESS } from "./chains.js";
+
+/** Uniswap v3 on Celo mainnet — https://docs.celo.org/tooling/contracts/uniswap-contracts */
+export const UNISWAP_V3 = {
+  factory: "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc" as const,
+  quoterV2: "0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8" as const,
+  swapRouter02: "0x5615CDAb10dc425a742d643d949a7F474C01abc4" as const,
+} as const;
+
+/** Standard v3 fee tiers probed on the Celo factory. */
+export const UNISWAP_V3_FEE_TIERS = [100, 500, 3000, 10000] as const;
+
+/** Canonical v3 pool (token0 sorts before token1). */
+export type UniswapV3Pool = {
+  token0: `0x${string}`;
+  token1: `0x${string}`;
+  fee: number;
+};
+
+export type UniswapProtocol = "uniswap_v3" | "uniswap_v4";
 
 /** Uniswap v4 on Celo mainnet — https://docs.celo.org/tooling/contracts/uniswap-contracts */
 export const UNISWAP_V4 = {

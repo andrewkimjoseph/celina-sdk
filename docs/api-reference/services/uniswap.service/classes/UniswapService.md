@@ -6,9 +6,9 @@
 
 # Class: UniswapService
 
-Defined in: [src/services/uniswap.service.ts:97](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L97)
+Defined in: [src/services/uniswap.service.ts:109](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L109)
 
-Uniswap v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet.
+Uniswap v3 and v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet.
 
 ## Constructors
 
@@ -16,7 +16,7 @@ Uniswap v4 quotes, gas estimates, and `prepareSwap` flows on Celo mainnet.
 
 > **new UniswapService**(`clientFactory`): `UniswapService`
 
-Defined in: [src/services/uniswap.service.ts:101](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L101)
+Defined in: [src/services/uniswap.service.ts:113](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L113)
 
 #### Parameters
 
@@ -32,11 +32,12 @@ Defined in: [src/services/uniswap.service.ts:101](https://github.com/andrewkimjo
 
 ### estimateSwap()
 
-> **estimateSwap**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string`[]; `approvalStepsNeeded`: `number`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"uniswap_v4"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGas`: `string` \| `undefined`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+> **estimateSwap**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string`[]; `approvalStepsNeeded`: `number`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `UniswapProtocol`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGas`: `string` \| `undefined`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
-Defined in: [src/services/uniswap.service.ts:454](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L454)
+Defined in: [src/services/uniswap.service.ts:520](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L520)
 
-Simulate gas for a Uniswap v4 swap from `from`, including Permit2 approvals when needed.
+Simulate gas for a Uniswap swap from `from`.
+v4 includes Permit2 approvals when needed. v3 includes one ERC-20 approval when needed.
 
 #### Parameters
 
@@ -72,17 +73,18 @@ Optional slippage, deadline, and recipient
 
 #### Returns
 
-`Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string`[]; `approvalStepsNeeded`: `number`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"uniswap_v4"`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGas`: `string` \| `undefined`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+`Promise`\<\{ `amountIn`: `string`; `amountOutMin`: `string`; `approvalGas`: `string`[]; `approvalStepsNeeded`: `number`; `deadline`: `string`; `deadlineMinutes`: `number`; `expectedOut`: `string`; `from`: `` `0x${string}` ``; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `UniswapProtocol`; `recipient`: `` `0x${string}` ``; `routeHops`: `number`; `slippageTolerance`: `number`; `swapGas`: `string` \| `undefined`; `swapGasEstimated`: `boolean`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
 ***
 
 ### getSwapQuote()
 
-> **getSwapQuote**(`tokenIn`, `tokenOut`, `amount`, `_from?`): `Promise`\<\{ `amountIn`: `string`; `expectedOut`: `string`; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"uniswap_v4"`; `route`: \{ `pools`: `UniswapPoolKey`[]; \}; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+> **getSwapQuote**(`tokenIn`, `tokenOut`, `amount`, `_from?`): `Promise`\<\{ `amountIn`: `string`; `expectedOut`: `string`; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `UniswapProtocol`; `route`: \{ `pools`: `UniswapPoolKey`[] \| `UniswapV3Pool`[]; \}; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
-Defined in: [src/services/uniswap.service.ts:420](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L420)
+Defined in: [src/services/uniswap.service.ts:484](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L484)
 
-Expected Uniswap v4 output for a token pair — no wallet required.
+Expected Uniswap output for a token pair — no wallet required.
+Compares v3 and v4 and returns the higher output.
 
 #### Parameters
 
@@ -112,7 +114,7 @@ Deprecated; ignored. Balance checks run on prepare/estimate only.
 
 #### Returns
 
-`Promise`\<\{ `amountIn`: `string`; `expectedOut`: `string`; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `"uniswap_v4"`; `route`: \{ `pools`: `UniswapPoolKey`[]; \}; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
+`Promise`\<\{ `amountIn`: `string`; `expectedOut`: `string`; `indexSource`: `string` \| `undefined`; `network`: `"mainnet"`; `protocol`: `UniswapProtocol`; `route`: \{ `pools`: `UniswapPoolKey`[] \| `UniswapV3Pool`[]; \}; `routeHops`: `number`; `tokenIn`: `string`; `tokenOut`: `string`; \}\>
 
 ***
 
@@ -120,9 +122,11 @@ Deprecated; ignored. Balance checks run on prepare/estimate only.
 
 > **listPairs**(`token?`): `Promise`\<[`SwapPairsResult`](../../../index/type-aliases/SwapPairsResult.md)\>
 
-Defined in: [src/services/uniswap.service.ts:397](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L397)
+Defined in: [src/services/uniswap.service.ts:454](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L454)
 
-Uniswap v4 registry-token pairs on Celo mainnet (direct pools and 2-hop routes).
+Uniswap registry-token pairs on Celo mainnet (v4 graph plus v3 hub pools).
+`protocol` stays `uniswap_v4` for existing consumers. Each pair's `venues`
+lists which versions can route it.
 
 #### Parameters
 
@@ -142,9 +146,12 @@ Optional registry symbol; when set, only pairs involving that token
 
 > **prepareSwap**(`from`, `tokenIn`, `tokenOut`, `amount`, `params?`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/uniswap.service.ts:549](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/uniswap.service.ts#L549)
+Defined in: [src/services/uniswap.service.ts:623](https://github.com/andrewkimjoseph/celina-sdk/blob/7e7366e621d233383ba931e39791a490b5122106/src/services/uniswap.service.ts#L623)
 
-Build unsigned Uniswap v4 steps (ERC-20 approve → Permit2 approve → swap when needed).
+Build unsigned Uniswap steps.
+v4: ERC-20 approve → Permit2 approve → Universal Router swap.
+v3: ERC-20 approve → SwapRouter02 multicall swap.
+Pass `params.protocol` to pin the venue from a quote the caller already chose.
 
 #### Parameters
 

@@ -4,7 +4,9 @@ import {
   buildPairsFromMentoRoutes,
   buildPairsFromUniswapIndex,
   filterPairsByToken,
+  mergeSwapPairs,
   withTokenFilter,
+  withVenue,
 } from "../../src/services/swap-pairs.js";
 
 const USDC = "0xceba9300f2b948710d2653dd7b07f33a8b32118c";
@@ -80,5 +82,28 @@ describe("swap pair listing", () => {
     );
     expect(eurm.token).toBe("EURm");
     expect(eurm.counterparts).toEqual(["CELO", "USDC", "USDT"]);
+  });
+
+  it("merges v3 and v4 pairs, keeps the shorter hop, and unions venues", () => {
+    const merged = mergeSwapPairs([
+      withVenue([{ token_a: "USDC", token_b: "USDT", hops: 2 }], "uniswap_v4"),
+      withVenue([{ token_a: "USDC", token_b: "USDT", hops: 1 }], "uniswap_v3"),
+      withVenue([{ token_a: "CELO", token_b: "USDC", hops: 1 }], "uniswap_v3"),
+    ]);
+
+    expect(merged).toEqual([
+      {
+        token_a: "CELO",
+        token_b: "USDC",
+        hops: 1,
+        venues: ["uniswap_v3"],
+      },
+      {
+        token_a: "USDC",
+        token_b: "USDT",
+        hops: 1,
+        venues: ["uniswap_v3", "uniswap_v4"],
+      },
+    ]);
   });
 });

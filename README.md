@@ -138,7 +138,7 @@ Identity whitelist reads, daily UBI entitlement, unsigned UBI claim, and **G$ �
 |-------|---------|
 | `getWhitelistingInfo`, `getUbiClaimEligibility`, `getReserveQuote` | `prepareClaimUbi`, `prepareReserveSwap` |
 
-For **G$ ↔ USDm**, use `getReserveQuote` / `prepareReserveSwap` (or aggregated `getSwapQuoteWithFallback` from `@andrewkimjoseph/celina-sdk/tools`) — not Uniswap. For other G$ pairs (e.g. G$ → USDT), Uniswap v4 remains the AMM fallback.
+For **G$ ↔ USDm**, use `getReserveQuote` / `prepareReserveSwap` (or aggregated `getSwapQuoteWithFallback` from `@andrewkimjoseph/celina-sdk/tools`) — not Uniswap. For other G$ pairs (e.g. G$ → USDT), Uniswap v3 and v4 remain the AMM fallback. The quote keeps the higher output.
 
 MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_gooddollar_reserve_quote`, `estimate_gooddollar_reserve_swap`, `execute_gooddollar_reserve_swap` (stdio write with server key); `claim_daily_gooddollar_ubi` (stdio UBI write). Browser apps: `prepareClaimUbi`, `prepareReserveSwap`, or `prepare_swap` + wagmi.
 
@@ -153,7 +153,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 ## Roadmap
 
 - [x] Mento FX routing (`getFxQuote`, `estimateFx`, `prepareFx`)
-- [x] Uniswap v4 swaps (`getSwapQuote`, `estimateSwap`, `prepareSwap`)
+- [x] Uniswap v3 and v4 swaps (`getSwapQuote`, `estimateSwap`, `prepareSwap`)
 - [x] GoodDollar reserve swaps (`getReserveQuote`, `prepareReserveSwap`) — G$ ↔ USDm via MentoBroker
 - [x] Aave tools (`getBalances` / MCP `get_aave_balances`, `prepareSupply`, `prepareWithdraw`) — USDT, WETH, USDm, USDC, CELO, EURm
 - [x] Self proof verification (`verifySelfAgent`, `verifySelfRequest`, ai.self.xyz)

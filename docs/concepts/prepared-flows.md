@@ -118,6 +118,6 @@ See [Configuration](../getting-started/configuration.md) for the full options ta
 - [wagmi integration](../guides/wagmi-integration.md)
 - [Send tokens](../guides/send-tokens.md)
 - [Mento FX](../guides/mento-fx.md)
-- [Uniswap v4](../guides/uniswap.md)
+- [Uniswap v3 and v4](../guides/uniswap.md)
 - [Aave](../guides/aave.md)
 - [GoodDollar](../guides/gooddollar.md)

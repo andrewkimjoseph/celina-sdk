@@ -100,7 +100,7 @@ These live in `src/utils/`, `src/aa/`, and `src/config/celina-tag.ts` and are re
 | `token` | TokenService | Balances, token registry, stablecoin scans |
 | `transaction` | TransactionService | Sends, gas fees |
 | `mentoFx` | MentoFxService | Mento FX quotes and swaps |
-| `uniswap` | UniswapService | Uniswap v4 quotes and swaps |
+| `uniswap` | UniswapService | Uniswap v3 and v4 quotes and swaps |
 | `aave` | AaveService | Aave V3 supplied balance reads, supply/withdraw |
 | `gooddollar` | GoodDollarService | Identity link, whitelist (connected-wallet root resolution), UBI entitlement, reserve quote/prepare (G$ ↔ USDm), `prepareClaimUbi` |
 | `ens` | EnsService | ENS resolution (Celo + Ethereum) |

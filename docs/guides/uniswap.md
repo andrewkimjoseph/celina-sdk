@@ -1,10 +1,13 @@
-# Uniswap v4
+# Uniswap v3 and v4
 
-Swap tokens via Uniswap v4 on Celo mainnet (Universal Router + Permit2).
+Swap tokens via Uniswap on Celo mainnet. A quote compares the best v3 path with the best v4 path and keeps the higher output. Equal output prefers v3.
+
+- **v4** executes through the Universal Router and Permit2.
+- **v3** executes through SwapRouter02. `exactInput` has no deadline field, so the swap is wrapped in `multicall(deadline, bytes[])`.
 
 Use this when Mento FX has no route — for example `GoodDollar` → `USDT`.
 
-For **GoodDollar ↔ USDm**, prefer the [GoodDollar reserve](gooddollar.md) via `get_swap_quote` or `get_gooddollar_reserve_quote` — Uniswap v4 pools for that pair are typically illiquid.
+For **GoodDollar ↔ USDm**, prefer the [GoodDollar reserve](gooddollar.md) via `get_swap_quote` or `get_gooddollar_reserve_quote` — Uniswap pools for that pair are typically illiquid.
 
 ## Get a quote (no wallet)
 
@@ -69,9 +72,13 @@ const flow = await celina.uniswap.prepareSwap(
 
 ## Routing
 
-The SDK discovers v4 pools via the Celo v4 subgraph when available, otherwise by probing hub-token pairs on-chain (`StateView`). It quotes single- and multi-hop paths (up to two hops) with the v4 quoter and picks the best output.
+The SDK quotes v3 and v4 separately. A route is entirely one version. Mixed hops are not built.
 
-Call `listPairs` (MCP / browser: `get_uniswap_swap_pairs`) to see which registry tokens currently have a pool or 2-hop path — do not invent pairs.
+v4 pools come from the Celo v4 subgraph when it is available, otherwise from on-chain hub probing (`StateView`). v3 pools come only from on-chain hub probing of the v3 factory (`getPool` plus `liquidity`). There is no v3 subgraph, so v3 quotes only see pools between hub tokens (CELO, USDC, USDT, WETH, USDm, G$, and the other hub addresses in the SDK). A one-quote simulation budget of 16 paths is shared by both venues.
+
+Each venue quotes single- and multi-hop paths (up to three pools) and keeps its own best output. The quote then keeps the higher of those two. `protocol` on the result is `uniswap_v3` or `uniswap_v4`.
+
+Call `listPairs` (MCP / browser: `get_uniswap_swap_pairs`) to see which registry tokens currently have a pool or 2-hop path — do not invent pairs. Each pair includes `venues`. The listing `protocol` stays `uniswap_v4` so older consumers keep working.
 
 ```ts
 const listing = await celina.uniswap.listPairs("USDC");
@@ -81,21 +88,28 @@ console.log(listing.source); // "subgraph" or "onchain"
 
 Native CELO is routed through WCELO (`0x471E…`) — the user must hold WCELO, not native CELO, as swap input.
 
-If no route exists, the SDK throws: `No Uniswap v4 route for X → Y`.
+Pass `protocol: "uniswap_v3"` or `"uniswap_v4"` to `estimateSwap` / `prepareSwap` to build only that venue. `prepareSwap` from aggregated routing does this with the protocol returned by the quote.
+
+If no route exists, the SDK throws: `No Uniswap v3/v4 route for X → Y`.
 
 ## Multi-step approval
 
-When Permit2 is not yet set up for the input token, `prepareSwap` may return up to three steps:
+**v4.** When Permit2 is not yet set up for the input token, `prepareSwap` may return up to three steps:
 
 1. **Approve** — ERC-20 approval for Permit2
 2. **Permit2 approve** — allow Universal Router to spend via Permit2
 3. **Swap** — Uniswap v4 swap execution
 
+**v3.** At most two steps:
+
+1. **Approve** — ERC-20 approval for SwapRouter02, when allowance is short
+2. **Swap** — `multicall(deadline, [exactInputSingle or exactInput])`
+
 Wait for each step to confirm before sending the next.
 
 ## Mento FX vs Uniswap
 
-| | Mento FX | Uniswap v4 |
+| | Mento FX | Uniswap v3 / v4 |
 |---|----------|--------------|
 | Best for | Mento stables (USDm, EURm, cUSD, …) | General AMM pairs, exotic tokens |
 | Pricing | Oracle-based FX | AMM pool price + LP fees |

@@ -133,7 +133,16 @@ export const uniswapOperations: OperationSpec[] = [
         throw new Error(`Expected uniswap_v4, got ${listing.protocol}`);
       }
       if (!Array.isArray(listing.pairs) || listing.pairs.length === 0) {
-        throw new Error("Expected at least one Uniswap v4 pair involving USDC");
+        throw new Error("Expected at least one Uniswap pair involving USDC");
+      }
+      for (const pair of listing.pairs as { venues?: string[] }[]) {
+        const venues = pair.venues ?? [];
+        if (
+          venues.length === 0 ||
+          venues.some((venue) => venue !== "uniswap_v3" && venue !== "uniswap_v4")
+        ) {
+          throw new Error("Expected each Uniswap pair to list v3 and/or v4 venues");
+        }
       }
     },
   },

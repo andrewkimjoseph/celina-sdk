@@ -1,7 +1,7 @@
 import type { CelinaClient } from "../index.js";
 import { isGoodDollarUsdReservePair } from "../config/gooddollar.js";
 
-export type SwapProtocol = "mento_fx" | "uniswap_v4" | "gooddollar_reserve";
+export type SwapProtocol = "mento_fx" | "uniswap_v3" | "uniswap_v4" | "gooddollar_reserve";
 
 export interface SwapQuoteResult {
   protocol: SwapProtocol;
@@ -39,7 +39,23 @@ function isMentoRouteError(message: string): boolean {
 }
 
 function isUniswapRouteError(message: string): boolean {
-  return /no uniswap v4 route|insufficient liquidity in uniswap v4/i.test(message);
+  return /no uniswap (v4|v3\/v4) route|insufficient liquidity in uniswap (v4|v3\/v4)/i.test(
+    message,
+  );
+}
+
+function uniswapFailureProtocols(message: string): Array<"uniswap_v3" | "uniswap_v4"> {
+  const v3 = /uniswap v3/i.test(message);
+  const v4 = /uniswap v4/i.test(message);
+  if (v3 && v4) return ["uniswap_v3", "uniswap_v4"];
+  if (v3) return ["uniswap_v3"];
+  return ["uniswap_v4"];
+}
+
+function isUniswapProtocol(
+  protocol: SwapProtocol,
+): protocol is "uniswap_v3" | "uniswap_v4" {
+  return protocol === "uniswap_v3" || protocol === "uniswap_v4";
 }
 
 function isGoodDollarReserveRouteError(message: string): boolean {
@@ -68,7 +84,7 @@ function filterAlternatives(
   }
 
   return others.filter((alt) => {
-    if (alt.protocol !== "uniswap_v4" || alt.error) {
+    if (!isUniswapProtocol(alt.protocol) || alt.error) {
       return true;
     }
     const altOut = parseExpectedOut(alt.expectedOut);
@@ -104,7 +120,7 @@ async function tryUniswapQuote(
 ) {
   const quote = await celina.uniswap.getSwapQuote(tokenIn, tokenOut, amount, from);
   return {
-    protocol: "uniswap_v4" as const,
+    protocol: quote.protocol,
     tokenIn: quote.tokenIn,
     tokenOut: quote.tokenOut,
     amountIn: quote.amountIn,
@@ -138,7 +154,7 @@ async function tryGoodDollarReserveQuote(
   };
 }
 
-/** Quote a swap across Mento FX, GoodDollar reserve, and Uniswap v4; returns the best route. */
+/** Quote a swap across Mento FX, GoodDollar reserve, and Uniswap v3/v4; returns the best route. */
 export async function getSwapQuoteWithFallback(
   celina: CelinaClient,
   tokenIn: string,
@@ -182,7 +198,9 @@ export async function getSwapQuoteWithFallback(
   } else {
     const message = rejectionMessage(uniswapResult.reason);
     if (!isUniswapRouteError(message)) {
-      alternatives.push({ protocol: "uniswap_v4", expectedOut: "0", error: message });
+      for (const protocol of uniswapFailureProtocols(message)) {
+        alternatives.push({ protocol, expectedOut: "0", error: message });
+      }
     }
   }
 
@@ -217,7 +235,7 @@ export async function getSwapQuoteWithFallback(
     }
 
     throw new Error(
-      `No swap route for ${tokenIn} → ${tokenOut} via Mento FX, GoodDollar reserve, or Uniswap v4.`,
+      `No swap route for ${tokenIn} → ${tokenOut} via Mento FX, GoodDollar reserve, or Uniswap v3/v4.`,
     );
   }
 
@@ -274,5 +292,6 @@ export async function prepareSwapWithFallback(
     recipient: params?.recipient,
     slippageTolerance: params?.slippageTolerance,
     deadlineMinutes: params?.deadlineMinutes,
+    protocol: chosen === "uniswap_v3" || chosen === "uniswap_v4" ? chosen : undefined,
   });
 }
