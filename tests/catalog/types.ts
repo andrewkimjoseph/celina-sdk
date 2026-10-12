@@ -1,4 +1,4 @@
-import type { CelinaClient } from "@andrewkimjoseph/celina-sdk";
+import type { CelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import type { MainnetFixtures } from "../fixtures/mainnet.js";
 
 export type OperationLayer = "read" | "write" | "prepare";

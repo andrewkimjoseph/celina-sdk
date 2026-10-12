@@ -56,7 +56,7 @@ export interface CounterpartyDecision {
   snapshot: KarmaSnapshot;
 }
 
-const CELINA_USER_AGENT = "@andrewkimjoseph/celina-sdk (+@agentkarma/sdk adapter)";
+const CELINA_USER_AGENT = "@cnvlabskoxyz/celina-sdk (+@agentkarma/sdk adapter)";
 
 /** Celo (EVM) address shape. AgentKarma keys Celo agents by 0x address. */
 const CELO_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;

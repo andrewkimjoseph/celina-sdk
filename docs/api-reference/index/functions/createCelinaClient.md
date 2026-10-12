@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / createCelinaClient
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / createCelinaClient
 
 # Function: createCelinaClient()
 
 > **createCelinaClient**(`opts?`): [`CelinaClient`](../interfaces/CelinaClient.md)
 
-Defined in: [src/index.ts:91](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/index.ts#L91)
+Defined in: [src/index.ts:91](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/index.ts#L91)
 
 Create a Celina client for Celo mainnet reads and unsigned tx preparation.
 No private keys — pass prepared `steps` to wagmi/viem for wallet signing.

@@ -1,8 +1,8 @@
-**@andrewkimjoseph/celina-sdk**
+**@cnvlabskoxyz/celina-sdk**
 
 ***
 
-# @andrewkimjoseph/celina-sdk
+# @cnvlabskoxyz/celina-sdk
 
 ## Modules
 

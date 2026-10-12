@@ -1,13 +1,13 @@
 # Self Agent ID on Celo
 
-The SDK exposes Self Agent ID via `celina.self` — the same flows as [celina-mcp](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp) tools (`verify_self_agent`, `register_self_agent`, etc.).
+The SDK exposes Self Agent ID via `celina.self` — the same flows as [celina-mcp](https://www.npmjs.com/package/@cnvlabskoxyz/celina-mcp) tools (`verify_self_agent`, `register_self_agent`, etc.).
 
 For browser-first apps, also consider the official [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk).
 
 ## Configuration
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 
 const celina = createCelinaClient({
   selfAgentPrivateKey: process.env.SELF_AGENT_PRIVATE_KEY as `0x${string}`,

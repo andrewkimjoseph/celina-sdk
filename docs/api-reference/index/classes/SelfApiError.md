@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / SelfApiError
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / SelfApiError
 
 # Class: SelfApiError
 
-Defined in: [src/clients/self-api.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/clients/self-api.ts#L12)
+Defined in: [src/clients/self-api.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/clients/self-api.ts#L12)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [src/clients/self-api.ts:12](https://github.com/andrewkimjoseph/celi
 
 > **new SelfApiError**(`message`): `SelfApiError`
 
-Defined in: [src/clients/self-api.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/clients/self-api.ts#L13)
+Defined in: [src/clients/self-api.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/clients/self-api.ts#L13)
 
 #### Parameters
 

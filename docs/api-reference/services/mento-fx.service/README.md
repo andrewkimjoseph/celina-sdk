@@ -1,8 +1,8 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / services/mento-fx.service
+[@cnvlabskoxyz/celina-sdk](../../README.md) / services/mento-fx.service
 
 # services/mento-fx.service
 

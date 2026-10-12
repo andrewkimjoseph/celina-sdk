@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / GetGovernanceDelegatesOptions
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / GetGovernanceDelegatesOptions
 
 # Type Alias: GetGovernanceDelegatesOptions
 
 > **GetGovernanceDelegatesOptions** = `object`
 
-Defined in: [src/services/governance-delegates.ts:47](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L47)
+Defined in: [src/services/governance-delegates.ts:58](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L58)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/governance-delegates.ts:47](https://github.com/andrewk
 
 > `optional` **includeStats?**: `boolean`
 
-Defined in: [src/services/governance-delegates.ts:51](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L51)
+Defined in: [src/services/governance-delegates.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L62)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/governance-delegates.ts:51](https://github.com/andrewk
 
 > `optional` **limit?**: `number`
 
-Defined in: [src/services/governance-delegates.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L49)
+Defined in: [src/services/governance-delegates.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L60)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/services/governance-delegates.ts:49](https://github.com/andrewk
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/services/governance-delegates.ts:50](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L50)
+Defined in: [src/services/governance-delegates.ts:61](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L61)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [src/services/governance-delegates.ts:50](https://github.com/andrewk
 
 > `optional` **search?**: `string`
 
-Defined in: [src/services/governance-delegates.ts:48](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L48)
+Defined in: [src/services/governance-delegates.ts:59](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L59)

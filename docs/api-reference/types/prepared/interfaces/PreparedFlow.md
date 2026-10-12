@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [types/prepared](../README.md) / PreparedFlow
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [types/prepared](../README.md) / PreparedFlow
 
 # Interface: PreparedFlow
 
-Defined in: [src/types/prepared.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/types/prepared.ts#L24)
+Defined in: [src/types/prepared.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/types/prepared.ts#L24)
 
 Prepared flow = ordered unsigned transactions ready to sign (wagmi/EOA) or
 submit as UserOps (`createAAClient.sendPreparedFlow`) — not a runtime workflow engine.
@@ -18,7 +18,7 @@ The primary payload is `steps`.
 
 > **chainId**: `42220`
 
-Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/types/prepared.ts#L28)
+Defined in: [src/types/prepared.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/types/prepared.ts#L28)
 
 Celo chain id (`celo.id` / [CHAIN](../../../index/variables/CHAIN.md).id); always `42220` for Celina today.
 
@@ -28,7 +28,7 @@ Celo chain id (`celo.id` / [CHAIN](../../../index/variables/CHAIN.md).id); alway
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/types/prepared.ts#L29)
+Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/types/prepared.ts#L29)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/types/prepared.ts:29](https://github.com/andrewkimjoseph/celina
 
 > **steps**: [`PreparedTx`](PreparedTx.md)[]
 
-Defined in: [src/types/prepared.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/types/prepared.ts#L25)
+Defined in: [src/types/prepared.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/types/prepared.ts#L25)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [src/types/prepared.ts:25](https://github.com/andrewkimjoseph/celina
 
 > **summary**: `string`
 
-Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/types/prepared.ts#L26)
+Defined in: [src/types/prepared.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/types/prepared.ts#L26)

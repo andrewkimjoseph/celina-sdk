@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/humanness.service](../README.md) / assertHumanness
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/humanness.service](../README.md) / assertHumanness
 
 # Function: assertHumanness()
 
 > **assertHumanness**(`result`): `void`
 
-Defined in: [src/services/humanness.service.ts:151](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L151)
+Defined in: [src/services/humanness.service.ts:157](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L157)
 
 Throw when humanness check fails, with remediation pointers.
 

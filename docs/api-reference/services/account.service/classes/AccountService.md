@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/account.service](../README.md) / AccountService
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/account.service](../README.md) / AccountService
 
 # Class: AccountService
 
-Defined in: [src/services/account.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/account.service.ts#L19)
+Defined in: [src/services/account.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/account.service.ts#L19)
 
 CELO mainnet account snapshot for a wallet or contract address.
 
@@ -16,7 +16,7 @@ CELO mainnet account snapshot for a wallet or contract address.
 
 > **new AccountService**(`clientFactory`): `AccountService`
 
-Defined in: [src/services/account.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/account.service.ts#L22)
+Defined in: [src/services/account.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/account.service.ts#L22)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [src/services/account.service.ts:22](https://github.com/andrewkimjos
 
 > **getAccount**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `balanceCelo`: `number`; `balanceWei`: `string`; `isContract`: `boolean`; `network`: `string`; `nonce`: `number`; \}\>
 
-Defined in: [src/services/account.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/account.service.ts#L31)
+Defined in: [src/services/account.service.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/account.service.ts#L31)
 
 Fetch CELO balance, nonce, and whether the address has contract bytecode.
 
@@ -58,7 +58,7 @@ Balance in wei and CELO, current nonce, and `isContract` flag
 
 > **getAccountRegistration**(`address`): `Promise`\<\{ `accountsContract`: `"0x7d21685C17607338b313a7174bAb6620baD0aaB7"`; `address`: `` `0x${string}` ``; `isRegistered`: `boolean`; `message`: `string`; `network`: `"mainnet"`; \}\>
 
-Defined in: [src/services/account.service.ts:53](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/account.service.ts#L53)
+Defined in: [src/services/account.service.ts:53](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/account.service.ts#L53)
 
 Whether an address is registered in the Celo Accounts contract.
 Required before LockedGold lock/unlock operations.
@@ -79,7 +79,7 @@ Required before LockedGold lock/unlock operations.
 
 > **prepareRegisterAccount**(`from`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
 
-Defined in: [src/services/account.service.ts:76](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/account.service.ts#L76)
+Defined in: [src/services/account.service.ts:76](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/account.service.ts#L76)
 
 Build unsigned Accounts.createAccount() step.
 

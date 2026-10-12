@@ -1,4 +1,4 @@
-import type { CelinaClient } from "@andrewkimjoseph/celina-sdk";
+import type { CelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import { getSignerAddress } from "../helpers/env.js";
 
 export interface MainnetFixtures {

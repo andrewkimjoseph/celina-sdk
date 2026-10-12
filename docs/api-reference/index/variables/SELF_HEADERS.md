@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / SELF\_HEADERS
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / SELF\_HEADERS
 
 # Variable: SELF\_HEADERS
 
 > `const` **SELF\_HEADERS**: `object`
 
-Defined in: [src/config/self.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/self.ts#L32)
+Defined in: [src/config/self.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/config/self.ts#L32)
 
 ## Type Declaration
 

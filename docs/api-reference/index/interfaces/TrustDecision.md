@@ -1,8 +1,8 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / TrustDecision
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / TrustDecision
 
 # Interface: TrustDecision
 

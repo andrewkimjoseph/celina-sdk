@@ -30,7 +30,7 @@ GoodDollar reads resolve connected wallets to their root before checking `isWhit
 Throw with remediation text when the check fails, instead of branching on `isHumanOverall` yourself:
 
 ```ts
-import { assertHumanness } from "@andrewkimjoseph/celina-sdk";
+import { assertHumanness } from "@cnvlabskoxyz/celina-sdk";
 
 const result = await celina.humanness.checkHumanness(from);
 assertHumanness(result); // throws if !result.isHumanOverall
@@ -39,7 +39,7 @@ assertHumanness(result); // throws if !result.isHumanOverall
 The thrown error includes both rails' failure reasons plus `GOODDOLLAR_HUMANNESS_REMEDIATION`:
 
 ```ts
-import { GOODDOLLAR_HUMANNESS_REMEDIATION } from "@andrewkimjoseph/celina-sdk";
+import { GOODDOLLAR_HUMANNESS_REMEDIATION } from "@cnvlabskoxyz/celina-sdk";
 // "Register a Self agent (register_self_agent), face-verify this wallet
 //  (get_gooddollar_face_verification_link), or if already GoodDollar verified
 //  on another wallet, set CELO_PRIVATE_KEY to that verified root and link this
@@ -51,7 +51,7 @@ import { GOODDOLLAR_HUMANNESS_REMEDIATION } from "@andrewkimjoseph/celina-sdk";
 `prepareLockCelo`, `prepareVote`, `prepareStake`, etc. build unsigned flows and do **not** call `checkHumanness` themselves — the gate is enforced by the **caller**, not the SDK method. celina-mcp is the reference implementation: it wraps every governance/staking write in a `checkHumanness` + `assertHumanness` gate before preparing and executing:
 
 ```ts
-import { assertHumanness } from "@andrewkimjoseph/celina-sdk";
+import { assertHumanness } from "@cnvlabskoxyz/celina-sdk";
 
 async function executeHumannessGated(from: `0x${string}`, prepare: () => Promise<SerializedPreparedFlow>) {
   const humanness = await celina.humanness.checkHumanness(from);

@@ -1,13 +1,13 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / GOODDOLLAR\_IDENTITY\_ADDRESS
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / GOODDOLLAR\_IDENTITY\_ADDRESS
 
 # Variable: GOODDOLLAR\_IDENTITY\_ADDRESS
 
 > `const` **GOODDOLLAR\_IDENTITY\_ADDRESS**: `"0xC361A6E67822a0EDc17D899227dd9FC50BD62F42"`
 
-Defined in: [src/config/gooddollar.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/gooddollar.ts#L2)
+Defined in: [src/config/gooddollar.ts:2](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/config/gooddollar.ts#L2)
 
 GoodDollar IdentityV4 contract on Celo mainnet.

@@ -17,7 +17,7 @@ If you use viem directly (no wagmi hook), the same step shape maps to **`walletC
 ## Basic pattern
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import { useSendTransaction, useAccount } from "wagmi";
 
 const celina = createCelinaClient();
@@ -41,7 +41,7 @@ async function executePreparedFlow(
 ## React hook example
 
 ```tsx
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import { useSendTransaction, useAccount } from "wagmi";
 import { useState } from "react";
 
@@ -98,8 +98,8 @@ Some prepare methods return multiple steps (approve + action):
 Simulate each step immediately before signing to avoid gas spent on reverts. See [Prepared-step simulation](prepared-step-simulation.md).
 
 ```ts
-import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
-import { reportCelinaOnchainTxn } from "@andrewkimjoseph/celina-sdk/onchain-stats";
+import { simulatePreparedStep } from "@cnvlabskoxyz/celina-sdk/simulation";
+import { reportCelinaOnchainTxn } from "@cnvlabskoxyz/celina-sdk/onchain-stats";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();
@@ -124,7 +124,7 @@ for (const step of flow.steps) {
 }
 ```
 
-Import `reportCelinaOnchainTxn` from `@andrewkimjoseph/celina-sdk/onchain-stats` in browser/wagmi code — not from `@andrewkimjoseph/celina-sdk`. The main barrel pulls Node-only analytics (`node:async_hooks`).
+Import `reportCelinaOnchainTxn` from `@cnvlabskoxyz/celina-sdk/onchain-stats` in browser/wagmi code — not from `@cnvlabskoxyz/celina-sdk`. The main barrel pulls Node-only analytics (`node:async_hooks`).
 
 ## Estimates before prepare
 

@@ -2,7 +2,7 @@
 
 Simulate each prepared transaction step against current chain state **immediately before** the wallet signs and broadcasts it. If simulation throws, the transaction would likely revert on-chain — do not open the wallet.
 
-Import from `@andrewkimjoseph/celina-sdk/simulation` (browser-safe; no Node analytics).
+Import from `@cnvlabskoxyz/celina-sdk/simulation` (browser-safe; no Node analytics).
 
 ## When to simulate
 
@@ -23,7 +23,7 @@ After a mined approval, the next `eth_call` can still hit a lagging RPC replica.
 ## Basic usage
 
 ```ts
-import { simulatePreparedStepWithRetry } from "@andrewkimjoseph/celina-sdk/simulation";
+import { simulatePreparedStepWithRetry } from "@cnvlabskoxyz/celina-sdk/simulation";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();

@@ -13,8 +13,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@andrewkimjoseph/celina-sdk": ["./src/index.ts"],
-      "@andrewkimjoseph/celina-sdk/testing": ["./tests/testing-entry.ts"]
+      "@cnvlabskoxyz/celina-sdk": ["./src/index.ts"],
+      "@cnvlabskoxyz/celina-sdk/testing": ["./tests/testing-entry.ts"]
     }
   },
   "include": ["src/**/*"],

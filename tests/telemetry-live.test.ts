@@ -23,7 +23,7 @@ describe("live SDK telemetry", () => {
   afterEach(() => {
     globalThis.fetch = originalFetch;
     setEventsStatsFetchForTests((() =>
-      Promise.resolve(new Response(null, { status: 204 })),
+      Promise.resolve(new Response(null, { status: 204 }))
     ) as typeof fetch);
   });
 

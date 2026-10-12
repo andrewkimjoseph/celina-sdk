@@ -4,8 +4,8 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@andrewkimjoseph/celina-sdk": path.resolve(__dirname, "src/index.ts"),
-      "@andrewkimjoseph/celina-sdk/testing": path.resolve(
+      "@cnvlabskoxyz/celina-sdk": path.resolve(__dirname, "src/index.ts"),
+      "@cnvlabskoxyz/celina-sdk/testing": path.resolve(
         __dirname,
         "tests/testing-entry.ts",
       ),

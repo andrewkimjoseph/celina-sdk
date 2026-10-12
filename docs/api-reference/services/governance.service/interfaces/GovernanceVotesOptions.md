@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/governance.service](../README.md) / GovernanceVotesOptions
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/governance.service](../README.md) / GovernanceVotesOptions
 
 # Interface: GovernanceVotesOptions
 
-Defined in: [src/services/governance.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L60)
+Defined in: [src/services/governance.service.ts:60](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance.service.ts#L60)
 
 Options for reading governance votes cast by an address.
 
@@ -16,6 +16,6 @@ Options for reading governance votes cast by an address.
 
 > `optional` **proposalId?**: `number`
 
-Defined in: [src/services/governance.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance.service.ts#L62)
+Defined in: [src/services/governance.service.ts:62](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance.service.ts#L62)
 
 When set, return only votes for this proposal ID.

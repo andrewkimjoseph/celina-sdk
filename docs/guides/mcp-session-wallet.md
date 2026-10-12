@@ -1,6 +1,6 @@
 # MCP session wallet (local stdio)
 
-This guide applies to **[celina-mcp](https://www.npmjs.com/package/@andrewkimjoseph/celina-mcp)** when you run it locally with `CELO_PRIVATE_KEY` in the MCP server `env`. It does **not** apply to browser apps that use this SDK directly.
+This guide applies to **[celina-mcp](https://www.npmjs.com/package/@cnvlabskoxyz/celina-mcp)** when you run it locally with `CELO_PRIVATE_KEY` in the MCP server `env`. It does **not** apply to browser apps that use this SDK directly.
 
 ## Prerequisites
 

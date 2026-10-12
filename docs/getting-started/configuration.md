@@ -3,7 +3,7 @@
 ## createCelinaClient options
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 
 const celina = createCelinaClient({
   rpcUrl: "https://forno.celo.org",
@@ -48,7 +48,7 @@ See [On-chain attribution](../guides/on-chain-attribution.md) and [Prepared flow
 ## SdkConfig type
 
 ```ts
-import type { SdkConfig, CelinaClientOptions } from "@andrewkimjoseph/celina-sdk";
+import type { SdkConfig, CelinaClientOptions } from "@cnvlabskoxyz/celina-sdk";
 
 // CelinaClientOptions is Partial<SdkConfig>
 ```
@@ -65,7 +65,7 @@ The SDK targets **Celo mainnet** only. All prepared flows return `chainId: 42220
 
 ## Account Abstraction
 
-Sponsored UserOps use a separate factory — **`createAAClient`** from `@andrewkimjoseph/celina-sdk/aa` — with an explicit `gasSponsorship` provider object (v1: `provider: "pimlico"` + `pimlico.apiKey`). Credentials stay in your app; Celina MCP does not host them.
+Sponsored UserOps use a separate factory — **`createAAClient`** from `@cnvlabskoxyz/celina-sdk/aa` — with an explicit `gasSponsorship` provider object (v1: `provider: "pimlico"` + `pimlico.apiKey`). Credentials stay in your app; Celina MCP does not host them.
 
 Optional **`attributionTags`** on `createAAClient` apply Celina dual tags in `sendPreparedFlow` (same as `createCelinaClient` / `prepare*`). Omit them to pass step calldata through unchanged.
 

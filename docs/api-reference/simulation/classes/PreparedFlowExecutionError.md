@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [simulation](../README.md) / PreparedFlowExecutionError
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [simulation](../README.md) / PreparedFlowExecutionError
 
 # Class: PreparedFlowExecutionError
 
-Defined in: [src/simulation/simulate-prepared-step.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L33)
+Defined in: [src/simulation/simulate-prepared-step.ts:33](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L33)
 
 Thrown when a multi-step prepared flow fails after one or more steps already
 broadcast. Carries confirmed hashes so hosts can report partial progress.
@@ -21,7 +21,7 @@ broadcast. Carries confirmed hashes so hosts can report partial progress.
 
 > **new PreparedFlowExecutionError**(`message`, `stepHashes?`, `stepCount?`): `PreparedFlowExecutionError`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L37)
+Defined in: [src/simulation/simulate-prepared-step.ts:37](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L37)
 
 #### Parameters
 
@@ -99,7 +99,7 @@ Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 > `readonly` `optional` **stepCount?**: `number`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L35)
+Defined in: [src/simulation/simulate-prepared-step.ts:35](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L35)
 
 ***
 
@@ -107,7 +107,7 @@ Defined in: [src/simulation/simulate-prepared-step.ts:35](https://github.com/and
 
 > `readonly` **stepHashes**: `` `0x${string}` ``[]
 
-Defined in: [src/simulation/simulate-prepared-step.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L34)
+Defined in: [src/simulation/simulate-prepared-step.ts:34](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L34)
 
 ***
 

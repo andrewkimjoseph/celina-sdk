@@ -56,7 +56,7 @@ flowchart TB
 
 | Layer | Role |
 |-------|------|
-| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@andrewkimjoseph/celina-sdk/tools` |
+| **SDK** (this package) | Chain logic, `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution, `createAAClient`, and `@cnvlabskoxyz/celina-sdk/tools` |
 | **MCP** | Registers filtered `ALL_TOOL_DEFINITIONS`; stdio `execute_*` with server keys |
 | **MCP remote** | Public `https://mcp.usecelina.xyz/mcp` — hosted reads + prepare + attribution tools (no server-key writes; no sponsorship keys) |
 | **Browser hosts** | `filterToolDefinitions(..., { surface: "browser" })` — user signs in wallet; no server keys |
@@ -65,7 +65,7 @@ Third-party apps can use the programmatic client only, or wire the tool catalog 
 
 ### Sign-time guard
 
-Browser hosts and local MCP simulate each prepared step immediately before broadcast via `@andrewkimjoseph/celina-sdk/simulation`. Wallet-specific logic (MiniPay fee currency, gas buffer UX) stays in the host app — not in the SDK.
+Browser hosts and local MCP simulate each prepared step immediately before broadcast via `@cnvlabskoxyz/celina-sdk/simulation`. Wallet-specific logic (MiniPay fee currency, gas buffer UX) stays in the host app — not in the SDK.
 
 ### Wallet address: SDK vs MCP
 
@@ -81,8 +81,8 @@ See [MCP session wallet](../guides/mcp-session-wallet.md) for wallet param rules
 
 | Export | Purpose |
 |--------|---------|
-| `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
-| `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run each `PreparedTx` before broadcast |
+| `@cnvlabskoxyz/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) — see [Tool catalog](../guides/tool-catalog.md) |
+| `@cnvlabskoxyz/celina-sdk/simulation` | `simulatePreparedStep` — dry-run each `PreparedTx` before broadcast |
 | `appendCelinaCalldataTag` | Dual CELINA attribution (legacy + ERC-8021); tags from `createCelinaClient` or `createAAClient` |
 | `createAAClient` / `deriveSmartAccountAddress` | Sponsored UserOps — see [Account Abstraction](../guides/account-abstraction.md) |
 | `checkAttributionInCalldata` | Unified custom `tags` from calldata — see [On-chain attribution](../guides/on-chain-attribution.md) |
@@ -118,7 +118,7 @@ These live in `src/utils/`, `src/aa/`, and `src/config/celina-tag.ts` and are re
 |------|---------|
 | `src/index.ts` | Public entry — `createCelinaClient()`, `createAAClient()`, and type exports |
 | `src/aa/` | ERC-4337 AA client, gas sponsorship, prepared → UserOp mapping |
-| `src/tools/` | LLM tool catalog — exported as `@andrewkimjoseph/celina-sdk/tools` |
+| `src/tools/` | LLM tool catalog — exported as `@cnvlabskoxyz/celina-sdk/tools` |
 | `src/clients/` | viem public clients (Celo + Ethereum for ENS) |
 | `src/config/` | Token registry, Aave/GoodDollar/Uniswap constants, `celina-tag` |
 | `src/services/` | Domain logic — reads and `prepare*` methods |
