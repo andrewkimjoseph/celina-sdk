@@ -18,8 +18,8 @@ Celina is layered from chain logic through agent tooling:
 
 | Layer | Package | Role |
 |-------|---------|------|
-| **SDK** | `@andrewkimjoseph/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
-| **MCP** | `@andrewkimjoseph/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads ([install guide](https://www.usecelina.xyz/mcp/local)) |
+| **SDK** | `@cnvlabskoxyz/celina-sdk` | Reads, gas estimates, `prepare*` flows (`chainId: 42220`), ERC-8021 attribution, `createAAClient` |
+| **MCP** | `@cnvlabskoxyz/celina-mcp` | MCP tools for Cursor / Claude / LM Studio — stdio writes or hosted reads ([install guide](https://www.usecelina.xyz/mcp/local)) |
 | **MCP remote** | `celina-mcp-remote` | Vercel Streamable HTTP + A2A — **50 hosted read tools**; no server-key writes; no sponsorship keys |
 
 This repo is the **SDK**. Downstream packages depend on published npm semver (no local `file:` links in production).
@@ -27,7 +27,7 @@ This repo is the **SDK**. Downstream packages depend on published npm semver (no
 ## Install
 
 ```bash
-npm i @andrewkimjoseph/celina-sdk
+npm i @cnvlabskoxyz/celina-sdk
 ```
 
 Requires Node.js ≥ 20.
@@ -36,27 +36,27 @@ Requires Node.js ≥ 20.
 
 | Export | Purpose |
 |--------|---------|
-| `@andrewkimjoseph/celina-sdk` | `createCelinaClient`, domain services, `parsePrivateKeyEnv` |
-| `@andrewkimjoseph/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) |
-| `@andrewkimjoseph/celina-sdk/simulation` | `simulatePreparedStep` — dry-run prepared txs before broadcast |
-| `@andrewkimjoseph/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-remote) |
-| `@andrewkimjoseph/celina-sdk/oasf` | OASF manifest helpers for agent discovery |
-| `@andrewkimjoseph/celina-sdk/testing` | Test harness entry for fork/integration tests |
+| `@cnvlabskoxyz/celina-sdk` | `createCelinaClient`, domain services, `parsePrivateKeyEnv` |
+| `@cnvlabskoxyz/celina-sdk/tools` | Shared LLM tool catalog (`ToolDefinition`, `filterToolDefinitions`) |
+| `@cnvlabskoxyz/celina-sdk/simulation` | `simulatePreparedStep` — dry-run prepared txs before broadcast |
+| `@cnvlabskoxyz/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-remote) |
+| `@cnvlabskoxyz/celina-sdk/oasf` | OASF manifest helpers for agent discovery |
+| `@cnvlabskoxyz/celina-sdk/testing` | Test harness entry for fork/integration tests |
 
 ### LLM tool catalog (v0.5+)
 
-For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definitions from `@andrewkimjoseph/celina-sdk/tools` instead of redefining schemas. See [LLM tool catalog](docs/guides/tool-catalog.md) — includes the recommended **`dynamicTool`** pattern so TypeScript does not OOM on large tool sets.
+For MCP servers and chat APIs (Vercel AI SDK, etc.), import shared tool definitions from `@cnvlabskoxyz/celina-sdk/tools` instead of redefining schemas. See [LLM tool catalog](docs/guides/tool-catalog.md) — includes the recommended **`dynamicTool`** pattern so TypeScript does not OOM on large tool sets.
 
 ### Sign-time simulation (v0.9.6+)
 
-Before broadcasting prepared steps, call `simulatePreparedStep` from `@andrewkimjoseph/celina-sdk/simulation` — browser-safe, no Node analytics. See [Prepared-step simulation](docs/guides/prepared-step-simulation.md).
+Before broadcasting prepared steps, call `simulatePreparedStep` from `@cnvlabskoxyz/celina-sdk/simulation` — browser-safe, no Node analytics. See [Prepared-step simulation](docs/guides/prepared-step-simulation.md).
 
 ## Documentation
 
 **Full docs:** [celina-sdk on GitBook](https://andrewkimjoseph.gitbook.io/celina-sdk)
 
 - [Quick start](https://andrewkimjoseph.gitbook.io/celina-sdk/getting-started/quick-start)
-- [LLM tool catalog](docs/guides/tool-catalog.md) — `@andrewkimjoseph/celina-sdk/tools` for MCP and AI SDK hosts
+- [LLM tool catalog](docs/guides/tool-catalog.md) — `@cnvlabskoxyz/celina-sdk/tools` for MCP and AI SDK hosts
 - [Architecture](docs/concepts/architecture.md) — client composition and stack
 - [Prepared flows](docs/concepts/prepared-flows.md) — `SerializedPreparedFlow` (`chainId: 42220`), ERC-8021 Celina attribution
 - [On-chain attribution](docs/guides/on-chain-attribution.md) — wire format, check vs verify, Celina vs AA tags
@@ -77,7 +77,7 @@ Docs source lives in [`docs/`](docs/) in this repository.
 ## Quick example
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 
 const celina = createCelinaClient({
   attributionTags: ["celo_862c21dd97a7", "my_app"],
@@ -118,9 +118,9 @@ Every step with calldata gets an **ERC-8021 Schema 0** attribution suffix via `a
 
 Optional `attributionTags` in `createCelinaClient({ attributionTags: [...] })` set custom codes after platform `celina` (deduped, stable order). The same option on **`createAAClient`** tags at `sendPreparedFlow` time (omit for pass-through). Prepared flows expose **`chainId: 42220`**. List or check on-chain tags with `check_attribution_tag` (preferred) or `checkAttributionInCalldata`; use `verify_attribution_tag` / `verifyAttributionInCalldata` for raw layers (including historical legacy `CELINA|…` when present).
 
-Before opening the wallet, simulate each step against current chain state with `@andrewkimjoseph/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
+Before opening the wallet, simulate each step against current chain state with `@cnvlabskoxyz/celina-sdk/simulation` (`simulatePreparedStep`). Local **celina-mcp** stdio writes use the same helper in `executePreparedFlow` before broadcast.
 
-For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) from `@andrewkimjoseph/celina-sdk/aa` with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
+For **sponsored / batched UserOps**, use [`createAAClient`](docs/guides/account-abstraction.md) from `@cnvlabskoxyz/celina-sdk/aa` with an app-owned gas sponsorship provider (v1: Pimlico). MCP does not host sponsorship API keys.
 
 See [Prepared flows](docs/concepts/prepared-flows.md), [On-chain attribution](docs/guides/on-chain-attribution.md), [Prepared-step simulation](docs/guides/prepared-step-simulation.md), and [Account Abstraction](docs/guides/account-abstraction.md).
 
@@ -138,7 +138,7 @@ Identity whitelist reads, daily UBI entitlement, unsigned UBI claim, and **G$ �
 |-------|---------|
 | `getWhitelistingInfo`, `getUbiClaimEligibility`, `getReserveQuote` | `prepareClaimUbi`, `prepareReserveSwap` |
 
-For **G$ ↔ USDm**, use `getReserveQuote` / `prepareReserveSwap` (or aggregated `getSwapQuoteWithFallback` from `@andrewkimjoseph/celina-sdk/tools`) — not Uniswap. For other G$ pairs (e.g. G$ → USDT), Uniswap v3 and v4 remain the AMM fallback. The quote keeps the higher output.
+For **G$ ↔ USDm**, use `getReserveQuote` / `prepareReserveSwap` (or aggregated `getSwapQuoteWithFallback` from `@cnvlabskoxyz/celina-sdk/tools`) — not Uniswap. For other G$ pairs (e.g. G$ → USDT), Uniswap v3 and v4 remain the AMM fallback. The quote keeps the higher output.
 
 MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_gooddollar_reserve_quote`, `estimate_gooddollar_reserve_swap`, `execute_gooddollar_reserve_swap` (stdio write with server key); `claim_daily_gooddollar_ubi` (stdio UBI write). Browser apps: `prepareClaimUbi`, `prepareReserveSwap`, or `prepare_swap` + wagmi.
 
@@ -146,7 +146,7 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 
 ## Related packages
 
-- [`@andrewkimjoseph/celina-mcp`](https://www.usecelina.xyz/mcp/local) — MCP server (`get_wallet_address`, optional address on wallet-scoped tools); [install guide](https://www.usecelina.xyz/mcp/local)
+- [`@cnvlabskoxyz/celina-mcp`](https://www.usecelina.xyz/mcp/local) — MCP server (`get_wallet_address`, optional address on wallet-scoped tools); [install guide](https://www.usecelina.xyz/mcp/local)
 - [`celina-mcp-remote`](../celina-mcp-remote/) — Cloudflare Worker-hosted remote MCP endpoint (`https://mcp.usecelina.xyz/mcp`)
 - [`@selfxyz/agent-sdk`](https://www.npmjs.com/package/@selfxyz/agent-sdk) — Self Agent ID browser flows
 

@@ -19,6 +19,9 @@ describe("sanitizePackageDeviceId", () => {
     expect(sanitizePackageDeviceId("@andrewkimjoseph/celina-mcp")).toBe(
       "andrewkimjoseph_celina_mcp",
     );
+    expect(sanitizePackageDeviceId("@cnvlabskoxyz/celina-sdk")).toBe(
+      "cnvlabskoxyz_celina_sdk",
+    );
     expect(sanitizePackageDeviceId("@andrewkimjoseph/celina-sdk")).toBe(
       "andrewkimjoseph_celina_sdk",
     );
@@ -54,7 +57,7 @@ describe("detectConsumerPackageName", () => {
     mkdirSync(join(sdkRoot, "build"), { recursive: true });
     writeFileSync(
       join(sdkRoot, "package.json"),
-      JSON.stringify({ name: "@andrewkimjoseph/celina-sdk" }),
+      JSON.stringify({ name: "@cnvlabskoxyz/celina-sdk" }),
     );
     const sdkFile = join(sdkRoot, "build", "index.js");
     writeFileSync(sdkFile, "// stub");

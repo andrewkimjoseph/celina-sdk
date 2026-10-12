@@ -58,7 +58,7 @@ const voteFlow = await celina.governance.prepareVote(from, /* proposalId */ 42, 
 ```
 
 ```ts
-import { VOTE_VALUES, voteValueToInt, type VoteValueName } from "@andrewkimjoseph/celina-sdk";
+import { VOTE_VALUES, voteValueToInt, type VoteValueName } from "@cnvlabskoxyz/celina-sdk";
 // VOTE_VALUES === ["None", "Abstain", "No", "Yes"] — on-chain enum order
 ```
 

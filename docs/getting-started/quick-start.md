@@ -5,7 +5,7 @@
 ## 1. Create a client
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 
 const celina = createCelinaClient({
   rpcUrl: "https://forno.celo.org",
@@ -51,8 +51,8 @@ console.log(flow.steps.length);
 Simulate each step immediately before signing to catch reverts before gas is spent. `usePublicClient()` returns a viem `PublicClient` — the same type `simulatePreparedStep` expects.
 
 ```ts
-import { simulatePreparedStep } from "@andrewkimjoseph/celina-sdk/simulation";
-import { reportCelinaOnchainTxn } from "@andrewkimjoseph/celina-sdk/onchain-stats";
+import { simulatePreparedStep } from "@cnvlabskoxyz/celina-sdk/simulation";
+import { reportCelinaOnchainTxn } from "@cnvlabskoxyz/celina-sdk/onchain-stats";
 import { useSendTransaction, usePublicClient } from "wagmi";
 
 const { sendTransactionAsync } = useSendTransaction();

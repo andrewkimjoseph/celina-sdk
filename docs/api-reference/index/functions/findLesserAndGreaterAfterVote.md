@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / findLesserAndGreaterAfterVote
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / findLesserAndGreaterAfterVote
 
 # Function: findLesserAndGreaterAfterVote()
 
 > **findLesserAndGreaterAfterVote**(`groups`, `targetGroup`, `voteWeight`): `object`
 
-Defined in: [src/utils/election-vote-neighbors.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/utils/election-vote-neighbors.ts#L12)
+Defined in: [src/utils/election-vote-neighbors.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/utils/election-vote-neighbors.ts#L12)
 
 Find lesser/greater neighbour validator groups after a vote weight change.
 Mirrors Celo Mondo's findLesserAndGreaterAfterVote (groups sorted descending).

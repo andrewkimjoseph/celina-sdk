@@ -1,8 +1,8 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / services/contract.service
+[@cnvlabskoxyz/celina-sdk](../../README.md) / services/contract.service
 
 # services/contract.service
 

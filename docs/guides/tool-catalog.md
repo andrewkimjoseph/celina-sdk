@@ -1,4 +1,4 @@
-# LLM tool catalog (`@andrewkimjoseph/celina-sdk/tools`)
+# LLM tool catalog (`@cnvlabskoxyz/celina-sdk/tools`)
 
 From **v0.5.0**, the SDK publishes a shared catalog of LLM-oriented tools: Zod input schemas, descriptions, and handlers that call `CelinaClient`. The same definitions power **celina-mcp** (`surface: "mcp"`) and **browser wallet apps** (`surface: "browser"`).
 
@@ -9,11 +9,11 @@ Use the programmatic client (`createCelinaClient`) when you only need reads and 
 The catalog is a separate export path (keeps MCP/agent deps out of the default bundle for simple wagmi apps):
 
 ```bash
-npm i @andrewkimjoseph/celina-sdk
+npm i @cnvlabskoxyz/celina-sdk
 ```
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import {
   ALL_TOOL_DEFINITIONS,
   filterToolDefinitions,
@@ -21,7 +21,7 @@ import {
   getMcpToolNames,
   type ToolDefinition,
   type ToolRuntime,
-} from "@andrewkimjoseph/celina-sdk/tools";
+} from "@cnvlabskoxyz/celina-sdk/tools";
 ```
 
 Requires **Node.js ≥ 20**. Schemas are built with **Zod 3** (same major as this package’s dependency).
@@ -101,12 +101,12 @@ Recommended pattern:
 
 ```ts
 import { dynamicTool, type FlexibleSchema, type ToolSet } from "ai";
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 import {
   ALL_TOOL_DEFINITIONS,
   filterToolDefinitions,
   type ToolRuntime,
-} from "@andrewkimjoseph/celina-sdk/tools";
+} from "@cnvlabskoxyz/celina-sdk/tools";
 
 const celina = createCelinaClient();
 const connected = "0xYourAddress" as const;
@@ -177,7 +177,7 @@ If your app depends on Zod 4, keep using the catalog schemas as-is and the `unkn
 3. Rich `returns` / `examples` live in `celina-website/src/data/tools.overrides.ts`.
 4. `celina-website` `prebuild` runs sync automatically.
 
-Helpers exported from `@andrewkimjoseph/celina-sdk/tools`: `getWebsiteToolBaselines`, `getHostedMcpToolCount`, `getMcpToolNameSet`, `toWebsiteToolBaseline`.
+Helpers exported from `@cnvlabskoxyz/celina-sdk/tools`: `getWebsiteToolBaselines`, `getHostedMcpToolCount`, `getMcpToolNameSet`, `toWebsiteToolBaseline`.
 
 ## See also
 

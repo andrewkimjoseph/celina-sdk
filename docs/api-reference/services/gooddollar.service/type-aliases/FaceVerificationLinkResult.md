@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/gooddollar.service](../README.md) / FaceVerificationLinkResult
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/gooddollar.service](../README.md) / FaceVerificationLinkResult
 
 # Type Alias: FaceVerificationLinkResult
 
 > **FaceVerificationLinkResult** = `object`
 
-Defined in: [src/services/gooddollar.service.ts:72](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L72)
+Defined in: [src/services/gooddollar.service.ts:72](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L72)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/services/gooddollar.service.ts:72](https://github.com/andrewkim
 
 > **callbackUrl**: `string`
 
-Defined in: [src/services/gooddollar.service.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L74)
+Defined in: [src/services/gooddollar.service.ts:74](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L74)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [src/services/gooddollar.service.ts:74](https://github.com/andrewkim
 
 > **from**: `` `0x${string}` ``
 
-Defined in: [src/services/gooddollar.service.ts:73](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L73)
+Defined in: [src/services/gooddollar.service.ts:73](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L73)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [src/services/gooddollar.service.ts:73](https://github.com/andrewkim
 
 > `optional` **guidance?**: `object`
 
-Defined in: [src/services/gooddollar.service.ts:79](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L79)
+Defined in: [src/services/gooddollar.service.ts:79](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L79)
 
 #### connectedTo?
 
@@ -56,7 +56,7 @@ Defined in: [src/services/gooddollar.service.ts:79](https://github.com/andrewkim
 
 > `optional` **link?**: `string`
 
-Defined in: [src/services/gooddollar.service.ts:75](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L75)
+Defined in: [src/services/gooddollar.service.ts:75](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L75)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [src/services/gooddollar.service.ts:75](https://github.com/andrewkim
 
 > **network**: `"celo-mainnet"`
 
-Defined in: [src/services/gooddollar.service.ts:76](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L76)
+Defined in: [src/services/gooddollar.service.ts:76](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L76)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [src/services/gooddollar.service.ts:76](https://github.com/andrewkim
 
 > `optional` **reason?**: `string`
 
-Defined in: [src/services/gooddollar.service.ts:78](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L78)
+Defined in: [src/services/gooddollar.service.ts:78](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L78)
 
 ***
 
@@ -80,4 +80,4 @@ Defined in: [src/services/gooddollar.service.ts:78](https://github.com/andrewkim
 
 > `optional` **skipped?**: `boolean`
 
-Defined in: [src/services/gooddollar.service.ts:77](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/gooddollar.service.ts#L77)
+Defined in: [src/services/gooddollar.service.ts:77](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/gooddollar.service.ts#L77)

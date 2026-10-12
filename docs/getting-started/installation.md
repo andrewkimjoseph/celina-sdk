@@ -3,7 +3,7 @@
 > **Server-side only.** This package includes server-native dependencies (`@agentkarma/sdk`, `@celo/attribution-tags`) that cannot be bundled for the browser. Import it only from Node.js environments — API routes, background workers (BullMQ / Vercel Cron), or CLI scripts.
 
 ```bash
-npm i @andrewkimjoseph/celina-sdk
+npm i @cnvlabskoxyz/celina-sdk
 ```
 
 ## Requirements
@@ -24,4 +24,4 @@ Celina SDK prepares unsigned transactions; wagmi/viem handles signing and broadc
 
 ## Optional: sign-time simulation
 
-For wallet apps, import `@andrewkimjoseph/celina-sdk/simulation` and call `simulatePreparedStep` immediately before each send. The subpath is browser-safe (viem + types only; no Node analytics). See [Prepared-step simulation](../guides/prepared-step-simulation.md).
+For wallet apps, import `@cnvlabskoxyz/celina-sdk/simulation` and call `simulatePreparedStep` immediately before each send. The subpath is browser-safe (viem + types only; no Node analytics). See [Prepared-step simulation](../guides/prepared-step-simulation.md).

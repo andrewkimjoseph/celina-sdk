@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / GovernanceDelegate
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / GovernanceDelegate
 
 # Type Alias: GovernanceDelegate
 
 > **GovernanceDelegate** = [`GovernanceDelegateMetadata`](GovernanceDelegateMetadata.md) & `object`
 
-Defined in: [src/services/governance-delegates.ts:38](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/governance-delegates.ts#L38)
+Defined in: [src/services/governance-delegates.ts:49](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/governance-delegates.ts#L49)
 
 ## Type Declaration
 

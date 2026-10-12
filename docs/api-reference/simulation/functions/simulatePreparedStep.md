@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [simulation](../README.md) / simulatePreparedStep
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [simulation](../README.md) / simulatePreparedStep
 
 # Function: simulatePreparedStep()
 
 > **simulatePreparedStep**(`publicClient`, `params`, `options?`): `Promise`\<`void`\>
 
-Defined in: [src/simulation/simulate-prepared-step.ts:93](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L93)
+Defined in: [src/simulation/simulate-prepared-step.ts:93](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L93)
 
 Simulate a prepared transaction step against current chain state.
 Throws when the transaction would revert — call immediately before send.

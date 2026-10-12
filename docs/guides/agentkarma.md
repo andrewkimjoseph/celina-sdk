@@ -16,7 +16,7 @@ For direct AgentKarma integration outside Celina, see [`@agentkarma/sdk`](https:
 No configuration is required. The adapter defaults to `https://agentkarma.io`:
 
 ```ts
-import { createCelinaClient } from "@andrewkimjoseph/celina-sdk";
+import { createCelinaClient } from "@cnvlabskoxyz/celina-sdk";
 
 const celina = createCelinaClient();
 

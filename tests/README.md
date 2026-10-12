@@ -51,7 +51,7 @@ Writes and destructive Self flows are **off by default** so `npm test` does not 
 4. Run `npm test` in `celina-sdk`, then `celina-mcp`.
 5. `registry-parity.test.ts` fails if an MCP tool lacks a catalog entry.
 
-`celina-mcp` imports the shared catalog via `@andrewkimjoseph/celina-sdk/testing` (published with the SDK package).
+`celina-mcp` imports the shared catalog via `@cnvlabskoxyz/celina-sdk/testing` (published with the SDK package).
 
 ### OperationSpec shape
 

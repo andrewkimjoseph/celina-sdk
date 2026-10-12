@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/humanness.service](../README.md) / HumannessCheckResult
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/humanness.service](../README.md) / HumannessCheckResult
 
 # Interface: HumannessCheckResult
 
-Defined in: [src/services/humanness.service.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L19)
+Defined in: [src/services/humanness.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L21)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [src/services/humanness.service.ts:19](https://github.com/andrewkimj
 
 > **goodDollar**: [`HumannessRailResult`](HumannessRailResult.md)
 
-Defined in: [src/services/humanness.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L22)
+Defined in: [src/services/humanness.service.ts:24](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L24)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/services/humanness.service.ts:22](https://github.com/andrewkimj
 
 > **isHumanOverall**: `boolean`
 
-Defined in: [src/services/humanness.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L23)
+Defined in: [src/services/humanness.service.ts:25](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L25)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/services/humanness.service.ts:23](https://github.com/andrewkimj
 
 > **selfAgent**: [`HumannessRailResult`](HumannessRailResult.md)
 
-Defined in: [src/services/humanness.service.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L21)
+Defined in: [src/services/humanness.service.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L23)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [src/services/humanness.service.ts:21](https://github.com/andrewkimj
 
 > **signerAddress**: `` `0x${string}` ``
 
-Defined in: [src/services/humanness.service.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/humanness.service.ts#L20)
+Defined in: [src/services/humanness.service.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/humanness.service.ts#L22)

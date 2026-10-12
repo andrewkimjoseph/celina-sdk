@@ -2,8 +2,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const SDK_PACKAGE_NAME = "@andrewkimjoseph/celina-sdk";
-const SDK_DEVICE_IDS = new Set(["andrewkimjoseph_celina_sdk", "celina-sdk"]);
+const SDK_PACKAGE_NAME = "@cnvlabskoxyz/celina-sdk";
+const SDK_DEVICE_IDS = new Set([
+  "cnvlabskoxyz_celina_sdk",
+  "andrewkimjoseph_celina_sdk",
+  "celina-sdk",
+]);
 
 let detectionCached = false;
 let detectedDeviceId: string | undefined;
@@ -48,7 +52,7 @@ function isSdkFramePath(filePath: string, sdkRoot: string | undefined): boolean 
     }
   }
   return normalized.includes(
-    `${sep}node_modules${sep}@andrewkimjoseph${sep}celina-sdk${sep}`,
+    `${sep}node_modules${sep}@cnvlabskoxyz${sep}celina-sdk${sep}`,
   );
 }
 

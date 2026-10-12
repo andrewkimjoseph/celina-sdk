@@ -68,7 +68,7 @@ Sign and confirm each step sequentially. Do not skip or reorder steps.
 
 ## Sign-time simulation
 
-Call `simulatePreparedStep` from `@andrewkimjoseph/celina-sdk/simulation` **per step, immediately before** `sendTransactionAsync` — after any prior step is mined. Simulation uses current chain state; simulating step 2 before step 1 confirms falsely fails with insufficient allowance.
+Call `simulatePreparedStep` from `@cnvlabskoxyz/celina-sdk/simulation` **per step, immediately before** `sendTransactionAsync` — after any prior step is mined. Simulation uses current chain state; simulating step 2 before step 1 confirms falsely fails with insufficient allowance.
 
 After a mined approval, the next `eth_call` can still hit a lagging RPC replica and revert with an opaque message. Hosts that execute sequential steps (MCP `execute_*`, wallet confirm cards) should use `simulatePreparedStepWithRetry` instead — it retries with short backoff before treating the revert as final.
 
@@ -83,7 +83,7 @@ Those MCP tools sign and broadcast with `CELO_PRIVATE_KEY` instead of returning 
 `value` fields are decimal strings (not BigInt) so flows serialize cleanly over JSON APIs:
 
 ```ts
-import { serializePreparedFlow } from "@andrewkimjoseph/celina-sdk";
+import { serializePreparedFlow } from "@cnvlabskoxyz/celina-sdk";
 
 // prepare* methods already return serialized flows
 const flow = await celina.transaction.prepareSend(from, to, "CELO", "1");

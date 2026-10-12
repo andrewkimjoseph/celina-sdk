@@ -1,13 +1,13 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / AAVE\_SUPPORTED\_SYMBOLS
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / AAVE\_SUPPORTED\_SYMBOLS
 
 # Variable: AAVE\_SUPPORTED\_SYMBOLS
 
 > `const` **AAVE\_SUPPORTED\_SYMBOLS**: readonly \[`"USDT"`, `"WETH"`, `"USDm"`, `"USDC"`, `"CELO"`, `"EURm"`\]
 
-Defined in: [src/config/aave.ts:52](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/config/aave.ts#L52)
+Defined in: [src/config/aave.ts:56](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/config/aave.ts#L56)
 
 Aave V3 Celo pool address and supported asset symbols.

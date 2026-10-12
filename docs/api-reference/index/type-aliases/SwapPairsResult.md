@@ -1,16 +1,16 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [index](../README.md) / SwapPairsResult
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [index](../README.md) / SwapPairsResult
 
 # Type Alias: SwapPairsResult
 
 > **SwapPairsResult** = `object`
 
-Defined in: [src/services/swap-pairs.ts:17](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L17)
+Defined in: [src/services/swap-pairs.ts:26](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L26)
 
-Mento FX or Uniswap pair listing returned to tools and SDK callers. Uniswap pairs include optional `venues`.
+Mento FX or Uniswap pair listing returned to tools and SDK callers.
 
 ## Properties
 
@@ -18,7 +18,7 @@ Mento FX or Uniswap pair listing returned to tools and SDK callers. Uniswap pair
 
 > `optional` **counterparts?**: `string`[]
 
-Defined in: [src/services/swap-pairs.ts:22](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L22)
+Defined in: [src/services/swap-pairs.ts:31](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L31)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/services/swap-pairs.ts:22](https://github.com/andrewkimjoseph/c
 
 > **network**: `"mainnet"`
 
-Defined in: [src/services/swap-pairs.ts:18](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L18)
+Defined in: [src/services/swap-pairs.ts:27](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L27)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [src/services/swap-pairs.ts:18](https://github.com/andrewkimjoseph/c
 
 > **pairs**: [`SwapPair`](SwapPair.md)[]
 
-Defined in: [src/services/swap-pairs.ts:21](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L21)
+Defined in: [src/services/swap-pairs.ts:30](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L30)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [src/services/swap-pairs.ts:21](https://github.com/andrewkimjoseph/c
 
 > **protocol**: `"mento_fx"` \| `"uniswap_v4"`
 
-Defined in: [src/services/swap-pairs.ts:19](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L19)
+Defined in: [src/services/swap-pairs.ts:28](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L28)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [src/services/swap-pairs.ts:19](https://github.com/andrewkimjoseph/c
 
 > `optional` **source?**: `"subgraph"` \| `"onchain"`
 
-Defined in: [src/services/swap-pairs.ts:23](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L23)
+Defined in: [src/services/swap-pairs.ts:32](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L32)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [src/services/swap-pairs.ts:23](https://github.com/andrewkimjoseph/c
 
 > `optional` **token?**: `string`
 
-Defined in: [src/services/swap-pairs.ts:20](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/swap-pairs.ts#L20)
+Defined in: [src/services/swap-pairs.ts:29](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/swap-pairs.ts#L29)

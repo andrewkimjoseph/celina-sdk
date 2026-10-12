@@ -32,7 +32,7 @@ Use **one consistent tag list** per send path. Setting different lists on both t
 Hand-built flows (no `prepare*`) that still need tags:
 
 ```ts
-import { appendCelinaCalldataTag } from "@andrewkimjoseph/celina-sdk";
+import { appendCelinaCalldataTag } from "@cnvlabskoxyz/celina-sdk";
 
 const data = appendCelinaCalldataTag(encodeFunctionData(...), ["goclaim"]);
 ```

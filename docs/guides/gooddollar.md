@@ -14,7 +14,7 @@ Export constants from the SDK:
 import {
   GOODDOLLAR_IDENTITY_ADDRESS,
   GOODDOLLAR_UBI_SCHEME_ADDRESS,
-} from "@andrewkimjoseph/celina-sdk";
+} from "@cnvlabskoxyz/celina-sdk";
 ```
 
 ## Identity link
@@ -147,7 +147,7 @@ If you already verified on wallet A and the current signer is wallet B: do not f
 import {
   GOODDOLLAR_FACE_VERIFICATION_CALLBACK_URL,
   shouldSkipFaceVerification,
-} from "@andrewkimjoseph/celina-sdk";
+} from "@cnvlabskoxyz/celina-sdk";
 
 const result = await celina.gooddollar.getFaceVerificationLink({
   publicClient,
@@ -204,7 +204,7 @@ const flow = await celina.gooddollar.prepareReserveSwap(
 Or use aggregated routing:
 
 ```ts
-import { getSwapQuoteWithFallback } from "@andrewkimjoseph/celina-sdk/tools";
+import { getSwapQuoteWithFallback } from "@cnvlabskoxyz/celina-sdk/tools";
 
 const best = await getSwapQuoteWithFallback(celina, "GoodDollar", "USDm", "1000");
 // best.protocol === "gooddollar_reserve"

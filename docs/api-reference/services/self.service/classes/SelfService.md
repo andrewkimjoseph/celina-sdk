@@ -1,12 +1,12 @@
-[**@andrewkimjoseph/celina-sdk**](../../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../../README.md) / [services/self.service](../README.md) / SelfService
+[@cnvlabskoxyz/celina-sdk](../../../README.md) / [services/self.service](../README.md) / SelfService
 
 # Class: SelfService
 
-Defined in: [src/services/self.service.ts:120](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L120)
+Defined in: [src/services/self.service.ts:121](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L121)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [src/services/self.service.ts:120](https://github.com/andrewkimjosep
 
 > **new SelfService**(`clientFactory`, `config`): `SelfService`
 
-Defined in: [src/services/self.service.ts:121](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L121)
+Defined in: [src/services/self.service.ts:122](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L122)
 
 #### Parameters
 
@@ -36,7 +36,7 @@ Defined in: [src/services/self.service.ts:121](https://github.com/andrewkimjosep
 
 > **authenticatedFetch**(`params`): `Promise`\<\{ `body`: `string`; `status`: `number`; `truncated`: `boolean`; \}\>
 
-Defined in: [src/services/self.service.ts:927](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L927)
+Defined in: [src/services/self.service.ts:939](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L939)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Defined in: [src/services/self.service.ts:927](https://github.com/andrewkimjosep
 
 > **checkRegistration**(`sessionId`): `Promise`\<\{ `agent_address?`: `undefined`; `agent_id?`: `undefined`; `message`: `string`; `private_key_hex?`: `undefined`; `proof_expires_at?`: `undefined`; `status`: `"deregistered"`; `tx_hash?`: `undefined`; \} \| \{ `agent_address?`: `undefined`; `agent_id?`: `undefined`; `message`: `string`; `private_key_hex?`: `undefined`; `proof_expires_at`: `string`; `status`: `"refreshed"`; `tx_hash?`: `undefined`; \} \| \{ `agent_address`: `string`; `agent_id`: `number`; `message`: `string`; `private_key_hex`: `string`; `proof_expires_at?`: `undefined`; `status`: `"verified"`; `tx_hash`: `string` \| `undefined`; \} \| \{ `agent_address?`: `undefined`; `agent_id?`: `undefined`; `message`: `string`; `private_key_hex?`: `undefined`; `proof_expires_at?`: `undefined`; `status`: `"pending"`; `tx_hash?`: `undefined`; \} \| \{ `agent_address?`: `undefined`; `agent_id?`: `undefined`; `message`: `string`; `private_key_hex?`: `undefined`; `proof_expires_at?`: `undefined`; `status`: `"expired"`; `tx_hash?`: `undefined`; \}\>
 
-Defined in: [src/services/self.service.ts:740](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L740)
+Defined in: [src/services/self.service.ts:752](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L752)
 
 #### Parameters
 
@@ -86,7 +86,7 @@ Defined in: [src/services/self.service.ts:740](https://github.com/andrewkimjosep
 
 > **deregisterAgent**(): `Promise`\<\{ `deep_link`: `string`; `expires_at`: `string`; `instructions`: `string`; `qr_code_url`: `string`; `qr_url`: `string`; `session_id`: `string`; \}\>
 
-Defined in: [src/services/self.service.ts:871](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L871)
+Defined in: [src/services/self.service.ts:883](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L883)
 
 #### Returns
 
@@ -98,7 +98,27 @@ Defined in: [src/services/self.service.ts:871](https://github.com/andrewkimjosep
 
 > **getIdentity**(): `Promise`\<\{ `address`: `` `0x${string}` ``; `agentCount`: `number`; `agentId`: `number`; `agentKey`: `` `0x${string}` ``; `credentials`: `FormattedSelfCredentials`; `credentials_summary`: `string`; `days_until_expiry`: `number`; `expiry_warning?`: `string`; `is_expired`: `boolean`; `is_expiring_soon`: `boolean`; `isVerified`: `boolean`; `network`: `"mainnet"`; `nullifier`: `number`; `proof_expires_at`: `string` \| `null`; `registered`: `true`; `sibling_agent_ids`: `number`[]; `verificationStrength`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `message`: `string`; `network`: `"mainnet"`; `registered`: `false`; \}\>
 
-Defined in: [src/services/self.service.ts:692](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L692)
+Defined in: [src/services/self.service.ts:714](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L714)
+
+#### Returns
+
+`Promise`\<\{ `address`: `` `0x${string}` ``; `agentCount`: `number`; `agentId`: `number`; `agentKey`: `` `0x${string}` ``; `credentials`: `FormattedSelfCredentials`; `credentials_summary`: `string`; `days_until_expiry`: `number`; `expiry_warning?`: `string`; `is_expired`: `boolean`; `is_expiring_soon`: `boolean`; `isVerified`: `boolean`; `network`: `"mainnet"`; `nullifier`: `number`; `proof_expires_at`: `string` \| `null`; `registered`: `true`; `sibling_agent_ids`: `number`[]; `verificationStrength`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `message`: `string`; `network`: `"mainnet"`; `registered`: `false`; \}\>
+
+***
+
+### getIdentityByAddress()
+
+> **getIdentityByAddress**(`address`): `Promise`\<\{ `address`: `` `0x${string}` ``; `agentCount`: `number`; `agentId`: `number`; `agentKey`: `` `0x${string}` ``; `credentials`: `FormattedSelfCredentials`; `credentials_summary`: `string`; `days_until_expiry`: `number`; `expiry_warning?`: `string`; `is_expired`: `boolean`; `is_expiring_soon`: `boolean`; `isVerified`: `boolean`; `network`: `"mainnet"`; `nullifier`: `number`; `proof_expires_at`: `string` \| `null`; `registered`: `true`; `sibling_agent_ids`: `number`[]; `verificationStrength`: `string`; \} \| \{ `address`: `` `0x${string}` ``; `message`: `string`; `network`: `"mainnet"`; `registered`: `false`; \}\>
+
+Defined in: [src/services/self.service.ts:697](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L697)
+
+On-chain Self identity for any address. Does not require a Self agent key.
+
+#### Parameters
+
+##### address
+
+`` `0x${string}` ``
 
 #### Returns
 
@@ -110,7 +130,7 @@ Defined in: [src/services/self.service.ts:692](https://github.com/andrewkimjosep
 
 > **lookupAgent**(`agentId`): `Promise`\<\{ `credentials`: `FormattedSelfCredentials`; `credentialsSummary`: `string`; `days_until_expiry`: `number`; `is_expired`: `boolean`; `is_expiring_soon`: `boolean`; `network`: `"mainnet"`; `proof_expires_at`: `string` \| `null`; \}\>
 
-Defined in: [src/services/self.service.ts:358](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L358)
+Defined in: [src/services/self.service.ts:359](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L359)
 
 #### Parameters
 
@@ -128,7 +148,7 @@ Defined in: [src/services/self.service.ts:358](https://github.com/andrewkimjosep
 
 > **refreshProof**(`params?`): `Promise`\<\{ `deep_link`: `string`; `expires_at`: `string`; `instructions`: `string`; `qr_code_url`: `string`; `qr_url`: `string`; `session_id`: `string`; \}\>
 
-Defined in: [src/services/self.service.ts:836](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L836)
+Defined in: [src/services/self.service.ts:848](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L848)
 
 #### Parameters
 
@@ -148,7 +168,7 @@ Defined in: [src/services/self.service.ts:836](https://github.com/andrewkimjosep
 
 > **registerAgent**(`params?`): `Promise`\<\{ `deep_link`: `string`; `expires_at`: `string`; `instructions`: `string`; `qr_code_url`: `string`; `qr_url`: `string`; `session_id`: `string`; \}\>
 
-Defined in: [src/services/self.service.ts:707](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L707)
+Defined in: [src/services/self.service.ts:719](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L719)
 
 #### Parameters
 
@@ -166,7 +186,7 @@ Defined in: [src/services/self.service.ts:707](https://github.com/andrewkimjosep
 
 > **signRequest**(`params`): `Promise`\<\{ `headers`: \{ `x-self-agent-address`: `` `0x${string}` ``; `x-self-agent-signature`: `` `0x${string}` ``; `x-self-agent-timestamp`: `string`; \}; `instructions`: `string`; \}\>
 
-Defined in: [src/services/self.service.ts:898](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L898)
+Defined in: [src/services/self.service.ts:910](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L910)
 
 #### Parameters
 
@@ -194,7 +214,7 @@ Defined in: [src/services/self.service.ts:898](https://github.com/andrewkimjosep
 
 > `protected` **taggedCalldata**(`data`): `` `0x${string}` ``
 
-Defined in: [src/services/self.service.ts:968](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L968)
+Defined in: [src/services/self.service.ts:980](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L980)
 
 Reserved for future on-chain Self writes (e.g. metadata updates).
 
@@ -214,7 +234,7 @@ Reserved for future on-chain Self writes (e.g. metadata updates).
 
 > **verifyAgent**(`params`): `Promise`\<\{ `agent_address`: `` `0x${string}` ``; `network`: `"mainnet"`; `reason`: `string`; `verified`: `boolean`; \} \| \{ `agent_address`: `` `0x${string}` ``; `agent_id`: `number`; `credentials`: `FormattedSelfCredentials`; `days_until_expiry`: `number`; `is_expiring_soon`: `boolean`; `network`: `"mainnet"`; `proof_expires_at`: `string` \| `null`; `reason`: `string`; `sibling_agent_ids`: `number`[]; `verification_strength`: `string`; `verified`: `boolean`; \} \| \{ `agent_address`: `` `0x${string}` ``; `agent_count`: `number`; `agent_id`: `number`; `credentials`: `FormattedSelfCredentials`; `days_until_expiry`: `number`; `is_expiring_soon`: `boolean`; `is_proof_fresh`: `boolean`; `network`: `"mainnet"`; `proof_expires_at`: `string` \| `null`; `reason?`: `undefined`; `registered_at`: `number`; `sibling_agent_ids`: `number`[]; `verification_strength`: `string`; `verified`: `boolean`; \}\>
 
-Defined in: [src/services/self.service.ts:197](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L197)
+Defined in: [src/services/self.service.ts:198](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L198)
 
 #### Parameters
 
@@ -232,7 +252,7 @@ Defined in: [src/services/self.service.ts:197](https://github.com/andrewkimjosep
 
 > **verifyRequest**(`params`): `Promise`\<\{ `agent_address?`: `undefined`; `agent_count?`: `undefined`; `agent_id?`: `undefined`; `credentials?`: `undefined`; `note?`: `undefined`; `nullifier?`: `undefined`; `reason`: `string`; `valid`: `boolean`; \} \| \{ `agent_address`: `` `0x${string}` ``; `agent_count?`: `undefined`; `agent_id?`: `undefined`; `credentials?`: `undefined`; `note?`: `undefined`; `nullifier?`: `undefined`; `reason`: `string`; `valid`: `boolean`; \} \| \{ `agent_address`: `` `0x${string}` ``; `agent_count?`: `undefined`; `agent_id`: `number`; `credentials?`: `undefined`; `note?`: `undefined`; `nullifier?`: `undefined`; `reason`: `string`; `valid`: `boolean`; \} \| \{ `agent_address`: `` `0x${string}` ``; `agent_count`: `number`; `agent_id`: `number`; `credentials`: `FormattedSelfCredentials`; `note`: `string`; `nullifier`: `number`; `reason?`: `undefined`; `valid`: `boolean`; \}\>
 
-Defined in: [src/services/self.service.ts:395](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/services/self.service.ts#L395)
+Defined in: [src/services/self.service.ts:396](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/self.service.ts#L396)
 
 #### Parameters
 

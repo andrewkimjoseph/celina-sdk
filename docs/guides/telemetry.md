@@ -46,7 +46,7 @@ On **serverless** hosts (Vercel, AWS Lambda, Cloudflare Workers), do **not** awa
 When one shared `createCelinaClient()` serves many users, wrap the handler:
 
 ```ts
-import { runWithAnalyticsWallet, drainCelinaAnalytics } from "@andrewkimjoseph/celina-sdk";
+import { runWithAnalyticsWallet, drainCelinaAnalytics } from "@cnvlabskoxyz/celina-sdk";
 import { after } from "next/server";
 
 export async function POST(req: Request) {

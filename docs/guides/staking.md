@@ -65,7 +65,7 @@ Recommended flow:
 
 `prepareStake` runs the same validation via `assertStakeEligible` and throws before building unsigned steps — so browser apps get fail-fast behavior even without an explicit pre-check call.
 
-The result type `StakeEligibilityResult` is exported from `@andrewkimjoseph/celina-sdk`.
+The result type `StakeEligibilityResult` is exported from `@cnvlabskoxyz/celina-sdk`.
 
 ## Network totals and delegation
 

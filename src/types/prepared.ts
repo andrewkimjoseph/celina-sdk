@@ -32,7 +32,7 @@ export interface PreparedFlow {
 /**
  * Prepared flow = ordered unsigned transactions ready to sign or submit as UserOps —
  * not a runtime workflow engine. JSON-safe form returned by `prepare*` tools and chat APIs.
- * Primary payload is `steps`. Consumers simulate each step (see `@andrewkimjoseph/celina-sdk/simulation`),
+ * Primary payload is `steps`. Consumers simulate each step (see `@cnvlabskoxyz/celina-sdk/simulation`),
  * then call `sendTransactionAsync` (wagmi), `walletClient.sendTransaction` (viem), or
  * `createAAClient().sendPreparedFlow` for sponsored UserOps.
  */

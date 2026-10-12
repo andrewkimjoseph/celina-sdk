@@ -1,14 +1,14 @@
-[**@andrewkimjoseph/celina-sdk**](../../README.md)
+[**@cnvlabskoxyz/celina-sdk**](../../README.md)
 
 ***
 
-[@andrewkimjoseph/celina-sdk](../../README.md) / [simulation](../README.md) / SimulatePreparedStepOptions
+[@cnvlabskoxyz/celina-sdk](../../README.md) / [simulation](../README.md) / SimulatePreparedStepOptions
 
 # Type Alias: SimulatePreparedStepOptions
 
 > **SimulatePreparedStepOptions** = `object`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L10)
+Defined in: [src/simulation/simulate-prepared-step.ts:10](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L10)
 
 Optional host overrides for Celo fee abstraction or custom state.
 
@@ -18,7 +18,7 @@ Optional host overrides for Celo fee abstraction or custom state.
 
 > `optional` **feeCurrency?**: `` `0x${string}` ``
 
-Defined in: [src/simulation/simulate-prepared-step.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L12)
+Defined in: [src/simulation/simulate-prepared-step.ts:12](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L12)
 
 Celo fee-abstraction currency — host-provided, never auto-resolved by the SDK.
 
@@ -28,4 +28,4 @@ Celo fee-abstraction currency — host-provided, never auto-resolved by the SDK.
 
 > `optional` **stateOverride?**: `StateOverride`
 
-Defined in: [src/simulation/simulate-prepared-step.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/22b2ccc38aadfee03a1077786ec5de9ae678568c/src/simulation/simulate-prepared-step.ts#L13)
+Defined in: [src/simulation/simulate-prepared-step.ts:13](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/simulation/simulate-prepared-step.ts#L13)
