@@ -90,7 +90,10 @@
     "uniswap",
     "sdk"
   ],
-  "author": "Andrew Kim Joseph",
+  "author": {
+    "name": "CNV Labs KO XYZ",
+    "url": "https://github.com/andrewkimjoseph"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
