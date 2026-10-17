@@ -165,4 +165,4 @@ MCP: `get_gooddollar_whitelisting_info`, `get_gooddollar_ubi_entitlement`, `get_
 
 ## License
 
-MIT
+MIT — Copyright (c) 2026 CNV Labs KO XYZ.

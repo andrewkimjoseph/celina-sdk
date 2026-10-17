@@ -67,7 +67,7 @@ export function buildCelinaOasfRecord(
     description: DEFAULT_DESCRIPTION,
     version: options.version ?? "0.9.2",
     schema_version: CELINA_OASF_SCHEMA_VERSION,
-    authors: ["Celina <https://usecelina.xyz>"],
+    authors: ["CNV Labs KO XYZ <https://github.com/andrewkimjoseph>"],
     created_at: "2025-06-01T00:00:00Z",
     skills: CELINA_OASF_SKILLS.map(({ name, id }) => ({ name, id })),
     domains: CELINA_OASF_DOMAINS.map(({ name, id }) => ({ name, id })),
