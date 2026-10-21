@@ -126,10 +126,21 @@ const activateFlow = await celina.staking.prepareActivateStake(from, groupAddres
 // Unstake — revokes pending first, then active, to cover the requested amount
 const unstakeFlow = await celina.staking.prepareUnstake(from, groupAddress, "50");
 
-// Delegate / undelegate a percentage (1–100) of governance voting power
+// Delegate sets that delegatee's share of total voting power (1–100).
 const delegateFlow = await celina.staking.prepareDelegatePower(from, delegateeAddress, 25);
+
+// Undelegate subtracts percentage points from one delegatee.
+// A delegatee who holds 50% is removed with 50, or { all: true } — not 100.
+// 100 is the whole voting power and only succeeds when that delegatee holds all of it.
 const undelegateFlow = await celina.staking.prepareUndelegatePower(from, delegateeAddress, 25);
+const removeDelegatee = await celina.staking.prepareUndelegatePower(from, delegateeAddress, {
+  all: true,
+});
 ```
+
+`prepareUndelegatePower` reads that delegatee's current share first. `percent` is percentage points of the delegator's total voting power to subtract, and it cannot exceed the share that delegatee holds. `{ all: true }` revokes the exact on-chain fraction so a full removal does not round. Each call is one delegatee. When the requested percent is too high, or nothing is delegated to that address, the method throws and names the current percent and CELO amount instead of building a transaction that would revert with "Not enough delegated percents."
+
+Unlock does not require undelegating first. LockedGold reduces each delegatee's amount in proportion during unlock. Withdraw still waits for the unlocking period.
 
 `prepareStake`, `prepareActivateStake`, `prepareUnstake`, `prepareDelegatePower`, and `prepareUndelegatePower` call `assertCeloAccountRegistered` first — the `from` address must have a registered Celo account.
 

@@ -341,7 +341,9 @@ Defined in: [src/services/staking.service.ts:871](https://github.com/andrewkimjo
 
 ### prepareUndelegatePower()
 
-> **prepareUndelegatePower**(`from`, `delegatee`, `percent`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
+> **prepareUndelegatePower**(`from`, `delegatee`, `request`): `Promise`\<[`SerializedPreparedFlow`](../../../types/prepared/interfaces/SerializedPreparedFlow.md)\>
+
+Revoke governance voting power from one delegatee. `request` is a percent (percentage points of total voting power to subtract, capped by the share that delegatee holds) or `{ all: true }` to revoke their exact on-chain fraction.
 
 Defined in: [src/services/staking.service.ts:1070](https://github.com/andrewkimjoseph/celina-sdk/blob/2b7487815780d780ca38b8d2b9ce505b311839e0/src/services/staking.service.ts#L1070)
 
@@ -355,9 +357,9 @@ Defined in: [src/services/staking.service.ts:1070](https://github.com/andrewkimj
 
 `` `0x${string}` ``
 
-##### percent
+##### request
 
-`number`
+`number` \| `{ percent?: number; all?: boolean }`
 
 #### Returns
 
