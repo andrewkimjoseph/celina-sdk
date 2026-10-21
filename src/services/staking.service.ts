@@ -52,6 +52,42 @@ export type {
 const MAX_ELECTABLE_VALIDATORS = 110;
 const MIN_INCREMENTAL_VOTE_AMOUNT = parseEther("0.000001");
 
+/** Percent points to subtract, or `{ all: true }` to revoke that delegatee's exact share. */
+export type UndelegatePowerRequest =
+  | number
+  | {
+      percent?: number;
+      all?: boolean;
+    };
+
+type ResolvedUndelegate =
+  | { all: true }
+  | { all: false; percent: number };
+
+function resolveUndelegateRequest(request: UndelegatePowerRequest): ResolvedUndelegate {
+  if (typeof request === "number") {
+    if (request <= 0 || request > 100) {
+      throw new Error("Undelegation percent must be between 0 and 100.");
+    }
+    return { all: false, percent: request };
+  }
+
+  const hasPercent = request.percent !== undefined;
+  const all = request.all === true;
+  if (hasPercent === all) {
+    throw new Error(
+      all ? "Pass percent or all: true, not both." : "Pass percent or all: true.",
+    );
+  }
+  if (all) return { all: true };
+
+  const percent = request.percent as number;
+  if (percent <= 0 || percent > 100) {
+    throw new Error("Undelegation percent must be between 0 and 100.");
+  }
+  return { all: false, percent };
+}
+
 function calculateGroupCapacity(
   groupMembers: number,
   totalLockedGold: bigint,
@@ -1067,39 +1103,79 @@ export class StakingService {
     );
   }
 
+  /**
+   * Revoke governance voting power from one delegatee.
+   *
+   * `percent` is percentage points of the delegator's total voting power to subtract.
+   * It cannot exceed the share that delegatee currently holds — 100 is the whole
+   * voting power, not "all of this delegatee." Pass `{ all: true }` to revoke the
+   * exact on-chain fraction and remove them.
+   */
   async prepareUndelegatePower(
     from: `0x${string}`,
     delegatee: `0x${string}`,
-    percent: number,
+    request: UndelegatePowerRequest,
   ): Promise<SerializedPreparedFlow> {
-    await assertCeloAccountRegistered(this.clientFactory, from);
     if (!isAddress(delegatee)) {
       throw new Error(`Invalid delegatee address: ${delegatee}`);
     }
-    if (percent <= 0 || percent > 100) {
+    const resolved = resolveUndelegateRequest(request);
+    await assertCeloAccountRegistered(this.clientFactory, from);
+
+    const info = await this.getClient().readContract({
+      address: CELO_CORE_CONTRACTS.lockedGold,
+      abi: lockedGoldAbi,
+      functionName: "getDelegatorDelegateeInfo",
+      args: [from, delegatee],
+    });
+    const [heldFraction, currentAmount] = info as readonly [bigint, bigint];
+    const fractionPercent = (fromFixidity(heldFraction) * 100).toFixed(2);
+    const amountLabel = formatCeloAmount(currentAmount);
+
+    if (heldFraction === 0n) {
+      throw new Error(`No voting power is delegated to ${delegatee}.`);
+    }
+
+    const fractionToRevoke = resolved.all
+      ? heldFraction
+      : percentToFixidity(resolved.percent);
+    if (fractionToRevoke > heldFraction) {
+      throw new Error(
+        `${delegatee} currently holds ${fractionPercent}% (${amountLabel}). ` +
+          "percent is percentage points of total voting power to subtract from this delegatee, and it cannot exceed that share. " +
+          "100 means all of your voting power. " +
+          `Pass ${fractionPercent}, or all: true, to remove them.`,
+      );
+    }
+    if (fractionToRevoke === 0n) {
       throw new Error("Undelegation percent must be between 0 and 100.");
     }
 
-    const fraction = percentToFixidity(percent);
     const data = appendCelinaCalldataTag(
       encodeFunctionData({
         abi: lockedGoldAbi,
         functionName: "revokeDelegatedGovernanceVotes",
-        args: [delegatee, fraction],
+        args: [delegatee, fractionToRevoke],
       }),
       this.attributionTags,
     );
 
+    const short = formatAddress(delegatee);
+    const shareLabel = `${fractionPercent}%, ${amountLabel}`;
+    let stepDescription: string;
+    let summary: string;
+    if (!resolved.all && fractionToRevoke !== heldFraction) {
+      stepDescription = `Revoke ${resolved.percent} percentage points from ${short} (they hold ${shareLabel})`;
+      summary = `Undelegate ${resolved.percent} percentage points from ${short} (they hold ${shareLabel})`;
+    } else {
+      stepDescription = `Revoke this delegatee's entire share (${shareLabel}) from ${short}`;
+      summary = `Undelegate this delegatee's entire share (${shareLabel}) from ${short}`;
+    }
+
     return this.toPreparedFlow(
       from,
-      [
-        this.buildStep(
-          CELO_CORE_CONTRACTS.lockedGold,
-          data,
-          `Revoke ${percent}% delegated power from ${formatAddress(delegatee)}`,
-        ),
-      ],
-      `Undelegate ${percent}% from ${delegatee}`,
+      [this.buildStep(CELO_CORE_CONTRACTS.lockedGold, data, stepDescription)],
+      summary,
     );
   }
 }

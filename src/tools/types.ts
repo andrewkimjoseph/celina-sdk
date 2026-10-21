@@ -198,7 +198,7 @@ export type StakingWriteExecutors = {
   ) => Promise<unknown>;
   undelegatePower: (
     delegatee: `0x${string}`,
-    percent: number,
+    request: { percent?: number; all?: boolean },
     signer?: "celo" | "self_agent",
   ) => Promise<unknown>;
 };

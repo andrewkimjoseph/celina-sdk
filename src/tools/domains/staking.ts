@@ -20,6 +20,35 @@ const destructive = {
   openWorldHint: true,
 } as const;
 
+const UNDELEGATE_PERCENT_DESCRIPTION =
+  "Percentage points of the delegator's total voting power to subtract from this delegatee. Must be less than or equal to that delegatee's fractionPercent from get_delegation_info. 50 removes a delegatee who holds 50%. 100 only works when that delegatee currently holds 100%. Omit when all is true.";
+
+const UNDELEGATE_ALL_DESCRIPTION =
+  "Revoke exactly the fraction this delegatee currently holds, removing them. Use when the user wants that delegatee fully undelegated. Do not also pass percent.";
+
+const UNDELEGATE_DESCRIPTION =
+  "Revoke delegated governance voting power from one delegatee. percent is percentage points of total voting power to subtract and cannot exceed the share that delegatee currently holds (get_delegation_info fractionPercent). To remove a delegatee completely, set all true and omit percent — 100 only works when they hold 100%. One delegatee per call.";
+
+function undelegatePowerSchema(options: { from?: boolean; signer?: boolean }) {
+  return z
+    .object({
+      ...(options.from ? { from: optionalWalletAddressSchema } : {}),
+      delegatee: addressSchema,
+      percent: z
+        .number()
+        .gt(0)
+        .max(100)
+        .optional()
+        .describe(UNDELEGATE_PERCENT_DESCRIPTION),
+      all: z.boolean().optional().describe(UNDELEGATE_ALL_DESCRIPTION),
+      ...(options.signer ? { signer: optionalSignerSchema } : {}),
+    })
+    .refine(
+      (value) => (value.percent !== undefined) !== (value.all === true),
+      "Pass percent or all: true, not both and not neither.",
+    );
+}
+
 function resolveSigner(input: Record<string, unknown>) {
   return input.signer as "celo" | "self_agent" | undefined;
 }
@@ -261,12 +290,8 @@ export const stakingToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "execute_undelegate_power",
-    description: "Revoke delegated governance voting power. Requires humanness verification.",
-    inputSchema: z.object({
-      delegatee: addressSchema,
-      percent: z.number().min(0).max(100),
-      signer: optionalSignerSchema,
-    }),
+    description: `${UNDELEGATE_DESCRIPTION} Requires humanness verification.`,
+    inputSchema: undelegatePowerSchema({ signer: true }),
     families: ["execute"],
     surfaces: ["mcp"],
     requiresEnv: [...executeEnvRequirements],
@@ -276,7 +301,10 @@ export const stakingToolDefinitions: ToolDefinition[] = [
       if (!write) throw new Error("Staking write executor not configured.");
       return write.undelegatePower(
         input.delegatee as `0x${string}`,
-        input.percent as number,
+        {
+          percent: input.percent as number | undefined,
+          all: input.all === true ? true : undefined,
+        },
         resolveSigner(input),
       );
     },
@@ -365,22 +393,22 @@ export const stakingToolDefinitions: ToolDefinition[] = [
   },
   {
     name: "prepare_undelegate_power",
-    description: "Prepare unsigned undelegate governance power flow for wallet signing.",
-    inputSchema: z.object({
-      from: optionalWalletAddressSchema,
-      delegatee: addressSchema,
-      percent: z.number().min(0).max(100),
-    }),
+    description: `Prepare an unsigned transaction that revokes delegated governance voting power from one delegatee. ${UNDELEGATE_DESCRIPTION}`,
+    inputSchema: undelegatePowerSchema({ from: true }),
     families: ["prepare"],
     surfaces: ["browser"],
     handler: async (runtime, input) => {
       const from = resolveWalletFromRuntime(runtime, {
         from: input.from as string | undefined,
       });
+      const request =
+        input.all === true
+          ? { all: true as const }
+          : (input.percent as number);
       return runtime.celina.staking.prepareUndelegatePower(
         from,
         input.delegatee as `0x${string}`,
-        input.percent as number,
+        request,
       );
     },
   },
