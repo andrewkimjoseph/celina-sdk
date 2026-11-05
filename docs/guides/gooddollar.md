@@ -201,6 +201,18 @@ const flow = await celina.gooddollar.prepareReserveSwap(
 // Same params as quote — 1–2 steps: optional ERC-20 approve + broker swapIn
 ```
 
+Browser apps should not import `createCelinaClient()` (that entry is server-only). Use the browser-safe subpath with the page's viem public client instead. `GoodDollarService` calls this same module, so quote and calldata match.
+
+```ts
+import { createGoodDollarReserveClient } from "@cnvlabskoxyz/celina-sdk/gooddollar-reserve";
+
+const reserve = createGoodDollarReserveClient(publicClient, {
+  attributionTags: ["your-app"],
+});
+const quote = await reserve.getReserveQuote("GoodDollar", "USDm", "1000");
+const flow = await reserve.prepareReserveSwap(from, "GoodDollar", "USDm", "1000");
+```
+
 Or use aggregated routing:
 
 ```ts

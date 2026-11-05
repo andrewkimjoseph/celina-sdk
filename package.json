@@ -1,6 +1,6 @@
 {
   "name": "@cnvlabskoxyz/celina-sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Celina SDK — Celo mainnet reads, unsigned transaction preparation, and ERC-4337 createAAClient for sponsored UserOps.",
   "type": "module",
   "sideEffects": false,
@@ -46,6 +46,11 @@
       "types": "./build/analytics/onchain-stats.d.ts",
       "import": "./build/analytics/onchain-stats.js",
       "default": "./build/analytics/onchain-stats.js"
+    },
+    "./gooddollar-reserve": {
+      "types": "./build/browser/gooddollar-reserve.d.ts",
+      "import": "./build/browser/gooddollar-reserve.js",
+      "default": "./build/browser/gooddollar-reserve.js"
     }
   },
   "files": [

@@ -42,6 +42,7 @@ Requires Node.js ≥ 20.
 | `@cnvlabskoxyz/celina-sdk/a2a` | A2A agent card handler (used by celina-mcp-remote) |
 | `@cnvlabskoxyz/celina-sdk/oasf` | OASF manifest helpers for agent discovery |
 | `@cnvlabskoxyz/celina-sdk/testing` | Test harness entry for fork/integration tests |
+| `@cnvlabskoxyz/celina-sdk/gooddollar-reserve` | Browser-safe G$ ↔ USDm reserve quote and unsigned swap steps |
 
 ### LLM tool catalog (v0.5+)
 
