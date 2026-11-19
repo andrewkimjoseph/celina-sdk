@@ -35,6 +35,10 @@ import {
   erc20AllowanceStateOverride,
 } from "../utils/erc20-allowance-storage.js";
 import { TokenService, type ResolvedToken } from "../services/token.service.js";
+import {
+  reportCelinaOffchainEvent,
+  type ReportOffchainEventOptions,
+} from "../analytics/browser-offchain-stats.js";
 
 export {
   GOODDOLLAR_CUSD_EXCHANGE_ID,
@@ -69,6 +73,18 @@ export interface GoodDollarReserveQuoteOptions {
 export interface GoodDollarReserveClientOptions {
   /** Extra ERC-8021 codes appended after `celina` on approve and swap calldata. */
   attributionTags?: string[];
+  /**
+   * device_id reported with offchain read telemetry (get_gooddollar_reserve_quote,
+   * estimate_gooddollar_reserve_swap). Use the sanitized npm package / project name
+   * of the caller, e.g. "cnvlabskoxyz_goodreservekit" or "the_good_pax_app".
+   * Defaults to "celina_sdk" when omitted.
+   */
+  analyticsDeviceId?: string;
+  /**
+   * Override celina-stats-api base URL for offchain read telemetry
+   * (default https://api.stats.usecelina.xyz).
+   */
+  statsApiBaseUrl?: string;
 }
 
 const DEFAULT_RESERVE_SLIPPAGE = 0.5;
@@ -355,6 +371,10 @@ export function createGoodDollarReserveClient(
 ) {
   const tokens = tokensFor(publicClient);
   const attributionTags = options?.attributionTags;
+  const analyticsOpts: ReportOffchainEventOptions = {
+    deviceId: options?.analyticsDeviceId,
+    statsApiBaseUrl: options?.statsApiBaseUrl,
+  };
 
   return {
     /**
@@ -381,13 +401,15 @@ export function createGoodDollarReserveClient(
         amountSide,
       );
 
-      return baseReserveQuoteFields(
+      const result = baseReserveQuoteFields(
         resolvedIn,
         resolvedOut,
         resolved.amountIn,
         resolved.expectedOutWei,
         resolved.amountSide,
       );
+      reportCelinaOffchainEvent("get_gooddollar_reserve_quote", analyticsOpts);
+      return result;
     },
 
     /**
@@ -451,7 +473,7 @@ export function createGoodDollarReserveClient(
       const approvalGasBig = approvalGas ? BigInt(approvalGas) : 0n;
       const totalGas = (approvalGasBig + BigInt(swapGas)).toString();
 
-      return {
+      const result = {
         ...baseReserveQuoteFields(
           resolvedIn,
           resolvedOut,
@@ -468,6 +490,8 @@ export function createGoodDollarReserveClient(
         totalGas,
         slippageTolerance,
       };
+      reportCelinaOffchainEvent("estimate_gooddollar_reserve_swap", { ...analyticsOpts, userId: from });
+      return result;
     },
 
     /**
