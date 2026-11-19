@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PublicClient } from "viem";
 import {
   GOODDOLLAR_MENTO_BROKER,
@@ -8,6 +8,11 @@ import {
   createGoodDollarReserveClient,
 } from "../../src/browser/gooddollar-reserve.js";
 import { checkAttributionInCalldata } from "../../src/config/celina-tag.js";
+import {
+  DEFAULT_STATS_API_BASE_URL,
+  resetBrowserOffchainStatsForTests,
+  setBrowserOffchainStatsFetchForTests,
+} from "../../src/analytics/browser-offchain-stats.js";
 
 const FROM = "0x0000000000000000000000000000000000000001" as const;
 const SRC_ROOT = resolve(process.cwd(), "src");
@@ -85,6 +90,10 @@ function mockPublicClient(options?: {
     estimateGas,
   };
 }
+
+afterEach(() => {
+  resetBrowserOffchainStatsForTests();
+});
 
 describe("gooddollar reserve browser module", () => {
   it("does not import citizen-sdk, AgentKarma, or GoodDollarService", () => {
@@ -188,6 +197,100 @@ describe("gooddollar reserve browser module", () => {
     await expect(
       reserve.estimateReserveSwap(FROM, "GoodDollar", "USDm", "10"),
     ).rejects.toThrow(/Insufficient GoodDollar balance/);
+  });
+});
+
+describe("offchain telemetry in browser reserve client", () => {
+  it("POSTs get_gooddollar_reserve_quote after a successful getReserveQuote", async () => {
+    const calls: Array<{ url: string; init: RequestInit }> = [];
+    setBrowserOffchainStatsFetchForTests(((url: string, init?: RequestInit) => {
+      calls.push({ url: String(url), init: init ?? {} });
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }) as typeof fetch);
+
+    const { client } = mockPublicClient();
+    const reserve = createGoodDollarReserveClient(client, { analyticsDeviceId: "cnvlabskoxyz_goodreservekit" });
+    await reserve.getReserveQuote("GoodDollar", "USDm", "1000");
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.url).toBe(`${DEFAULT_STATS_API_BASE_URL}/telemetry`);
+    const body = JSON.parse(calls[0]?.init.body as string) as Record<string, unknown>;
+    expect(body.event_type).toBe("get_gooddollar_reserve_quote");
+    expect(body.device_id).toBe("cnvlabskoxyz_goodreservekit");
+    expect(body.time).toBeTypeOf("number");
+  });
+
+  it("uses default device_id when analyticsDeviceId is omitted", async () => {
+    const calls: Array<{ url: string; init: RequestInit }> = [];
+    setBrowserOffchainStatsFetchForTests(((url: string, init?: RequestInit) => {
+      calls.push({ url: String(url), init: init ?? {} });
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }) as typeof fetch);
+
+    const { client } = mockPublicClient();
+    const reserve = createGoodDollarReserveClient(client);
+    await reserve.getReserveQuote("GoodDollar", "USDm", "100");
+
+    const body = JSON.parse(calls[0]?.init.body as string) as Record<string, unknown>;
+    expect(body.device_id).toBe("celina_sdk");
+  });
+
+  it("POSTs estimate_gooddollar_reserve_swap with user_id after estimateReserveSwap", async () => {
+    const calls: Array<{ url: string; init: RequestInit }> = [];
+    setBrowserOffchainStatsFetchForTests(((url: string, init?: RequestInit) => {
+      calls.push({ url: String(url), init: init ?? {} });
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }) as typeof fetch);
+
+    const { client } = mockPublicClient();
+    const reserve = createGoodDollarReserveClient(client, { analyticsDeviceId: "cnvlabskoxyz_goodreservekit" });
+    await reserve.estimateReserveSwap(FROM, "GoodDollar", "USDm", "10");
+
+    expect(calls).toHaveLength(1);
+    const body = JSON.parse(calls[0]?.init.body as string) as Record<string, unknown>;
+    expect(body.event_type).toBe("estimate_gooddollar_reserve_swap");
+    expect(body.device_id).toBe("cnvlabskoxyz_goodreservekit");
+    expect(body.user_id).toBe(FROM);
+  });
+
+  it("does NOT POST a telemetry event for prepareReserveSwap", async () => {
+    const calls: unknown[] = [];
+    setBrowserOffchainStatsFetchForTests((() => {
+      calls.push(1);
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }) as typeof fetch);
+
+    const { client } = mockPublicClient({ allowance: 10n ** 30n });
+    const reserve = createGoodDollarReserveClient(client, { analyticsDeviceId: "cnvlabskoxyz_goodreservekit" });
+    await reserve.prepareReserveSwap(FROM, "USDm", "GoodDollar", "1");
+
+    expect(calls).toHaveLength(0);
+  });
+
+  it("honours a custom statsApiBaseUrl option", async () => {
+    const calls: Array<{ url: string }> = [];
+    setBrowserOffchainStatsFetchForTests(((url: string) => {
+      calls.push({ url: String(url) });
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }) as typeof fetch);
+
+    const { client } = mockPublicClient();
+    const reserve = createGoodDollarReserveClient(client, {
+      analyticsDeviceId: "test_app",
+      statsApiBaseUrl: "https://staging-stats.example.com",
+    });
+    await reserve.getReserveQuote("GoodDollar", "USDm", "1");
+
+    expect(calls[0]?.url).toBe("https://staging-stats.example.com/telemetry");
+  });
+
+  it("does not throw when the offchain fetch rejects", async () => {
+    setBrowserOffchainStatsFetchForTests((() =>
+      Promise.reject(new Error("offline"))) as typeof fetch);
+
+    const { client } = mockPublicClient();
+    const reserve = createGoodDollarReserveClient(client);
+    await expect(reserve.getReserveQuote("GoodDollar", "USDm", "1")).resolves.toBeDefined();
   });
 });
 
